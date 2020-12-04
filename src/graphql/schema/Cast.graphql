@@ -1,5 +1,0 @@
-type Cast {
-    firstName: String!
-    familyName: String!
-    person: Person!
-}

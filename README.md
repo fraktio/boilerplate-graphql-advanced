@@ -1,4 +1,4 @@
-# Graphql boilerplate - Medium hardness
+# Graphql boilerplate - Advanced hardness
 
 ## Developing project
 

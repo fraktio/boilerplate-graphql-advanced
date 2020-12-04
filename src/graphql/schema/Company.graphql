@@ -1,0 +1,70 @@
+type Company implements Node {
+  uuid: UUID!
+  name: String!
+  timestamp: Timestamp!
+  employees: [Employee!]!
+}
+
+type Query {
+  companies: [Company]!
+  company(uuid: UUID!): Company!
+}
+
+type Mutation {
+  addCompany(input: AddCompanyInput!): AddCompanyOutput!
+  editCompany(input: EditCompanyInput!): EditCompanyOutput!
+  addEmployee(
+    input: AddEmployeeInput!
+  ): AddEmployeeOutput!
+  removeEmployee(
+    input: RemoveEmployeeInput!
+  ): RemoveEmployeeOutput!
+}
+
+input AddCompanyInput {
+  company: CompanyInput!
+}
+
+input EditCompanyInput {
+  uuid: UUID!
+  company: CompanyInput!
+}
+
+input CompanyInput {
+  name: String!
+  # more later..
+}
+
+input AddEmployeeInput {
+  companyUuid: UUID!
+  personUuid: UUID!
+}
+
+input RemoveEmployeeInput {
+  companyUuid: UUID!
+  personUuid: UUID!
+}
+
+union AddCompanyOutput = AddCompanySuccess | UniqueConstraintViolationFailure
+
+type AddCompanySuccess {
+  company: Company!
+}
+
+union EditCompanyOutput = EditCompanySuccess #| possible other failures
+
+type EditCompanySuccess {
+  company: Company!
+}
+
+union AddEmployeeOutput = AddEmployeeSuccess #| possible other failures
+
+type AddEmployeeSuccess {
+  company: Company!
+}
+
+union RemoveEmployeeOutput = RemoveEmployeeSuccess #| possible other failures
+
+type RemoveEmployeeSuccess {
+  company: Company!
+}
