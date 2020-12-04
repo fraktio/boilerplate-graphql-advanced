@@ -1,4 +1,4 @@
-# merivaara-api
+# Graphql boilerplate - Medium hardness
 
 ## Developing project
 
@@ -6,6 +6,11 @@
 
     1. Populate `.env` file with values found in `.env.example`
     2. `yarn`
+
+2. Start database
+
+    1. `docker-compose up`
+    2. `yarn database:migrate:latest`
 
 2. Start the api
 
