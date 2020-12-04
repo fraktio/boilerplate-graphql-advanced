@@ -1,10 +1,14 @@
 import { DateTime } from "luxon";
 
 import { CastTableRaw } from "./CastDataSource";
-import { MovieTableRaw } from "./MovieDataSource";
 
 import { DataSourceWithContext } from "~/dataSources/DataSourceWithContext";
-import { Table, tableColumn } from "~/database/types";
+import {
+  MovieTableRaw,
+  PersonTableRaw,
+  Table,
+  tableColumn,
+} from "~/database/types";
 
 export type PersonTable = {
   id: number;
@@ -14,16 +18,6 @@ export type PersonTable = {
   birthday: DateTime;
   createdAt: DateTime;
   updatedAt: DateTime;
-};
-
-export type PersonTableRaw = {
-  id: number;
-  uuid: string;
-  firstName: string;
-  familyName: string;
-  birthday: Date;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 export class PersonDataSource extends DataSourceWithContext {
@@ -76,6 +70,8 @@ export class PersonDataSource extends DataSourceWithContext {
   }
 
   public async getPersons() {
+    this.ensureAuthenticatedUser();
+
     const personsRaw = await this.knex<PersonTableRaw>(Table.PERSONS);
 
     return personsRaw.map(this.formatRow);

@@ -8,7 +8,7 @@ export const registrationResolver: Resolvers = {
   },
 
   Mutation: {
-    async register(_, { input }, { dataSources, hashingService }) {
+    async register(_, { input }, { dataSources, hashingUtils }) {
       const user = await dataSources.userDS.getUser({
         username: input.username,
       });
@@ -20,7 +20,7 @@ export const registrationResolver: Resolvers = {
         };
       }
 
-      const hashedPassword = await hashingService.hashPassword({
+      const hashedPassword = await hashingUtils.hashPassword({
         password: input.password,
       });
 

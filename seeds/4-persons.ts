@@ -1,8 +1,7 @@
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { PersonTableRaw } from "../src/dataSources/PersonDataSource";
-import { Table } from "../src/database/types";
+import { PersonTableRaw, Table } from "../src/database/types";
 
 import { seedPersons } from "./seedData";
 

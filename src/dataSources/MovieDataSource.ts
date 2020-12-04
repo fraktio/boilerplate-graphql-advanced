@@ -1,12 +1,17 @@
+import { ApolloError } from "apollo-server-express";
 import { DateTime } from "luxon";
 
 import { CastTableRaw } from "./CastDataSource";
 import { GenresTableRaw } from "./GenreDataSource";
-import { MovieGenreRelationTableRaw } from "./MovieGenreRelationDataSource";
-import { PersonTableRaw } from "./PersonDataSource";
 
 import { DataSourceWithContext } from "~/dataSources/DataSourceWithContext";
-import { tableColumn, Table } from "~/database/types";
+import {
+  tableColumn,
+  Table,
+  MovieTableRaw,
+  MovieGenreRelationTableRaw,
+  PersonTableRaw,
+} from "~/database/types";
 
 export type MovieTable = {
   id: number;
@@ -16,16 +21,6 @@ export type MovieTable = {
   releaseDate: DateTime;
   createdAt: DateTime;
   updatedAt: DateTime;
-};
-
-export type MovieTableRaw = {
-  id: number;
-  uuid: string;
-  title: string;
-  rating: number;
-  releaseDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 export class MovieDataSource extends DataSourceWithContext {
@@ -100,6 +95,18 @@ export class MovieDataSource extends DataSourceWithContext {
   }
 
   public async getMovie(opts: { id?: number; uuid?: string }) {
+    const movie = await this.knex<MovieTableRaw>(Table.MOVIES)
+      .where(opts)
+      .first();
+
+    if (!movie) {
+      throw new ApolloError("Internal error");
+    }
+
+    return this.formatRow(movie);
+  }
+
+  public async maybeGetMovie(opts: { id?: number; uuid?: string }) {
     const movie = await this.knex<MovieTableRaw>(Table.MOVIES)
       .where(opts)
       .first();

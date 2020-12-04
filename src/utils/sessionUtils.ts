@@ -14,8 +14,8 @@ export type JWTRefreshPayload = {
   uuid: string;
 };
 
-export class SessionService {
-  config: Config;
+export class SessionUtils {
+  private config: Config;
 
   constructor(opts: { config: Config }) {
     this.config = opts.config;

@@ -6,10 +6,3 @@ export type MovieGenreRelationTable = {
   genreId: number;
   createdAt: DateTime;
 };
-
-export type MovieGenreRelationTableRaw = {
-  id: number;
-  movieId: number;
-  genreId: number;
-  createdAt: Date;
-};

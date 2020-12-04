@@ -10,12 +10,12 @@ import { createLogger } from "~/logger";
 import { errorHandler } from "~/middleware/errorHandler";
 import { loggerHandler } from "~/middleware/loggerHandler";
 import { sessionHandler } from "~/middleware/sessionHandler";
-import { createServices } from "~/services/services";
+import { createUtils } from "~/utils/utils";
 
 export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });
   const knex = createKnex({ config });
-  const services = createServices({ config, logger });
+  const utils = createUtils({ config, logger });
   const dataSources = createDataSources({ config, logger, knex });
 
   const app = createExpress({ config });
@@ -23,14 +23,14 @@ export const createServer = ({ config }: { config: Config }) => {
   app.use(
     sessionHandler({
       config,
-      sessionService: services.sessionService,
+      sessionUtils: utils.sessionUtils,
       userDataSource: dataSources.userDS,
     }),
   );
 
   const apolloServer = createApolloServer({
     config,
-    context: createContext({ services }),
+    context: createContext({ utils }),
     dataSources: () => dataSources,
   });
 
@@ -49,5 +49,5 @@ export const createServer = ({ config }: { config: Config }) => {
     app.use(errorHandler);
   }
 
-  return { app, logger };
+  return { app, logger, knex };
 };

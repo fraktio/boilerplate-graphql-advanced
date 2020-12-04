@@ -1,9 +1,11 @@
 import * as Knex from "knex";
 
 import { GenresTableRaw } from "../src/dataSources/GenreDataSource";
-import { MovieTableRaw } from "../src/dataSources/MovieDataSource";
-import { MovieGenreRelationTableRaw } from "../src/dataSources/MovieGenreRelationDataSource";
-import { Table } from "../src/database/types";
+import {
+  MovieGenreRelationTableRaw,
+  MovieTableRaw,
+  Table,
+} from "../src/database/types";
 
 import { seedMovies } from "./seedData";
 

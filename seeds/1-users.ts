@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 
 import { UserTable } from "../src/dataSources/UserDataSource";
 import { Table } from "../src/database/types";
-import { HashingService } from "../src/services/hashingService";
 
-const hashingService = new HashingService();
+import { HashingUtils } from "~/utils/hashingUtils";
+
+const hashingUtils = new HashingUtils();
 
 export const seed = async (knex: Knex): Promise<void> => {
   // Deletes ALL existing entries
@@ -21,7 +22,7 @@ export const seed = async (knex: Knex): Promise<void> => {
         username,
         email: faker.internet.email(),
         phoneNumber: faker.phone.phoneNumber(),
-        hashedPassword: await hashingService.hashPassword({
+        hashedPassword: await hashingUtils.hashPassword({
           password: "password",
         }),
       },

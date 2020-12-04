@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-export class HashingService {
+export class HashingUtils {
   private saltRounds = 10;
 
   hashPassword(opts: { password: string }) {

@@ -2,8 +2,8 @@ import Logger from "bunyan";
 import { Request, Response } from "express";
 
 import { DataSources } from "~/dataSources/dataSources";
-import { Services } from "~/services/services";
-import { JWTRefreshPayload } from "~/services/sessionService";
+import { JWTRefreshPayload } from "~/utils/sessionUtils";
+import { Utils } from "~/utils/utils";
 
 export type Context = CreatedContext & {
   // Do not remove this
@@ -16,9 +16,9 @@ type CreatedContext = {
   req: Request;
   res: Response;
   authenticatedUser: JWTRefreshPayload | null;
-} & Services;
+} & Utils;
 
-export const createContext = (opts: { services: Services }) => (app: {
+export const createContext = (opts: { utils: Utils }) => (app: {
   req: Request;
   res: Response;
 }): CreatedContext => ({
@@ -26,5 +26,5 @@ export const createContext = (opts: { services: Services }) => (app: {
   req: app.req,
   res: app.res,
   authenticatedUser: app.req.user || null,
-  ...opts.services,
+  ...opts.utils,
 });

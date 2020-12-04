@@ -11,7 +11,7 @@ export const authenticationResolver: Resolvers = {
     async login(
       _,
       { input },
-      { dataSources, hashingService, sessionService, res },
+      { dataSources, hashingUtils, sessionUtils, res },
     ) {
       const user = await dataSources.userDS.getUser({
         username: input.username,
@@ -24,7 +24,7 @@ export const authenticationResolver: Resolvers = {
         };
       }
 
-      const isValidPassword = await hashingService.validatePassword({
+      const isValidPassword = await hashingUtils.validatePassword({
         password: input.password,
         hash: user.hashedPassword,
       });
@@ -36,11 +36,11 @@ export const authenticationResolver: Resolvers = {
         };
       }
 
-      const { refreshToken } = sessionService.generateRefreshToken({
+      const { refreshToken } = sessionUtils.generateRefreshToken({
         user,
       });
 
-      sessionService.setRefreshToken({ res, refreshToken });
+      sessionUtils.setRefreshToken({ res, refreshToken });
 
       return {
         __typename: "LoginUserSuccess",
@@ -48,8 +48,8 @@ export const authenticationResolver: Resolvers = {
       };
     },
 
-    logout(_, __, { res, sessionService }) {
-      sessionService.clearSessions({ res });
+    logout(_, __, { res, sessionUtils }) {
+      sessionUtils.clearSessions({ res });
 
       return true;
     },

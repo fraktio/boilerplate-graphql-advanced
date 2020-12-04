@@ -1,10 +1,12 @@
 import { DateTime } from "luxon";
 
-import { MovieTableRaw } from "./MovieDataSource";
-import { MovieGenreRelationTableRaw } from "./MovieGenreRelationDataSource";
-
 import { DataSourceWithContext } from "~/dataSources/DataSourceWithContext";
-import { tableColumn, Table } from "~/database/types";
+import {
+  tableColumn,
+  Table,
+  MovieGenreRelationTableRaw,
+  MovieTableRaw,
+} from "~/database/types";
 
 export type GenresTable = {
   id: number;

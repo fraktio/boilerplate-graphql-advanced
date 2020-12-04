@@ -1,8 +1,7 @@
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { MovieTableRaw } from "../src/dataSources/MovieDataSource";
-import { Table } from "../src/database/types";
+import { MovieTableRaw, Table } from "../src/database/types";
 
 import { seedMovies } from "./seedData";
 

@@ -3,18 +3,7 @@ import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 
 import { DataSourceWithContext } from "~/dataSources/DataSourceWithContext";
-import { Table } from "~/database/types";
-
-export type UserTableRaw = {
-  id: number;
-  uuid: string;
-  username: string;
-  email: string;
-  phoneNumber: string;
-  hashedPassword: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { Table, UserTableRaw } from "~/database/types";
 
 export type UserTable = {
   id: number;

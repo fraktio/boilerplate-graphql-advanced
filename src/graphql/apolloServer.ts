@@ -8,7 +8,7 @@ import { createComplexityLimitRule } from "graphql-validation-complexity";
 import { createSchemaDirectives } from "./directives/directives";
 
 import { Config } from "~/config";
-import { resolvers } from "~/graphql/resolvers";
+import { resolvers } from "~/graphql/resolvers/resolvers";
 import { typeDefs } from "~/graphql/typeDefs";
 import { apolloServerLogger } from "~/logger";
 import { apolloErrorHandler } from "~/middleware/errorHandler";
@@ -50,3 +50,12 @@ export const createApolloServer = (opts: CreateServerOpts) =>
     },
     ...opts,
   });
+
+/*
+onHealthCheck: async () => {},
+
+(LINUX) => LB;
+(Docker) => LB;
+(Apigateway) => (Lambda) => (express) => graphql || autho | Cognito;
+appsync;
+*/
