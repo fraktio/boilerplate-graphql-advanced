@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  dev-db:
+    image: postgres:12-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: graphql-boilerplate
+      POSTGRES_USER: graphql-boilerplate
+      POSTGRES_DB: graphql-boilerplate
+
+  test-db:
+    image: postgres:12-alpine
+    restart: always
+    ports:
+      - 54321:5432
+    environment:
+      POSTGRES_PASSWORD: graphql-boilerplate-test
+      POSTGRES_USER: graphql-boilerplate-test
+      POSTGRES_DB: graphql-boilerplate-test

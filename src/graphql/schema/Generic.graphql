@@ -1,0 +1,8 @@
+scalar Date
+scalar DateTime
+scalar PhoneNumber
+scalar EmailAddress
+scalar UUID
+scalar HexColorCode
+
+directive @authenticated on FIELD_DEFINITION

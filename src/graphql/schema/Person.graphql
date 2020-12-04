@@ -1,0 +1,18 @@
+type Person {
+  uuid: UUID!
+  firstName: String!
+  familyName: String!
+  birthday: Date!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  movies: [Movie!]!
+}
+
+input PersonInput {
+  uuid: UUID!
+}
+
+type Query {
+  persons: [Person!]! @authenticated
+  person(input: PersonInput!): Person! @authenticated
+}

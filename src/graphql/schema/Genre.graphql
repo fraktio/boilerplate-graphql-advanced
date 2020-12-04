@@ -1,0 +1,16 @@
+type Genre {
+  uuid: UUID!
+  type: String!
+  movies: [Movie!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input GenreInput {
+  uuid: UUID!
+}
+
+type Query {
+  genres: [Genre!]!
+  genre(input: GenreInput!): Genre!
+}

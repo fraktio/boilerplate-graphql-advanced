@@ -1,0 +1,20 @@
+schema:
+    - 'src/graphql/schema/**/*.graphql'
+generates:
+  'src/generated/graphql.ts':
+    config:
+      mappers:
+        Movie: ../models#MovieModel
+        Genre: ../models#GenreModel
+        Person: ../models#PersonModel
+      contextType: ../graphql/context#Context
+      useIndexSignature: true
+      scalars:
+        Date: luxon#DateTime
+        DateTime: luxon#DateTime
+        EmailAddress: string
+        PhoneNumber: "google-libphonenumber#PhoneNumber"
+        Email: string
+    plugins:
+      - typescript
+      - typescript-resolvers

@@ -1,0 +1,27 @@
+type Session {
+  uuid: UUID
+}
+
+type Query {
+  authenticatedUser: User! @authenticated
+}
+
+type LoginUserSuccess {
+  user: User!
+}
+
+type LoginUserFailure {
+  success: Boolean!
+}
+
+union LoginUserResponse = LoginUserSuccess | LoginUserFailure
+
+input LoginUserInput {
+  username: String!
+  password: String!
+}
+
+type Mutation {
+  login(input: LoginUserInput!): LoginUserResponse!
+  logout: Boolean!
+}

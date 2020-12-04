@@ -1,0 +1,24 @@
+type RegisterSuccess {
+  success: Boolean!
+}
+
+type RegisterFailure {
+  success: Boolean!
+}
+
+type RegisterFailureAlreadyExists {
+  success: Boolean!
+}
+
+union RegisterResponse = RegisterSuccess | RegisterFailure | RegisterFailureAlreadyExists
+
+input RegisterInput {
+  username: String!
+  password: String!
+  email: EmailAddress!
+  phoneNumber: PhoneNumber!
+}
+
+type Mutation {
+  register(input: RegisterInput!): RegisterResponse!
+}

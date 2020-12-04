@@ -1,0 +1,11 @@
+type Page {
+  slug: String!
+}
+
+input PageInput {
+  slug: String!
+}
+
+type Query {
+  page(input: PageInput!): Page
+}
