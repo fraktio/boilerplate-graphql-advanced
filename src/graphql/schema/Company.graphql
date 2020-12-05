@@ -1,8 +1,8 @@
-type Company implements Node {
+type Company {
   uuid: UUID!
   name: String!
   timestamp: Timestamp!
-  employees: [Employee!]!
+  employees: [!Adult]!
 }
 
 type Query {
@@ -13,12 +13,6 @@ type Query {
 type Mutation {
   addCompany(input: AddCompanyInput!): AddCompanyOutput!
   editCompany(input: EditCompanyInput!): EditCompanyOutput!
-  addEmployee(
-    input: AddEmployeeInput!
-  ): AddEmployeeOutput!
-  removeEmployee(
-    input: RemoveEmployeeInput!
-  ): RemoveEmployeeOutput!
 }
 
 input AddCompanyInput {
@@ -35,16 +29,6 @@ input CompanyInput {
   # more later..
 }
 
-input AddEmployeeInput {
-  companyUuid: UUID!
-  personUuid: UUID!
-}
-
-input RemoveEmployeeInput {
-  companyUuid: UUID!
-  personUuid: UUID!
-}
-
 union AddCompanyOutput = AddCompanySuccess | UniqueConstraintViolationFailure
 
 type AddCompanySuccess {
@@ -54,17 +38,5 @@ type AddCompanySuccess {
 union EditCompanyOutput = EditCompanySuccess #| possible other failures
 
 type EditCompanySuccess {
-  company: Company!
-}
-
-union AddEmployeeOutput = AddEmployeeSuccess #| possible other failures
-
-type AddEmployeeSuccess {
-  company: Company!
-}
-
-union RemoveEmployeeOutput = RemoveEmployeeSuccess #| possible other failures
-
-type RemoveEmployeeSuccess {
   company: Company!
 }
