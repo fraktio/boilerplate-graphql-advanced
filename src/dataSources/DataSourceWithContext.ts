@@ -1,5 +1,4 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
-import { AuthenticationError } from "apollo-server-express";
 import Logger from "bunyan";
 import Knex from "knex";
 
@@ -28,29 +27,5 @@ export class DataSourceWithContext extends DataSource<Context> {
   // This function is fired by apolloServer
   initialize(config: DataSourceConfig<Context>) {
     this.context = config.context;
-  }
-
-  private ensureAuthenticated() {
-    if (!this.context.authenticatedUser) {
-      this.logger.warn("User was not authenticated");
-      throw new AuthenticationError("Unauthorized");
-    }
-
-    return this.context.authenticatedUser;
-  }
-
-  protected async ensureAuthenticatedUser() {
-    const userAuth = this.ensureAuthenticated();
-
-    const user = await this.context.dataSources.userDS.getUser({
-      uuid: userAuth.uuid,
-    });
-
-    if (!user) {
-      this.logger.warn("Authenticated user was not found");
-      throw new AuthenticationError("Unauthorized");
-    }
-
-    return user;
   }
 }

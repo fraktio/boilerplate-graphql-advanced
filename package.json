@@ -8,14 +8,14 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' src/index.ts | ./node_modules/.bin/bunyan",
+    "dev": "nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' src/index.ts | ./node_modules/.bin/bunyan",
     "build": "tsc && cp -r ./src/graphql/schema ./dist/src/graphql/",
     "codegen": "graphql-codegen",
-    "schemats": "schemats generate",
+    "schemats": "schemats generate -c postgres://graphql-boilerplate@localhost/graphql-boilerplate -s public -o osm.ts",
     "lint": "eslint . --ext ts,js",
     "database:migrate:latest": "knex migrate:latest",
     "database:migrate:down": "knex migrate:down",
-    "database:seed": "knex seed:run"
+    "seed": "knex seed:run"
   },
   "dependencies": {
     "@graphql-tools/load-files": "^6.2.5",

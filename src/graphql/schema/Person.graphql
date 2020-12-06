@@ -5,11 +5,11 @@ interface Person {
   firstName: String!
   lastName: String!
   personalIdentityCode: PersonalIdentityCode!  # TODO: @auth(requires: ADMIN)
-  phone: Phone
-  email: Email!
+  phone: PhoneNumber
+  email: EmailAddress!
   nationality: CountryCode!
   languages: [Language!]!
-  birthDay: Date!
+  birthday: Date!
   timestamp: Timestamp!
 }
 
@@ -22,11 +22,11 @@ type Adult implements Person {
   firstName: String!
   lastName: String!
   personalIdentityCode: PersonalIdentityCode!
-  phone: Phone
-  email: Email!
+  phone: PhoneNumber
+  email: EmailAddress!
   nationality: CountryCode!
   languages: [Language!]!
-  birthDay: Date!
+  birthday: Date!
   timestamp: Timestamp!
   employers: [Company!]!
 }
@@ -40,11 +40,11 @@ type Underage implements Person {
   firstName: String!
   lastName: String!
   personalIdentityCode: PersonalIdentityCode!
-  phone: Phone
-  email: Email!
+  phone: PhoneNumber
+  email: EmailAddress!
   nationality: CountryCode!
   languages: [Language!]!
-  birthDay: Date!
+  birthday: Date!
   timestamp: Timestamp!
 }
 
@@ -66,19 +66,19 @@ type Mutation {
   editPerson(input: EditPersonInput!): EditPersonOutput!
 }
 
-input PersonInput {
+input AddPersonPersonInput {
   firstName: String!
   lastName: String!
   personalIdentityCode: PersonalIdentityCode!
-  phone: Phone
-  email: Email!
+  phone: PhoneNumber
+  email: EmailAddress!
   nationality: CountryCode!
   languages: [Language!]!
-  birthDay: Date!
+  birthday: Date!
 }
 
 input AddPersonInput {
-  person: PersonInput!
+  person: AddPersonPersonInput!
 }
 
 union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
@@ -89,7 +89,7 @@ type AddPersonSuccess {
 
 input EditPersonInput {
   UUID: UUID!
-  person: PersonInput!
+  person: AddPersonPersonInput!
 }
 
 union EditPersonOutput = EditPersonSuccess # | possible failure
@@ -99,5 +99,5 @@ type EditPersonSuccess {
 }
 
 input PersonFilter {
-  birthDayFilter: DateFilter
+  birthdayFilter: DateFilter
 }

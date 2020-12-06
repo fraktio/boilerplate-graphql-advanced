@@ -2,12 +2,16 @@ type Company {
   uuid: UUID!
   name: String!
   timestamp: Timestamp!
-  employees: [!Adult]!
+  employees: [Adult!]!
+}
+
+input CompanyQuery {
+  uuid: UUID!
 }
 
 type Query {
-  companies: [Company]!
-  company(uuid: UUID!): Company!
+  companies: [Company!]!
+  company(input: CompanyQuery!): Company!
 }
 
 type Mutation {

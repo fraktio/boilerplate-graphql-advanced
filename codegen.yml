@@ -4,12 +4,13 @@ generates:
   'src/generated/graphql.ts':
     config:
       mappers:
-        Movie: ../models#MovieModel
-        Genre: ../models#GenreModel
+        Company: ../models#CompanyModel
         Person: ../models#PersonModel
+        Adult: ../models#AdultModel
       contextType: ../graphql/context#Context
       useIndexSignature: true
       scalars:
+        UUID: ../models#UUID
         Date: luxon#DateTime
         DateTime: luxon#DateTime
         EmailAddress: string
