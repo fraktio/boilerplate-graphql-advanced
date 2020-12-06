@@ -1,6 +1,6 @@
 import { CompanyDataSource } from "./CompanyDataSource";
+import { EmployeeDataSource } from "./EmployeeDataSource";
 import { PersonDataSource } from "./PersonDataSource";
-import { EmployeeDataSource } from "./employeeDataSource";
 
 import { CreateDataSourceOptions } from "~/dataSources/DataSourceWithContext";
 import { UserDataSource } from "~/dataSources/UserDataSource";
