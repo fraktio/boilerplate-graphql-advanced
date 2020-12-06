@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 
-import { getConnection } from "./dbConfig";
 import { getConfigFromEnv } from "./src/config";
+import { getConnection } from "./src/database/connection";
 
 // This file is for knex migrations
 

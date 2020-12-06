@@ -15,7 +15,7 @@ import { apolloErrorHandler } from "~/middleware/errorHandler";
 
 const createValidationRules = () => [
   depthLimit(6),
-  createComplexityLimitRule(1000000000, {
+  createComplexityLimitRule(100000000000, {
     scalarCost: 2,
     objectCost: 10,
     listFactor: 20,

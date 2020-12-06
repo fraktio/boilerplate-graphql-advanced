@@ -1,5 +1,6 @@
 import { UserInputError } from "apollo-server-express";
 
+import { PersonTable } from "~/dataSources/PersonDataSource";
 import { Resolvers } from "~/generated/graphql";
 
 export const companyResolver: Resolvers = {
@@ -18,10 +19,16 @@ export const companyResolver: Resolvers = {
   },
 
   Company: {
-    async employees(company, __, { dataSources }) {
-      return await dataSources.personDS.getPersonsOfCompany({
-        uuid: company.uuid,
-      });
+    async employees(company, __, { dataLoaders }) {
+      const personUUIDs = await dataLoaders.personDL.personsOfCompany.load(
+        company.uuid,
+      );
+
+      const persons = (await dataLoaders.personDL.person.loadMany(
+        personUUIDs,
+      )) as PersonTable[];
+
+      return persons;
     },
   },
 
@@ -30,10 +37,8 @@ export const companyResolver: Resolvers = {
       return dataSources.companyDS.getCompanies();
     },
 
-    async company(_, { input }, { dataSources }) {
-      const company = await dataSources.companyDS.getCompany({
-        uuid: input.uuid,
-      });
+    async company(_, { input }, { dataLoaders }) {
+      const company = await dataLoaders.companyDL.company.load(input.uuid);
 
       if (!company) {
         throw new UserInputError(`Invalid company id: ${input.uuid}`);

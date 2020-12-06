@@ -41,6 +41,7 @@ type CreatePersonOptions = {
 type UpdatePersonOptions = CreatePersonOptions & {
   uuid: UUID;
 };
+
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 export class PersonDataSource extends DataSourceWithContext {

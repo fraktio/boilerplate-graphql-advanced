@@ -13,8 +13,6 @@ export const employeeResolver: Resolvers = {
     },
   },
 
-  Query: {},
-
   Mutation: {
     async addEmployee(_, { input }, { dataSources }) {
       const company = await dataSources.companyDS.getCompany({

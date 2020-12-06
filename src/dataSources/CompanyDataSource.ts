@@ -52,6 +52,12 @@ export class CompanyDataSource extends DataSourceWithContext {
   public async getCompanies() {
     const companies = await this.knex<CompanyTableRaw>(Table.COMPANY);
 
+    const formattedCompanies = companies.map(this.formatRow);
+
+    formattedCompanies.forEach((company) => {
+      this.context.dataLoaders.companyDL.company.prime(company.uuid, company);
+    });
+
     return companies.map(this.formatRow);
   }
 

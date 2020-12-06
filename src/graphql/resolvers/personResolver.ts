@@ -1,5 +1,6 @@
 import { UserInputError } from "apollo-server-express";
 
+import { CompanyTable } from "~/dataSources/CompanyDataSource";
 import { Resolvers } from "~/generated/graphql";
 
 export const personResolver: Resolvers = {
@@ -24,8 +25,16 @@ export const personResolver: Resolvers = {
   },
 
   Adult: {
-    async employers(company, _, { dataSources }) {
-      return dataSources.companyDS.getCompaniesOfPerson({ uuid: company.UUID });
+    async employers(company, _, { dataLoaders }) {
+      const companiesUUIDs = await dataLoaders.companyDL.companiesOfPerson.load(
+        company.UUID,
+      );
+
+      const companies = (await dataLoaders.companyDL.company.loadMany(
+        companiesUUIDs,
+      )) as CompanyTable[];
+
+      return companies;
     },
   },
 
