@@ -5,13 +5,14 @@ import { DateTime } from "luxon";
 import { Cookie } from "~/@types/session";
 import { Config } from "~/config";
 import { UserTable } from "~/dataSources/UserDataSource";
+import { UUID } from "~/models";
 
 export type JWTAccessPayload = {
-  uuid: string;
+  uuid: UUID;
 };
 
 export type JWTRefreshPayload = {
-  uuid: string;
+  uuid: UUID;
 };
 
 export class SessionUtils {

@@ -1,67 +1,69 @@
+import { PhoneNumber, PhoneNumberUtil } from "google-libphonenumber";
 import { DateTime } from "luxon";
-
-import { CastTableRaw } from "./CastDataSource";
+import { v4 as uuidv4 } from "uuid";
 
 import { DataSourceWithContext } from "~/dataSources/DataSourceWithContext";
 import {
-  MovieTableRaw,
+  CompanyTableRaw,
+  EmployeeTableRaw,
   PersonTableRaw,
   Table,
   tableColumn,
 } from "~/database/types";
+import { UUID } from "~/models";
 
 export type PersonTable = {
   id: number;
-  uuid: string;
+  UUID: UUID;
   firstName: string;
-  familyName: string;
+  lastName: string;
+  personalIdentityCode: string;
+  phone: PhoneNumber;
+  email: string;
+  nationality: string;
   birthday: DateTime;
-  createdAt: DateTime;
-  updatedAt: DateTime;
+  timestamp: {
+    createdAt: DateTime;
+    updatedAt: DateTime | null;
+  };
 };
+
+type CreatePersonOptions = {
+  firstName: string;
+  lastName: string;
+  personalIdentityCode: string;
+  phone: PhoneNumber | null;
+  email: string;
+  nationality: string;
+  birthday: DateTime;
+};
+
+type UpdatePersonOptions = CreatePersonOptions & {
+  uuid: UUID;
+};
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 
 export class PersonDataSource extends DataSourceWithContext {
   private formatRow(row: PersonTableRaw): PersonTable {
     return {
       id: row.id,
-      uuid: row.uuid,
+      UUID: row.uuid,
       firstName: row.firstName,
-      familyName: row.familyName,
+      lastName: row.lastName,
+      personalIdentityCode: row.personalIdentityCode,
+      phone: phoneUtil.parseAndKeepRawInput(row.phone),
+      email: row.email,
+      nationality: row.nationality,
       birthday: DateTime.fromJSDate(row.birthday),
-      createdAt: DateTime.fromJSDate(row.createdAt),
-      updatedAt: DateTime.fromJSDate(row.updatedAt),
+      timestamp: {
+        createdAt: DateTime.fromJSDate(row.createdAt),
+        updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
+      },
     };
   }
 
-  public async getPersonsOfMovie(opts: { id?: number; uuid?: string }) {
-    const genres = await this.knex
-      .select<PersonTableRaw[]>(`${Table.PERSONS}.*`)
-      .from(Table.PERSONS)
-      .innerJoin(
-        Table.CAST,
-        tableColumn<CastTableRaw>(Table.CAST, "personId"),
-        "=",
-        tableColumn<PersonTableRaw>(Table.PERSONS, "id"),
-      )
-      .innerJoin(
-        Table.MOVIES,
-        tableColumn<MovieTableRaw>(Table.MOVIES, "id"),
-        "=",
-        tableColumn<CastTableRaw>(Table.CAST, "movieId"),
-      )
-      .where({
-        ...(opts.id && {
-          [tableColumn<MovieTableRaw>(Table.MOVIES, "id")]: opts.id,
-        }),
-        ...(opts.uuid && {
-          [tableColumn<MovieTableRaw>(Table.MOVIES, "uuid")]: opts.uuid,
-        }),
-      });
-
-    return genres.map(this.formatRow);
-  }
-
-  public async getPerson(opts: { id?: number; uuid?: string }) {
+  public async getPerson(opts: { id?: number; uuid?: UUID }) {
     const person = await this.knex<PersonTableRaw>(Table.PERSONS)
       .where(opts)
       .first();
@@ -70,10 +72,82 @@ export class PersonDataSource extends DataSourceWithContext {
   }
 
   public async getPersons() {
-    this.ensureAuthenticatedUser();
-
     const personsRaw = await this.knex<PersonTableRaw>(Table.PERSONS);
 
     return personsRaw.map(this.formatRow);
+  }
+
+  public async createPerson(opts: CreatePersonOptions) {
+    const phone = opts.phone?.getRawInput();
+    const birthday = opts.birthday.toJSDate();
+
+    const person = await this.knex<PersonTableRaw>(Table.PERSONS)
+      .insert({
+        uuid: (uuidv4() as unknown) as UUID,
+        firstName: opts.firstName,
+        lastName: opts.lastName,
+        personalIdentityCode: opts.personalIdentityCode,
+        phone,
+        email: opts.email,
+        nationality: opts.nationality,
+        birthday,
+      })
+      .returning("*")
+      .first();
+
+    if (!person) {
+      throw new Error("Could not insert person");
+    }
+
+    return this.formatRow(person);
+  }
+
+  public async updatePerson(opts: UpdatePersonOptions) {
+    const phone = opts.phone?.getRawInput();
+    const birthday = opts.birthday.toJSDate();
+
+    const person = await this.knex<PersonTableRaw>(Table.PERSONS)
+      .update({
+        firstName: opts.firstName,
+        lastName: opts.lastName,
+        personalIdentityCode: opts.personalIdentityCode,
+        phone,
+        email: opts.email,
+        nationality: opts.nationality,
+        birthday,
+      })
+      .where({ uuid: opts.uuid })
+      .returning("*")
+      .first();
+
+    return person ? this.formatRow(person) : null;
+  }
+
+  public async getPersonsOfCompany(opts: { id?: number; uuid?: UUID }) {
+    const persons = await this.knex
+      .select<PersonTableRaw[]>(`${Table.PERSONS}.*`)
+      .from(Table.PERSONS)
+      .innerJoin(
+        Table.EMPLOYEE,
+        tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "personId"),
+        "=",
+        tableColumn<PersonTableRaw>(Table.PERSONS, "id"),
+      )
+      .innerJoin(
+        Table.COMPANY,
+        tableColumn<CompanyTableRaw>(Table.COMPANY, "id"),
+        "=",
+        tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "companyId"),
+      )
+      .where({
+        ...(opts.id && {
+          [tableColumn<CompanyTableRaw>(Table.COMPANY, "id")]: opts.id,
+        }),
+        ...(opts.uuid && {
+          [tableColumn<CompanyTableRaw>(Table.COMPANY, "uuid")]: opts.uuid,
+        }),
+      });
+
+    return persons.map(this.formatRow);
   }
 }

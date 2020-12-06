@@ -1,0 +1,46 @@
+type Company {
+  uuid: UUID!
+  name: String!
+  timestamp: Timestamp!
+  employees: [Adult!]!
+}
+
+input CompanyQuery {
+  uuid: UUID!
+}
+
+type Query {
+  companies: [Company!]!
+  company(input: CompanyQuery!): Company!
+}
+
+type Mutation {
+  addCompany(input: AddCompanyInput!): AddCompanyOutput!
+  editCompany(input: EditCompanyInput!): EditCompanyOutput!
+}
+
+input AddCompanyInput {
+  company: CompanyInput!
+}
+
+input EditCompanyInput {
+  uuid: UUID!
+  company: CompanyInput!
+}
+
+input CompanyInput {
+  name: String!
+  # more later..
+}
+
+union AddCompanyOutput = AddCompanySuccess | UniqueConstraintViolationFailure
+
+type AddCompanySuccess {
+  company: Company!
+}
+
+union EditCompanyOutput = EditCompanySuccess #| possible other failures
+
+type EditCompanySuccess {
+  company: Company!
+}

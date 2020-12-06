@@ -2,30 +2,32 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { UserTable } from "../src/dataSources/UserDataSource";
-import { Table } from "../src/database/types";
-
-import { HashingUtils } from "~/utils/hashingUtils";
+import { Table, UserTableRaw } from "../src/database/types";
+import { HashingUtils } from "../src/utils/hashingUtils";
 
 const hashingUtils = new HashingUtils();
 
+export const doXTimes = (count: number) => [...Array(count).keys()];
+
+const createUser = (opts: { username?: string; password: string }) => ({
+  uuid: uuidv4(),
+  username: opts?.username || faker.internet.userName(),
+  email: faker.internet.email(),
+  phoneNumber: faker.phone.phoneNumber(),
+  hashedPassword: opts.password,
+});
+
 export const seed = async (knex: Knex): Promise<void> => {
-  // Deletes ALL existing entries
   await knex(Table.USERS).del();
 
-  [...Array(125).keys()].forEach(async () => {
-    const username = faker.internet.userName();
-
-    await knex(Table.USERS).insert<UserTable>([
-      {
-        uuid: uuidv4(),
-        username,
-        email: faker.internet.email(),
-        phoneNumber: faker.phone.phoneNumber(),
-        hashedPassword: await hashingUtils.hashPassword({
-          password: "password",
-        }),
-      },
-    ]);
+  const password = await hashingUtils.hashPassword({
+    password: "password",
   });
+
+  const users = [
+    createUser({ username: "username", password }),
+    ...doXTimes(125).map(() => createUser({ password })),
+  ];
+
+  await knex(Table.USERS).insert<UserTableRaw>(users);
 };

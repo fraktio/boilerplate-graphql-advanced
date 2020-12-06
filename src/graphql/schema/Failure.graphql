@@ -1,0 +1,10 @@
+interface FailureOutput {
+  message: String!
+  field: String!
+}
+
+"Operation fails because some value is not unique"
+type UniqueConstraintViolationFailure implements FailureOutput {
+  message: String!
+  field: String!
+}

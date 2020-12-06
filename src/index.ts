@@ -13,3 +13,5 @@ process.on("SIGINT", () => {
   knex.destroy();
   server.close();
 });
+
+export const handler = app;

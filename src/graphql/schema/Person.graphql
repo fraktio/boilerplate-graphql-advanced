@@ -1,18 +1,103 @@
-type Person {
-  uuid: UUID!
+
+interface Person {
+  "Requires authentication and ADMIN privileges"
+  UUID: UUID!
   firstName: String!
-  familyName: String!
+  lastName: String!
+  personalIdentityCode: PersonalIdentityCode!  # TODO: @auth(requires: ADMIN)
+  phone: PhoneNumber
+  email: EmailAddress!
+  nationality: CountryCode!
+  languages: [Language!]!
   birthday: Date!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  movies: [Movie!]!
+  timestamp: Timestamp!
+}
+
+"""
+Adult is over 16 years old Person
+"""
+type Adult implements Person {
+  "Requires authentication and ADMIN privileges"
+  UUID: UUID!
+  firstName: String!
+  lastName: String!
+  personalIdentityCode: PersonalIdentityCode!
+  phone: PhoneNumber
+  email: EmailAddress!
+  nationality: CountryCode!
+  languages: [Language!]!
+  birthday: Date!
+  timestamp: Timestamp!
+  employers: [Company!]!
+}
+
+"""
+Underage is under 16 years old Person
+"""
+type Underage implements Person {
+  "Requires authentication and ADMIN privileges"
+  UUID: UUID!
+  firstName: String!
+  lastName: String!
+  personalIdentityCode: PersonalIdentityCode!
+  phone: PhoneNumber
+  email: EmailAddress!
+  nationality: CountryCode!
+  languages: [Language!]!
+  birthday: Date!
+  timestamp: Timestamp!
+}
+
+type Query {
+  persons(filter: PersonFilter): [Person]!  @authenticated
+  person(input: PersonInput!): Person! @authenticated
 }
 
 input PersonInput {
   uuid: UUID!
 }
 
-type Query {
-  persons: [Person!]! @authenticated
-  person(input: PersonInput!): Person! @authenticated
+type Subscription {
+  personAdded: Person!
+}
+
+type Mutation {
+  addPerson(input: AddPersonInput!): AddPersonOutput!
+  editPerson(input: EditPersonInput!): EditPersonOutput!
+}
+
+input AddPersonPersonInput {
+  firstName: String!
+  lastName: String!
+  personalIdentityCode: PersonalIdentityCode!
+  phone: PhoneNumber
+  email: EmailAddress!
+  nationality: CountryCode!
+  languages: [Language!]!
+  birthday: Date!
+}
+
+input AddPersonInput {
+  person: AddPersonPersonInput!
+}
+
+union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
+
+type AddPersonSuccess {
+  person: Person!
+}
+
+input EditPersonInput {
+  UUID: UUID!
+  person: AddPersonPersonInput!
+}
+
+union EditPersonOutput = EditPersonSuccess # | possible failure
+
+type EditPersonSuccess {
+  person: Person!
+}
+
+input PersonFilter {
+  birthdayFilter: DateFilter
 }

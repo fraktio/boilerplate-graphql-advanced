@@ -1,7 +1,11 @@
-import { Genre, Movie, Person } from "./generated/graphql";
+import { Adult, Company, Person } from "./generated/graphql";
 
-export type MovieModel = Omit<Movie, "genres" | "cast">;
+export type CompanyModel = Omit<Company, "employees">;
 
-export type GenreModel = Omit<Genre, "movies">;
+export type PersonModel = Omit<Person, "languages">;
 
-export type PersonModel = Omit<Person, "movies">;
+export type AdultModel = Omit<Adult, "languages" | "employers">;
+
+export interface UUID extends String {
+  _UUID: never;
+}

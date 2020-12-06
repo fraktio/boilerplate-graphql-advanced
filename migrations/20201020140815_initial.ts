@@ -11,54 +11,41 @@ export async function up(knex: Knex): Promise<void> {
       table.text("phoneNumber").notNullable();
       table.text("hashedPassword").notNullable();
       table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+      table.timestamp("updatedAt").nullable();
     })
-    .createTable("movies", (table) => {
+    .createTable("company", (table) => {
       table.increments("id").primary().notNullable();
       table.uuid("uuid").notNullable();
-      table.text("title").notNullable();
-      table.integer("rating").notNullable();
-      table.timestamp("releaseDate").notNullable();
+      table.text("name").notNullable();
       table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+      table.timestamp("updatedAt").nullable();
     })
-    .createTable("genres", (table) => {
-      table.increments("id").primary().notNullable();
-      table.uuid("uuid").notNullable();
-      table.text("type").notNullable();
-      table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
-    })
-    .createTable("movieGenreRelation", (table) => {
-      table.increments("id").primary().notNullable();
-      table.integer("movieId").notNullable().references("movies.id");
-      table.integer("genreId").notNullable().references("genres.id");
-      table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-    })
-    .createTable("persons", (table) => {
+    .createTable("person", (table) => {
       table.increments("id").primary().notNullable();
       table.uuid("uuid").notNullable();
       table.text("firstName").notNullable();
-      table.text("familyName").notNullable();
+      table.text("lastName").notNullable();
+      table.text("personalIdentityCode").notNullable();
+      table.text("phone").notNullable();
+      table.text("email").notNullable();
+      table.text("nationality").notNullable();
       table.timestamp("birthday").notNullable();
       table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
-      table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
+      table.timestamp("updatedAt").nullable();
     })
-    .createTable("cast", (table) => {
+    .createTable("employee", (table) => {
       table.increments("id").primary().notNullable();
-      table.integer("movieId").notNullable().references("movies.id");
-      table.integer("personId").notNullable().references("persons.id");
+      table.integer("companyId").notNullable().references("company.id");
+      table.integer("personId").notNullable().references("person.id");
       table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTableIfExists("movieGenreRelation")
-    .dropTableIfExists("cast")
+    .dropTableIfExists("employee")
     .dropTableIfExists("users")
-    .dropTableIfExists("movies")
-    .dropTableIfExists("genres")
-    .dropTableIfExists("persons")
+    .dropTableIfExists("company")
+    .dropTableIfExists("person")
     .raw("DROP EXTENSION IF EXISTS btree_gist;");
 }

@@ -1,0 +1,30 @@
+type Mutation {
+  addEmployee(
+    input: AddEmployeeInput!
+  ): AddEmployeeOutput!
+  removeEmployee(
+    input: RemoveEmployeeInput!
+  ): RemoveEmployeeOutput!
+}
+
+input AddEmployeeInput {
+  companyUuid: UUID!
+  personUuid: UUID!
+}
+
+input RemoveEmployeeInput {
+  companyUuid: UUID!
+  personUuid: UUID!
+}
+
+union AddEmployeeOutput = AddEmployeeSuccess #| possible other failures
+
+type AddEmployeeSuccess {
+  company: Company!
+}
+
+union RemoveEmployeeOutput = RemoveEmployeeSuccess #| possible other failures
+
+type RemoveEmployeeSuccess {
+  company: Company!
+}

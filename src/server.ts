@@ -30,7 +30,7 @@ export const createServer = ({ config }: { config: Config }) => {
 
   const apolloServer = createApolloServer({
     config,
-    context: createContext({ utils }),
+    context: createContext({ utils, knex }),
     dataSources: () => dataSources,
   });
 

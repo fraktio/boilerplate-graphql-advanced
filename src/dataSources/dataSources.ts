@@ -1,5 +1,5 @@
-import { GenreDataSource } from "./GenreDataSource";
-import { MovieDataSource } from "./MovieDataSource";
+import { CompanyDataSource } from "./CompanyDataSource";
+import { EmployeeDataSource } from "./EmployeeDataSource";
 import { PersonDataSource } from "./PersonDataSource";
 
 import { CreateDataSourceOptions } from "~/dataSources/DataSourceWithContext";
@@ -7,16 +7,16 @@ import { UserDataSource } from "~/dataSources/UserDataSource";
 
 export type DataSources = {
   userDS: UserDataSource;
-  genreDS: GenreDataSource;
-  movieDS: MovieDataSource;
   personDS: PersonDataSource;
+  employeeDS: EmployeeDataSource;
+  companyDS: CompanyDataSource;
 };
 
 export const createDataSources = (
   opts: CreateDataSourceOptions,
 ): DataSources => ({
   userDS: new UserDataSource(opts),
-  genreDS: new GenreDataSource(opts),
-  movieDS: new MovieDataSource(opts),
   personDS: new PersonDataSource(opts),
+  employeeDS: new EmployeeDataSource(opts),
+  companyDS: new CompanyDataSource(opts),
 });

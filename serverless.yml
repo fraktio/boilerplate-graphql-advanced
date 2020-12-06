@@ -1,0 +1,70 @@
+service: boilerplate-graphql
+useDotenv: true
+
+plugins:
+    - serverless-offline
+
+    custom:
+        defaultStage: dev
+        profiles:
+            dev: boilerplate-graphql-advanced
+            prod: boilerplate-graphql-advanced
+      
+        serverless-offline:
+            httpPort: 4000
+    
+        webpack:
+            webpackConfig: '.babelrc.json'
+            includeModules: false
+            packager: 'yarn'
+            excludeFiles: src/**/*.test.js
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    stage: ${opt:stage, self:custom.defaultStage}
+    profile: ${self:custom.profiles.${opt:stage, self:provider.stage, 'dev'}}
+    region: ${opt:region, 'eu-west-1'}
+    memorySize: 192
+    timeout: 15
+    versionFunctions: false
+
+    apiGateway:
+        shouldStartNameWithService: true
+    
+    environment:
+        API_PORT: ${env:API_PORT}
+        STDOUT_LOGGING: ${env:STDOUT_LOGGING}
+        PRODUCTION: ${env:PRODUCTION}
+        API_CORS_ENDPOINT: ${env:API_CORS_ENDPOINT}
+        TOKEN_PATH: ${env:TOKEN_PATH}
+        TOKEN_DOMAIN: ${env:TOKEN_DOMAIN}
+        TOKEN_SECRET: ${env:TOKEN_SECRET}
+        ACCESS_TOKEN_AGE_SECONDS: ${env:ACCESS_TOKEN_AGE_SECONDS}
+        REFRESH_TOKEN_AGE_SECONDS: ${env:REFRESH_TOKEN_AGE_SECONDS}
+        DATABASE_TYPE: ${env:DATABASE_TYPE}
+        DATABASE_HOST: ${env:DATABASE_HOST}
+        DATABASE_USER: ${env:DATABASE_USER}
+        DATABASE_PORT: ${env:DATABASE_PORT}
+        DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
+        DATABASE_DATABASE_NAME: ${env:DATABASE_DATABASE_NAME}
+    
+    usagePlan:
+        quota:
+            limit: 6000 # The maximum number of requests that users can make within the specified time period.
+            offset: 0 # For the initial time period, the number of requests to subtract from the specified limit.
+            period: DAY # The time period for which the maximum limit of requests applies, such as DAY or WEEK.
+        throttle:
+            burstLimit: 200
+            rateLimit: 100
+    
+functions:
+    graphql:
+        handler: build/index.graphqlHandler
+        events:
+        - http:
+            path: graphql
+            method: post
+        - http:
+            path: graphql
+            method: get
