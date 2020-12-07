@@ -21,7 +21,7 @@ export const companyResolver: Resolvers = {
   Company: {
     async employees(company, __, { dataLoaders }) {
       const personUUIDs = await dataLoaders.personDL.personsOfCompany.load(
-        company.uuid,
+        company.UUID,
       );
 
       const persons = (await dataLoaders.personDL.person.loadMany(
@@ -38,10 +38,10 @@ export const companyResolver: Resolvers = {
     },
 
     async company(_, { input }, { dataLoaders }) {
-      const company = await dataLoaders.companyDL.company.load(input.uuid);
+      const company = await dataLoaders.companyDL.company.load(input.UUID);
 
       if (!company) {
-        throw new UserInputError(`Invalid company id: ${input.uuid}`);
+        throw new UserInputError(`Invalid company id: ${input.UUID}`);
       }
 
       return company;
@@ -62,11 +62,11 @@ export const companyResolver: Resolvers = {
 
     async editCompany(_, { input }, { dataSources }) {
       const company = await dataSources.companyDS.updateCompany({
-        company: { uuid: input.uuid, name: input.company.name },
+        company: { UUID: input.UUID, name: input.company.name },
       });
 
       if (!company) {
-        throw new UserInputError(`Invalid company id: ${input.uuid}`);
+        throw new UserInputError(`Invalid company id: ${input.UUID}`);
       }
 
       return {

@@ -14,7 +14,7 @@ import { UUID } from "~/models";
 
 export type CompanyTable = {
   id: number;
-  uuid: UUID;
+  UUID: UUID;
   name: string;
   timestamp: {
     createdAt: DateTime;
@@ -26,13 +26,13 @@ type CreateCompanyInput = {
   name: string;
 };
 
-type CompanyModifyInput = Pick<Company, "uuid" | "name">;
+type CompanyModifyInput = Pick<Company, "UUID" | "name">;
 
 export class CompanyDataSource extends DataSourceWithContext {
   private formatRow(row: CompanyTableRaw): CompanyTable {
     return {
       id: row.id,
-      uuid: row.uuid,
+      UUID: row.uuid,
       name: row.name,
       timestamp: {
         createdAt: DateTime.fromJSDate(row.createdAt),
@@ -55,7 +55,7 @@ export class CompanyDataSource extends DataSourceWithContext {
     const formattedCompanies = companies.map(this.formatRow);
 
     formattedCompanies.forEach((company) => {
-      this.context.dataLoaders.companyDL.company.prime(company.uuid, company);
+      this.context.dataLoaders.companyDL.company.prime(company.UUID, company);
     });
 
     return companies.map(this.formatRow);
@@ -80,7 +80,7 @@ export class CompanyDataSource extends DataSourceWithContext {
   public async updateCompany(opts: { company: CompanyModifyInput }) {
     const company = await this.knex<CompanyTableRaw>(Table.COMPANY)
       .update({ name: opts.company.name })
-      .where({ uuid: opts.company.uuid })
+      .where({ uuid: opts.company.UUID })
       .returning("*")
       .first();
 

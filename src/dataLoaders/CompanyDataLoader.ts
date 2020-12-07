@@ -15,7 +15,7 @@ import { UUID } from "~/models";
 
 const formatRow = (row: CompanyTableRaw): CompanyTable => ({
   id: row.id,
-  uuid: row.uuid,
+  UUID: row.uuid,
   name: row.name,
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),

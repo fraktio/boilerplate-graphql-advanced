@@ -40,7 +40,7 @@ export const personResolver: Resolvers = {
 
   Query: {
     async person(_, { input }, { dataSources }) {
-      const person = await dataSources.personDS.getPerson({ uuid: input.uuid });
+      const person = await dataSources.personDS.getPerson({ uuid: input.UUID });
 
       if (!person) {
         throw new UserInputError("Invalid person uuid");

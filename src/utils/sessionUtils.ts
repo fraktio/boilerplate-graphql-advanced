@@ -23,7 +23,7 @@ export class SessionUtils {
   }
 
   generateRefreshToken = (opts: { user: UserTable }) => {
-    const signObj: JWTRefreshPayload = { uuid: opts.user.uuid };
+    const signObj: JWTRefreshPayload = { uuid: opts.user.UUID };
     const expiresAt = this.getTokenExpireDate({
       age: this.config.accessTokenAgeSeconds,
     });
@@ -39,7 +39,7 @@ export class SessionUtils {
   };
 
   generateAccessToken = (opts: { user: UserTable }) => {
-    const signObj: JWTAccessPayload = { uuid: opts.user.uuid };
+    const signObj: JWTAccessPayload = { uuid: opts.user.UUID };
     const expiresAt = this.getTokenExpireDate({
       age: this.config.accessTokenAgeSeconds,
     });

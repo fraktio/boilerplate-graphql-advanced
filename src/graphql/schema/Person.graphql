@@ -54,7 +54,7 @@ type Query {
 }
 
 input PersonInput {
-  uuid: UUID!
+  UUID: UUID!
 }
 
 type Subscription {

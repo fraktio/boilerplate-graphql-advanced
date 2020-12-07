@@ -1,12 +1,12 @@
 type Company {
-  uuid: UUID!
+  UUID: UUID!
   name: String!
   timestamp: Timestamp!
   employees: [Adult!]!
 }
 
 input CompanyQuery {
-  uuid: UUID!
+  UUID: UUID!
 }
 
 type Query {
@@ -24,7 +24,7 @@ input AddCompanyInput {
 }
 
 input EditCompanyInput {
-  uuid: UUID!
+  UUID: UUID!
   company: CompanyInput!
 }
 

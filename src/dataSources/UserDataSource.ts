@@ -8,7 +8,7 @@ import { UUID } from "~/models";
 
 export type UserTable = {
   id: number;
-  uuid: UUID;
+  UUID: UUID;
   username: string;
   email: string;
   phoneNumber: string;
@@ -30,7 +30,7 @@ export class UserDataSource extends DataSourceWithContext {
   private formatRow(row: UserTableRaw): UserTable {
     return {
       id: row.id,
-      uuid: row.uuid,
+      UUID: row.uuid,
       username: row.username,
       email: row.email,
       phoneNumber: row.phoneNumber,

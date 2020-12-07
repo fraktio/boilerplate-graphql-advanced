@@ -16,7 +16,7 @@ export const employeeResolver: Resolvers = {
   Mutation: {
     async addEmployee(_, { input }, { dataSources }) {
       const company = await dataSources.companyDS.getCompany({
-        uuid: input.companyUuid,
+        uuid: input.companyUUID,
       });
 
       if (!company) {
@@ -24,7 +24,7 @@ export const employeeResolver: Resolvers = {
       }
 
       const person = await dataSources.personDS.getPerson({
-        uuid: input.personUuid,
+        uuid: input.personUUID,
       });
 
       if (!person) {
@@ -44,7 +44,7 @@ export const employeeResolver: Resolvers = {
 
     async removeEmployee(_, { input }, { dataSources }) {
       const company = await dataSources.companyDS.getCompany({
-        uuid: input.companyUuid,
+        uuid: input.companyUUID,
       });
 
       if (!company) {
@@ -52,7 +52,7 @@ export const employeeResolver: Resolvers = {
       }
 
       const person = await dataSources.personDS.getPerson({
-        uuid: input.personUuid,
+        uuid: input.personUUID,
       });
 
       if (!person) {

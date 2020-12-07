@@ -33,7 +33,7 @@ export type Scalars = {
 
 export type Session = {
   __typename?: 'Session';
-  uuid?: Maybe<Scalars['UUID']>;
+  UUID?: Maybe<Scalars['UUID']>;
 };
 
 export type Query = {
@@ -132,14 +132,14 @@ export type MutationRemoveEmployeeArgs = {
 
 export type Company = {
   __typename?: 'Company';
-  uuid: Scalars['UUID'];
+  UUID: Scalars['UUID'];
   name: Scalars['String'];
   timestamp: Timestamp;
   employees: Array<Adult>;
 };
 
 export type CompanyQuery = {
-  uuid: Scalars['UUID'];
+  UUID: Scalars['UUID'];
 };
 
 export type AddCompanyInput = {
@@ -147,7 +147,7 @@ export type AddCompanyInput = {
 };
 
 export type EditCompanyInput = {
-  uuid: Scalars['UUID'];
+  UUID: Scalars['UUID'];
   company: CompanyInput;
 };
 
@@ -170,13 +170,13 @@ export type EditCompanySuccess = {
 };
 
 export type AddEmployeeInput = {
-  companyUuid: Scalars['UUID'];
-  personUuid: Scalars['UUID'];
+  companyUUID: Scalars['UUID'];
+  personUUID: Scalars['UUID'];
 };
 
 export type RemoveEmployeeInput = {
-  companyUuid: Scalars['UUID'];
-  personUuid: Scalars['UUID'];
+  companyUUID: Scalars['UUID'];
+  personUUID: Scalars['UUID'];
 };
 
 export type AddEmployeeOutput = AddEmployeeSuccess;
@@ -287,7 +287,7 @@ export type Underage = Person & {
 };
 
 export type PersonInput = {
-  uuid: Scalars['UUID'];
+  UUID: Scalars['UUID'];
 };
 
 export type Subscription = {
@@ -359,7 +359,7 @@ export type RegisterInput = {
 
 export type User = {
   __typename?: 'User';
-  uuid: Scalars['UUID'];
+  UUID: Scalars['UUID'];
   username: Scalars['String'];
 };
 
@@ -573,7 +573,7 @@ export type UpperDirectiveArgs = {  };
 export type UpperDirectiveResolver<Result, Parent, ContextType = Context, Args = UpperDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type SessionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = ResolversObject<{
-  uuid?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  UUID?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -612,7 +612,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 }>;
 
 export type CompanyResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']> = ResolversObject<{
-  uuid?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   employees?: Resolver<Array<ResolversTypes['Adult']>, ParentType, ContextType>;
@@ -798,7 +798,7 @@ export type RegisterResponseResolvers<ContextType = Context, ParentType extends 
 }>;
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  uuid?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

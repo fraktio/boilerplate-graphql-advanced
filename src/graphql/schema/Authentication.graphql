@@ -1,5 +1,5 @@
 type Session {
-  uuid: UUID
+  UUID: UUID
 }
 
 type Query {
