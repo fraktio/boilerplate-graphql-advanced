@@ -1,7 +1,11 @@
 dist/
 build
 .build
+.serverless
+.webpack
+.webpackCache
 
 node_modules
 yarn-error.log
 .DS_Stores
+.DS_Store

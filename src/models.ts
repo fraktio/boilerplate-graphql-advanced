@@ -1,10 +1,16 @@
 import { Adult, Company, Person } from "./generated/graphql";
 
-export type CompanyModel = Omit<Company, "employees">;
+export interface CompanyModel extends Omit<Company, "employees"> {
+  id: number;
+}
 
-export type PersonModel = Omit<Person, "languages">;
+export interface PersonModel extends Omit<Person, "languages"> {
+  id: number;
+}
 
-export type AdultModel = Omit<Adult, "languages" | "employers">;
+export interface AdultModel extends Omit<Adult, "languages" | "employers"> {
+  id: number;
+}
 
 export interface UUID extends String {
   _UUID: never;

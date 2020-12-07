@@ -2,22 +2,31 @@ service: boilerplate-graphql
 useDotenv: true
 
 plugins:
+    - serverless-webpack
+    - serverless-vpc-plugin
     - serverless-offline
 
-    custom:
-        defaultStage: dev
-        profiles:
-            dev: boilerplate-graphql-advanced
-            prod: boilerplate-graphql-advanced
-      
-        serverless-offline:
-            httpPort: 4000
+custom:
+    defaultStage: dev
+    profiles:
+        dev: boilerplate-graphql-advanced
+        prod: boilerplate-graphql-advanced
     
-        webpack:
-            webpackConfig: '.babelrc.json'
-            includeModules: false
-            packager: 'yarn'
-            excludeFiles: src/**/*.test.js
+    serverless-offline:
+        httpPort: 4000
+
+    vpcConfig:
+        createNatGateway: true
+        createDbSubnet: true
+        subnetGroups:
+            - rds
+
+    webpack:
+        webpackConfig: webpack.config.js
+        packager: 'yarn'
+        includeModules:
+            forceInclude:
+              - pg
 
 provider:
     name: aws
@@ -60,7 +69,7 @@ provider:
     
 functions:
     graphql:
-        handler: build/index.graphqlHandler
+        handler: src/serverless.graphqlHandler
         events:
         - http:
             path: graphql
