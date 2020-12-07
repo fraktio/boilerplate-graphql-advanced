@@ -16,6 +16,11 @@ import { UUID } from "~/models";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
+type CompanyTableQueryRelationRaw = {
+  companyUUID: UUID;
+  personUUID: UUID;
+};
+
 const formatRow = (row: PersonTableRaw): PersonTable => ({
   id: row.id,
   UUID: row.uuid,
@@ -54,39 +59,48 @@ export class PersonDataLoader {
     });
 
     this.personsOfCompany = new DataLoader<UUID, UUID[]>(async (keys) => {
-      const personsRaw = await Promise.all(
-        keys.map(async (key) => {
-          const persons = await opts.knex
-            .select<PersonTableRaw[]>(
-              tableColumn<PersonTableRaw>(Table.PERSONS, "uuid"),
-            )
-            .from(Table.PERSONS)
-            .innerJoin(
-              Table.EMPLOYEE,
-              tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "personId"),
-              "=",
-              tableColumn<PersonTableRaw>(Table.PERSONS, "id"),
-            )
-            .innerJoin(
-              Table.COMPANY,
-              tableColumn<CompanyTableRaw>(Table.COMPANY, "id"),
-              "=",
-              tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "companyId"),
-            )
-            .where(tableColumn<CompanyTableRaw>(Table.COMPANY, "uuid"), key);
-
-          return {
-            companyKey: key.toString(),
-            persons: persons.map((person) => person.uuid),
-          };
-        }),
-      );
+      const personsRaw = await opts.knex
+        .select<CompanyTableQueryRelationRaw[]>(
+          `${tableColumn<CompanyTableRaw>(
+            Table.COMPANY,
+            "uuid",
+          )} as companyUUID`,
+          `${tableColumn<CompanyTableRaw>(
+            Table.PERSONS,
+            "uuid",
+          )} as personUUID`,
+        )
+        .from(Table.PERSONS)
+        .innerJoin(
+          Table.EMPLOYEE,
+          tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "personId"),
+          "=",
+          tableColumn<PersonTableRaw>(Table.PERSONS, "id"),
+        )
+        .innerJoin(
+          Table.COMPANY,
+          tableColumn<CompanyTableRaw>(Table.COMPANY, "id"),
+          "=",
+          tableColumn<EmployeeTableRaw>(Table.EMPLOYEE, "companyId"),
+        )
+        .whereIn(tableColumn<CompanyTableRaw>(Table.COMPANY, "uuid"), keys);
 
       const persons = personsRaw.reduce<{ [key: string]: UUID[] }>(
-        (prev, current) => ({
-          ...prev,
-          [current.companyKey]: current.persons,
-        }),
+        (prev, current) => {
+          const { personUUID } = current;
+          const companyUUID = current.companyUUID.toString();
+          if (companyUUID in prev) {
+            return {
+              ...prev,
+              [companyUUID]: [...prev[companyUUID], personUUID],
+            };
+          }
+
+          return {
+            ...prev,
+            [companyUUID]: [personUUID],
+          };
+        },
         {},
       );
 
