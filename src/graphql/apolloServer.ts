@@ -27,8 +27,8 @@ export const createSchema = (): GraphQLSchema =>
     allowUndefinedInResolve: false,
     inheritResolversFromInterfaces: true,
     resolverValidationOptions: {
-      requireResolversForArgs: true,
-      requireResolversForResolveType: true,
+      requireResolversForArgs: "warn",
+      requireResolversForResolveType: "warn",
     },
     resolvers,
     typeDefs,

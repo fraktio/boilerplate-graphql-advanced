@@ -9,7 +9,7 @@ export const apolloServerLogger: ApolloServerPlugin<Context> = {
     requestContext.context.logger.info(
       {
         url: requestContext.request.http?.url,
-        // graphqlQuery: requestContext.request.query,
+        graphqlQuery: requestContext.request.query,
       },
       "Apollo requestDidStart",
     );
