@@ -2,10 +2,14 @@ import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import { DateTime } from "luxon";
 
-import { Cookie } from "~/@types/session";
 import { Config } from "~/config";
 import { UserTable } from "~/dataSources/UserDataSource";
 import { UUID } from "~/models";
+
+export enum Cookie {
+  AccessToken = "access-token",
+  RefreshToken = "refresh-token",
+}
 
 export type JWTAccessPayload = {
   uuid: UUID;
