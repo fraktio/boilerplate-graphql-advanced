@@ -9,6 +9,7 @@ const { isLocal } = slsw.lib.webpack;
 module.exports = {
   mode: isLocal ? "development" : "production",
   entry: slsw.lib.entries,
+  stats: "minimal",
   externals: [nodeExternals()],
   target: "node",
   resolve: {
