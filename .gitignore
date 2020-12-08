@@ -4,7 +4,6 @@ build
 .serverless
 .webpack
 .webpackCache
-src/generated/schema.ts
 
 node_modules
 yarn-error.log
