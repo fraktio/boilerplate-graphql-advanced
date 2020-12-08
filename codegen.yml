@@ -1,7 +1,7 @@
 schema:
-    - 'src/graphql/schema/**/*.graphql'
+    - 'app/graphql/schema/**/*.graphql'
 generates:
-  'src/generated/graphql.ts':
+  'app/generated/graphql.ts':
     config:
       mappers:
         Company: ../models#CompanyModel

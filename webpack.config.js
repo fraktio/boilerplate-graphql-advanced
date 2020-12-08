@@ -15,7 +15,7 @@ module.exports = {
   resolve: {
     extensions: [".js", ".json", ".ts"],
     alias: {
-      "~": path.resolve(__dirname, "./src"),
+      "~": path.resolve(__dirname, "./app"),
     },
   },
   module: {
@@ -31,9 +31,9 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          context: "./src/graphql/schema/",
+          context: "./app/graphql/schema/",
           from: "*",
-          to: "./src/schema",
+          to: "./app/schema",
         },
       ],
     }),

@@ -1,6 +1,6 @@
 import * as Knex from "knex";
 
-import { Table } from "../src/database/types";
+import { Table } from "../app/database/types";
 
 export const seed = async (knex: Knex): Promise<void> => {
   await knex(Table.EMPLOYEE).del();

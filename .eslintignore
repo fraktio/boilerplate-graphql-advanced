@@ -8,4 +8,4 @@ build
 .webpack
 .webpackCache
 
-src/generated
+app/generated

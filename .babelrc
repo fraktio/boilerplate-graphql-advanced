@@ -16,7 +16,7 @@
       {
         "root": ["."],
         "alias": {
-          "~": "./src"
+          "~": "./app"
         },
         "extensions": [".ts"]
       }

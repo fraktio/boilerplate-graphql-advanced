@@ -70,7 +70,7 @@ provider:
     
 functions:
     graphql:
-        handler: src/serverless.graphqlHandler
+        handler: app/serverless.graphqlHandler
         events:
         - http:
             path: graphql

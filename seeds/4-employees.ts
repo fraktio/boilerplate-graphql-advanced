@@ -5,7 +5,7 @@ import {
   EmployeeTableRaw,
   PersonTableRaw,
   Table,
-} from "../src/database/types";
+} from "../app/database/types";
 
 function getRandomItemsFromArray<T>(array: T[], count: number): T[] {
   const shuffled = array.sort(() => 0.5 - Math.random());
