@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const slsw = require("serverless-webpack");
 const nodeExternals = require("webpack-node-externals");
@@ -9,27 +10,31 @@ module.exports = {
   mode: isLocal ? "development" : "production",
   entry: slsw.lib.entries,
   externals: [nodeExternals()],
-  devtool: "source-map",
+  target: "node",
   resolve: {
     extensions: [".js", ".json", ".ts"],
     alias: {
       "~": path.resolve(__dirname, "./src"),
     },
   },
-  output: {
-    libraryTarget: "commonjs2",
-    path: path.join(__dirname, ".webpack"),
-    filename: "[name].js",
-  },
-  target: "node",
   module: {
     rules: [
       {
-        // Include ts, tsx, js, and jsx files.
-        test: /\.(ts|js)?$/,
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ["ts-loader"],
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          context: "./src/graphql/schema/",
+          from: "*",
+          to: "./src/schema",
+        },
+      ],
+    }),
+  ],
 };

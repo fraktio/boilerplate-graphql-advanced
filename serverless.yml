@@ -5,6 +5,7 @@ plugins:
     - serverless-webpack
     - serverless-vpc-plugin
     - serverless-offline
+    - serverless-prune-plugin
 
 custom:
     defaultStage: dev
