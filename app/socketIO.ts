@@ -6,7 +6,7 @@ import { Server as SocketIOServer, Socket } from "socket.io";
 
 If you want to use socket.io with this app add these to server.ts
 
-import { createSocketIO } from "./socketIO";
+import { createSocketIO } from "~/socketIO";
 
 const server = http.createServer(app);
 createSocketIO({ server, logger });

@@ -1,4 +1,4 @@
-import { Adult, Company, Person } from "./generated/graphql";
+import { Adult, Company, Person } from "~/generated/graphql";
 
 export interface CompanyModel extends Omit<Company, "employees"> {
   id: number;

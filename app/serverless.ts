@@ -1,7 +1,7 @@
 import serverless from "serverless-http";
 
-import { getConfigFromEnv } from "./config";
-import { createServer } from "./server";
+import { getConfigFromEnv } from "~/config";
+import { createServer } from "~/server";
 
 const config = getConfigFromEnv();
 
