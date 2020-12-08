@@ -22,18 +22,3 @@ export const createExpress = (opts: { config: Config }) => {
 
   return app;
 };
-/*
-
-import {
-  HealthChecker,
-  LivenessEndpoint,
-  ReadinessEndpoint,
-  HealthEndpoint,
-} from "@cloudnative/health-connect";
-
-  const healthcheck = new HealthChecker();
-  app.use("/live", LivenessEndpoint(healthcheck));
-  app.use("/ready", ReadinessEndpoint(healthcheck));
-  app.use("/health", HealthEndpoint(healthcheck));
-
-*/

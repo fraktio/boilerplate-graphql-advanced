@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "lib": ["es2020"],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "target": "ES6",
     "outDir": "dist",
     "noUnusedLocals": true,
