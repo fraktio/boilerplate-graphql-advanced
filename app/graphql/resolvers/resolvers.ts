@@ -1,4 +1,4 @@
-import { mergeResolvers } from "@graphql-tools/merge";
+import { mergeResolvers } from "graphql-tools";
 
 import { authenticationResolver } from "./authenticationResolver";
 import { companyResolver } from "./companyResolver";
