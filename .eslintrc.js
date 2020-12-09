@@ -91,7 +91,7 @@ module.exports = {
     ],
     "array-bracket-newline": ["error", "consistent"],
     "no-else-return": ["error", { allowElseIf: false }],
-    "import/no-cycle": [2, { maxDepth: "∞" }],
+    "import/no-cycle": [2, { maxDepth: 2, ignoreExternal: true }],
     "import/no-self-import": "error",
     "no-restricted-syntax": [
       "error",
