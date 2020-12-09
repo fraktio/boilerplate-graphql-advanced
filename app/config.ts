@@ -1,9 +1,26 @@
 /* eslint-disable no-process-env */
 
-import { config } from "dotenv";
+/*
+import { SecretsManager } from "aws-sdk";
+import SSM from "aws-sdk/clients/ssm";
 
-config();
+const SM = new SecretsManager({});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getAwsSecretAsync = async (secretName: string) =>
+  await SM.getSecretValue({ SecretId: secretName }).promise();
 
+const ssm = new SSM();
+const getParams = async (names: string[]) => {
+  const result = await ssm
+    .getParameters({
+      Names: names,
+      // WithDecryption: true,
+    })
+    .promise();
+
+  return result;
+};
+*/
 const requireEnv = (env: string): string => {
   const envVariable = process.env[env];
 

@@ -26,6 +26,8 @@ custom:
         webpackConfig: webpack.config.js
         packager: 'yarn'
         includeModules:
+            forceExclude:
+              - aws-sdk
             forceInclude:
               - pg
 
