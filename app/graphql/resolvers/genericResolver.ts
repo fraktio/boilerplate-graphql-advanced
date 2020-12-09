@@ -1,6 +1,6 @@
 import { Resolvers } from "~/generated/graphql";
 
-export const gnericResolver: Resolvers = {
+export const genericResolver: Resolvers = {
   Timestamp: {
     async modifiedAt(timestamp) {
       return timestamp.modifiedAt ?? null;

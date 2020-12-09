@@ -91,5 +91,14 @@ module.exports = {
     ],
     "array-bracket-newline": ["error", "consistent"],
     "no-else-return": ["error", { allowElseIf: false }],
+    "import/no-cycle": [2, { maxDepth: "∞" }],
+    "import/no-self-import": "error",
+    "no-restricted-syntax": [
+      "error",
+      {
+        selector: "ExportDefaultDeclaration",
+        message: "Prefer named exports",
+      },
+    ],
   },
 };
