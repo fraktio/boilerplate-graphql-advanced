@@ -17,6 +17,7 @@ module.exports = {
     },
   },
   rules: {
+    "newline-per-chained-call": ["error", { ignoreChainWithDepth: 3 }],
     "no-process-env": "error",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
     "no-param-reassign": ["error", { props: true }],
