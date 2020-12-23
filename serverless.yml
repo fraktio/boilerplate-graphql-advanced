@@ -11,7 +11,7 @@ custom:
     profiles:
         dev: boilerplate-graphql-advanced
         prod: boilerplate-graphql-advanced
-    
+
     lambda:
         logRetention:
             dev: 14
@@ -36,12 +36,6 @@ custom:
     serverless-offline:
         httpPort: 4000
 
-    vpcConfig:
-        createNatGateway: true
-        createDbSubnet: true
-        subnetGroups:
-            - rds
-
     webpack:
         webpackConfig: webpack.config.js
         packager: 'yarn'
@@ -61,7 +55,7 @@ provider:
     memorySize: 192
     timeout: 15
     versionFunctions: false
-    logRetentionInDays: ${self:custom.logRetention.${self:custom.defaultStage}, self:custom.logRetention.dev}
+    logRetentionInDays: ${self:custom.lambda.logRetention.${self:custom.stage}
     stackTags:
         APP: graphql
         STAGE: ${self:custom.defaultStage}
