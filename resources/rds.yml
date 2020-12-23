@@ -1,0 +1,77 @@
+Resources:
+
+  RDSClusterLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+        LogGroupName: /aws/rds/cluster/${self:custom.stage}-cluster/postgresql
+        RetentionInDays: ${self:provider.logRetentionInDays}
+
+  DBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties:
+      DBSubnetGroupDescription: ${self:provider.stackName}-DBSubnetGroup
+      SubnetIds:
+        - !Ref PrivateSubnetA	
+        - !Ref PrivateSubnetB
+
+  SGIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: ClusterSecurityGroup
+    Properties: 
+      Description: "RDS port ingress Self Reference"
+      FromPort: '5432'
+      GroupId: !Ref ClusterSecurityGroup
+      IpProtocol: tcp
+      SourceSecurityGroupId: !Ref ClusterSecurityGroup
+      ToPort: '5432'
+  
+  ClusterSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: !Ref 'AWS::StackName'
+      VpcId:
+        Fn::Join:
+        - ""
+        - - !Ref VPC
+      Tags:
+      - Key: Name
+        Value: ${self:provider.stackName}-RDSClusterSecurityGroup
+
+
+  DatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: ${self:custom.RDS.clusterDatabaseSecretName}
+      Description: 'This is a Secrets Manager secret for an RDS DB instance'
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "${self:custom.rds.databaseUser}"}'
+        GenerateStringKey: 'password'
+        PasswordLength: 30
+        ExcludeCharacters: '"@/\'
+
+
+  SecretRDSInstanceAttachment:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId: !Ref DatabaseSecret
+      TargetId: !Ref AuroraDBCluster
+      TargetType: AWS::RDS::DBCluster
+
+
+  RDSCluster:
+    Type: AWS::RDS::DBCluster
+    UpdateReplacePolicy: ${self:custom.DBUpdateReplacePolicy.${self:custom.stage}, self:custom.DBUpdateReplacePolicy.default}
+    DeletionPolicy: ${self:custom.rds.deletionPolicy.${self:custom.stage}
+    Properties:
+      DBClusterIdentifier: ${self:custom.rds.clusterIdentifierName}
+      DatabaseName: ${self:custom.rds.databaseName}
+      Engine: aurora-postgresql
+      EngineMode: provisioned
+      EngineVersion: "10.7"
+      BackupRetentionPeriod: ${self:custom.rds.backupRetentionPeriod.${self:custom.stage}
+      DeletionProtection: ${self:custom.rds.deletionProtection.${self:custom.stage}
+      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref ClusterSecret, ':SecretString:username}}' ]]
+      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref ClusterSecret, ':SecretString:password}}' ]]
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+      - !Ref ClusterSecurityGroup
