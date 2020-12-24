@@ -19,9 +19,12 @@ custom:
 
     rds:
         clusterIdentifierName: ${self:provider.stackName}-aurora-cluster
-        clusterDatabaseSecretName: ${self:custom.RDS.clusterIdentifierName}-secret
-        databaseName: ${self:service}-${self:custom.stage} # rds requires alphanumeric database names
+        clusterDatabaseSecretName: ${self:custom.rds.clusterIdentifierName}-secret
+        databaseName: ${self:custom.defaultStage} # rds requires alphanumeric database names
         databaseUser: ${self:service}
+        logRetention:
+            dev: 14
+            prod: 180
         backupRetentionPeriod: 
             dev: 1
             prod: 14
@@ -29,6 +32,9 @@ custom:
             dev: false
             prod: true
         deletionPolicy:
+            dev: Delete
+            prod: Retain
+        updateReplacePolicy:
             dev: Delete
             prod: Retain
 
@@ -55,10 +61,14 @@ provider:
     memorySize: 192
     timeout: 15
     versionFunctions: false
-    logRetentionInDays: ${self:custom.lambda.logRetention.${self:custom.stage}
+    logRetentionInDays: ${self:custom.lambda.logRetention.${self:custom.defaultStage}}
     stackTags:
         APP: graphql
         STAGE: ${self:custom.defaultStage}
+    vpc:
+        subnetIds:
+            - !Ref PrivateSubnetA
+            - !Ref PrivateSubnetB
 
     apiGateway:
         shouldStartNameWithService: true
