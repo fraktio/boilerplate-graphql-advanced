@@ -34,7 +34,7 @@ export const companyResolver: Resolvers = {
 
   Query: {
     async companies(_, __, { dataSources }) {
-      return dataSources.companyDS.getCompanies();
+      return await dataSources.companyDS.getCompanies();
     },
 
     async company(_, { input }, { dataLoaders }) {
