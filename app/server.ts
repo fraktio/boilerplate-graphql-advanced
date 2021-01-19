@@ -14,10 +14,10 @@ import { createUtils } from "~/utils/utils";
 
 export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });
+  logger.info(config);
   const knex = createKnex({ config });
   const utils = createUtils({ config, logger });
   const dataSources = createDataSources({ config, logger, knex });
-  logger.info(config);
   const app = createExpress({ config });
   app.use(loggerHandler({ logger }));
   app.use(

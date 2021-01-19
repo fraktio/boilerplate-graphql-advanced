@@ -75,3 +75,19 @@ Resources:
       DBSubnetGroupName: !Ref DBSubnetGroup
       VpcSecurityGroupIds:
       - !Ref ClusterSecurityGroup
+
+  RDSDBInstance1:
+    Type: "AWS::RDS::DBInstance"
+    Properties: 
+#       AvailabilityZone: 
+#         Fn::GetAtt:
+#           - Subnet1
+#           - AvailabilityZone
+      DBClusterIdentifier: 
+        Ref: RDSCluster
+      DBInstanceClass: db.t3.medium
+      DBSubnetGroupName: 
+        Ref: DBSubnetGroup
+      Engine: aurora-postgresql
+      PubliclyAccessible: "false"
+      
