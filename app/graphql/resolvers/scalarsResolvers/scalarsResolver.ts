@@ -1,17 +1,18 @@
-import {
-  EmailAddressResolver,
-  PhoneNumberResolver,
-  UUIDResolver,
-} from "graphql-scalars";
+import { UUIDResolver } from "graphql-scalars";
+
+import { DateResolver } from "./DateResolver";
+import { DateTimeResolver } from "./DateTimeResolver";
+import { EmailResolver } from "./EmailResolver";
+import { FinnishPersonalIdentityCodeResolver } from "./FinnishPersonalIdentityCodeResolver";
+import { PhoneResolver } from "./PhoneResolver";
 
 import { Resolvers } from "~/generated/graphql";
-import { DateResolver } from "~/graphql/resolvers/scalarsResolvers/DateResolver";
-import { DateTimeResolver } from "~/graphql/resolvers/scalarsResolvers/DateTimeResolver";
 
 export const scalarsResolver: Resolvers = {
   UUID: UUIDResolver,
   Date: DateResolver,
   DateTime: DateTimeResolver,
-  PhoneNumber: PhoneNumberResolver,
-  EmailAddress: EmailAddressResolver,
+  PhoneNumber: PhoneResolver,
+  EmailAddress: EmailResolver,
+  FinnishPErsonalIdentityCode: FinnishPersonalIdentityCodeResolver,
 };
