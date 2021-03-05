@@ -3,7 +3,6 @@ useDotenv: true
 
 plugins:
     - serverless-webpack
-    - serverless-vpc-plugin
     - serverless-offline
     - serverless-prune-plugin
 
@@ -12,15 +11,36 @@ custom:
     profiles:
         dev: boilerplate-graphql-advanced
         prod: boilerplate-graphql-advanced
+
+    lambda:
+        logRetention:
+            dev: 14
+            prod: 180
+
+    rds:
+        clusterIdentifierName: ${self:provider.stackName}-aurora-cluster
+        clusterDatabaseSecretName: ${self:custom.rds.clusterIdentifierName}-secret
+        databaseName: ${self:custom.defaultStage} # rds requires alphanumeric database names
+        databaseUser: ${self:service}
+        logRetention:
+            dev: 14
+            prod: 180
+        backupRetentionPeriod: 
+            dev: 1
+            prod: 14
+        deletionProtection:
+            dev: false
+            prod: true
+        deletionPolicy:
+            dev: Delete
+            prod: Retain
+        updateReplacePolicy:
+            dev: Delete
+            prod: Retain
+
     
     serverless-offline:
         httpPort: 4000
-
-    vpcConfig:
-        createNatGateway: true
-        createDbSubnet: true
-        subnetGroups:
-            - rds
 
     webpack:
         webpackConfig: webpack.config.js
@@ -35,11 +55,20 @@ provider:
     name: aws
     runtime: nodejs12.x
     stage: ${opt:stage, self:custom.defaultStage}
+    stackName: ${self:custom.defaultStage}-${self:service.name}
     profile: ${self:custom.profiles.${opt:stage, self:provider.stage, 'dev'}}
     region: ${opt:region, 'eu-west-1'}
     memorySize: 192
     timeout: 15
     versionFunctions: false
+    logRetentionInDays: ${self:custom.lambda.logRetention.${self:custom.defaultStage}}
+    stackTags:
+        APP: graphql
+        STAGE: ${self:custom.defaultStage}
+    vpc:
+        subnetIds:
+            - !Ref PrivateSubnetA
+            - !Ref PrivateSubnetB
 
     apiGateway:
         shouldStartNameWithService: true
@@ -80,3 +109,10 @@ functions:
         - http:
             path: graphql
             method: get
+
+
+resources:
+    # VPC
+    - ${file(resources/vpc.yml)}
+    # RDS
+    - ${file(resources/rds.yml)}

@@ -1,34 +1,31 @@
 import Logger from "bunyan";
 import { Request, Response } from "express";
-import Knex from "knex";
 
+import { Config } from "~/config";
 import { createDataLoaders, DataLoaders } from "~/dataLoaders/dataLoaders";
-import { DataSources } from "~/dataSources/dataSources";
-import { JWTRefreshPayload } from "~/utils/sessionUtils";
-import { Utils } from "~/utils/utils";
+import { DBConnection } from "~/database/connection";
+import { UserTable } from "~/database/userDB";
+import { Maybe } from "~/generated/graphql";
 
-export type Context = CreatedContext & {
-  // Do not remove this
-  // Apollo injects datasources to context automatically
-  dataSources: DataSources;
-};
-
-type CreatedContext = {
+export type Context = {
   logger: Logger;
   req: Request;
   res: Response;
-  authenticatedUser: JWTRefreshPayload | null;
+  config: Config;
+  knex: DBConnection;
   dataLoaders: DataLoaders;
-} & Utils;
+  authenticatedUser: Maybe<UserTable>;
+};
 
-export const createContext = (opts: { utils: Utils; knex: Knex }) => (app: {
-  req: Request;
-  res: Response;
-}): CreatedContext => ({
+export const createContext = (params: {
+  knex: DBConnection;
+  config: Config;
+}) => (app: { req: Request; res: Response }) => ({
   logger: app.req.logger,
   req: app.req,
   res: app.res,
-  dataLoaders: createDataLoaders({ knex: opts.knex }),
+  config: params.config,
+  knex: params.knex,
+  dataLoaders: createDataLoaders(),
   authenticatedUser: app.req.user || null,
-  ...opts.utils,
 });

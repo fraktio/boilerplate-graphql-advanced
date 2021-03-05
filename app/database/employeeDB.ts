@@ -1,10 +1,21 @@
 import { DateTime } from "luxon";
 
-import { Table } from "~/database/base";
-import { CompanyID } from "~/database/companyDB";
+import { ID, Table } from "./base";
+import { CompanyID } from "./companyDB";
+import { PersonID } from "./personDB";
+
 import { DBConnection } from "~/database/connection";
-import { EmployeeID, EmployeeTableRow } from "~/database/employeeDB";
-import { PersonID } from "~/database/personDB";
+
+export interface EmployeeID extends ID {
+  __EmployeeID: never;
+}
+
+export type EmployeeTableRow = Readonly<{
+  id: EmployeeID;
+  companyId: CompanyID;
+  personId: PersonID;
+  createdAt: Date;
+}>;
 
 type EmployeeTable = {
   id: EmployeeID;
@@ -31,7 +42,7 @@ export const employeeDS = {
     knex: DBConnection;
     companyId: CompanyID;
     personId: PersonID;
-  }) {
+  }): Promise<EmployeeTable> {
     const employee = await params
       .knex<EmployeeTableRow>(Table.EMPLOYEE)
       .insert({
@@ -52,7 +63,7 @@ export const employeeDS = {
     knex: DBConnection;
     companyId: CompanyID;
     personId: PersonID;
-  }) {
+  }): Promise<boolean> {
     const count = await params
       .knex<EmployeeTableRow>(Table.EMPLOYEE)
       .where({

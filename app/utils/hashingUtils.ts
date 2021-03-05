@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 
-export class HashingUtils {
-  private saltRounds = 10;
+const saltRounds = 10;
 
+export const hashingUtils = {
   hashPassword(opts: { password: string }) {
-    return bcrypt.hash(opts.password, this.saltRounds);
-  }
+    return bcrypt.hash(opts.password, saltRounds);
+  },
 
   validatePassword(opts: { password: string; hash: string }) {
     return bcrypt.compare(opts.password, opts.hash);
-  }
-}
+  },
+};

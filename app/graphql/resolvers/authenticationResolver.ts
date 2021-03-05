@@ -1,4 +1,9 @@
 import { Resolvers } from "~/generated/graphql";
+import {
+  loginHandler,
+  LogInHandlerErrors,
+  logoutHandler,
+} from "~/graphql/handlers/authenticationHandlers";
 
 export const authenticationResolver: Resolvers = {
   LoginUserResponse: {
@@ -8,48 +13,38 @@ export const authenticationResolver: Resolvers = {
   },
 
   Mutation: {
-    async login(
-      _,
-      { input },
-      { dataSources, hashingUtils, sessionUtils, res },
-    ) {
-      const user = await dataSources.userDS.getUser({
-        username: input.username,
+    async login(_, { input }, { knex, res, config }) {
+      const response = await loginHandler({
+        knex,
+        res,
+        input,
+        cookiesConfig: config.cookies,
       });
 
-      if (!user) {
+      if (response.success) {
         return {
-          __typename: "LoginUserFailure",
-          success: false,
+          __typename: "LoginUserSuccess",
+          user: response.value,
         };
       }
 
-      const isValidPassword = await hashingUtils.validatePassword({
-        password: input.password,
-        hash: user.hashedPassword,
-      });
+      switch (response.failure) {
+        case LogInHandlerErrors.UserNotFound:
+          return {
+            __typename: "LoginUserFailure",
+            success: false,
+          };
 
-      if (!isValidPassword) {
-        return {
-          __typename: "LoginUserFailure",
-          success: false,
-        };
+        case LogInHandlerErrors.InvalidPassword:
+          return {
+            __typename: "LoginUserFailure",
+            success: false,
+          };
       }
-
-      const { refreshToken } = sessionUtils.generateRefreshToken({
-        user,
-      });
-
-      sessionUtils.setRefreshToken({ res, refreshToken });
-
-      return {
-        __typename: "LoginUserSuccess",
-        user,
-      };
     },
 
-    logout(_, __, { res, sessionUtils }) {
-      sessionUtils.clearSessions({ res });
+    logout(_, __, { res, config }) {
+      logoutHandler({ res, cookiesConfig: config.cookies });
 
       return true;
     },

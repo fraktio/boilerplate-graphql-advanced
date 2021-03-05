@@ -10,11 +10,8 @@ module.exports = {
   plugins: ["switch-case"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
+    createDefaultProgram: true,
+    project: "./tsconfig.json",
   },
   rules: {
     "newline-per-chained-call": ["error", { ignoreChainWithDepth: 3 }],
@@ -45,6 +42,7 @@ module.exports = {
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/switch-exhaustiveness-check": "error",
     "import/newline-after-import": ["error", { count: 1 }],
     "import/order": [
       "error",
@@ -74,8 +72,8 @@ module.exports = {
       },
     ],
     "max-depth": ["error", 5],
-    complexity: ["error", 10],
-    "max-statements": ["error", 20],
+    complexity: ["error", 20],
+    "max-statements": ["error", 24],
     "max-params": ["error", 3],
     "lines-between-class-members": [
       "error",
@@ -101,5 +99,6 @@ module.exports = {
         message: "Prefer named exports",
       },
     ],
+    "max-lines": ["error", 400],
   },
 };

@@ -1,29 +1,38 @@
 import { RequestHandler } from "express";
 
-import { Config } from "~/config";
-import { UserDataSource } from "~/dataSources/UserDataSource";
-import { SessionUtils } from "~/utils/sessionUtils";
+import { CookiesConfig } from "~/config";
+import { DBConnection } from "~/database/connection";
+import { personDB } from "~/database/personDB";
+import { sessionUtils } from "~/utils/sessionUtils";
 
-export const sessionHandler = (opts: {
-  config: Config;
-  sessionUtils: SessionUtils;
-  userDataSource: UserDataSource;
-  // eslint-disable-next-line max-statements, complexity
-}): RequestHandler => (req, _, next) => {
-  const token = opts.sessionUtils.getRefreshToken({ req });
+export const sessionHandler = (params: {
+  knex: DBConnection;
+  cookiesConfig: CookiesConfig;
+}): RequestHandler => async (req, _, next) => {
+  const token = sessionUtils.getRefreshToken({ req });
 
   if (!token) {
     return next();
   }
 
-  const jwtPayload = opts.sessionUtils.verifyRefreshPayload({ token });
+  const jwtPayload = sessionUtils.verifyRefreshPayload({
+    token,
+    tokenSecret: params.cookiesConfig.secret,
+  });
 
   if (!jwtPayload) {
     return next();
   }
 
-  // eslint-disable-next-line no-param-reassign
-  req.user = { uuid: jwtPayload.uuid };
+  const user = await personDB.getByUUID({
+    knex: params.knex,
+    personUUID: jwtPayload.uuid,
+  });
+
+  if (user) {
+    // eslint-disable-next-line no-param-reassign
+    req.user = user;
+  }
 
   next();
 };

@@ -1,11 +1,9 @@
 import * as Knex from "knex";
 
-import {
-  CompanyTableRaw,
-  EmployeeTableRaw,
-  PersonTableRaw,
-  Table,
-} from "../app/database/types";
+import { Table } from "~/database/base";
+import { CompanyTableRow } from "~/database/companyDB";
+import { EmployeeTableRow } from "~/database/employeeDB";
+import { PersonTableRow } from "~/database/personDB";
 
 function getRandomItemsFromArray<T>(array: T[], count: number): T[] {
   const shuffled = array.sort(() => 0.5 - Math.random());
@@ -14,9 +12,9 @@ function getRandomItemsFromArray<T>(array: T[], count: number): T[] {
 }
 
 export async function seed(knex: Knex): Promise<void> {
-  const persons = await knex<PersonTableRaw>(Table.PERSONS);
+  const persons = await knex<PersonTableRow>(Table.PERSONS);
 
-  const companies = await knex<CompanyTableRaw>(Table.COMPANY);
+  const companies = await knex<CompanyTableRow>(Table.COMPANY);
   const count = Math.floor(companies.length * 0.1);
 
   const relations = persons.flatMap((person) => {
@@ -28,5 +26,5 @@ export async function seed(knex: Knex): Promise<void> {
     }));
   });
 
-  await knex<EmployeeTableRaw>(Table.EMPLOYEE).insert(relations);
+  await knex<EmployeeTableRow>(Table.EMPLOYEE).insert(relations);
 }
