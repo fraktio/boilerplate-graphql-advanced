@@ -1,11 +1,23 @@
 import { DateTime } from "luxon";
 
-import { Table } from "~/database/base";
-import { CompanyID, CompanyTableRow } from "~/database/companyDB";
+import { ID, Table } from "./base";
+import { PersonID } from "./personDB";
+
 import { DBConnection } from "~/database/connection";
-import { PersonID } from "~/database/personDB";
 import { tableColumn, createUUID } from "~/database/utils";
 import { UUID } from "~/models";
+
+export interface CompanyID extends ID {
+  __CompanyID: never;
+}
+
+export type CompanyTableRow = Readonly<{
+  id: CompanyID;
+  uuid: UUID;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date | null;
+}>;
 
 export type CompanyTable = {
   id: CompanyID;
@@ -27,8 +39,11 @@ export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
   },
 });
 
-export const companyDS = {
-  async get(params: { knex: DBConnection; companyId: CompanyID }) {
+export const companyDB = {
+  async get(params: {
+    knex: DBConnection;
+    companyId: CompanyID;
+  }): Promise<CompanyTable | null> {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .where({ id: params.companyId })
@@ -37,13 +52,43 @@ export const companyDS = {
     return company ? formatCompanyRow(company) : null;
   },
 
-  async getAll(params: { knex: DBConnection }) {
+  async tryGet(params: {
+    knex: DBConnection;
+    companyId: CompanyID;
+  }): Promise<CompanyTable> {
+    const company = await companyDB.get({
+      knex: params.knex,
+      companyId: params.companyId,
+    });
+
+    if (!company) {
+      throw new Error("Invalid companyId");
+    }
+
+    return company;
+  },
+
+  async getByIds(params: {
+    knex: DBConnection;
+    companyIds: CompanyID[];
+  }): Promise<CompanyTable[]> {
+    const persons = await params
+      .knex<CompanyTableRow>(Table.COMPANY)
+      .whereIn("id", params.companyIds);
+
+    return persons.map(formatCompanyRow);
+  },
+
+  async getAll(params: { knex: DBConnection }): Promise<CompanyTable[]> {
     const companies = await params.knex<CompanyTableRow>(Table.COMPANY);
 
     return companies.map(formatCompanyRow);
   },
 
-  async create(params: { knex: DBConnection; name: string }) {
+  async create(params: {
+    knex: DBConnection;
+    name: string;
+  }): Promise<CompanyTable> {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .insert({
@@ -64,7 +109,7 @@ export const companyDS = {
     knex: DBConnection;
     companyId: CompanyID;
     name: string;
-  }) {
+  }): Promise<CompanyTable> {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .update({ name: params.name })
@@ -82,7 +127,7 @@ export const companyDS = {
   async getCompaniesOfPerson(params: {
     knex: DBConnection;
     personId?: PersonID;
-  }) {
+  }): Promise<CompanyTable[]> {
     const companies = await params.knex
       .select<CompanyTableRow[]>(`${Table.COMPANY}.*`)
       .from(Table.COMPANY)

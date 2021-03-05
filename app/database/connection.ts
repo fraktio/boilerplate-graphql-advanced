@@ -3,6 +3,8 @@ import type Knex from "knex";
 
 import { Config } from "~/config";
 
+export type DBConnection = Knex;
+
 export const createKnex = (opts: { config: Config }) =>
   knex(getConnection({ config: opts.config }));
 
