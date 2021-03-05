@@ -10,7 +10,7 @@ import { createLogger } from "~/logger";
 import { errorHandler } from "~/middleware/errorHandler";
 import { loggerHandler } from "~/middleware/loggerHandler";
 import { sessionHandler } from "~/middleware/sessionHandler";
-import { createUtils } from "~/utils/utils";
+import { createUtils } from "~/utils";
 
 export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });
@@ -31,7 +31,6 @@ export const createServer = ({ config }: { config: Config }) => {
   const apolloServer = createApolloServer({
     config,
     context: createContext({ utils, knex }),
-    dataSources: () => dataSources,
   });
 
   apolloServer.applyMiddleware({ app, cors: false });

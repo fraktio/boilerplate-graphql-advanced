@@ -2,7 +2,7 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { Table, UserTableRaw } from "../app/database/types";
+import { Table, UserTableRaw } from "../app/database/utils";
 import { HashingUtils } from "../app/utils/hashingUtils";
 
 const hashingUtils = new HashingUtils();

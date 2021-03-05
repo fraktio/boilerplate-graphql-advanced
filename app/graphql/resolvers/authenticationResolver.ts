@@ -1,4 +1,8 @@
 import { Resolvers } from "~/generated/graphql";
+import {
+  loginHandler,
+  logoutHandler,
+} from "~/graphql/handlers/authenticationHandlers";
 
 export const authenticationResolver: Resolvers = {
   LoginUserResponse: {
@@ -8,48 +12,12 @@ export const authenticationResolver: Resolvers = {
   },
 
   Mutation: {
-    async login(
-      _,
-      { input },
-      { dataSources, hashingUtils, sessionUtils, res },
-    ) {
-      const user = await dataSources.userDS.getUser({
-        username: input.username,
-      });
-
-      if (!user) {
-        return {
-          __typename: "LoginUserFailure",
-          success: false,
-        };
-      }
-
-      const isValidPassword = await hashingUtils.validatePassword({
-        password: input.password,
-        hash: user.hashedPassword,
-      });
-
-      if (!isValidPassword) {
-        return {
-          __typename: "LoginUserFailure",
-          success: false,
-        };
-      }
-
-      const { refreshToken } = sessionUtils.generateRefreshToken({
-        user,
-      });
-
-      sessionUtils.setRefreshToken({ res, refreshToken });
-
-      return {
-        __typename: "LoginUserSuccess",
-        user,
-      };
+    async login(_, { input }, { knex, res, config }) {
+      return await loginHandler({ knex, res, input, config });
     },
 
-    logout(_, __, { res, sessionUtils }) {
-      sessionUtils.clearSessions({ res });
+    logout(_, __, { res, config }) {
+      logoutHandler({ res, config });
 
       return true;
     },

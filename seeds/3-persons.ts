@@ -2,7 +2,7 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { PersonTableRaw, Table } from "../app/database/types";
+import { PersonTableRaw, Table } from "../app/database/utils";
 
 import { doXTimes } from "./1-users";
 
