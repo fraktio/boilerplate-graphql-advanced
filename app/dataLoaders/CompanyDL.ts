@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
 
-import { companyDS, CompanyID, CompanyTable } from "~/database/companyDB";
+import { companyDB, CompanyID, CompanyTable } from "~/database/companyDB";
 import { DBConnection } from "~/database/connection";
 
 export class CompanyDL {
@@ -16,7 +16,7 @@ export class CompanyDL {
 
   private createDataLoader(params: { knex: DBConnection }) {
     this.dataloader = new DataLoader<CompanyID, CompanyTable>(async (keys) => {
-      const personRows = await companyDS.getByIds({
+      const personRows = await companyDB.getByIds({
         knex: params.knex,
         companyIds: keys as CompanyID[],
       });
