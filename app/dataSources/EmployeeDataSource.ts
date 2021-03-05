@@ -1,13 +1,10 @@
 import { DateTime } from "luxon";
 
+import { Table } from "~/database/base";
+import { CompanyID } from "~/database/companyDB";
 import { DBConnection } from "~/database/connection";
-import {
-  Table,
-  EmployeeTableRow,
-  CompanyID,
-  PersonID,
-  EmployeeID,
-} from "~/database/utils";
+import { EmployeeID, EmployeeTableRow } from "~/database/employeeDB";
+import { PersonID } from "~/database/personDB";
 
 type EmployeeTable = {
   id: EmployeeID;

@@ -126,7 +126,7 @@ export const companyDB = {
 
   async getCompaniesOfPerson(params: {
     knex: DBConnection;
-    personId?: PersonID;
+    personId: PersonID;
   }): Promise<CompanyTable[]> {
     const companies = await params.knex
       .select<CompanyTableRow[]>(`${Table.COMPANY}.*`)
@@ -143,11 +143,7 @@ export const companyDB = {
         "=",
         tableColumn(Table.EMPLOYEE, "personId"),
       )
-      .where({
-        ...(params.personId && {
-          [tableColumn(Table.PERSONS, "id")]: params.personId,
-        }),
-      });
+      .where({ [tableColumn(Table.PERSONS, "id")]: params.personId });
 
     return companies.map(formatCompanyRow);
   },

@@ -37,18 +37,27 @@ export const companyDS = {
     return company ? formatCompanyRow(company) : null;
   },
 
+  async getByUUID(params: { knex: DBConnection; companyUUID: UUID }) {
+    const company = await params
+      .knex<CompanyTableRow>(Table.COMPANY)
+      .where({ uuid: params.companyUUID })
+      .first();
+
+    return company ? formatCompanyRow(company) : null;
+  },
+
   async getAll(params: { knex: DBConnection }) {
     const companies = await params.knex<CompanyTableRow>(Table.COMPANY);
 
     return companies.map(formatCompanyRow);
   },
 
-  async create(params: { knex: DBConnection; name: string }) {
+  async create(params: { knex: DBConnection; input: { name: string } }) {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .insert({
         uuid: createUUID(),
-        name: params.name,
+        name: params.input.name,
       })
       .returning("*")
       .first();
@@ -60,20 +69,20 @@ export const companyDS = {
     return formatCompanyRow(company);
   },
 
-  async update(params: {
+  async updateByUUID(params: {
     knex: DBConnection;
-    companyId: CompanyID;
-    name: string;
+    companyUUID: UUID;
+    company: { name: string };
   }) {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
-      .update({ name: params.name })
-      .where({ id: params.companyId })
+      .update({ name: params.company.name })
+      .where({ uuid: params.companyUUID })
       .returning("*")
       .first();
 
     if (!company) {
-      throw new Error("Could not create company");
+      return null;
     }
 
     return formatCompanyRow(company);

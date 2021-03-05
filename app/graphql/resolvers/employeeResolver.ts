@@ -1,3 +1,10 @@
+import {
+  addEmployeeHandler,
+  AddEmployeeHandlerErrors,
+  removeEmployeeHandler,
+  RemoveEmployeeHandlerErrors,
+} from "../handlers/employeeHandler";
+
 import { Resolvers } from "~/generated/graphql";
 
 export const employeeResolver: Resolvers = {
@@ -14,60 +21,50 @@ export const employeeResolver: Resolvers = {
   },
 
   Mutation: {
-    async addEmployee(_, { input }, { dataSources }) {
-      const company = await dataSources.companyDS.getCompany({
-        uuid: input.companyUUID,
+    async addEmployee(_, { input }, { knex }) {
+      const employee = await addEmployeeHandler({
+        knex,
+        companyUUID: input.companyUUID,
+        personUUID: input.personUUID,
       });
 
-      if (!company) {
-        throw new Error("Invalid company uuid");
+      if (employee.success) {
+        return {
+          __typename: "AddEmployeeSuccess",
+          company: employee.value,
+        };
       }
 
-      const person = await dataSources.personDS.getPerson({
-        uuid: input.personUUID,
-      });
+      switch (employee.failure) {
+        case AddEmployeeHandlerErrors.InvalidCompanyUUID:
+          throw new Error("Invalid person uuid");
 
-      if (!person) {
-        throw new Error("Invalid person uuid");
+        case AddEmployeeHandlerErrors.InvalidPersonUUID:
+          throw new Error("Invalid person uuid");
       }
-
-      await dataSources.employeeDS.createEmployee({
-        companyId: company.id,
-        personId: person.id,
-      });
-
-      return {
-        __typename: "AddEmployeeSuccess",
-        company,
-      };
     },
 
-    async removeEmployee(_, { input }, { dataSources }) {
-      const company = await dataSources.companyDS.getCompany({
-        uuid: input.companyUUID,
+    async removeEmployee(_, { input }, { knex }) {
+      const employee = await removeEmployeeHandler({
+        knex,
+        companyUUID: input.companyUUID,
+        personUUID: input.personUUID,
       });
 
-      if (!company) {
-        throw new Error("Invalid company uuid");
+      if (employee.success) {
+        return {
+          __typename: "RemoveEmployeeSuccess",
+          company: employee.value,
+        };
       }
 
-      const person = await dataSources.personDS.getPerson({
-        uuid: input.personUUID,
-      });
+      switch (employee.failure) {
+        case RemoveEmployeeHandlerErrors.InvalidCompanyUUID:
+          throw new Error("Invalid company uuid");
 
-      if (!person) {
-        throw new Error("Invalid person uuid");
+        case RemoveEmployeeHandlerErrors.InvalidPersonUUID:
+          throw new Error("Invalid person uuid");
       }
-
-      await dataSources.employeeDS.removeEmployee({
-        companyId: company.id,
-        personId: person.id,
-      });
-
-      return {
-        __typename: "RemoveEmployeeSuccess",
-        company,
-      };
     },
   },
 };

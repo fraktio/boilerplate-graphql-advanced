@@ -2,9 +2,10 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { PersonTableRaw, Table } from "../app/database/utils";
-
 import { doXTimes } from "./1-users";
+
+import { Table } from "~/database/base";
+import { PersonTableRow } from "~/database/personDB";
 
 const createPerson = () => ({
   uuid: uuidv4(),
@@ -20,5 +21,5 @@ const createPerson = () => ({
 export async function seed(knex: Knex): Promise<void> {
   const persons = doXTimes(1225).map(createPerson);
 
-  await knex(Table.PERSONS).insert<PersonTableRaw>(persons);
+  await knex(Table.PERSONS).insert<PersonTableRow>(persons);
 }

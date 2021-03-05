@@ -67,24 +67,35 @@ const requireBoolean = (env: string): boolean => {
   );
 };
 
+export const getCookiesConfigFromEnv = () => ({
+  path: requireEnv("TOKEN_PATH"),
+  domain: requireEnv("TOKEN_DOMAIN"),
+  secret: requireEnv("TOKEN_SECRET"),
+  accessAgeSeconds: requireIntEnv("ACCESS_TOKEN_AGE_SECONDS"),
+  refreshAgeSeconds: requireIntEnv("REFRESH_TOKEN_AGE_SECONDS"),
+});
+
+export type CookiesConfig = ReturnType<typeof getCookiesConfigFromEnv>;
+
+export const getDatabaseConfigFromEnv = () => ({
+  type: requireEnv("DATABASE_TYPE"),
+  host: requireEnv("DATABASE_HOST"),
+  user: requireEnv("DATABASE_USER"),
+  port: requireIntEnv("DATABASE_PORT"),
+  password: requireEnv("DATABASE_PASSWORD"),
+  databaseName: requireEnv("DATABASE_DATABASE_NAME"),
+});
+
+export type DatabaseConfig = ReturnType<typeof getDatabaseConfigFromEnv>;
+
 export const getConfigFromEnv = () => ({
   apiPort: requireIntEnv("API_PORT"),
   stdoutLogging: requireBoolean("STDOUT_LOGGING"),
   isProduction: requireBoolean("PRODUCTION"),
   apiCorsEndpoint: requireEnv("API_CORS_ENDPOINT"),
 
-  tokenPath: requireEnv("TOKEN_PATH"),
-  tokenDomain: requireEnv("TOKEN_DOMAIN"),
-  tokenSecret: requireEnv("TOKEN_SECRET"),
-  accessTokenAgeSeconds: requireIntEnv("ACCESS_TOKEN_AGE_SECONDS"),
-  refreshTokenAgeSeconds: requireIntEnv("REFRESH_TOKEN_AGE_SECONDS"),
-
-  databaseType: requireEnv("DATABASE_TYPE"),
-  databaseHost: requireEnv("DATABASE_HOST"),
-  databaseUser: requireEnv("DATABASE_USER"),
-  databasePort: requireIntEnv("DATABASE_PORT"),
-  databasePassword: requireEnv("DATABASE_PASSWORD"),
-  databaseDatabaseName: requireEnv("DATABASE_DATABASE_NAME"),
+  cookies: getCookiesConfigFromEnv(),
+  database: getDatabaseConfigFromEnv(),
 });
 
 export type Config = ReturnType<typeof getConfigFromEnv>;

@@ -2,10 +2,9 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { Table, UserTableRaw } from "../app/database/utils";
-import { HashingUtils } from "../app/utils/hashingUtils";
-
-const hashingUtils = new HashingUtils();
+import { Table } from "~/database/base";
+import { UserTableRow } from "~/database/userDB";
+import { hashingUtils } from "~/utils/hashingUtils";
 
 export const doXTimes = (count: number) => [...Array(count).keys()];
 
@@ -29,5 +28,5 @@ export const seed = async (knex: Knex): Promise<void> => {
     ...doXTimes(125).map(() => createUser({ password })),
   ];
 
-  await knex(Table.USERS).insert<UserTableRaw>(users);
+  await knex(Table.USERS).insert<UserTableRow>(users);
 };

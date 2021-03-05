@@ -1,6 +1,13 @@
 import { UserInputError } from "apollo-server-express";
 
-import { PersonTable } from "~/dataSources/PersonDataSource";
+import {
+  addCompanyHandler,
+  companiesHandler,
+  companyEmployees,
+  companyHandler,
+  editCompanyHandler,
+} from "../handlers/companyHandlers";
+
 import { Resolvers } from "~/generated/graphql";
 
 export const companyResolver: Resolvers = {
@@ -19,39 +26,26 @@ export const companyResolver: Resolvers = {
   },
 
   Company: {
-    async employees(company, __, { dataLoaders }) {
-      const personUUIDs = await dataLoaders.personDL.personsOfCompany.load(
-        company.UUID,
-      );
-
-      const persons = (await dataLoaders.personDL.person.loadMany(
-        personUUIDs,
-      )) as PersonTable[];
-
-      return persons;
+    async employees(company, __, { knex }) {
+      return companyEmployees({ knex, companyId: company.id });
     },
   },
 
   Query: {
-    async companies(_, __, { dataSources }) {
-      return await dataSources.companyDS.getCompanies();
+    async companies(_, __, { knex }) {
+      return await companiesHandler({ knex });
     },
 
-    async company(_, { input }, { dataLoaders }) {
-      const company = await dataLoaders.companyDL.company.load(input.UUID);
-
-      if (!company) {
-        throw new UserInputError(`Invalid company id: ${input.UUID}`);
-      }
-
-      return company;
+    async company(_, { input }, { knex }) {
+      return await companyHandler({ knex, companyUUID: input.UUID });
     },
   },
 
   Mutation: {
-    async addCompany(_, { input }, { dataSources }) {
-      const company = await dataSources.companyDS.addCompany({
-        company: { name: input.company.name },
+    async addCompany(_, { input }, { knex }) {
+      const company = addCompanyHandler({
+        knex,
+        input: { name: input.company.name },
       });
 
       return {
@@ -60,13 +54,15 @@ export const companyResolver: Resolvers = {
       };
     },
 
-    async editCompany(_, { input }, { dataSources }) {
-      const company = await dataSources.companyDS.updateCompany({
-        company: { UUID: input.UUID, name: input.company.name },
+    async editCompany(_, { input }, { knex }) {
+      const company = editCompanyHandler({
+        knex,
+        companyUUID: input.UUID,
+        company: { name: input.company.name },
       });
 
       if (!company) {
-        throw new UserInputError(`Invalid company id: ${input.UUID}`);
+        throw new UserInputError(`Invalid company uuid: ${input.UUID}`);
       }
 
       return {

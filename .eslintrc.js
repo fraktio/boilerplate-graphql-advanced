@@ -9,12 +9,8 @@ module.exports = {
   ],
   plugins: ["switch-case"],
   parser: "@typescript-eslint/parser",
-  parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
+  "parserOptions": {
+    "project": "./tsconfig.json",
   },
   rules: {
     "newline-per-chained-call": ["error", { ignoreChainWithDepth: 3 }],
@@ -44,6 +40,7 @@ module.exports = {
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-unused-vars": ["error", { varsIgnorePattern: "^_" }],
+    "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "import/newline-after-import": ["error", { count: 1 }],
     "import/order": [

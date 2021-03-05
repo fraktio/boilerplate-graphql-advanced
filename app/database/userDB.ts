@@ -68,6 +68,18 @@ export const userDB = {
     return user ? formatUserRow(user) : null;
   },
 
+  async getByUUID(params: {
+    knex: DBConnection;
+    userUUID: UUID;
+  }): Promise<UserTable | null> {
+    const user = await params
+      .knex<UserTableRow>(Table.USERS)
+      .where({ uuid: params.userUUID })
+      .first();
+
+    return user ? formatUserRow(user) : null;
+  },
+
   async getByUsername(params: {
     knex: DBConnection;
     username: string;

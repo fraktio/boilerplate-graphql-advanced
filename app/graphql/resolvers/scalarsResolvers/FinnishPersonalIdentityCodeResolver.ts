@@ -7,7 +7,7 @@ import { validateFinnishPersonalIdentityCode } from "~/validation/converters";
 const ERROR_MESSAGE =
   "PersonalIdentityCode must be a valid personal identity code";
 
-export const FinnishPErsonalIdentityCodeResolver = new GraphQLScalarType({
+export const FinnishPersonalIdentityCodeResolver = new GraphQLScalarType({
   description: "PersonalIdentityCode custom scalar type",
   name: "PersonalIdentityCode",
 

@@ -20,8 +20,10 @@ type TableColumns<T extends Table> = T extends Table.USERS
   ? PersonTableRow
   : never;
 
-export const tableColumn = (table: Table, column: keyof TableColumns<Table>) =>
-  [table, column].join(".");
+export const tableColumn = <T extends Table>(
+  table: T,
+  column: keyof TableColumns<T>,
+) => [table, column].join(".");
 
 export type Tables =
   | UserTableRow

@@ -1,15 +1,11 @@
 import { PhoneNumber, PhoneNumberUtil } from "google-libphonenumber";
 import { DateTime } from "luxon";
 
+import { Table } from "~/database/base";
+import { CompanyID } from "~/database/companyDB";
 import { DBConnection } from "~/database/connection";
-import {
-  CompanyID,
-  createUUID,
-  PersonID,
-  PersonTableRow,
-  Table,
-  tableColumn,
-} from "~/database/utils";
+import { PersonID, PersonTableRow } from "~/database/personDB";
+import { createUUID, tableColumn } from "~/database/utils";
 import { UUID } from "~/models";
 
 export type PersonTable = {
@@ -38,9 +34,7 @@ type CreatePersonOptions = {
   birthday: DateTime;
 };
 
-type UpdatePersonOptions = CreatePersonOptions & {
-  uuid: UUID;
-};
+type UpdatePersonOptions = CreatePersonOptions;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -65,6 +59,15 @@ export const personDS = {
     const person = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .where({ id: params.id })
+      .first();
+
+    return person ? formatPersonRow(person) : null;
+  },
+
+  async getByUUID(params: { knex: DBConnection; personUUID: UUID }) {
+    const person = await params
+      .knex<PersonTableRow>(Table.PERSONS)
+      .where({ uuid: params.personUUID })
       .first();
 
     return person ? formatPersonRow(person) : null;
@@ -102,8 +105,9 @@ export const personDS = {
     return formatPersonRow(person);
   },
 
-  async updatePerson(params: {
+  async updateByUUID(params: {
     knex: DBConnection;
+    personUUID: UUID;
     person: UpdatePersonOptions;
   }) {
     const phone = params.person.phone?.getRawInput();
@@ -120,7 +124,7 @@ export const personDS = {
         nationality: params.person.nationality,
         birthday,
       })
-      .where({ uuid: params.person.uuid })
+      .where({ uuid: params.personUUID })
       .returning("*")
       .first();
 
@@ -129,7 +133,7 @@ export const personDS = {
 
   async getPersonsOfCompany(params: {
     knex: DBConnection;
-    companyId?: CompanyID;
+    companyId: CompanyID;
   }) {
     const persons = await params.knex
       .select<PersonTableRow[]>(`${Table.PERSONS}.*`)
@@ -146,11 +150,7 @@ export const personDS = {
         "=",
         tableColumn(Table.EMPLOYEE, "companyId"),
       )
-      .where({
-        ...(params.companyId && {
-          [tableColumn(Table.COMPANY, "id")]: params.companyId,
-        }),
-      });
+      .where(tableColumn(Table.COMPANY, "id"), params.companyId);
 
     return persons.map(formatPersonRow);
   },

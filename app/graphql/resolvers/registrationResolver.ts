@@ -1,3 +1,8 @@
+import {
+  registerHandler,
+  RegisterHandlerErrors,
+} from "../handlers/registerHandlers";
+
 import { Resolvers } from "~/generated/graphql";
 
 export const registrationResolver: Resolvers = {
@@ -8,42 +13,31 @@ export const registrationResolver: Resolvers = {
   },
 
   Mutation: {
-    async register(_, { input }, { dataSources, hashingUtils }) {
-      const user = await dataSources.userDS.getUser({
-        username: input.username,
-      });
-
-      if (user) {
-        return {
-          success: false,
-          __typename: "RegisterFailureAlreadyExists",
-        };
-      }
-
-      const hashedPassword = await hashingUtils.hashPassword({
-        password: input.password,
-      });
-
-      const createdUser = await dataSources.userDS.createUser({
+    async register(_, { input }, { knex }) {
+      const createdUser = await registerHandler({
+        knex,
         newUser: {
           username: input.username,
           email: input.email,
-          hashedPassword,
+          password: input.password,
           phoneNumber: input.phoneNumber,
         },
       });
 
-      if (!createdUser) {
+      if (createdUser.success) {
         return {
-          success: false,
-          __typename: "RegisterFailure",
+          success: true,
+          __typename: "RegisterSuccess",
         };
       }
 
-      return {
-        success: true,
-        __typename: "RegisterSuccess",
-      };
+      switch (createdUser.failure) {
+        case RegisterHandlerErrors.UsernameAlreadyExists:
+          return {
+            success: false,
+            __typename: "RegisterFailure",
+          };
+      }
     },
   },
 };

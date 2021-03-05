@@ -14,5 +14,5 @@ export const scalarsResolver: Resolvers = {
   DateTime: DateTimeResolver,
   PhoneNumber: PhoneResolver,
   EmailAddress: EmailResolver,
-  FinnishPErsonalIdentityCode: FinnishPersonalIdentityCodeResolver,
+  FinnishPersonalIdentityCode: FinnishPersonalIdentityCodeResolver,
 };

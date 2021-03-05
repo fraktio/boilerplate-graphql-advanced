@@ -1,15 +1,13 @@
 import type Bunyan from "bunyan";
 
-import { UUID } from "~/models";
+import { PersonTable } from "~/database/personDB";
 import { FailureObject } from "~/utils/failure";
 
 declare global {
   namespace Express {
     interface Request {
       logger: Bunyan;
-      user?: {
-        uuid: UUID;
-      };
+      user?: PersonTable;
     }
   }
 }

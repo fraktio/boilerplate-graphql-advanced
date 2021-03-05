@@ -1,33 +1,27 @@
 import { Response } from "express";
 
-import { Config } from "~/config";
+import { CookiesConfig } from "~/config";
 import { userDS } from "~/dataSources/UserDataSource";
 import { DBConnection } from "~/database/connection";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
-
-export const logoutHandler = async (params: {
-  res: Response;
-  config: Config;
-}) => {
-  sessionUtils.clearSessions({
-    res: params.res,
-    path: params.config.tokenPath,
-  });
-
-  return true;
-};
+import { toFailure, toSuccess } from "~/validation/common";
 
 type LoginHandlerInput = {
   password: string;
   username: string;
 };
 
+export enum LogInHandlerErrors {
+  UserNotFound = "user-not-found",
+  InvalidPassword = "invalid-password",
+}
+
 export const loginHandler = async (params: {
   knex: DBConnection;
   res: Response;
   input: LoginHandlerInput;
-  config: Config;
+  cookiesConfig: CookiesConfig;
 }) => {
   const user = await userDS.getByUsername({
     knex: params.knex,
@@ -35,7 +29,7 @@ export const loginHandler = async (params: {
   });
 
   if (!user) {
-    return { success: false, error: "failure" };
+    return toFailure(LogInHandlerErrors.UserNotFound);
   }
 
   const isValidPassword = await hashingUtils.validatePassword({
@@ -44,28 +38,34 @@ export const loginHandler = async (params: {
   });
 
   if (!isValidPassword) {
-    return {
-      __typename: "LoginUserFailure",
-      success: false,
-    };
+    return toFailure(LogInHandlerErrors.InvalidPassword);
   }
 
   const { refreshToken } = sessionUtils.generateRefreshToken({
     user,
-    secret: params.config.tokenSecret,
-    tokenAgeSeconds: params.config.refreshTokenAgeSeconds,
+    secret: params.cookiesConfig.secret,
+    tokenAgeSeconds: params.cookiesConfig.refreshAgeSeconds,
   });
 
   sessionUtils.setRefreshToken({
     res: params.res,
     refreshToken,
-    refreshTokenAgeSeconds: params.config.refreshTokenAgeSeconds,
-    domain: params.config.tokenDomain,
-    tokenPath: params.config.tokenPath,
+    refreshTokenAgeSeconds: params.cookiesConfig.refreshAgeSeconds,
+    domain: params.cookiesConfig.domain,
+    tokenPath: params.cookiesConfig.path,
   });
 
-  return {
-    __typename: "LoginUserSuccess",
-    user,
-  };
+  return toSuccess(user);
+};
+
+export const logoutHandler = async (params: {
+  res: Response;
+  cookiesConfig: CookiesConfig;
+}) => {
+  sessionUtils.clearSessions({
+    res: params.res,
+    path: params.cookiesConfig.path,
+  });
+
+  return true;
 };

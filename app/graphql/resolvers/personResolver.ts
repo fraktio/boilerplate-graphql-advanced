@@ -1,6 +1,13 @@
 import { UserInputError } from "apollo-server-express";
 
-import { CompanyTable } from "~/dataSources/CompanyDataSource";
+import {
+  addPersonHandler,
+  adultEmployersHandler,
+  modifyPerson,
+  personHandler,
+  personsHandler,
+} from "../handlers/personHandler";
+
 import { Resolvers } from "~/generated/graphql";
 
 export const personResolver: Resolvers = {
@@ -25,22 +32,14 @@ export const personResolver: Resolvers = {
   },
 
   Adult: {
-    async employers(company, _, { dataLoaders }) {
-      const companiesUUIDs = await dataLoaders.companyDL.companiesOfPerson.load(
-        company.UUID,
-      );
-
-      const companies = (await dataLoaders.companyDL.company.loadMany(
-        companiesUUIDs,
-      )) as CompanyTable[];
-
-      return companies;
+    async employers(adult, _, { knex }) {
+      return await adultEmployersHandler({ knex, personId: adult.id });
     },
   },
 
   Query: {
-    async person(_, { input }, { dataSources }) {
-      const person = await dataSources.personDS.getPerson({ uuid: input.UUID });
+    async person(_, { input }, { knex }) {
+      const person = await personHandler({ knex, personUUID: input.UUID });
 
       if (!person) {
         throw new UserInputError("Invalid person uuid");
@@ -49,14 +48,14 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, __, { dataSources }) {
-      return await dataSources.personDS.getPersons();
+    async persons(_, __, { knex }) {
+      return await personsHandler({ knex });
     },
   },
 
   Mutation: {
-    async addPerson(_, { input }, { dataSources }) {
-      const person = await dataSources.personDS.createPerson({
+    async addPerson(_, { input }, { knex }) {
+      const newPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
         personalIdentityCode: input.person.personalIdentityCode,
@@ -64,17 +63,15 @@ export const personResolver: Resolvers = {
         email: input.person.email,
         nationality: input.person.nationality,
         birthday: input.person.birthday,
-      });
-
-      return {
-        __typename: "AddPersonSuccess",
-        person,
       };
+
+      const person = addPersonHandler({ knex, person: newPerson });
+
+      return { __typename: "AddPersonSuccess", person };
     },
 
-    async editPerson(_, { input }, { dataSources }) {
-      const person = await dataSources.personDS.updatePerson({
-        uuid: input.UUID,
+    async editPerson(_, { input }, { knex }) {
+      const modifiedPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
         personalIdentityCode: input.person.personalIdentityCode,
@@ -82,16 +79,19 @@ export const personResolver: Resolvers = {
         email: input.person.email,
         nationality: input.person.nationality,
         birthday: input.person.birthday,
+      };
+
+      const person = await modifyPerson({
+        knex,
+        personUUID: input.UUID,
+        modifiedPerson,
       });
 
       if (!person) {
         throw new Error("Invalid person uuid");
       }
 
-      return {
-        __typename: "EditPersonSuccess",
-        person,
-      };
+      return { __typename: "EditPersonSuccess", person };
     },
   },
 };

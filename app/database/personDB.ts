@@ -60,7 +60,7 @@ export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
   },
 });
 
-type CreatePersonOptions = {
+export type CreatePersonOptions = {
   firstName: string;
   lastName: string;
   personalIdentityCode: string;
@@ -70,11 +70,17 @@ type CreatePersonOptions = {
   birthday: DateTime;
 };
 
-type UpdatePersonOptions = CreatePersonOptions & {
-  uuid: UUID;
+export type UpdatePersonOptions = {
+  firstName: string;
+  lastName: string;
+  personalIdentityCode: string;
+  phone: PhoneNumber | null;
+  email: string;
+  nationality: string;
+  birthday: DateTime;
 };
 
-export const personDS = {
+export const personDB = {
   async get(params: {
     knex: DBConnection;
     id: PersonID;
@@ -82,6 +88,18 @@ export const personDS = {
     const person = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .where({ id: params.id })
+      .first();
+
+    return person ? formatPersonRow(person) : null;
+  },
+
+  async getByUUID(params: {
+    knex: DBConnection;
+    personUUID: UUID;
+  }): Promise<PersonTable | null> {
+    const person = await params
+      .knex<PersonTableRow>(Table.PERSONS)
+      .where({ uuid: params.personUUID })
       .first();
 
     return person ? formatPersonRow(person) : null;
@@ -100,7 +118,7 @@ export const personDS = {
     const phone = params.person.phone?.getRawInput();
     const birthday = params.person.birthday.toJSDate();
 
-    const person = await params
+    const persons = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .insert({
         uuid: createUUID(),
@@ -112,18 +130,18 @@ export const personDS = {
         nationality: params.person.nationality,
         birthday,
       })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!person) {
+    if (!persons.length) {
       throw new Error("Could not insert person");
     }
 
-    return formatPersonRow(person);
+    return formatPersonRow(persons[0]);
   },
 
-  async updatePerson(params: {
+  async updateByUUID(params: {
     knex: DBConnection;
+    personUUID: UUID;
     person: UpdatePersonOptions;
   }): Promise<PersonTable> {
     const phone = params.person.phone?.getRawInput();
@@ -140,7 +158,7 @@ export const personDS = {
         nationality: params.person.nationality,
         birthday,
       })
-      .where({ uuid: params.person.uuid })
+      .where({ uuid: params.personUUID })
       .returning("*")
       .first();
 
@@ -177,5 +195,16 @@ export const personDS = {
       });
 
     return persons.map(formatPersonRow);
+  },
+
+  async getPersonsByIds(params: {
+    knex: DBConnection;
+    personIds: readonly PersonID[];
+  }) {
+    const personRows = await params
+      .knex<PersonTableRow>(Table.PERSONS)
+      .whereIn("id", params.personIds);
+
+    return personRows.map(formatPersonRow);
   },
 };
