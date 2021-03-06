@@ -1,4 +1,4 @@
-import { Resolvers } from "~/generated/graphql";
+import { Resolvers } from "~/graphql/generation/generated";
 
 export const genericResolver: Resolvers = {
   Timestamp: {

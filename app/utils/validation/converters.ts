@@ -20,7 +20,7 @@ import {
   FinnishPostalCode,
   FinnishMunicipality,
   Timestamp,
-} from "~/@types/scalarTypes";
+} from "~/graphql/generation/scalarTypes";
 
 export function asCountryCode(value: string): CountryCode {
   return trySuccess(validateCountryCode(value));

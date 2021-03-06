@@ -6,7 +6,7 @@ import {
   PersonID,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export const personHandler = async (params: {
   knex: DBConnection;

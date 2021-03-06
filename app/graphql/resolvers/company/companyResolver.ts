@@ -8,7 +8,7 @@ import {
   editCompanyHandler,
 } from "./companyHandlers";
 
-import { Resolvers } from "~/generated/graphql";
+import { Resolvers } from "~/graphql/generation/generated";
 
 export const companyResolver: Resolvers = {
   AddCompanyOutput: {

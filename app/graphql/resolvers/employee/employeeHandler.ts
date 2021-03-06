@@ -2,8 +2,8 @@ import { companyDS } from "~/database/company/companyDataSource";
 import { DBConnection } from "~/database/connection";
 import { employeeDS } from "~/database/employee/employeeDataSource";
 import { personDS } from "~/database/person/personDataSource";
-import { UUID } from "~/models";
-import { toFailure, toSuccess } from "~/validation/common";
+import { UUID } from "~/graphql/generation/mappers";
+import { toFailure, toSuccess } from "~/utils/validation/common";
 
 export enum AddEmployeeHandlerErrors {
   InvalidPersonUUID = "invalid-person-uuid",

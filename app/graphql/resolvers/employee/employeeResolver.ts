@@ -5,7 +5,7 @@ import {
   RemoveEmployeeHandlerErrors,
 } from "./employeeHandler";
 
-import { Resolvers } from "~/generated/graphql";
+import { Resolvers } from "~/graphql/generation/generated";
 
 export const employeeResolver: Resolvers = {
   AddEmployeeOutput: {

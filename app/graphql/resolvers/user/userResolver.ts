@@ -2,7 +2,7 @@ import { AuthenticationError } from "apollo-server-express";
 
 import { authenticatedUserHandler } from "./userHandlers";
 
-import { Resolvers } from "~/generated/graphql";
+import { Resolvers } from "~/graphql/generation/generated";
 
 export const userResolver: Resolvers = {
   Query: {

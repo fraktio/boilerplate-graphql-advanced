@@ -5,7 +5,7 @@ import { DBConnection } from "~/database/connection";
 import { userDS } from "~/database/user/UserDataSource";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
-import { toFailure, toSuccess } from "~/validation/common";
+import { toFailure, toSuccess } from "~/utils/validation/common";
 
 type LoginHandlerInput = {
   password: string;

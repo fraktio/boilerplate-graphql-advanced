@@ -1,7 +1,7 @@
 import { DBConnection } from "~/database/connection";
 import { userDS } from "~/database/user/UserDataSource";
 import { hashingUtils } from "~/utils/hashingUtils";
-import { toFailure, toSuccess } from "~/validation/common";
+import { toFailure, toSuccess } from "~/utils/validation/common";
 
 type CreateUser = {
   username: string;

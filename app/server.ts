@@ -2,13 +2,13 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { Config } from "~/config";
 import { createKnex } from "~/database/connection";
-import { createExpress } from "~/express";
+import { createExpress } from "~/express/express";
+import { errorHandler } from "~/express/middleware/errorHandler";
+import { loggerHandler } from "~/express/middleware/loggerHandler";
+import { sessionHandler } from "~/express/middleware/sessionHandler";
 import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
 import { createLogger } from "~/logger";
-import { errorHandler } from "~/middleware/errorHandler";
-import { loggerHandler } from "~/middleware/loggerHandler";
-import { sessionHandler } from "~/middleware/sessionHandler";
 
 export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });

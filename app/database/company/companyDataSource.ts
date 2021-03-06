@@ -7,7 +7,7 @@ import {
 } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { PersonID } from "~/database/person/personDatabase";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export type CompanyTable = {
   id: CompanyID;
