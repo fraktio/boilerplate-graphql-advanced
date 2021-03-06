@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { doXTimes } from "./1-users";
 
-import { PersonTableRow } from "~/dataSources/person/personDatabase";
-import { Table } from "~/database/base";
+import { PersonTableRow } from "~/database/person/personDatabase";
+import { Table } from "~/database/tables";
 
 const createPerson = () => ({
   uuid: uuidv4(),

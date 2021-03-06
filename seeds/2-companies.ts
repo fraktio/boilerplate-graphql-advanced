@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { doXTimes } from "./1-users";
 
-import { CompanyTableRow } from "~/dataSources/company/companyDatabase";
-import { Table } from "~/database/base";
+import { CompanyTableRow } from "~/database/company/companyDatabase";
+import { Table } from "~/database/tables";
 
 const createCompany = () => ({
   uuid: uuidv4(),

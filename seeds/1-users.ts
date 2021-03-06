@@ -2,8 +2,8 @@ import faker from "faker";
 import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { UserTableRow } from "~/dataSources/user/userDatabase";
-import { Table } from "~/database/base";
+import { Table } from "~/database/tables";
+import { UserTableRow } from "~/database/user/userDatabase";
 import { hashingUtils } from "~/utils/hashingUtils";
 
 export const doXTimes = (count: number) => [...Array(count).keys()];

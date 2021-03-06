@@ -1,6 +1,6 @@
 import type Bunyan from "bunyan";
 
-import { PersonTable } from "~/dataSources/person/personDatabase";
+import { PersonTable } from "~/database/person/personDatabase";
 import { FailureObject } from "~/utils/failure";
 
 declare global {
