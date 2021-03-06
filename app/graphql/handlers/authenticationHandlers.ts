@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 import { CookiesConfig } from "~/config";
-import { userDS } from "~/dataSources/UserDataSource";
+import { userDS } from "~/dataSources/user/UserDataSource";
 import { DBConnection } from "~/database/connection";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";

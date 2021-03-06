@@ -1,8 +1,8 @@
 import { DateTime } from "luxon";
 
-import { ID, Table } from "./base";
-import { CompanyID } from "./companyDB";
-import { PersonID } from "./personDB";
+import { ID, Table } from "../../database/base";
+import { CompanyID } from "../company/companyDatabase";
+import { PersonID } from "../person/personDatabase";
 
 import { DBConnection } from "~/database/connection";
 
@@ -37,7 +37,7 @@ export const formatEmployeeRow = (row: EmployeeTableRow): EmployeeTable => ({
   },
 });
 
-export const employeeDS = {
+export const employeeDB = {
   async create(params: {
     knex: DBConnection;
     companyId: CompanyID;

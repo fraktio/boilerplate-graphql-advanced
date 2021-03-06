@@ -1,7 +1,7 @@
-import { companyDS } from "~/dataSources/CompanyDataSource";
-import { personDS } from "~/dataSources/PersonDataSource";
+import { companyDS } from "~/dataSources/company/companyDataSource";
+import { employeeDS } from "~/dataSources/employee/employeeDataSource";
+import { personDS } from "~/dataSources/person/personDataSource";
 import { DBConnection } from "~/database/connection";
-import { employeeDS } from "~/database/employeeDB";
 import { UUID } from "~/models";
 import { toFailure, toSuccess } from "~/validation/common";
 

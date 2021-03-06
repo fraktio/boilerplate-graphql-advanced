@@ -1,8 +1,8 @@
 import { UserInputError } from "apollo-server-express";
 
-import { companyDS } from "~/dataSources/CompanyDataSource";
-import { personDS } from "~/dataSources/PersonDataSource";
-import { CompanyID } from "~/database/companyDB";
+import { companyDS } from "~/dataSources/company/companyDataSource";
+import { CompanyID } from "~/dataSources/company/companyDatabase";
+import { personDS } from "~/dataSources/person/personDataSource";
 import { DBConnection } from "~/database/connection";
 import { UUID } from "~/models";
 
@@ -35,7 +35,7 @@ export const addCompanyHandler = async (params: {
 }) =>
   await companyDS.create({
     knex: params.knex,
-    input: { name: params.input.name },
+    newCompany: { name: params.input.name },
   });
 
 export const editCompanyHandler = async (params: {

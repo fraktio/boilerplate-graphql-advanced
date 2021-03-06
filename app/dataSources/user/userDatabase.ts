@@ -1,7 +1,7 @@
 import { PhoneNumber } from "google-libphonenumber";
 import { DateTime } from "luxon";
 
-import { ID, Table } from "./base";
+import { ID, Table } from "../../database/base";
 
 import { DBConnection } from "~/database/connection";
 import { createUUID } from "~/database/utils";

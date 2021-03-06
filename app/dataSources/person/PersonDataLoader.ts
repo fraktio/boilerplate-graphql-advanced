@@ -1,13 +1,20 @@
 import DataLoader from "dataloader";
 
-import { AbstractDataLoaderBase, DataLoaderParams } from "./AbstractDataLoader";
+import {
+  AbstractDataLoaderBase,
+  DataLoaderParams,
+} from "../AbstractDataLoader";
 
-import { personDB, PersonID, PersonTable } from "~/database/personDB";
+import {
+  personDB,
+  PersonID,
+  PersonTable,
+} from "~/dataSources/person/personDatabase";
 
 export type PersonLoader = DataLoader<PersonID, PersonTable | null>;
 
 export class PersonDataLoader extends AbstractDataLoaderBase<PersonLoader> {
-  protected createLoaders(params: DataLoaderParams): PersonLoader {
+  protected createLoader(params: DataLoaderParams): PersonLoader {
     const personLoader: PersonLoader = new DataLoader(async (ids) => {
       const employees = await personDB.getPersonsByIds({
         knex: params.knex,

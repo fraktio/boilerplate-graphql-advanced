@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 
 import { CookiesConfig } from "~/config";
+import { personDB } from "~/dataSources/person/personDatabase";
 import { DBConnection } from "~/database/connection";
-import { personDB } from "~/database/personDB";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 export const sessionHandler = (params: {

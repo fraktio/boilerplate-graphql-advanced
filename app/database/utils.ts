@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
+import { CompanyTableRow } from "../dataSources/company/companyDatabase";
+import { EmployeeTableRow } from "../dataSources/employee/employeeDatabase";
+import { PersonTableRow } from "../dataSources/person/personDatabase";
+import { UserTableRow } from "../dataSources/user/userDatabase";
+
 import { Table } from "./base";
-import { CompanyTableRow } from "./companyDB";
-import { EmployeeTableRow } from "./employeeDB";
-import { PersonTableRow } from "./personDB";
-import { UserTableRow } from "./userDB";
 
 import { UUID } from "~/models";
 

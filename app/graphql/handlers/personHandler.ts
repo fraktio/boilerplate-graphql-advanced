@@ -1,11 +1,11 @@
-import { personDS } from "~/dataSources/PersonDataSource";
-import { companyDB } from "~/database/companyDB";
-import { DBConnection } from "~/database/connection";
+import { companyDB } from "~/dataSources/company/companyDatabase";
+import { personDS } from "~/dataSources/person/personDataSource";
 import {
   CreatePersonOptions,
   PersonID,
   UpdatePersonOptions,
-} from "~/database/personDB";
+} from "~/dataSources/person/personDatabase";
+import { DBConnection } from "~/database/connection";
 import { UUID } from "~/models";
 
 export const personHandler = async (params: {

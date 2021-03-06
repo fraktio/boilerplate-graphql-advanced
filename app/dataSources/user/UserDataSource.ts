@@ -1,5 +1,5 @@
+import { userDB, UserID } from "~/dataSources/user/userDatabase";
 import { DBConnection } from "~/database/connection";
-import { userDB, UserID } from "~/database/userDB";
 import { UUID } from "~/models";
 
 export type CreateUser = {
@@ -11,18 +11,14 @@ export type CreateUser = {
 
 export const userDS = {
   async get(params: { knex: DBConnection; userId: UserID }) {
-    const user = userDB.get({ knex: params.knex, userId: params.userId });
-
-    return user;
+    return await userDB.get({ knex: params.knex, userId: params.userId });
   },
 
   async getByUsername(params: { knex: DBConnection; username: string }) {
-    const user = userDB.getByUsername({
+    return await userDB.getByUsername({
       knex: params.knex,
       username: params.username,
     });
-
-    return user;
   },
 
   async getByUUID(params: { knex: DBConnection; userUUID: UUID }) {

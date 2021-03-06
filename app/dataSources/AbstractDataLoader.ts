@@ -9,11 +9,11 @@ export abstract class AbstractDataLoaderBase<Loaders> {
 
   public getLoaders(params: DataLoaderParams): Loaders {
     if (!this.loaders) {
-      this.loaders = this.createLoaders({ knex: params.knex });
+      this.loaders = this.createLoader({ knex: params.knex });
     }
 
     return this.loaders;
   }
 
-  protected abstract createLoaders(params: DataLoaderParams): Loaders;
+  protected abstract createLoader(params: DataLoaderParams): Loaders;
 }

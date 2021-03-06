@@ -1,4 +1,4 @@
-import { PersonDataLoader } from "./PersonDataLoader";
+import { PersonDataLoader } from "./person/PersonDataLoader";
 
 export type DataLoaders = {
   personDL: PersonDataLoader;
