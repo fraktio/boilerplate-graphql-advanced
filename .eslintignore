@@ -8,4 +8,4 @@ build
 .webpack
 .webpackCache
 
-app/generated
+app/graphql/generation/generated.ts
