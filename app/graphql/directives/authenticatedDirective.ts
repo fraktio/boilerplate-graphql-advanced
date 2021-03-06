@@ -1,6 +1,8 @@
-import { AuthenticationError } from "apollo-server-express";
+import {
+  AuthenticationError,
+  SchemaDirectiveVisitor,
+} from "apollo-server-express";
 import { defaultFieldResolver, GraphQLField } from "graphql";
-import { SchemaDirectiveVisitor } from "graphql-tools";
 
 import { Context } from "~/graphql/context";
 
