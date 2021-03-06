@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 import { CookiesConfig } from "~/config";
 import { DBConnection } from "~/database/connection";
-import { personDB } from "~/database/personDB";
+import { personDB } from "~/database/person/personDatabase";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 export const sessionHandler = (params: {

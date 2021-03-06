@@ -2,9 +2,9 @@ import Logger from "bunyan";
 import { Request, Response } from "express";
 
 import { Config } from "~/config";
-import { createDataLoaders, DataLoaders } from "~/dataLoaders/dataLoaders";
 import { DBConnection } from "~/database/connection";
-import { UserTable } from "~/database/userDB";
+import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
+import { UserTable } from "~/database/user/userDatabase";
 import { Maybe } from "~/generated/graphql";
 
 export type Context = {

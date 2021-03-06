@@ -1,5 +1,5 @@
-import { CompanyTable } from "./database/companyDB";
-import { PersonTable } from "./database/personDB";
+import { CompanyTable } from "./database/company/companyDatabase";
+import { PersonTable } from "./database/person/personDatabase";
 
 import { Adult, Company, Person } from "~/generated/graphql";
 

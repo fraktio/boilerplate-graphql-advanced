@@ -1,9 +1,9 @@
 import * as Knex from "knex";
 
-import { Table } from "~/database/base";
-import { CompanyTableRow } from "~/database/companyDB";
-import { EmployeeTableRow } from "~/database/employeeDB";
-import { PersonTableRow } from "~/database/personDB";
+import { CompanyTableRow } from "~/database/company/companyDatabase";
+import { EmployeeTableRow } from "~/database/employee/employeeDatabase";
+import { PersonTableRow } from "~/database/person/personDatabase";
+import { Table } from "~/database/tables";
 
 function getRandomItemsFromArray<T>(array: T[], count: number): T[] {
   const shuffled = array.sort(() => 0.5 - Math.random());
