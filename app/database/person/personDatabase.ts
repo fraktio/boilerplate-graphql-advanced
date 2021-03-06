@@ -1,8 +1,7 @@
 import { PhoneNumber, PhoneNumberUtil } from "google-libphonenumber";
 import { DateTime } from "luxon";
 
-import { CompanyID } from "../company/companyDatabase";
-
+import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import { UUID } from "~/graphql/generation/mappers";

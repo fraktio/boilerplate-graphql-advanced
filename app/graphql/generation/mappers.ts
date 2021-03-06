@@ -1,6 +1,5 @@
-import { CompanyTable } from "../../database/company/companyDatabase";
-import { PersonTable } from "../../database/person/personDatabase";
-
+import { CompanyTable } from "~/database/company/companyDatabase";
+import { PersonTable } from "~/database/person/personDatabase";
 import { Adult, Company, Person } from "~/graphql/generation/generated";
 
 export interface UUID extends String {

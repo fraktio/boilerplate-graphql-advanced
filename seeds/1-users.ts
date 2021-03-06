@@ -1,5 +1,5 @@
 import faker from "faker";
-import * as Knex from "knex";
+import { Knex } from "knex";
 import { v4 as uuidv4 } from "uuid";
 
 import { Table } from "~/database/tables";

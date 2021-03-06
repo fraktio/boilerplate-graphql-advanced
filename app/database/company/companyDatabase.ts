@@ -1,8 +1,7 @@
 import { DateTime } from "luxon";
 
-import { PersonID } from "../person/personDatabase";
-
 import { DBConnection } from "~/database/connection";
+import { PersonID } from "~/database/person/personDatabase";
 import { tableColumn, createUUID, ID, Table } from "~/database/tables";
 import { UUID } from "~/graphql/generation/mappers";
 

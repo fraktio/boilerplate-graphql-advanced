@@ -1,11 +1,11 @@
 import faker from "faker";
-import * as Knex from "knex";
 import { v4 as uuidv4 } from "uuid";
 
 import { doXTimes } from "./1-users";
 
 import { CompanyTableRow } from "~/database/company/companyDatabase";
 import { Table } from "~/database/tables";
+import { Knex } from "knex";
 
 const createCompany = () => ({
   uuid: uuidv4(),

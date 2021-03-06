@@ -1,7 +1,7 @@
-import type Knex from "knex";
+import { DBConnection } from "~/database/connection";
 
 export type DataLoaderParams = {
-  knex: Knex;
+  knex: DBConnection;
 };
 
 export abstract class AbstractDataLoaderBase<Loaders> {

@@ -1,5 +1,4 @@
-import * as Knex from "knex";
-
+import { Knex } from "knex";
 import { CompanyTableRow } from "~/database/company/companyDatabase";
 import { EmployeeTableRow } from "~/database/employee/employeeDatabase";
 import { PersonTableRow } from "~/database/person/personDatabase";

@@ -3,8 +3,7 @@ import DataLoader from "dataloader";
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
-} from "../AbstractDataLoader";
-
+} from "~/database/AbstractDataLoader";
 import {
   personDB,
   PersonID,

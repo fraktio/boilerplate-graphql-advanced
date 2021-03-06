@@ -1,5 +1,4 @@
-import knex from "knex";
-import type Knex from "knex";
+import knex, { Knex } from "knex";
 
 import { Config } from "~/config";
 

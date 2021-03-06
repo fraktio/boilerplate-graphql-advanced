@@ -1,10 +1,9 @@
 import { DateTime } from "luxon";
 
-import { CompanyID } from "../company/companyDatabase";
-import { PersonID } from "../person/personDatabase";
-import { ID, Table } from "../tables";
-
+import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
+import { PersonID } from "~/database/person/personDatabase";
+import { ID, Table } from "~/database/tables";
 
 export interface EmployeeID extends ID {
   __EmployeeID: never;
