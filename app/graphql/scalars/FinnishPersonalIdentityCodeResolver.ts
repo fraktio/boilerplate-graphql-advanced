@@ -1,8 +1,8 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
 
-import { FinnishPersonalIdentityCode } from "~/@types/scalarTypes";
-import { validateFinnishPersonalIdentityCode } from "~/validation/converters";
+import { FinnishPersonalIdentityCode } from "~/graphql/generation/scalarTypes";
+import { validateFinnishPersonalIdentityCode } from "~/utils/validation/converters";
 
 const ERROR_MESSAGE =
   "PersonalIdentityCode must be a valid personal identity code";

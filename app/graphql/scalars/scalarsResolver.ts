@@ -6,7 +6,7 @@ import { EmailResolver } from "./EmailResolver";
 import { FinnishPersonalIdentityCodeResolver } from "./FinnishPersonalIdentityCodeResolver";
 import { PhoneResolver } from "./PhoneResolver";
 
-import { Resolvers } from "~/generated/graphql";
+import { Resolvers } from "~/graphql/generation/generated";
 
 export const createScalarResolvers = (): Resolvers => ({
   UUID: UUIDResolver,

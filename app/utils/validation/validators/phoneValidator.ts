@@ -1,9 +1,8 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-import { toFailure, toSuccess } from "../common";
+import { toFailure, toSuccess, Try } from "../common";
 
-import { Try } from "~/@types/global";
-import { Phone } from "~/@types/scalarTypes";
+import { Phone } from "~/graphql/generation/scalarTypes";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validatePhone(value: string): Try<Phone, ValidationFailure> {

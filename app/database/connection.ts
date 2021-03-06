@@ -8,10 +8,6 @@ export type DBConnection = Knex;
 export const createKnex = (opts: { config: Config }) =>
   knex(getConnection({ config: opts.config }));
 
-export const testConnection = async (opts: { knex: Knex }) => {
-  await opts.knex.raw("SELECT 1 + 1 as result;");
-};
-
 export const getConnection = (opts: { config: Config }) => ({
   client: opts.config.database.type,
   connection: {

@@ -3,7 +3,7 @@ import { sign, verify } from "jsonwebtoken";
 import { DateTime } from "luxon";
 
 import { UserTable } from "~/database/user/userDatabase";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export enum Cookie {
   AccessToken = "access-token",

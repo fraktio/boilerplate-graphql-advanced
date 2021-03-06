@@ -4,7 +4,7 @@ import { companyDS } from "~/database/company/companyDataSource";
 import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { personDS } from "~/database/person/personDataSource";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export const companiesHandler = async (params: { knex: DBConnection }) =>
   await companyDS.getAll({ knex: params.knex });

@@ -4,7 +4,7 @@ import { PersonID } from "../person/personDatabase";
 
 import { DBConnection } from "~/database/connection";
 import { tableColumn, createUUID, ID, Table } from "~/database/tables";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export interface CompanyID extends ID {
   __CompanyID: never;

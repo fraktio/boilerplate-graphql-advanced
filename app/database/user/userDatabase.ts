@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 
 import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
-import { UUID } from "~/models";
+import { UUID } from "~/graphql/generation/mappers";
 
 export interface UserID extends ID {
   __UserID: never;

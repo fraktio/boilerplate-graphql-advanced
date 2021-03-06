@@ -1,7 +1,6 @@
-import { toFailure, toSuccess } from "../common";
+import { toFailure, toSuccess, Try } from "../common";
 
-import { Try } from "~/@types/global";
-import { CountryCode } from "~/@types/scalarTypes";
+import { CountryCode } from "~/graphql/generation/scalarTypes";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validateCountryCode(

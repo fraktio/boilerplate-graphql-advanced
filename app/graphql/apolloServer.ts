@@ -2,10 +2,10 @@ import { ApolloServer, ApolloServerExpressConfig } from "apollo-server-express";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
 
 import { Config } from "~/config";
+import { apolloErrorHandler } from "~/express/middleware/errorHandler";
 import { createExecutableSchema } from "~/graphql/schema";
 import { createValidationRules } from "~/graphql/validationRules";
 import { apolloServerLogger } from "~/logger";
-import { apolloErrorHandler } from "~/middleware/errorHandler";
 
 type CreateServerOpts = ApolloServerExpressConfig & {
   config: Config;

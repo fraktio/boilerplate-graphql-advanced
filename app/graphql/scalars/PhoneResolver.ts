@@ -1,8 +1,8 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
 
-import { Phone } from "~/@types/scalarTypes";
-import { validatePhone } from "~/validation/converters";
+import { Phone } from "~/graphql/generation/scalarTypes";
+import { validatePhone } from "~/utils/validation/converters";
 
 const ERROR_MESSAGE =
   "Phone must be a valid a valid phone number in international format";
