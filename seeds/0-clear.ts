@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+
 import { Table } from "~/database/tables";
 
 export const seed = async (knex: Knex): Promise<void> => {
