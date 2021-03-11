@@ -1,3 +1,5 @@
+import { PersonDataLoader } from "./PersonDataLoader";
+
 import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import {
@@ -9,8 +11,14 @@ import {
 import { UUID } from "~/graphql/generation/mappers";
 
 export const personDS = {
-  async get(params: { knex: DBConnection; id: PersonID }) {
-    return await personDB.get(params);
+  async get(params: {
+    knex: DBConnection;
+    personId: PersonID;
+    personDL: PersonDataLoader;
+  }) {
+    return params.personDL
+      .getLoaders({ knex: params.knex })
+      .load(params.personId);
   },
 
   async getByUUID(params: { knex: DBConnection; personUUID: UUID }) {
