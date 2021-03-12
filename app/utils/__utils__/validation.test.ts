@@ -15,7 +15,7 @@ describe("utils / validation", () => {
 
     expect(response).toMatchObject({
       success: false,
-      value: "success-message",
+      failure: "success-message",
     });
   });
 });
