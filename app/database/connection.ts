@@ -1,20 +1,20 @@
 import knex, { Knex } from "knex";
 
-import { Config } from "~/config";
+import { DatabaseConfig } from "~/config";
 
 export type DBConnection = Knex;
 
-export const createKnex = (opts: { config: Config }) =>
-  knex(getConnection({ config: opts.config }));
+export const createKnex = (params: { databaseConfig: DatabaseConfig }) =>
+  knex(getConnection(params));
 
-export const getConnection = (opts: { config: Config }) => ({
-  client: opts.config.database.type,
+export const getConnection = (params: { databaseConfig: DatabaseConfig }) => ({
+  client: params.databaseConfig.type,
   connection: {
-    host: opts.config.database.host,
-    user: opts.config.database.user,
-    port: opts.config.database.port,
-    password: opts.config.database.password,
-    database: opts.config.database.databaseName,
+    host: params.databaseConfig.host,
+    user: params.databaseConfig.user,
+    port: params.databaseConfig.port,
+    password: params.databaseConfig.password,
+    database: params.databaseConfig.databaseName,
   },
   migrations: {
     directory: "./migrations",

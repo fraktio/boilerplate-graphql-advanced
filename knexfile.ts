@@ -1,12 +1,12 @@
 import { config } from "dotenv";
 
-import { getConfigFromEnv } from "./app/config";
+import { getDatabaseConfigFromEnv } from "./app/config";
 import { getConnection } from "./app/database/connection";
 
 // This file is for knex migrations
 
 config();
 
-const envConfig = getConfigFromEnv();
+const envDatabaseConfig = getDatabaseConfigFromEnv();
 
-module.exports = getConnection({ config: envConfig });
+module.exports = getConnection({ databaseConfig: envDatabaseConfig });

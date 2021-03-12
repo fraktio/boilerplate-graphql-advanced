@@ -13,7 +13,7 @@ import { createLogger } from "~/logger";
 export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });
 
-  const knex = createKnex({ config });
+  const knex = createKnex({ databaseConfig: config.database });
   const app = createExpress({ config });
 
   app.use(loggerHandler({ logger }));

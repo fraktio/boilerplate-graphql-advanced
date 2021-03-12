@@ -3,12 +3,14 @@ import serverless from "serverless-http";
 import { getConfigFromEnv } from "~/config";
 import { createServer } from "~/server";
 
-const config = getConfigFromEnv();
+export const graphqlHandler = async () => {
+  const config = await getConfigFromEnv();
 
-const { app, knex } = createServer({ config });
+  const { app, knex } = createServer({ config });
 
-process.on("SIGINT", () => {
-  knex.destroy();
-});
+  process.on("SIGINT", () => {
+    knex.destroy();
+  });
 
-export const graphqlHandler = serverless(app);
+  return serverless(app);
+};
