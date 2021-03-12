@@ -43,6 +43,7 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "import/newline-after-import": ["error", { count: 1 }],
+    "import/no-relative-parent-imports": "error",
     "import/order": [
       "error",
       {
