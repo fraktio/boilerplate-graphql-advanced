@@ -38,8 +38,12 @@ export const personResolver: Resolvers = {
   },
 
   Query: {
-    async person(_, { input }, { knex }) {
-      const person = await personHandler({ knex, personUUID: input.UUID });
+    async person(_, { input }, { knex, dataLoaders }) {
+      const person = await personHandler({
+        knex,
+        personUUID: input.UUID,
+        personDL: dataLoaders.personDL,
+      });
 
       if (!person) {
         throw new UserInputError("Invalid person uuid");
@@ -48,13 +52,13 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, __, { knex }) {
-      return await personsHandler({ knex });
+    async persons(_, __, { knex, dataLoaders }) {
+      return await personsHandler({ knex, personDL: dataLoaders.personDL });
     },
   },
 
   Mutation: {
-    async addPerson(_, { input }, { knex }) {
+    async addPerson(_, { input }, { knex, dataLoaders }) {
       const newPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
@@ -65,12 +69,16 @@ export const personResolver: Resolvers = {
         birthday: input.person.birthday,
       };
 
-      const person = addPersonHandler({ knex, person: newPerson });
+      const person = addPersonHandler({
+        knex,
+        person: newPerson,
+        personDL: dataLoaders.personDL,
+      });
 
       return { __typename: "AddPersonSuccess", person };
     },
 
-    async editPerson(_, { input }, { knex }) {
+    async editPerson(_, { input }, { knex, dataLoaders }) {
       const modifiedPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
@@ -85,6 +93,7 @@ export const personResolver: Resolvers = {
         knex,
         personUUID: input.UUID,
         modifiedPerson,
+        personDL: dataLoaders.personDL,
       });
 
       if (!person) {

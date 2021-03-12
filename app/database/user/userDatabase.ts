@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 
 import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
+import { Maybe } from "~/graphql/generation/generated";
 import { UUID } from "~/graphql/generation/mappers";
 
 export interface UserID extends ID {
@@ -57,7 +58,7 @@ export const userDB = {
   async get(params: {
     knex: DBConnection;
     userId: UserID;
-  }): Promise<UserTable | null> {
+  }): Promise<Maybe<UserTable>> {
     const user = await params
       .knex<UserTableRow>(Table.USERS)
       .where({ id: params.userId })
@@ -69,7 +70,7 @@ export const userDB = {
   async getByUUID(params: {
     knex: DBConnection;
     userUUID: UUID;
-  }): Promise<UserTable | null> {
+  }): Promise<Maybe<UserTable>> {
     const user = await params
       .knex<UserTableRow>(Table.USERS)
       .where({ uuid: params.userUUID })
@@ -81,7 +82,7 @@ export const userDB = {
   async getByUsername(params: {
     knex: DBConnection;
     username: string;
-  }): Promise<UserTable | null> {
+  }): Promise<Maybe<UserTable>> {
     const user = await params
       .knex<UserTableRow>(Table.USERS)
       .where({ username: params.username })
@@ -94,7 +95,7 @@ export const userDB = {
     knex: DBConnection;
     newUser: CreateUserValues;
   }): Promise<UserTable> {
-    const user = await params
+    const users = await params
       .knex<UserTableRow>(Table.USERS)
       .insert({
         uuid: createUUID(),
@@ -103,13 +104,19 @@ export const userDB = {
         hashedPassword: params.newUser.hashedPassword,
         phoneNumber: params.newUser.phoneNumber.getRawInput(),
       })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!user) {
-      throw new Error("Could not insert user");
-    }
+    return formatUserRow(users[0]);
+  },
 
-    return formatUserRow(user);
+  async getUsersByIds(params: {
+    knex: DBConnection;
+    userIds: readonly UserID[];
+  }): Promise<UserTable[]> {
+    const userRows = await params
+      .knex<UserTableRow>(Table.PERSONS)
+      .whereIn("id", params.userIds);
+
+    return userRows.map(formatUserRow);
   },
 };

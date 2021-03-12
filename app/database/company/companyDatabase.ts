@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { DBConnection } from "~/database/connection";
 import { PersonID } from "~/database/person/personDatabase";
 import { tableColumn, createUUID, ID, Table } from "~/database/tables";
+import { Maybe } from "~/graphql/generation/generated";
 import { UUID } from "~/graphql/generation/mappers";
 
 export interface CompanyID extends ID {
@@ -41,7 +42,7 @@ export const companyDB = {
   async get(params: {
     knex: DBConnection;
     companyId: CompanyID;
-  }): Promise<CompanyTable | null> {
+  }): Promise<Maybe<CompanyTable>> {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .where({ id: params.companyId })
@@ -69,7 +70,7 @@ export const companyDB = {
   async getByUUID(params: {
     knex: DBConnection;
     companyUUID: UUID;
-  }): Promise<CompanyTable | null> {
+  }): Promise<Maybe<CompanyTable>> {
     const company = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .where({ uuid: params.companyUUID })
@@ -119,19 +120,18 @@ export const companyDB = {
     knex: DBConnection;
     companyUUID: UUID;
     company: { name: string };
-  }): Promise<CompanyTable> {
-    const company = await params
+  }): Promise<Maybe<CompanyTable>> {
+    const companies = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .update({ name: params.company.name })
       .where({ uuid: params.companyUUID })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!company) {
-      throw new Error("Could not create company");
+    if (companies.length === 0) {
+      return null;
     }
 
-    return formatCompanyRow(company);
+    return formatCompanyRow(companies[0]);
   },
 
   async getCompaniesOfPerson(params: {
@@ -156,5 +156,16 @@ export const companyDB = {
       .where({ [tableColumn(Table.PERSONS, "id")]: params.personId });
 
     return companies.map(formatCompanyRow);
+  },
+
+  async getCompaniesByIds(params: {
+    knex: DBConnection;
+    companyIds: readonly CompanyID[];
+  }): Promise<CompanyTable[]> {
+    const companyRows = await params
+      .knex<CompanyTableRow>(Table.COMPANY)
+      .whereIn("id", params.companyIds);
+
+    return companyRows.map(formatCompanyRow);
   },
 };

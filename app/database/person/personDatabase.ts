@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import { Maybe } from "~/graphql/generation/generated";
 import { UUID } from "~/graphql/generation/mappers";
 
 export interface PersonID extends ID {
@@ -74,7 +75,7 @@ export const personDB = {
   async get(params: {
     knex: DBConnection;
     id: PersonID;
-  }): Promise<PersonTable | null> {
+  }): Promise<Maybe<PersonTable>> {
     const person = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .where({ id: params.id })
@@ -86,7 +87,7 @@ export const personDB = {
   async getByUUID(params: {
     knex: DBConnection;
     personUUID: UUID;
-  }): Promise<PersonTable | null> {
+  }): Promise<Maybe<PersonTable>> {
     const person = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .where({ uuid: params.personUUID })
@@ -122,10 +123,6 @@ export const personDB = {
       })
       .returning("*");
 
-    if (!persons.length) {
-      throw new Error("Could not insert person");
-    }
-
     return formatPersonRow(persons[0]);
   },
 
@@ -133,11 +130,11 @@ export const personDB = {
     knex: DBConnection;
     personUUID: UUID;
     person: UpdatePersonOptions;
-  }): Promise<PersonTable> {
+  }): Promise<Maybe<PersonTable>> {
     const phone = params.person.phone?.getRawInput();
     const birthday = params.person.birthday.toJSDate();
 
-    const person = await params
+    const persons = await params
       .knex(Table.PERSONS)
       .update({
         firstName: params.person.firstName,
@@ -149,19 +146,18 @@ export const personDB = {
         birthday,
       })
       .where({ uuid: params.personUUID })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!person) {
-      throw new Error("Invalid userId");
+    if (persons.length === 0) {
+      return null;
     }
 
-    return formatPersonRow(person);
+    return formatPersonRow(persons[0]);
   },
 
   async getPersonsOfCompany(params: {
     knex: DBConnection;
-    companyId?: CompanyID;
+    companyId: CompanyID;
   }): Promise<PersonTable[]> {
     const persons = await params.knex
       .select<PersonTableRow[]>(`${Table.PERSONS}.*`)
@@ -178,11 +174,7 @@ export const personDB = {
         "=",
         tableColumn(Table.EMPLOYEE, "companyId"),
       )
-      .where({
-        ...(params.companyId && {
-          [tableColumn(Table.COMPANY, "id")]: params.companyId,
-        }),
-      });
+      .where(tableColumn(Table.COMPANY, "id"), params.companyId);
 
     return persons.map(formatPersonRow);
   },

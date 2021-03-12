@@ -21,11 +21,13 @@ export const employeeResolver: Resolvers = {
   },
 
   Mutation: {
-    async addEmployee(_, { input }, { knex }) {
+    async addEmployee(_, { input }, { knex, dataLoaders }) {
       const employee = await addEmployeeHandler({
         knex,
         companyUUID: input.companyUUID,
         personUUID: input.personUUID,
+        companyDL: dataLoaders.companyDL,
+        personDL: dataLoaders.personDL,
       });
 
       if (employee.success) {
@@ -44,11 +46,13 @@ export const employeeResolver: Resolvers = {
       }
     },
 
-    async removeEmployee(_, { input }, { knex }) {
+    async removeEmployee(_, { input }, { knex, dataLoaders }) {
       const employee = await removeEmployeeHandler({
         knex,
         companyUUID: input.companyUUID,
         personUUID: input.personUUID,
+        companyDL: dataLoaders.companyDL,
+        personDL: dataLoaders.personDL,
       });
 
       if (employee.success) {

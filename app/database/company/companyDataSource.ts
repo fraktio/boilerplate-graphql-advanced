@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 
+import { CompanyDataLoader } from "./CompanyDataLoader";
+
 import {
   companyDB,
   CompanyID,
@@ -30,35 +32,95 @@ export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
 });
 
 export const companyDS = {
-  async get(params: { knex: DBConnection; companyId: CompanyID }) {
-    return await companyDB.get(params);
+  async get(params: {
+    knex: DBConnection;
+    companyId: CompanyID;
+    companyDL: CompanyDataLoader;
+  }) {
+    const company = await companyDB.get(params);
+
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
+    }
+
+    return company;
   },
 
-  async tryGet(params: { knex: DBConnection; companyId: CompanyID }) {
-    return await companyDB.tryGet(params);
+  async tryGet(params: {
+    knex: DBConnection;
+    companyId: CompanyID;
+    companyDL: CompanyDataLoader;
+  }) {
+    const company = await companyDB.tryGet(params);
+
+    params.companyDL
+      .getLoader({ knex: params.knex })
+      .prime(company.id, company);
+
+    return company;
   },
 
-  async getByUUID(params: { knex: DBConnection; companyUUID: UUID }) {
-    return await companyDB.getByUUID(params);
+  async getByUUID(params: {
+    knex: DBConnection;
+    companyUUID: UUID;
+    companyDL: CompanyDataLoader;
+  }) {
+    const company = await companyDB.getByUUID(params);
+
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
+    }
+
+    return company;
   },
 
-  async getAll(params: { knex: DBConnection }) {
-    return await companyDB.getAll(params);
+  async getAll(params: { knex: DBConnection; companyDL: CompanyDataLoader }) {
+    const companies = await companyDB.getAll(params);
+
+    const dataloader = params.companyDL.getLoader({ knex: params.knex });
+    companies.forEach((company) => {
+      dataloader.prime(company.id, company);
+    });
+
+    return companies;
   },
 
-  async create(params: { knex: DBConnection; newCompany: { name: string } }) {
-    return await companyDB.create({
+  async create(params: {
+    knex: DBConnection;
+    newCompany: { name: string };
+    companyDL: CompanyDataLoader;
+  }) {
+    const company = await companyDB.create({
       knex: params.knex,
       company: params.newCompany,
     });
+
+    params.companyDL
+      .getLoader({ knex: params.knex })
+      .prime(company.id, company);
+
+    return company;
   },
 
   async updateByUUID(params: {
     knex: DBConnection;
     companyUUID: UUID;
     company: { name: string };
+    companyDL: CompanyDataLoader;
   }) {
-    return await companyDB.updateByUUID(params);
+    const company = await companyDB.updateByUUID(params);
+
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
+    }
+
+    return company;
   },
 
   async getCompaniesOfPerson(params: {

@@ -7,7 +7,7 @@ export type DataLoaderParams = {
 export abstract class AbstractDataLoaderBase<Loaders> {
   private loaders: Loaders | null = null;
 
-  public getLoaders(params: DataLoaderParams): Loaders {
+  public getLoader(params: DataLoaderParams): Loaders {
     if (!this.loaders) {
       this.loaders = this.createLoader({ knex: params.knex });
     }

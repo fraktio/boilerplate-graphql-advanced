@@ -1,4 +1,5 @@
 import { DBConnection } from "~/database/connection";
+import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { toFailure, toSuccess } from "~/utils/validation/common";
@@ -17,10 +18,12 @@ export enum RegisterHandlerErrors {
 export const registerHandler = async (params: {
   knex: DBConnection;
   newUser: CreateUser;
+  userDL: UserDataLoader;
 }) => {
   const user = await userDS.getByUsername({
     knex: params.knex,
     username: params.newUser.username,
+    userDL: params.userDL,
   });
 
   if (user) {
@@ -39,6 +42,7 @@ export const registerHandler = async (params: {
       hashedPassword,
       phoneNumber: params.newUser.phoneNumber,
     },
+    userDL: params.userDL,
   });
 
   return toSuccess(null);

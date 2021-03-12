@@ -1,6 +1,8 @@
+import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDS } from "~/database/company/companyDataSource";
 import { DBConnection } from "~/database/connection";
 import { employeeDS } from "~/database/employee/employeeDataSource";
+import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
 import { UUID } from "~/graphql/generation/mappers";
 import { toFailure, toSuccess } from "~/utils/validation/common";
@@ -14,10 +16,13 @@ export const addEmployeeHandler = async (params: {
   knex: DBConnection;
   companyUUID: UUID;
   personUUID: UUID;
+  companyDL: CompanyDataLoader;
+  personDL: PersonDataLoader;
 }) => {
   const company = await companyDS.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
+    companyDL: params.companyDL,
   });
 
   if (!company) {
@@ -27,6 +32,7 @@ export const addEmployeeHandler = async (params: {
   const person = await personDS.getByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
+    personDL: params.personDL,
   });
 
   if (!person) {
@@ -51,10 +57,13 @@ export const removeEmployeeHandler = async (params: {
   knex: DBConnection;
   companyUUID: UUID;
   personUUID: UUID;
+  companyDL: CompanyDataLoader;
+  personDL: PersonDataLoader;
 }) => {
   const company = await companyDS.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
+    companyDL: params.companyDL,
   });
 
   if (!company) {
@@ -64,6 +73,7 @@ export const removeEmployeeHandler = async (params: {
   const person = await personDS.getByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
+    personDL: params.personDL,
   });
 
   if (!person) {

@@ -13,12 +13,13 @@ export const authenticationResolver: Resolvers = {
   },
 
   Mutation: {
-    async login(_, { input }, { knex, res, config }) {
+    async login(_, { input }, { knex, res, config, dataLoaders }) {
       const response = await loginHandler({
         knex,
         res,
         input,
         cookiesConfig: config.cookies,
+        userDL: dataLoaders.userDL,
       });
 
       if (response.success) {

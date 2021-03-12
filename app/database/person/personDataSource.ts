@@ -17,28 +17,60 @@ export const personDS = {
     personDL: PersonDataLoader;
   }) {
     return params.personDL
-      .getLoaders({ knex: params.knex })
+      .getLoader({ knex: params.knex })
       .load(params.personId);
   },
 
-  async getByUUID(params: { knex: DBConnection; personUUID: UUID }) {
-    return await personDB.getByUUID(params);
+  async getByUUID(params: {
+    knex: DBConnection;
+    personUUID: UUID;
+    personDL: PersonDataLoader;
+  }) {
+    const person = await personDB.getByUUID(params);
+
+    if (person) {
+      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+    }
+
+    return person;
   },
 
-  async getAll(params: { knex: DBConnection }) {
-    return await personDB.getAll(params);
+  async getAll(params: { knex: DBConnection; personDL: PersonDataLoader }) {
+    const persons = await personDB.getAll(params);
+
+    persons.forEach((person) => {
+      const dataLoader = params.personDL.getLoader({ knex: params.knex });
+      dataLoader.prime(person.id, person);
+    });
+
+    return persons;
   },
 
-  async create(params: { knex: DBConnection; person: CreatePersonOptions }) {
-    return await personDB.create(params);
+  async create(params: {
+    knex: DBConnection;
+    person: CreatePersonOptions;
+    personDL: PersonDataLoader;
+  }) {
+    const person = await personDB.create(params);
+
+    params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+
+    return person;
   },
 
   async updateByUUID(params: {
     knex: DBConnection;
     personUUID: UUID;
     person: UpdatePersonOptions;
+    personDL: PersonDataLoader;
   }) {
-    return await personDB.updateByUUID(params);
+    const person = await personDB.updateByUUID(params);
+
+    if (person) {
+      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+    }
+
+    return person;
   },
 
   async getPersonsOfCompany(params: {

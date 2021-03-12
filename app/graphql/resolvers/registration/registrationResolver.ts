@@ -10,7 +10,7 @@ export const registrationResolver: Resolvers = {
   },
 
   Mutation: {
-    async register(_, { input }, { knex }) {
+    async register(_, { input }, { knex, dataLoaders }) {
       const createdUser = await registerHandler({
         knex,
         newUser: {
@@ -19,6 +19,7 @@ export const registrationResolver: Resolvers = {
           password: input.password,
           phoneNumber: input.phoneNumber,
         },
+        userDL: dataLoaders.userDL,
       });
 
       if (createdUser.success) {

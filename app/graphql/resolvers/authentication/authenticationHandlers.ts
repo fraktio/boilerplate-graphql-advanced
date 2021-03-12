@@ -2,6 +2,7 @@ import { Response } from "express";
 
 import { CookiesConfig } from "~/config";
 import { DBConnection } from "~/database/connection";
+import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
@@ -22,10 +23,12 @@ export const loginHandler = async (params: {
   res: Response;
   input: LoginHandlerInput;
   cookiesConfig: CookiesConfig;
+  userDL: UserDataLoader;
 }) => {
   const user = await userDS.getByUsername({
     knex: params.knex,
     username: params.input.username,
+    userDL: params.userDL,
   });
 
   if (!user) {

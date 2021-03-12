@@ -32,20 +32,25 @@ export const companyResolver: Resolvers = {
   },
 
   Query: {
-    async companies(_, __, { knex }) {
-      return await companiesHandler({ knex });
+    async companies(_, __, { knex, dataLoaders }) {
+      return await companiesHandler({ knex, companyDL: dataLoaders.companyDL });
     },
 
-    async company(_, { input }, { knex }) {
-      return await companyHandler({ knex, companyUUID: input.UUID });
+    async company(_, { input }, { knex, dataLoaders }) {
+      return await companyHandler({
+        knex,
+        companyUUID: input.UUID,
+        companyDL: dataLoaders.companyDL,
+      });
     },
   },
 
   Mutation: {
-    async addCompany(_, { input }, { knex }) {
+    async addCompany(_, { input }, { knex, dataLoaders }) {
       const company = addCompanyHandler({
         knex,
         input: { name: input.company.name },
+        companyDL: dataLoaders.companyDL,
       });
 
       return {
@@ -54,11 +59,12 @@ export const companyResolver: Resolvers = {
       };
     },
 
-    async editCompany(_, { input }, { knex }) {
+    async editCompany(_, { input }, { knex, dataLoaders }) {
       const company = editCompanyHandler({
         knex,
         companyUUID: input.UUID,
         company: { name: input.company.name },
+        companyDL: dataLoaders.companyDL,
       });
 
       if (!company) {
