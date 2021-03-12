@@ -3,6 +3,9 @@
 exports[`database tests / user formatUserRow 1`] = `
 Object {
   "UUID": "valid-uuid",
+  "accessLevel": Array [
+    "USER",
+  ],
   "email": "email",
   "hashedPassword": "valid-hashed-password",
   "id": 2,
@@ -18,6 +21,9 @@ Object {
 exports[`database tests / user formatUserRow updated 1`] = `
 Object {
   "UUID": "valid-uuid",
+  "accessLevel": Array [
+    "USER",
+  ],
   "email": "email",
   "hashedPassword": "valid-hashed-password",
   "id": 2,
