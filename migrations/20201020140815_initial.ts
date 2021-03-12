@@ -25,10 +25,8 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid("uuid").notNullable();
       table.text("firstName").notNullable();
       table.text("lastName").notNullable();
-      table.text("personalIdentityCode").notNullable();
       table.text("phone").notNullable();
       table.text("email").notNullable();
-      table.text("nationality").notNullable();
       table.timestamp("birthday").notNullable();
       table.timestamp("createdAt").notNullable().defaultTo(knex.fn.now());
       table.timestamp("updatedAt").nullable();

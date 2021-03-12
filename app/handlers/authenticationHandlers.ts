@@ -7,7 +7,7 @@ import { userDS } from "~/database/user/UserDataSource";
 import { UserTable } from "~/database/user/userDatabase";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
-import { toFailure, toSuccess } from "~/utils/validation/common";
+import { toFailure, toSuccess } from "~/utils/validation";
 
 export const authenticatedUserHandler = async (params: {
   authenticatedUser: UserTable;

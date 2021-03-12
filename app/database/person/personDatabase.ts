@@ -1,4 +1,4 @@
-import { PhoneNumber, PhoneNumberUtil } from "google-libphonenumber";
+import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import { CompanyID } from "~/database/company/companyDatabase";
@@ -16,10 +16,8 @@ export type PersonTableRow = Readonly<{
   uuid: UUID;
   firstName: string;
   lastName: string;
-  personalIdentityCode: string;
   phone: string;
   email: string;
-  nationality: string;
   birthday: Date;
   createdAt: Date;
   updatedAt: Date | null;
@@ -30,10 +28,8 @@ export type PersonTable = {
   UUID: UUID;
   firstName: string;
   lastName: string;
-  personalIdentityCode: string;
   phone: PhoneNumber;
   email: string;
-  nationality: string;
   birthday: DateTime;
   timestamp: {
     createdAt: DateTime;
@@ -41,17 +37,13 @@ export type PersonTable = {
   };
 };
 
-const phoneUtil = PhoneNumberUtil.getInstance();
-
 export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
   id: row.id,
   UUID: row.uuid,
   firstName: row.firstName,
   lastName: row.lastName,
-  personalIdentityCode: row.personalIdentityCode,
-  phone: phoneUtil.parseAndKeepRawInput(row.phone),
+  phone: parsePhoneNumber(row.phone),
   email: row.email,
-  nationality: row.nationality,
   birthday: DateTime.fromJSDate(row.birthday),
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
@@ -62,10 +54,8 @@ export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
 export type CreatePersonOptions = {
   firstName: string;
   lastName: string;
-  personalIdentityCode: string;
   phone: PhoneNumber | null;
   email: string;
-  nationality: string;
   birthday: DateTime;
 };
 
@@ -106,7 +96,7 @@ export const personDB = {
     knex: DBConnection;
     person: CreatePersonOptions;
   }): Promise<PersonTable> {
-    const phone = params.person.phone?.getRawInput();
+    const phone = params.person.phone?.formatInternational();
     const birthday = params.person.birthday.toJSDate();
 
     const persons = await params
@@ -115,10 +105,8 @@ export const personDB = {
         uuid: createUUID(),
         firstName: params.person.firstName,
         lastName: params.person.lastName,
-        personalIdentityCode: params.person.personalIdentityCode,
         phone,
         email: params.person.email,
-        nationality: params.person.nationality,
         birthday,
       })
       .returning("*");
@@ -131,7 +119,7 @@ export const personDB = {
     personUUID: UUID;
     person: UpdatePersonOptions;
   }): Promise<Maybe<PersonTable>> {
-    const phone = params.person.phone?.getRawInput();
+    const phone = params.person.phone?.formatInternational();
     const birthday = params.person.birthday.toJSDate();
 
     const persons = await params
@@ -139,10 +127,8 @@ export const personDB = {
       .update({
         firstName: params.person.firstName,
         lastName: params.person.lastName,
-        personalIdentityCode: params.person.personalIdentityCode,
         phone,
         email: params.person.email,
-        nationality: params.person.nationality,
         birthday,
       })
       .where({ uuid: params.personUUID })

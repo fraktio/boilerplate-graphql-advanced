@@ -5,7 +5,7 @@ import { employeeDS } from "~/database/employee/employeeDataSource";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
 import { UUID } from "~/generation/mappers";
-import { toFailure, toSuccess } from "~/utils/validation/common";
+import { toFailure, toSuccess } from "~/utils/validation";
 
 export enum AddEmployeeHandlerErrors {
   InvalidPersonUUID = "invalid-person-uuid",
