@@ -43,11 +43,11 @@ export type UserTable = {
 export const formatUserRow = (row: UserTableRow): UserTable => ({
   id: row.id,
   UUID: row.uuid,
+  accessLevel: [UserAccessLevel.USER],
   username: row.username,
   email: row.email,
   phoneNumber: row.phoneNumber,
   hashedPassword: row.hashedPassword,
-  accessLevel: [UserAccessLevel.USER],
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
     updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
