@@ -3,7 +3,7 @@
 exports[`database tests / person formatPersonRow 1`] = `
 Object {
   "UUID": "valid-uuid",
-  "birthday": "2021-03-12T13:16:56.000+02:00",
+  "birthday": "2021-03-12T11:16:56.000+00:00",
   "email": "valid-email",
   "firstName": "firstname",
   "id": 2,
@@ -125,7 +125,7 @@ Object {
     },
   },
   "timestamp": Object {
-    "createdAt": "2021-03-12T13:16:56.000+02:00",
+    "createdAt": "2021-03-12T11:16:56.000+00:00",
     "updatedAt": null,
   },
 }
@@ -134,7 +134,7 @@ Object {
 exports[`database tests / person formatPersonRow updated 1`] = `
 Object {
   "UUID": "valid-uuid",
-  "birthday": "2021-03-12T13:16:56.000+02:00",
+  "birthday": "2021-03-12T11:16:56.000+00:00",
   "email": "valid-email",
   "firstName": "firstname",
   "id": 2,
@@ -256,8 +256,8 @@ Object {
     },
   },
   "timestamp": Object {
-    "createdAt": "2021-03-12T13:16:56.000+02:00",
-    "updatedAt": "2021-03-12T13:16:56.000+02:00",
+    "createdAt": "2021-03-12T11:16:56.000+00:00",
+    "updatedAt": "2021-03-12T11:16:56.000+00:00",
   },
 }
 `;

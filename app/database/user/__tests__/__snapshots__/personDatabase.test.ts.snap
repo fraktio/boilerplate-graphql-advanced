@@ -8,7 +8,7 @@ Object {
   "id": 2,
   "phoneNumber": "+358400000000",
   "timestamp": Object {
-    "createdAt": "2021-03-12T13:16:56.000+02:00",
+    "createdAt": "2021-03-12T11:16:56.000+00:00",
     "updatedAt": null,
   },
   "username": "username",
@@ -23,8 +23,8 @@ Object {
   "id": 2,
   "phoneNumber": "+358400000000",
   "timestamp": Object {
-    "createdAt": "2021-03-12T13:16:56.000+02:00",
-    "updatedAt": "2021-03-12T13:16:56.000+02:00",
+    "createdAt": "2021-03-12T11:16:56.000+00:00",
+    "updatedAt": "2021-03-12T11:16:56.000+00:00",
   },
   "username": "username",
 }

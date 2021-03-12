@@ -2,6 +2,7 @@
 export default {
   roots: ["<rootDir>"],
   preset: "ts-jest",
+  globalSetup: "<rootDir>/tests/globalSetup.ts",
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
   moduleFileExtensions: ["ts", "js", "json", "node"],
   testPathIgnorePatterns: ["<rootDir>/node_modules/"],
