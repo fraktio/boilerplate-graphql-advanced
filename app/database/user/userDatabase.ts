@@ -10,6 +10,11 @@ export interface UserID extends ID {
   __UserID: never;
 }
 
+export enum UserAccessLevel {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
+
 export type UserTableRow = Readonly<{
   id: UserID;
   uuid: UUID;
@@ -28,6 +33,7 @@ export type UserTable = {
   email: string;
   phoneNumber: string;
   hashedPassword: string;
+  accessLevel: [UserAccessLevel];
   timestamp: {
     createdAt: DateTime;
     updatedAt: DateTime | null;
@@ -41,6 +47,7 @@ export const formatUserRow = (row: UserTableRow): UserTable => ({
   email: row.email,
   phoneNumber: row.phoneNumber,
   hashedPassword: row.hashedPassword,
+  accessLevel: [UserAccessLevel.USER],
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
     updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,

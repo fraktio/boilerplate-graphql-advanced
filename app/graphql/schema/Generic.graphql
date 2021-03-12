@@ -9,13 +9,17 @@ scalar PersonalIdentityCode
 scalar Language
 scalar CountryCode
 
-directive @authenticated on FIELD_DEFINITION
-directive @upper on FIELD_DEFINITION
+enum AccessRight {
+  USER
+  ADMIN
+}
+directive @auth(requires: AccessRight = ADMIN) on OBJECT | FIELD_DEFINITION
 directive @deprecated(reason: String = "This field is deprecated") on FIELD_DEFINITION | ENUM_VALUE
-
 
 type Timestamp {
   createdAt: DateTime!
   modifiedAt: DateTime
 }
+
+
 
