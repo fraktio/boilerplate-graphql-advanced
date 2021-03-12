@@ -3,8 +3,8 @@ import { DateTime } from "luxon";
 import { DBConnection } from "~/database/connection";
 import { PersonID } from "~/database/person/personDatabase";
 import { tableColumn, createUUID, ID, Table } from "~/database/tables";
-import { Maybe } from "~/graphql/generation/generated";
-import { UUID } from "~/graphql/generation/mappers";
+import { Maybe } from "~/generation/generated";
+import { UUID } from "~/generation/mappers";
 
 export interface CompanyID extends ID {
   __CompanyID: never;

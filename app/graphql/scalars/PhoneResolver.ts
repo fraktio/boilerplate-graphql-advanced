@@ -1,7 +1,7 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
 
-import { Phone } from "~/graphql/generation/scalarTypes";
+import { Phone } from "~/generation/scalars";
 import { validatePhone } from "~/utils/validation/converters";
 
 const ERROR_MESSAGE =

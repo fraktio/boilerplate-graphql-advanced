@@ -2,7 +2,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 import { toFailure, toSuccess, Try } from "../common";
 
-import { Phone } from "~/graphql/generation/scalarTypes";
+import { Phone } from "~/generation/scalars";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validatePhone(value: string): Try<Phone, ValidationFailure> {

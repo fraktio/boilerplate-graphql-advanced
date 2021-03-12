@@ -1,6 +1,6 @@
 import { toFailure, toSuccess, Try } from "../common";
 
-import { Language } from "~/graphql/generation/scalarTypes";
+import { Language } from "~/generation/scalars";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validateLanguage(

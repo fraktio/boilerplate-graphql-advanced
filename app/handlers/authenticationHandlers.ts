@@ -4,9 +4,14 @@ import { CookiesConfig } from "~/config";
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
+import { UserTable } from "~/database/user/userDatabase";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
 import { toFailure, toSuccess } from "~/utils/validation/common";
+
+export const authenticatedUserHandler = async (params: {
+  authenticatedUser: UserTable;
+}) => params.authenticatedUser;
 
 type LoginHandlerInput = {
   password: string;

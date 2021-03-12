@@ -1,9 +1,15 @@
-type Session {
-  UUID: UUID
+type AuthenticatedUserSuccess {
+  user: User!
 }
 
+type AuthenticatedUserFailure {
+  success: Boolean!
+}
+
+union AuthenticatedUserResponse = AuthenticatedUserSuccess | AuthenticatedUserFailure
+
 type Query {
-  authenticatedUser: User! @authenticated
+  authenticatedUser: AuthenticatedUserResponse!
 }
 
 type LoginUserSuccess {

@@ -1,6 +1,6 @@
 import { toFailure, toSuccess, Try } from "../common";
 
-import { FinnishMunicipality } from "~/graphql/generation/scalarTypes";
+import { FinnishMunicipality } from "~/generation/scalars";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validateFinnishMunicipality(

@@ -8,7 +8,7 @@ import {
   PersonID,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
-import { UUID } from "~/graphql/generation/mappers";
+import { UUID } from "~/generation/mappers";
 
 export const personDS = {
   async get(params: {

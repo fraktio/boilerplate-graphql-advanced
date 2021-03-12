@@ -4,7 +4,7 @@ import { DBConnection } from "~/database/connection";
 import { employeeDS } from "~/database/employee/employeeDataSource";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
-import { UUID } from "~/graphql/generation/mappers";
+import { UUID } from "~/generation/mappers";
 import { toFailure, toSuccess } from "~/utils/validation/common";
 
 export enum AddEmployeeHandlerErrors {

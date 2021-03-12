@@ -2,7 +2,7 @@ import emailValidator from "email-validator";
 
 import { toFailure, toSuccess, Try } from "../common";
 
-import { Email } from "~/graphql/generation/scalarTypes";
+import { Email } from "~/generation/scalars";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validateEmail(value: string): Try<Email, ValidationFailure> {

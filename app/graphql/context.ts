@@ -5,7 +5,7 @@ import { Config } from "~/config";
 import { DBConnection } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
 import { UserTable } from "~/database/user/userDatabase";
-import { Maybe } from "~/graphql/generation/generated";
+import { Maybe } from "~/generation/generated";
 
 export type Context = {
   logger: Logger;

@@ -1,20 +1,17 @@
-import { Maybe } from "graphql/jsutils/Maybe";
-import { DateTime } from "luxon";
-
-export interface ID extends Number {
-  _id: never;
-}
-
-export interface UUID extends String {
-  _id: never;
-}
-
 export interface Email extends String {
   _email: never;
 }
 
 export interface Phone extends String {
   _phone: never;
+}
+
+export interface FinnishPostalCode extends String {
+  _postalCode: never;
+}
+
+export interface FinnishMunicipality extends String {
+  _municipality: never;
 }
 
 export interface FinnishPersonalIdentityCode extends String {
@@ -280,15 +277,3 @@ export enum CountryCode {
   "ZM" = "ZM",
   "ZW" = "ZW",
 }
-export interface FinnishPostalCode extends String {
-  _postalCode: never;
-}
-
-export interface FinnishMunicipality extends String {
-  _municipality: never;
-}
-
-export type Timestamp = Readonly<{
-  createdAt: DateTime;
-  modifiedAt: Maybe<DateTime>;
-}>;

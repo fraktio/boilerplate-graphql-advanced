@@ -1,5 +1,6 @@
-import { Resolvers } from "~/graphql/generation/generated";
+import { Resolvers } from "~/generation/generated";
 import {
+  authenticatedUserHandler,
   loginHandler,
   LogInHandlerErrors,
   logoutHandler,
@@ -9,6 +10,31 @@ export const authenticationResolver: Resolvers = {
   LoginUserResponse: {
     __resolveType(loginuserResponse) {
       return loginuserResponse.__typename ?? "LoginUserFailure";
+    },
+  },
+
+  Query: {
+    async authenticatedUser(_, __, { authenticatedUser }) {
+      if (!authenticatedUser) {
+        return {
+          __typename: "AuthenticatedUserFailure",
+          success: false,
+        };
+      }
+
+      const user = await authenticatedUserHandler({ authenticatedUser });
+
+      if (user) {
+        return {
+          __typename: "AuthenticatedUserSuccess",
+          user,
+        };
+      }
+
+      return {
+        __typename: "AuthenticatedUserFailure",
+        success: false,
+      };
     },
   },
 

@@ -8,7 +8,7 @@ import {
   personsHandler,
 } from "../../handlers/personHandler";
 
-import { Resolvers } from "~/graphql/generation/generated";
+import { Resolvers } from "~/generation/generated";
 
 export const personResolver: Resolvers = {
   AddPersonOutput: {

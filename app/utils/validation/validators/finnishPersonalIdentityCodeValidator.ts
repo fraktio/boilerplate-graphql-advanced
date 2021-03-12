@@ -2,7 +2,7 @@ import { FinnishSSN } from "finnish-ssn";
 
 import { toFailure, toSuccess, Try } from "../common";
 
-import { FinnishPersonalIdentityCode } from "~/graphql/generation/scalarTypes";
+import { FinnishPersonalIdentityCode } from "~/generation/scalars";
 import { ValidationFailure } from "~/utils/failure/ValidationFailure";
 
 export function validateFinnishPersonalIdentityCode(

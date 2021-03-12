@@ -1,8 +1,8 @@
-import { authenticatedUserHandler } from "../userHandlers";
+import { authenticatedUserHandler } from "../authenticationHandlers";
 
 import { createFakeUserTable } from "~/database/company/__tests__/companyDatabase.test";
 
-describe("userHandlers tests", () => {
+describe("authenticationHandlers tests", () => {
   it("authenticatedUserHandler", async () => {
     const fakeUser = createFakeUserTable();
 

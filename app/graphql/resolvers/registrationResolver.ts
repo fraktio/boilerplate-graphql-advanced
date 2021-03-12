@@ -3,7 +3,7 @@ import {
   RegisterHandlerErrors,
 } from "../../handlers/registerHandlers";
 
-import { Resolvers } from "~/graphql/generation/generated";
+import { Resolvers } from "~/generation/generated";
 
 export const registrationResolver: Resolvers = {
   RegisterResponse: {

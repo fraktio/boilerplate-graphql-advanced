@@ -1,16 +1,17 @@
 schema:
     - 'app/graphql/schema/**/*.graphql'
 generates:
-  'app/generated/graphql.ts':
+  'app/generation/generated.ts':
     config:
       mappers:
-        Company: ../models#CompanyModel
-        Person: ../models#PersonModel
-        Adult: ../models#AdultModel
+        Company: ./mappers#CompanyModel
+        Person: ./mappers#PersonModel
+        Adult: ./mappers#AdultModel
+        User: ./mappers#UserModel
       contextType: ../graphql/context#Context
       useIndexSignature: true
       scalars:
-        UUID: ../models#UUID
+        UUID: ./mappers#UUID
         Date: luxon#DateTime
         DateTime: luxon#DateTime
         EmailAddress: string

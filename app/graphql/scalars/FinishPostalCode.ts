@@ -1,7 +1,7 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
 
-import { FinnishPostalCode } from "~/graphql/generation/scalarTypes";
+import { FinnishPostalCode } from "~/generation/scalars";
 import { validateFinnishPostalCode } from "~/utils/validation/converters";
 
 const ERROR_MESSAGE = "PostalCode must be a valid a valid 5 digit postal code";

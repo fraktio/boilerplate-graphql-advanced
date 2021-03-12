@@ -2,7 +2,7 @@ import { UserDataLoader } from "./UserDataLoader";
 
 import { DBConnection } from "~/database/connection";
 import { userDB, UserID } from "~/database/user/userDatabase";
-import { UUID } from "~/graphql/generation/mappers";
+import { UUID } from "~/generation/mappers";
 
 export type CreateUser = {
   username: string;

@@ -5,7 +5,7 @@ import { EmployeeTableRow } from "./employee/employeeDatabase";
 import { PersonTableRow } from "./person/personDatabase";
 import { UserTableRow } from "./user/userDatabase";
 
-import { UUID } from "~/graphql/generation/mappers";
+import { UUID } from "~/generation/mappers";
 
 export enum Table {
   USERS = "users",

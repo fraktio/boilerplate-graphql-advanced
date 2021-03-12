@@ -9,18 +9,18 @@ import { validateFinnishPostalCode } from "./validators/finnishPostalCodeValidat
 import { validateLanguage } from "./validators/languageValidator";
 import { validatePhone } from "./validators/phoneValidator";
 
+import { ID } from "~/database/tables";
+import { Timestamp } from "~/generation/generated";
+import { UUID } from "~/generation/mappers";
 import {
   CountryCode,
   Email,
-  ID,
-  UUID,
   Language,
   FinnishPersonalIdentityCode,
   Phone,
   FinnishPostalCode,
   FinnishMunicipality,
-  Timestamp,
-} from "~/graphql/generation/scalarTypes";
+} from "~/generation/scalars";
 
 export function asCountryCode(value: string): CountryCode {
   return trySuccess(validateCountryCode(value));

@@ -4,7 +4,7 @@ import {
   UserTable,
   UserTableRow,
 } from "~/database/user/userDatabase";
-import { UUID } from "~/graphql/generation/mappers";
+import { UUID } from "~/generation/mappers";
 
 const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
