@@ -1,4 +1,5 @@
 import { createProxyMiddleware } from "http-proxy-middleware";
+import { testPassword, testUsername } from "seeds/1-users";
 
 import { Config } from "~/config";
 import { createKnex } from "~/database/connection";
@@ -25,8 +26,12 @@ export const createServer = ({ config }: { config: Config }) => {
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
-  if (config.isProduction) {
+  if (!config.isProduction) {
     // Used for proxy for cookies to work on certain endpoints
+    logger.info("Test user credentials", {
+      username: testUsername,
+      password: testPassword,
+    });
     app.use(
       createProxyMiddleware({
         target: "http://localhost:3000",

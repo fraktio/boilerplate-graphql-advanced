@@ -1,12 +1,12 @@
 import type Bunyan from "bunyan";
 
-import { PersonTable } from "~/database/person/personDatabase";
+import { UserTable } from "~/database/user/userDatabase";
 
 declare global {
   namespace Express {
     interface Request {
       logger: Bunyan;
-      user?: PersonTable;
+      user?: UserTable;
     }
   }
 }

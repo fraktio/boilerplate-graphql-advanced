@@ -5,10 +5,11 @@
   "license": "UNLICENSED",
   "private": true,
   "engines": {
-    "node": "14.x"
+    "node": "15.x"
   },
   "scripts": {
-    "dev": "DEBUG=knex:query nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' -r dotenv/config app/index.ts | ./node_modules/.bin/bunyan",
+    "dev": "nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' -r dotenv/config app/index.ts | ./node_modules/.bin/bunyan",
+    "dev:debug": "DEBUG=knex:query yarn dev",
     "codegen": "graphql-codegen && yarn codegen:disable-rules && yarn codegen:lint",
     "codegen:lint": "eslint app/generation/generated.ts --fix",
     "codegen:disable-rules": "ts-node ./scripts/add-comments-to-generated.ts",

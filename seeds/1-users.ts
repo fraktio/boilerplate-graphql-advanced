@@ -6,6 +6,9 @@ import { Table } from "../app/database/tables";
 import { UserTableRow } from "../app/database/user/userDatabase";
 import { hashingUtils } from "../app/utils/hashingUtils";
 
+export const testUsername = "username";
+export const testPassword = "password";
+
 export const doXTimes = (count: number) => [...Array(count).keys()];
 
 const createUser = (opts: { username?: string; password: string }) => ({
@@ -20,11 +23,11 @@ export const seed = async (knex: Knex): Promise<void> => {
   await knex(Table.USERS).del();
 
   const password = await hashingUtils.hashPassword({
-    password: "password",
+    password: testPassword,
   });
 
   const users = [
-    createUser({ username: "username", password }),
+    createUser({ username: testUsername, password }),
     ...doXTimes(125).map(() => createUser({ password })),
   ];
 
