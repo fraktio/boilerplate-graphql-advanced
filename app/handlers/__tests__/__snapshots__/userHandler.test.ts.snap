@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`database tests / company formatUserRow 1`] = `
+Object {
+  "UUID": "valid-uuid",
+  "email": "email",
+  "hashedPassword": "valid-hashed-password",
+  "id": 2,
+  "phoneNumber": "valid-phonenumber",
+  "timestamp": Object {
+    "createdAt": "2021-03-12T13:16:56.000+02:00",
+    "updatedAt": null,
+  },
+  "username": "username",
+}
+`;
+
+exports[`database tests / company formatUserRow updated 1`] = `
+Object {
+  "UUID": "valid-uuid",
+  "email": "email",
+  "hashedPassword": "valid-hashed-password",
+  "id": 2,
+  "phoneNumber": "valid-phonenumber",
+  "timestamp": Object {
+    "createdAt": "2021-03-12T13:16:56.000+02:00",
+    "updatedAt": "2021-03-12T13:16:56.000+02:00",
+  },
+  "username": "username",
+}
+`;

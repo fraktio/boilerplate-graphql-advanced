@@ -13,10 +13,13 @@ jobs:
       run: yarn install --frozen-lockfile
     
     - name: Typecheck
-      run: yarn tsc --noEmit
+      run: yarn typescript-check --noEmit
     
     - name: Lint
       run: yarn lint
+
+    - name: Tests
+      run: yarn test
 
     - name: Schema validation
       run: yarn validate-schema

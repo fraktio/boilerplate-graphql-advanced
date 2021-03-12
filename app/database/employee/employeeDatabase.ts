@@ -16,7 +16,7 @@ export type EmployeeTableRow = Readonly<{
   createdAt: Date;
 }>;
 
-type EmployeeTable = {
+export type EmployeeTable = {
   id: EmployeeID;
   companyId: CompanyID;
   personId: PersonID;

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`database tests / connection createUUID 1`] = `
+Object {
+  "client": "type",
+  "connection": Object {
+    "database": "databaseName",
+    "host": "host",
+    "password": "password",
+    "port": 5432,
+    "user": "user",
+  },
+  "migrations": Object {
+    "directory": "./migrations",
+  },
+  "seeds": Object {
+    "directory": "./seeds",
+  },
+  "useNullAsDefault": true,
+}
+`;

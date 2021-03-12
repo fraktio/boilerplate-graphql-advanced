@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`database tests / employee formatEmployeeRow 1`] = `
+Object {
+  "companyId": 3,
+  "id": 2,
+  "personId": 5,
+  "timestamp": Object {
+    "createdAt": "2021-03-12T13:16:56.000+02:00",
+    "updatedAt": null,
+  },
+}
+`;
