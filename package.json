@@ -9,7 +9,9 @@
   },
   "scripts": {
     "dev": "DEBUG=knex:query nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' -r dotenv/config app/index.ts | ./node_modules/.bin/bunyan",
-    "codegen": "graphql-codegen",
+    "codegen": "graphql-codegen && yarn codegen:disable-rules && yarn codegen:lint",
+    "codegen:lint": "eslint app/generation/generated.ts --fix",
+    "codegen:disable-rules": "ts-node ./scripts/add-comments-to-generated.ts",
     "lint": "eslint . --ext ts,js",
     "test": "jest",
     "typescript-check": "yarn tsc",

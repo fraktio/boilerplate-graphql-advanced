@@ -7,5 +7,3 @@ build
 .serverless
 .webpack
 .webpackCache
-
-app/graphql/generation/generated.ts
