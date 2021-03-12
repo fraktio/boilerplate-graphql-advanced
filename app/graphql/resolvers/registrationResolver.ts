@@ -1,4 +1,7 @@
-import { registerHandler, RegisterHandlerErrors } from "./registerHandlers";
+import {
+  registerHandler,
+  RegisterHandlerErrors,
+} from "../../handlers/registerHandlers";
 
 import { Resolvers } from "~/graphql/generation/generated";
 

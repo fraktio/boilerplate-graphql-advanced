@@ -3,7 +3,7 @@ import {
   AddEmployeeHandlerErrors,
   removeEmployeeHandler,
   RemoveEmployeeHandlerErrors,
-} from "./employeeHandler";
+} from "../../handlers/employeeHandler";
 
 import { Resolvers } from "~/graphql/generation/generated";
 

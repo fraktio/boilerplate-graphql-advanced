@@ -1,12 +1,12 @@
 import { mergeResolvers } from "graphql-tools";
 
-import { authenticationResolver } from "./authentication/authenticationResolver";
-import { companyResolver } from "./company/companyResolver";
-import { employeeResolver } from "./employee/employeeResolver";
-import { genericResolver } from "./generic/genericResolver";
-import { personResolver } from "./person/personResolver";
-import { registrationResolver } from "./registration/registrationResolver";
-import { userResolver } from "./user/userResolver";
+import { authenticationResolver } from "./authenticationResolver";
+import { companyResolver } from "./companyResolver";
+import { employeeResolver } from "./employeeResolver";
+import { genericResolver } from "./genericResolver";
+import { personResolver } from "./personResolver";
+import { registrationResolver } from "./registrationResolver";
+import { userResolver } from "./userResolver";
 
 import { createScalarResolvers } from "~/graphql/scalars/scalarsResolver";
 

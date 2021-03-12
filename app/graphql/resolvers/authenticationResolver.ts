@@ -3,7 +3,7 @@ import {
   loginHandler,
   LogInHandlerErrors,
   logoutHandler,
-} from "~/graphql/resolvers/authentication/authenticationHandlers";
+} from "~/handlers/authenticationHandlers";
 
 export const authenticationResolver: Resolvers = {
   LoginUserResponse: {

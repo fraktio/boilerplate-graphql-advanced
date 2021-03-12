@@ -6,7 +6,7 @@ import {
   modifyPerson,
   personHandler,
   personsHandler,
-} from "./personHandler";
+} from "../../handlers/personHandler";
 
 import { Resolvers } from "~/graphql/generation/generated";
 

@@ -1,6 +1,6 @@
 import { AuthenticationError } from "apollo-server-express";
 
-import { authenticatedUserHandler } from "./userHandlers";
+import { authenticatedUserHandler } from "../../handlers/userHandlers";
 
 import { Resolvers } from "~/graphql/generation/generated";
 

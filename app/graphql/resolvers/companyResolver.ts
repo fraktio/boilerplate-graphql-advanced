@@ -6,7 +6,7 @@ import {
   companyEmployees,
   companyHandler,
   editCompanyHandler,
-} from "./companyHandlers";
+} from "../../handlers/companyHandlers";
 
 import { Resolvers } from "~/graphql/generation/generated";
 
