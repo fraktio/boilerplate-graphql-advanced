@@ -13,6 +13,12 @@ export const authenticationResolver: Resolvers = {
     },
   },
 
+  AuthenticatedUserResponse: {
+    __resolveType(authenticatedUserResponse) {
+      return authenticatedUserResponse.__typename ?? "AuthenticatedUserFailure";
+    },
+  },
+
   Query: {
     async authenticatedUser(_, __, { authenticatedUser }) {
       if (!authenticatedUser) {
