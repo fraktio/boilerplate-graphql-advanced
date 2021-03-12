@@ -16,6 +16,8 @@
 
     3. `yarn dev`
 
+## Playground
+  Playground is by default running @ `http://localhost:4000/graphql` 
 
 ## Production
 

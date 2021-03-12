@@ -39,7 +39,7 @@ type GraphQLObjectTypeWithAuth = GraphQLObjectType & {
   _authFieldsWrapped: boolean;
 };
 
-export class AuthDirective extends SchemaDirectiveVisitor {
+export class AuthenticatedDirective extends SchemaDirectiveVisitor {
   visitObject(
     object: GraphQLObjectTypeWithAuth,
   ): GraphQLObjectType | void | null {
