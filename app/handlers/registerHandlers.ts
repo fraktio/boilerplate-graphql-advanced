@@ -1,14 +1,16 @@
+import { PhoneNumber } from "libphonenumber-js";
+
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
 import { hashingUtils } from "~/utils/hashingUtils";
-import { toFailure, toSuccess } from "~/utils/validation/common";
+import { toFailure, toSuccess } from "~/utils/validation";
 
 type CreateUser = {
   username: string;
   email: string;
   password: string;
-  phoneNumber: libphonenumber.PhoneNumber;
+  phoneNumber: PhoneNumber;
 };
 
 export enum RegisterHandlerErrors {

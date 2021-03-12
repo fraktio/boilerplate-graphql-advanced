@@ -15,8 +15,7 @@ generates:
         Date: luxon#DateTime
         DateTime: luxon#DateTime
         EmailAddress: string
-        PhoneNumber: "google-libphonenumber#PhoneNumber"
-        Email: string
+        PhoneNumber: "libphonenumber-js#PhoneNumber"
     plugins:
       - typescript
       - typescript-resolvers

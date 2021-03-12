@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable max-lines */
-import { PhoneNumber } from "google-libphonenumber";
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from "graphql";
+import { PhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import { Context } from "../graphql/context";
@@ -40,16 +40,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  UUID: UUID;
   Date: DateTime;
   DateTime: DateTime;
-  Hour: any;
-  PhoneNumber: PhoneNumber;
   EmailAddress: string;
-  UUID: UUID;
-  HexColorCode: any;
-  PersonalIdentityCode: any;
-  Language: any;
-  CountryCode: any;
+  PhoneNumber: PhoneNumber;
 };
 
 export type AuthenticatedUserSuccess = {
@@ -255,11 +250,8 @@ export type Person = {
   UUID: Scalars["UUID"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
-  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
-  nationality: Scalars["CountryCode"];
-  languages: Array<Scalars["Language"]>;
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -271,11 +263,8 @@ export type Adult = Person & {
   UUID: Scalars["UUID"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
-  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
-  nationality: Scalars["CountryCode"];
-  languages: Array<Scalars["Language"]>;
   birthday: Scalars["Date"];
   timestamp: Timestamp;
   employers: Array<Company>;
@@ -288,11 +277,8 @@ export type Underage = Person & {
   UUID: Scalars["UUID"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
-  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
-  nationality: Scalars["CountryCode"];
-  languages: Array<Scalars["Language"]>;
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -309,11 +295,8 @@ export type Subscription = {
 export type AddPersonPersonInput = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
-  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
-  nationality: Scalars["CountryCode"];
-  languages: Array<Scalars["Language"]>;
   birthday: Scalars["Date"];
 };
 
@@ -548,16 +531,11 @@ export type ResolversTypes = ResolversObject<{
   UniqueConstraintViolationFailure: ResolverTypeWrapper<UniqueConstraintViolationFailure>;
   TimeFilter: TimeFilter;
   DateFilter: DateFilter;
+  UUID: ResolverTypeWrapper<Scalars["UUID"]>;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
-  Hour: ResolverTypeWrapper<Scalars["Hour"]>;
-  PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
-  UUID: ResolverTypeWrapper<Scalars["UUID"]>;
-  HexColorCode: ResolverTypeWrapper<Scalars["HexColorCode"]>;
-  PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
-  Language: ResolverTypeWrapper<Scalars["Language"]>;
-  CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
+  PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   Timestamp: ResolverTypeWrapper<Timestamp>;
   Person: ResolverTypeWrapper<PersonModel>;
   Adult: ResolverTypeWrapper<AdultModel>;
@@ -639,16 +617,11 @@ export type ResolversParentTypes = ResolversObject<{
   UniqueConstraintViolationFailure: UniqueConstraintViolationFailure;
   TimeFilter: TimeFilter;
   DateFilter: DateFilter;
+  UUID: Scalars["UUID"];
   Date: Scalars["Date"];
   DateTime: Scalars["DateTime"];
-  Hour: Scalars["Hour"];
-  PhoneNumber: Scalars["PhoneNumber"];
   EmailAddress: Scalars["EmailAddress"];
-  UUID: Scalars["UUID"];
-  HexColorCode: Scalars["HexColorCode"];
-  PersonalIdentityCode: Scalars["PersonalIdentityCode"];
-  Language: Scalars["Language"];
-  CountryCode: Scalars["CountryCode"];
+  PhoneNumber: Scalars["PhoneNumber"];
   Timestamp: Timestamp;
   Person: PersonModel;
   Adult: AdultModel;
@@ -942,6 +915,11 @@ export type UniqueConstraintViolationFailureResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface UuidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["UUID"], any> {
+  name: "UUID";
+}
+
 export interface DateScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["Date"], any> {
   name: "Date";
@@ -952,44 +930,14 @@ export interface DateTimeScalarConfig
   name: "DateTime";
 }
 
-export interface HourScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["Hour"], any> {
-  name: "Hour";
-}
-
-export interface PhoneNumberScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["PhoneNumber"], any> {
-  name: "PhoneNumber";
-}
-
 export interface EmailAddressScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["EmailAddress"], any> {
   name: "EmailAddress";
 }
 
-export interface UuidScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["UUID"], any> {
-  name: "UUID";
-}
-
-export interface HexColorCodeScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["HexColorCode"], any> {
-  name: "HexColorCode";
-}
-
-export interface PersonalIdentityCodeScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["PersonalIdentityCode"], any> {
-  name: "PersonalIdentityCode";
-}
-
-export interface LanguageScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["Language"], any> {
-  name: "Language";
-}
-
-export interface CountryCodeScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["CountryCode"], any> {
-  name: "CountryCode";
+export interface PhoneNumberScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["PhoneNumber"], any> {
+  name: "PhoneNumber";
 }
 
 export type TimestampResolvers<
@@ -1013,27 +961,12 @@ export type PersonResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  personalIdentityCode?: Resolver<
-    ResolversTypes["PersonalIdentityCode"],
-    ParentType,
-    ContextType
-  >;
   phone?: Resolver<
     Maybe<ResolversTypes["PhoneNumber"]>,
     ParentType,
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
-  nationality?: Resolver<
-    ResolversTypes["CountryCode"],
-    ParentType,
-    ContextType
-  >;
-  languages?: Resolver<
-    Array<ResolversTypes["Language"]>,
-    ParentType,
-    ContextType
-  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
 }>;
@@ -1045,27 +978,12 @@ export type AdultResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  personalIdentityCode?: Resolver<
-    ResolversTypes["PersonalIdentityCode"],
-    ParentType,
-    ContextType
-  >;
   phone?: Resolver<
     Maybe<ResolversTypes["PhoneNumber"]>,
     ParentType,
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
-  nationality?: Resolver<
-    ResolversTypes["CountryCode"],
-    ParentType,
-    ContextType
-  >;
-  languages?: Resolver<
-    Array<ResolversTypes["Language"]>,
-    ParentType,
-    ContextType
-  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   employers?: Resolver<
@@ -1083,27 +1001,12 @@ export type UnderageResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  personalIdentityCode?: Resolver<
-    ResolversTypes["PersonalIdentityCode"],
-    ParentType,
-    ContextType
-  >;
   phone?: Resolver<
     Maybe<ResolversTypes["PhoneNumber"]>,
     ParentType,
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
-  nationality?: Resolver<
-    ResolversTypes["CountryCode"],
-    ParentType,
-    ContextType
-  >;
-  languages?: Resolver<
-    Array<ResolversTypes["Language"]>,
-    ParentType,
-    ContextType
-  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1219,16 +1122,11 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   RemoveEmployeeSuccess?: RemoveEmployeeSuccessResolvers<ContextType>;
   FailureOutput?: FailureOutputResolvers<ContextType>;
   UniqueConstraintViolationFailure?: UniqueConstraintViolationFailureResolvers<ContextType>;
+  UUID?: GraphQLScalarType;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
-  Hour?: GraphQLScalarType;
-  PhoneNumber?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
-  UUID?: GraphQLScalarType;
-  HexColorCode?: GraphQLScalarType;
-  PersonalIdentityCode?: GraphQLScalarType;
-  Language?: GraphQLScalarType;
-  CountryCode?: GraphQLScalarType;
+  PhoneNumber?: GraphQLScalarType;
   Timestamp?: TimestampResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   Adult?: AdultResolvers<ContextType>;

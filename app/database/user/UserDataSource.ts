@@ -1,3 +1,5 @@
+import { PhoneNumber } from "libphonenumber-js";
+
 import { UserDataLoader } from "./UserDataLoader";
 
 import { DBConnection } from "~/database/connection";
@@ -8,7 +10,7 @@ export type CreateUser = {
   username: string;
   email: string;
   hashedPassword: string;
-  phoneNumber: libphonenumber.PhoneNumber;
+  phoneNumber: PhoneNumber;
 };
 
 export const userDS = {

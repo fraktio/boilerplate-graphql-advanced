@@ -1,4 +1,4 @@
-import { PhoneNumber } from "google-libphonenumber";
+import { PhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import { DBConnection } from "~/database/connection";
@@ -109,7 +109,7 @@ export const userDB = {
         username: params.newUser.username,
         email: params.newUser.email,
         hashedPassword: params.newUser.hashedPassword,
-        phoneNumber: params.newUser.phoneNumber.getRawInput(),
+        phoneNumber: params.newUser.phoneNumber.formatInternational(),
       })
       .returning("*");
 

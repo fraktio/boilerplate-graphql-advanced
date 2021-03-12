@@ -100,20 +100,15 @@ export const companyDB = {
     knex: DBConnection;
     company: { name: string };
   }): Promise<CompanyTable> {
-    const company = await params
+    const companies = await params
       .knex<CompanyTableRow>(Table.COMPANY)
       .insert({
         uuid: createUUID(),
         name: params.company.name,
       })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!company) {
-      throw new Error("Could not create company");
-    }
-
-    return formatCompanyRow(company);
+    return formatCompanyRow(companies[0]);
   },
 
   async updateByUUID(params: {

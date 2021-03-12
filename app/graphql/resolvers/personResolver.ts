@@ -62,10 +62,8 @@ export const personResolver: Resolvers = {
       const newPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
-        personalIdentityCode: input.person.personalIdentityCode,
         phone: input.person.phone || null,
         email: input.person.email,
-        nationality: input.person.nationality,
         birthday: input.person.birthday,
       };
 
@@ -82,10 +80,8 @@ export const personResolver: Resolvers = {
       const modifiedPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
-        personalIdentityCode: input.person.personalIdentityCode,
         phone: input.person.phone ?? null,
         email: input.person.email,
-        nationality: input.person.nationality,
         birthday: input.person.birthday,
       };
 

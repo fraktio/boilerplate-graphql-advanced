@@ -4,11 +4,8 @@ interface Person {
   UUID: UUID!
   firstName: String!
   lastName: String!
-  personalIdentityCode: PersonalIdentityCode!  # TODO: @auth(requires: ADMIN)
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: CountryCode!
-  languages: [Language!]!
   birthday: Date!
   timestamp: Timestamp!
 }
@@ -21,11 +18,8 @@ type Adult implements Person {
   UUID: UUID!
   firstName: String!
   lastName: String!
-  personalIdentityCode: PersonalIdentityCode!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: CountryCode!
-  languages: [Language!]!
   birthday: Date!
   timestamp: Timestamp!
   employers: [Company!]!
@@ -39,11 +33,8 @@ type Underage implements Person {
   UUID: UUID!
   firstName: String!
   lastName: String!
-  personalIdentityCode: PersonalIdentityCode!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: CountryCode!
-  languages: [Language!]!
   birthday: Date!
   timestamp: Timestamp!
 }
@@ -69,11 +60,8 @@ type Mutation {
 input AddPersonPersonInput {
   firstName: String!
   lastName: String!
-  personalIdentityCode: PersonalIdentityCode!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: CountryCode!
-  languages: [Language!]!
   birthday: Date!
 }
 

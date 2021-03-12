@@ -1,13 +1,8 @@
+scalar UUID
 scalar Date
 scalar DateTime
-scalar Hour
-scalar PhoneNumber
 scalar EmailAddress
-scalar UUID
-scalar HexColorCode
-scalar PersonalIdentityCode
-scalar Language
-scalar CountryCode
+scalar PhoneNumber
 
 enum AccessRight {
   USER
@@ -20,6 +15,3 @@ type Timestamp {
   createdAt: DateTime!
   modifiedAt: DateTime
 }
-
-
-
