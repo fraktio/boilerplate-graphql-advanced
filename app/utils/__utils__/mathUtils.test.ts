@@ -21,8 +21,8 @@ describe("utils / math", () => {
 
     expect(suffledNumbers.length).toBe(3);
 
-    expect(suffledNumbers.find((n) => n === 1)).toBe(1);
-    expect(suffledNumbers.find((n) => n === 2)).toBe(1);
-    expect(suffledNumbers.find((n) => n === 3)).toBe(1);
+    expect(suffledNumbers.filter((n) => n === 1)).toHaveLength(1);
+    expect(suffledNumbers.filter((n) => n === 2)).toHaveLength(1);
+    expect(suffledNumbers.filter((n) => n === 3)).toHaveLength(1);
   });
 });
