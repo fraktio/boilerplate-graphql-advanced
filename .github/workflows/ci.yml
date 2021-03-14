@@ -18,8 +18,8 @@ jobs:
     - name: Lint
       run: yarn lint
 
-    - name: Tests
-      run: yarn test
-
     - name: Schema validation
       run: yarn validate-schema
+
+    - name: Tests
+      run: yarn test
