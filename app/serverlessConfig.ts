@@ -22,7 +22,8 @@ import {
 } from "~/config";
 
 export const getConfig = async (): Promise<Config> => {
-  const ssm = new SSM({ region: "eu-west-1" });
+  // eslint-disable-next-line no-process-env
+  const ssm = new SSM({ region: process.env.AWS_REGION });
 
   const getParam = async (param: string) => {
     try {
