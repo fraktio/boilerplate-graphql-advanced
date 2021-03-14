@@ -1,26 +1,21 @@
 /* eslint-disable no-process-env */
 
-/*
-import { SecretsManager } from "aws-sdk";
-import SSM from "aws-sdk/clients/ssm";
+export const API_PORT = "API_PORT";
+export const STDOUT_LOGGING = "STDOUT_LOGGING";
+export const PRODUCTION = "PRODUCTION";
+export const API_CORS_ENDPOINT = "API_CORS_ENDPOINT";
+export const TOKEN_PATH = "TOKEN_PATH";
+export const TOKEN_DOMAIN = "TOKEN_DOMAIN";
+export const TOKEN_SECRET = "TOKEN_SECRET";
+export const ACCESS_TOKEN_AGE_SECONDS = "ACCESS_TOKEN_AGE_SECONDS";
+export const REFRESH_TOKEN_AGE_SECONDS = "REFRESH_TOKEN_AGE_SECONDS";
+export const DATABASE_TYPE = "DATABASE_TYPE";
+export const DATABASE_HOST = "DATABASE_HOST";
+export const DATABASE_USER = "DATABASE_USER";
+export const DATABASE_PORT = "DATABASE_PORT";
+export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
+export const DATABASE_DATABASE_NAME = "DATABASE_DATABASE_NAME";
 
-const SM = new SecretsManager({});
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getAwsSecretAsync = async (secretName: string) =>
-  await SM.getSecretValue({ SecretId: secretName }).promise();
-
-const ssm = new SSM();
-const getParams = async (names: string[]) => {
-  const result = await ssm
-    .getParameters({
-      Names: names,
-      // WithDecryption: true,
-    })
-    .promise();
-
-  return result;
-};
-*/
 const requireEnv = (env: string): string => {
   const envVariable = process.env[env];
 
@@ -32,13 +27,9 @@ const requireEnv = (env: string): string => {
 };
 
 const requireIntEnv = (env: string): number => {
-  const envValue = process.env[env];
+  const value = requireEnv(env);
 
-  if (!envValue) {
-    throw new Error(`Environment variable ${env} is missing!`);
-  }
-
-  const parsed = parseInt(envValue, 10);
+  const parsed = parseInt(value, 10);
 
   if (!parsed || isNaN(parsed)) {
     throw new Error(`Environment variable ${env} is missing!`);
@@ -48,17 +39,13 @@ const requireIntEnv = (env: string): number => {
 };
 
 const requireBoolean = (env: string): boolean => {
-  const envValue = process.env[env];
+  const value = requireEnv(env);
 
-  if (!envValue) {
-    throw new Error(`Environment variable ${env} is missing!`);
-  }
-
-  if (envValue === "TRUE") {
+  if (value === "TRUE") {
     return true;
   }
 
-  if (envValue === "FALSE") {
+  if (value === "FALSE") {
     return false;
   }
 
@@ -68,31 +55,31 @@ const requireBoolean = (env: string): boolean => {
 };
 
 export const getCookiesConfigFromEnv = () => ({
-  path: requireEnv("TOKEN_PATH"),
-  domain: requireEnv("TOKEN_DOMAIN"),
-  secret: requireEnv("TOKEN_SECRET"),
-  accessAgeSeconds: requireIntEnv("ACCESS_TOKEN_AGE_SECONDS"),
-  refreshAgeSeconds: requireIntEnv("REFRESH_TOKEN_AGE_SECONDS"),
+  path: requireEnv(TOKEN_PATH),
+  domain: requireEnv(TOKEN_DOMAIN),
+  secret: requireEnv(TOKEN_SECRET),
+  accessAgeSeconds: requireIntEnv(ACCESS_TOKEN_AGE_SECONDS),
+  refreshAgeSeconds: requireIntEnv(REFRESH_TOKEN_AGE_SECONDS),
 });
 
 export type CookiesConfig = ReturnType<typeof getCookiesConfigFromEnv>;
 
 export const getDatabaseConfigFromEnv = () => ({
-  type: requireEnv("DATABASE_TYPE"),
-  host: requireEnv("DATABASE_HOST"),
-  user: requireEnv("DATABASE_USER"),
-  port: requireIntEnv("DATABASE_PORT"),
-  password: requireEnv("DATABASE_PASSWORD"),
-  databaseName: requireEnv("DATABASE_DATABASE_NAME"),
+  type: requireEnv(DATABASE_TYPE),
+  host: requireEnv(DATABASE_HOST),
+  user: requireEnv(DATABASE_USER),
+  port: requireIntEnv(DATABASE_PORT),
+  password: requireEnv(DATABASE_PASSWORD),
+  databaseName: requireEnv(DATABASE_DATABASE_NAME),
 });
 
 export type DatabaseConfig = ReturnType<typeof getDatabaseConfigFromEnv>;
 
 export const getConfigFromEnv = () => ({
-  apiPort: requireIntEnv("API_PORT"),
-  stdoutLogging: requireBoolean("STDOUT_LOGGING"),
-  isProduction: requireBoolean("PRODUCTION"),
-  apiCorsEndpoint: requireEnv("API_CORS_ENDPOINT"),
+  apiPort: requireIntEnv(API_PORT),
+  stdoutLogging: requireBoolean(STDOUT_LOGGING),
+  isProduction: requireBoolean(PRODUCTION),
+  apiCorsEndpoint: requireEnv(API_CORS_ENDPOINT),
 
   cookies: getCookiesConfigFromEnv(),
   database: getDatabaseConfigFromEnv(),

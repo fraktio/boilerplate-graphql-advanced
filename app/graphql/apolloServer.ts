@@ -17,8 +17,9 @@ export const createApolloServer = (opts: CreateServerOpts) =>
     schema: createExecutableSchema(),
     formatError: apolloErrorHandler({ config: opts.config }),
     plugins: [apolloServerLogger, responseCachePlugin()],
-    playground: {
-      settings: { "request.credentials": "include" },
-    },
+    introspection: !opts.config.isProduction,
+    playground: opts.config.isProduction
+      ? false
+      : { settings: { "request.credentials": "include" } },
     ...opts,
   });
