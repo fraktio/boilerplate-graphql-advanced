@@ -6,6 +6,8 @@ import { createUUID, Table } from "../app/database/tables";
 
 import { doXTimes } from "./1-users";
 
+import { EmailAddress } from "~/generation/scalars";
+
 const createPerson = (): Omit<
   PersonTableRow,
   "id" | "createdAt" | "updatedAt"
@@ -14,7 +16,7 @@ const createPerson = (): Omit<
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   phone: faker.phone.phoneNumber("+35840#######"),
-  email: faker.internet.email(),
+  email: (faker.internet.email() as unknown) as EmailAddress,
   birthday: faker.date.past(),
 });
 

@@ -6,6 +6,7 @@ import {
 } from "../personDatabase";
 
 import { UUID } from "~/generation/mappers";
+import { EmailAddress } from "~/generation/scalars";
 
 const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
@@ -16,7 +17,7 @@ export const dbPersonMockTableRow: PersonTableRow = {
   firstName: "firstname",
   lastName: "lastname",
   phone: "+358400000000",
-  email: "valid-email",
+  email: ("valid-email" as unknown) as EmailAddress,
   birthday: new Date(datetimeString),
   createdAt: new Date(datetimeString),
   updatedAt: null,

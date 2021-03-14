@@ -6,6 +6,7 @@ import {
 } from "../userDatabase";
 
 import { UUID } from "~/generation/mappers";
+import { EmailAddress } from "~/generation/scalars";
 
 const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
@@ -14,7 +15,7 @@ export const dbPersonMockTableRow: UserTableRow = {
   id: (2 as unknown) as UserID,
   uuid: ("valid-uuid" as unknown) as UUID,
   username: "username",
-  email: "email",
+  email: ("email" as unknown) as EmailAddress,
   phoneNumber: "+358400000000",
   hashedPassword: "valid-hashed-password",
   createdAt: new Date(datetimeString),

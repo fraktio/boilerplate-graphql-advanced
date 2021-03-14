@@ -5,10 +5,11 @@ import { UserDataLoader } from "./UserDataLoader";
 import { DBConnection } from "~/database/connection";
 import { userDB, UserID } from "~/database/user/userDatabase";
 import { UUID } from "~/generation/mappers";
+import { EmailAddress } from "~/generation/scalars";
 
 export type CreateUser = {
   username: string;
-  email: string;
+  email: EmailAddress;
   hashedPassword: string;
   phoneNumber: PhoneNumber;
 };

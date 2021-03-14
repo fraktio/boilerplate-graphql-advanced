@@ -5,6 +5,7 @@ import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
+import { EmailAddress } from "~/generation/scalars";
 
 export interface UserID extends ID {
   __UserID: never;
@@ -19,7 +20,7 @@ export type UserTableRow = Readonly<{
   id: UserID;
   uuid: UUID;
   username: string;
-  email: string;
+  email: EmailAddress;
   phoneNumber: string;
   hashedPassword: string;
   createdAt: Date;
@@ -30,7 +31,7 @@ export type UserTable = {
   id: UserID;
   UUID: UUID;
   username: string;
-  email: string;
+  email: EmailAddress;
   phoneNumber: string;
   hashedPassword: string;
   accessLevel: [UserAccessLevel];
@@ -56,7 +57,7 @@ export const formatUserRow = (row: UserTableRow): UserTable => ({
 
 type CreateUserValues = {
   username: string;
-  email: string;
+  email: EmailAddress;
   hashedPassword: string;
   phoneNumber: PhoneNumber;
 };

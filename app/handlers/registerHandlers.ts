@@ -3,12 +3,13 @@ import { PhoneNumber } from "libphonenumber-js";
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
+import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { toFailure, toSuccess } from "~/utils/validation";
 
 type CreateUser = {
   username: string;
-  email: string;
+  email: EmailAddress;
   password: string;
   phoneNumber: PhoneNumber;
 };

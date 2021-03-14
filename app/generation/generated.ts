@@ -19,6 +19,7 @@ import {
   AdultModel,
   UserModel,
 } from "./mappers";
+import { EmailAddress } from "./scalars";
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -43,7 +44,7 @@ export type Scalars = {
   UUID: UUID;
   Date: DateTime;
   DateTime: DateTime;
-  EmailAddress: string;
+  EmailAddress: EmailAddress;
   PhoneNumber: PhoneNumber;
 };
 

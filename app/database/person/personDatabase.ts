@@ -5,6 +5,7 @@ import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
+import { EmailAddress } from "~/generation/scalars";
 
 export interface PersonID extends ID {
   __PersonID: never;
@@ -16,7 +17,7 @@ export type PersonTableRow = Readonly<{
   firstName: string;
   lastName: string;
   phone: string;
-  email: string;
+  email: EmailAddress;
   birthday: Date;
   createdAt: Date;
   updatedAt: Date | null;
@@ -28,7 +29,7 @@ export type PersonTable = {
   firstName: string;
   lastName: string;
   phone: PhoneNumber;
-  email: string;
+  email: EmailAddress;
   birthday: DateTime;
   timestamp: {
     createdAt: DateTime;
@@ -54,7 +55,7 @@ export type CreatePersonOptions = {
   firstName: string;
   lastName: string;
   phone: PhoneNumber | null;
-  email: string;
+  email: EmailAddress;
   birthday: DateTime;
 };
 
