@@ -1,31 +1,41 @@
-# Graphql boilerplate - Advanced hardness
+# Graphql boilerplate - Advanced
 
 ## Developing project
 
 1. Dependencies
 
     1. Populate `.env` file with values found in `.env.example`
-    2. `yarn`
+    2. `yarn` to install packages
 
 2. Start database
 
-    1. `docker-compose up`
-    2. `yarn database:migrate:latest`
+    1. `docker-compose up` turn database on
+    2. `yarn database:migrate:latest` add database structure
+    3. `yarn seed` add mock data
 
 2. Start the api
 
     3. `yarn dev`
 
+3. When making `schema` changes run `yarn codegen` to generate types
+
 ## Playground
-  Playground is by default running @ `http://localhost:4000/graphql` 
+  - Test user credentials: `username` / `password`
 
-## Production
+  - Playground is by default running @ `http://localhost:4000/graphql`
 
-1. Build with `yarn build`
+## Deployment
 
-- Prefer to make api domain url same as where the site is running
-    - Cookies are the reason for this. This api is heavily secured
+#### AWS
 
-## Other documentation
+1. Create aws api keys and add a profile in serverless configuration
 
-- Please refer to the `/docs` folder for OpenOR API for designed api usage
+2. `serverless deploy`
+
+3. Wait...
+
+4. During serverless deploy you can populate env variables in `AWS` => `AWS Systems Manager` => `Parameter Store`.
+
+5. AWS Aurora(DB) connection????
+
+6. Play and have fun
