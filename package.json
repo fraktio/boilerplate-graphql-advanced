@@ -15,7 +15,6 @@
     "codegen:disable-rules": "ts-node ./scripts/add-comments-to-generated.ts",
     "lint": "eslint . --ext ts,js",
     "test": "jest",
-    "test:serverless": "serverless deploy --noDeploy",
     "typescript-check": "yarn tsc",
     "database:migrate:latest": "knex migrate:latest",
     "database:migrate:down": "knex migrate:down",

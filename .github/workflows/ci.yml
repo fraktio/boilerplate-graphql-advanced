@@ -21,8 +21,5 @@ jobs:
     - name: Tests
       run: yarn test
 
-    - name: Serverless test
-      run: yarn test:serverless
-
     - name: Schema validation
       run: yarn validate-schema
