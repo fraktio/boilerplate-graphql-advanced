@@ -48,14 +48,9 @@ export const employeeDB = {
         companyId: params.companyId,
         personId: params.personId,
       })
-      .returning("*")
-      .first();
+      .returning("*");
 
-    if (!employee) {
-      throw new Error("Could not insert employee");
-    }
-
-    return formatEmployeeRow(employee);
+    return formatEmployeeRow(employee[0]);
   },
 
   async remove(params: {
