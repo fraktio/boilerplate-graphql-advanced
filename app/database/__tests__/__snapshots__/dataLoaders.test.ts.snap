@@ -2,10 +2,16 @@
 
 exports[`database tests / loaders createDataLoaders 1`] = `
 Object {
+  "companiesOfPersonDL": CompaniesOfPersonDataLoader {
+    "loaders": null,
+  },
   "companyDL": CompanyDataLoader {
     "loaders": null,
   },
   "personDL": PersonDataLoader {
+    "loaders": null,
+  },
+  "personsOfCompanyDL": PersonsOfCompanyDataLoader {
     "loaders": null,
   },
   "userDL": UserDataLoader {

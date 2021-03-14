@@ -1,3 +1,5 @@
+import { PersonsOfCompanyDataLoader } from "../employee/PersonsOfCompanyDataLoader";
+
 import { PersonDataLoader } from "./PersonDataLoader";
 
 import { CompanyID } from "~/database/company/companyDatabase";
@@ -6,6 +8,7 @@ import {
   CreatePersonOptions,
   personDB,
   PersonID,
+  PersonTable,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
 import { UUID } from "~/generation/mappers";
@@ -76,7 +79,15 @@ export const personDS = {
   async getPersonsOfCompany(params: {
     knex: DBConnection;
     companyId: CompanyID;
+    personDL: PersonDataLoader;
+    personsOfCompanyDL: PersonsOfCompanyDataLoader;
   }) {
-    return await personDB.getPersonsOfCompany(params);
+    const personIds = await params.personsOfCompanyDL
+      .getLoader({ knex: params.knex })
+      .load(params.companyId);
+
+    return (await params.personDL
+      .getLoader({ knex: params.knex })
+      .loadMany(personIds)) as PersonTable[];
   },
 };

@@ -1,9 +1,8 @@
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
-import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
@@ -139,30 +138,6 @@ export const personDB = {
     }
 
     return formatPersonRow(persons[0]);
-  },
-
-  async getPersonsOfCompany(params: {
-    knex: DBConnection;
-    companyId: CompanyID;
-  }): Promise<PersonTable[]> {
-    const persons = await params.knex
-      .select<PersonTableRow[]>(`${Table.PERSONS}.*`)
-      .from(Table.PERSONS)
-      .innerJoin(
-        Table.EMPLOYEE,
-        tableColumn(Table.EMPLOYEE, "personId"),
-        "=",
-        tableColumn(Table.PERSONS, "id"),
-      )
-      .innerJoin(
-        Table.COMPANY,
-        tableColumn(Table.COMPANY, "id"),
-        "=",
-        tableColumn(Table.EMPLOYEE, "companyId"),
-      )
-      .where(tableColumn(Table.COMPANY, "id"), params.companyId);
-
-    return persons.map(formatPersonRow);
   },
 
   async getPersonsByIds(params: {

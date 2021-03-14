@@ -1,5 +1,7 @@
-import { companyDB } from "~/database/company/companyDatabase";
+import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
+import { companyDS } from "~/database/company/companyDataSource";
 import { DBConnection } from "~/database/connection";
+import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
 import {
@@ -52,8 +54,12 @@ export const modifyPerson = async (params: {
 export const adultEmployersHandler = async (params: {
   knex: DBConnection;
   personId: PersonID;
+  companyDL: CompanyDataLoader;
+  companiesOfPersonDL: CompaniesOfPersonDataLoader;
 }) =>
-  await companyDB.getCompaniesOfPerson({
+  await companyDS.getCompaniesOfPerson({
     knex: params.knex,
     personId: params.personId,
+    companyDL: params.companyDL,
+    companiesOfPersonDL: params.companiesOfPersonDL,
   });

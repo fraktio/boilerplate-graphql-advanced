@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 
+import { CompaniesOfPersonDataLoader } from "../employee/CompaniesOfPersonDataLoader";
+
 import { CompanyDataLoader } from "./CompanyDataLoader";
 
 import {
@@ -126,7 +128,17 @@ export const companyDS = {
   async getCompaniesOfPerson(params: {
     knex: DBConnection;
     personId: PersonID;
+    companyDL: CompanyDataLoader;
+    companiesOfPersonDL: CompaniesOfPersonDataLoader;
   }) {
-    return await companyDB.getCompaniesOfPerson(params);
+    const companyIds = await params.companiesOfPersonDL
+      .getLoader({ knex: params.knex })
+      .load(params.personId);
+
+    const companies = await params.companyDL
+      .getLoader({ knex: params.knex })
+      .loadMany(companyIds);
+
+    return companies as CompanyTable[];
   },
 };

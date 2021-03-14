@@ -32,8 +32,13 @@ export const personResolver: Resolvers = {
   },
 
   Adult: {
-    async employers(adult, _, { knex }) {
-      return await adultEmployersHandler({ knex, personId: adult.id });
+    async employers(adult, _, { knex, dataLoaders }) {
+      return await adultEmployersHandler({
+        knex,
+        personId: adult.id,
+        companyDL: dataLoaders.companyDL,
+        companiesOfPersonDL: dataLoaders.companiesOfPersonDL,
+      });
     },
   },
 

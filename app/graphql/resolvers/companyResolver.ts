@@ -26,8 +26,13 @@ export const companyResolver: Resolvers = {
   },
 
   Company: {
-    async employees(company, __, { knex }) {
-      return companyEmployees({ knex, companyId: company.id });
+    async employees(company, __, { knex, dataLoaders }) {
+      return companyEmployees({
+        knex,
+        companyId: company.id,
+        personDL: dataLoaders.personDL,
+        personsOfCompanyDL: dataLoaders.personsOfCompanyDL,
+      });
     },
   },
 

@@ -73,4 +73,26 @@ export const employeeDB = {
 
     return count > 0;
   },
+
+  async getEmployeesOfCompanies(params: {
+    knex: DBConnection;
+    companyIds: readonly CompanyID[];
+  }) {
+    const employees = await params
+      .knex<EmployeeTableRow>(Table.EMPLOYEE)
+      .whereIn("companyId", params.companyIds);
+
+    return employees.map(formatEmployeeRow);
+  },
+
+  async getEmployeesOfPersons(params: {
+    knex: DBConnection;
+    personIds: readonly PersonID[];
+  }) {
+    const employees = await params
+      .knex<EmployeeTableRow>(Table.EMPLOYEE)
+      .whereIn("personId", params.personIds);
+
+    return employees.map(formatEmployeeRow);
+  },
 };

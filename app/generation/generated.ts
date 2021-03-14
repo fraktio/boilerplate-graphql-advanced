@@ -239,6 +239,11 @@ export type DateFilter = {
   greaterOrEqualThan?: Maybe<Scalars["Date"]>;
 };
 
+export enum AccessRight {
+  User = "USER",
+  Admin = "ADMIN",
+}
+
 export type Timestamp = {
   __typename?: "Timestamp";
   createdAt: Scalars["DateTime"];
@@ -536,6 +541,7 @@ export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
+  AccessRight: AccessRight;
   Timestamp: ResolverTypeWrapper<Timestamp>;
   Person: ResolverTypeWrapper<PersonModel>;
   Adult: ResolverTypeWrapper<AdultModel>;
@@ -653,22 +659,13 @@ export type ResolversParentTypes = ResolversObject<{
   User: UserModel;
 }>;
 
-export type AuthenticatedDirectiveArgs = {};
+export type AuthenticatedDirectiveArgs = { requires?: Maybe<AccessRight> };
 
 export type AuthenticatedDirectiveResolver<
   Result,
   Parent,
   ContextType = Context,
   Args = AuthenticatedDirectiveArgs
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type UpperDirectiveArgs = {};
-
-export type UpperDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = Context,
-  Args = UpperDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AuthenticatedUserSuccessResolvers<
@@ -1150,7 +1147,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
   authenticated?: AuthenticatedDirectiveResolver<any, any, ContextType>;
-  upper?: UpperDirectiveResolver<any, any, ContextType>;
 }>;
 
 /**

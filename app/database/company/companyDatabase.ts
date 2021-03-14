@@ -1,8 +1,7 @@
 import { DateTime } from "luxon";
 
 import { DBConnection } from "~/database/connection";
-import { PersonID } from "~/database/person/personDatabase";
-import { tableColumn, createUUID, ID, Table } from "~/database/tables";
+import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
@@ -127,30 +126,6 @@ export const companyDB = {
     }
 
     return formatCompanyRow(companies[0]);
-  },
-
-  async getCompaniesOfPerson(params: {
-    knex: DBConnection;
-    personId: PersonID;
-  }): Promise<CompanyTable[]> {
-    const companies = await params.knex
-      .select<CompanyTableRow[]>(`${Table.COMPANY}.*`)
-      .from(Table.COMPANY)
-      .innerJoin(
-        Table.EMPLOYEE,
-        tableColumn(Table.EMPLOYEE, "companyId"),
-        "=",
-        tableColumn(Table.COMPANY, "id"),
-      )
-      .innerJoin(
-        Table.PERSONS,
-        tableColumn(Table.PERSONS, "id"),
-        "=",
-        tableColumn(Table.EMPLOYEE, "personId"),
-      )
-      .where({ [tableColumn(Table.PERSONS, "id")]: params.personId });
-
-    return companies.map(formatCompanyRow);
   },
 
   async getCompaniesByIds(params: {

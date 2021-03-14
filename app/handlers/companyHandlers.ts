@@ -4,6 +4,8 @@ import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDS } from "~/database/company/companyDataSource";
 import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
+import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
+import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
 import { UUID } from "~/generation/mappers";
 
@@ -69,8 +71,12 @@ export const editCompanyHandler = async (params: {
 export const companyEmployees = async (params: {
   knex: DBConnection;
   companyId: CompanyID;
+  personDL: PersonDataLoader;
+  personsOfCompanyDL: PersonsOfCompanyDataLoader;
 }) =>
   await personDS.getPersonsOfCompany({
     knex: params.knex,
     companyId: params.companyId,
+    personDL: params.personDL,
+    personsOfCompanyDL: params.personsOfCompanyDL,
   });
