@@ -114,6 +114,6 @@ functions:
 
 resources:
     # VPC
-    - ${file(resources/vpc.yml)}
+    - ${file(aws/vpc.yml)}
     # RDS
-    - ${file(resources/rds.yml)}
+    - ${file(aws/rds.yml)}
