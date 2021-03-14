@@ -72,6 +72,15 @@ provider:
 
     apiGateway:
         shouldStartNameWithService: true
+
+        usagePlan:
+            quota:
+                limit: 6000 # The maximum number of requests that users can make within the specified time period.
+                offset: 0 # For the initial time period, the number of requests to subtract from the specified limit.
+                period: DAY # The time period for which the maximum limit of requests applies, such as DAY or WEEK.
+            throttle:
+                burstLimit: 200
+                rateLimit: 100
     
     environment:
         API_PORT: ${env:API_PORT}
@@ -89,15 +98,7 @@ provider:
         DATABASE_PORT: ${env:DATABASE_PORT}
         DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
         DATABASE_DATABASE_NAME: ${env:DATABASE_DATABASE_NAME}
-    
-    usagePlan:
-        quota:
-            limit: 6000 # The maximum number of requests that users can make within the specified time period.
-            offset: 0 # For the initial time period, the number of requests to subtract from the specified limit.
-            period: DAY # The time period for which the maximum limit of requests applies, such as DAY or WEEK.
-        throttle:
-            burstLimit: 200
-            rateLimit: 100
+
     
 functions:
     graphql:
