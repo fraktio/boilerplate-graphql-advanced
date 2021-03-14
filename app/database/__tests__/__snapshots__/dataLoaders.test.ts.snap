@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`database tests / loaders createDataLoaders 1`] = `
+Object {
+  "companyDL": CompanyDataLoader {
+    "loaders": null,
+  },
+  "personDL": PersonDataLoader {
+    "loaders": null,
+  },
+  "userDL": UserDataLoader {
+    "loaders": null,
+  },
+}
+`;
