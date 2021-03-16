@@ -11,6 +11,9 @@ jobs:
 
     - name: Install dependencies
       run: yarn install --frozen-lockfile
+
+    - name: Generate codegen
+      run: yarn codegen
     
     - name: Typecheck
       run: yarn typescript-check --noEmit
