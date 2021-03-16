@@ -1,5 +1,5 @@
 type Company {
-  UUID: UUID!
+  UUID: String!
   name: String!
   timestamp: Timestamp!
   employees: [Adult!]!
