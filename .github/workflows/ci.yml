@@ -15,7 +15,7 @@ jobs:
     - name: Generate codegen
       run: yarn codegen
     
-    - name: Typecheck
+    - name: Rerun typecheck for generated contents
       run: yarn typescript-check --noEmit
     
     - name: Lint
