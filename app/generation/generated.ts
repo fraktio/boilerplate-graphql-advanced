@@ -256,13 +256,19 @@ export type Timestamp = {
   modifiedAt?: Maybe<Scalars["DateTime"]>;
 };
 
+export type NumberFact = {
+  __typename?: "NumberFact";
+  fact: Scalars["String"];
+  number: Scalars["Int"];
+};
+
 export type NumberFactInput = {
   number: Scalars["Int"];
 };
 
 export type NumberFactSuccess = {
   __typename?: "NumberFactSuccess";
-  fact: Scalars["String"];
+  numberFact: NumberFact;
 };
 
 export type NumberFactFailure = {
@@ -565,8 +571,9 @@ export type ResolversTypes = ResolversObject<{
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   AccessRight: AccessRight;
   Timestamp: ResolverTypeWrapper<Timestamp>;
-  NumberFactInput: NumberFactInput;
+  NumberFact: ResolverTypeWrapper<NumberFact>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
+  NumberFactInput: NumberFactInput;
   NumberFactSuccess: ResolverTypeWrapper<NumberFactSuccess>;
   NumberFactFailure: ResolverTypeWrapper<NumberFactFailure>;
   NumberFactOutput:
@@ -658,8 +665,9 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars["EmailAddress"];
   PhoneNumber: Scalars["PhoneNumber"];
   Timestamp: Timestamp;
-  NumberFactInput: NumberFactInput;
+  NumberFact: NumberFact;
   Int: Scalars["Int"];
+  NumberFactInput: NumberFactInput;
   NumberFactSuccess: NumberFactSuccess;
   NumberFactFailure: NumberFactFailure;
   NumberFactOutput:
@@ -992,11 +1000,20 @@ export type TimestampResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type NumberFactResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["NumberFact"] = ResolversParentTypes["NumberFact"]
+> = ResolversObject<{
+  fact?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type NumberFactSuccessResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["NumberFactSuccess"] = ResolversParentTypes["NumberFactSuccess"]
 > = ResolversObject<{
-  fact?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  numberFact?: Resolver<ResolversTypes["NumberFact"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1194,6 +1211,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   EmailAddress?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
   Timestamp?: TimestampResolvers<ContextType>;
+  NumberFact?: NumberFactResolvers<ContextType>;
   NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;
   NumberFactFailure?: NumberFactFailureResolvers<ContextType>;
   NumberFactOutput?: NumberFactOutputResolvers<ContextType>;

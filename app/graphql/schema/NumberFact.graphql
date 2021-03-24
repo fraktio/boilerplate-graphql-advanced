@@ -1,9 +1,14 @@
+type NumberFact {
+  fact: String!
+  number: Int!
+}
+
 input NumberFactInput {
   number: Int!
 }
 
 type NumberFactSuccess {
-  fact: String!
+  numberFact: NumberFact!
 }
 
 type NumberFactFailure {

@@ -10,12 +10,12 @@ export const numberFactResolver: Resolvers = {
 
   Query: {
     numberFact: async (_, { input }, { dataSources }) => {
-      const response = await numberFactHandler({
+      const numberFact = await numberFactHandler({
         number: input.number,
         numberFactApi: dataSources.numberFactApi,
       });
 
-      if (!response) {
+      if (!numberFact) {
         return {
           __typename: "NumberFactFailure",
           success: false,
@@ -24,7 +24,7 @@ export const numberFactResolver: Resolvers = {
 
       return {
         __typename: "NumberFactSuccess",
-        fact: response.message,
+        numberFact,
       };
     },
   },

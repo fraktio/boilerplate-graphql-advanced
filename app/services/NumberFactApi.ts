@@ -16,7 +16,7 @@ export class NumberFactApi extends RESTDataSource<BaseContext> {
     try {
       const response = await this.get<string>(`/${params.number}/math`);
 
-      return { message: response, number: params.number };
+      return { fact: response, number: params.number };
     } catch (e) {
       this.context.logger.error("Request to external number api failed", e);
 
