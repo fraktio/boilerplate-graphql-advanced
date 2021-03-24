@@ -4,6 +4,7 @@ import { authenticationResolver } from "./authenticationResolver";
 import { companyResolver } from "./companyResolver";
 import { employeeResolver } from "./employeeResolver";
 import { genericResolver } from "./genericResolver";
+import { numberFactResolver } from "./numberFactResolver";
 import { personResolver } from "./personResolver";
 import { registrationResolver } from "./registrationResolver";
 
@@ -16,6 +17,7 @@ const resolversArray = [
   personResolver,
   genericResolver,
   employeeResolver,
+  numberFactResolver,
   createScalarResolvers(),
 ];
 

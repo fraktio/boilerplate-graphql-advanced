@@ -67,12 +67,17 @@ export type Query = {
   authenticatedUser: AuthenticatedUserResponse;
   companies: Array<Company>;
   company: Company;
+  numberFact: NumberFactOutput;
   person: Person;
   persons: Array<Maybe<Person>>;
 };
 
 export type QueryCompanyArgs = {
   input: CompanyQuery;
+};
+
+export type QueryNumberFactArgs = {
+  input: NumberFactInput;
 };
 
 export type QueryPersonArgs = {
@@ -250,6 +255,22 @@ export type Timestamp = {
   createdAt: Scalars["DateTime"];
   modifiedAt?: Maybe<Scalars["DateTime"]>;
 };
+
+export type NumberFactInput = {
+  number: Scalars["Int"];
+};
+
+export type NumberFactSuccess = {
+  __typename?: "NumberFactSuccess";
+  fact: Scalars["String"];
+};
+
+export type NumberFactFailure = {
+  __typename?: "NumberFactFailure";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type NumberFactOutput = NumberFactSuccess | NumberFactFailure;
 
 export type Person = {
   /** Requires authentication and ADMIN privileges */
@@ -544,6 +565,13 @@ export type ResolversTypes = ResolversObject<{
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   AccessRight: AccessRight;
   Timestamp: ResolverTypeWrapper<Timestamp>;
+  NumberFactInput: NumberFactInput;
+  Int: ResolverTypeWrapper<Scalars["Int"]>;
+  NumberFactSuccess: ResolverTypeWrapper<NumberFactSuccess>;
+  NumberFactFailure: ResolverTypeWrapper<NumberFactFailure>;
+  NumberFactOutput:
+    | ResolversTypes["NumberFactSuccess"]
+    | ResolversTypes["NumberFactFailure"];
   Person: ResolverTypeWrapper<PersonModel>;
   Adult: ResolverTypeWrapper<AdultModel>;
   Underage: ResolverTypeWrapper<Underage>;
@@ -630,6 +658,13 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars["EmailAddress"];
   PhoneNumber: Scalars["PhoneNumber"];
   Timestamp: Timestamp;
+  NumberFactInput: NumberFactInput;
+  Int: Scalars["Int"];
+  NumberFactSuccess: NumberFactSuccess;
+  NumberFactFailure: NumberFactFailure;
+  NumberFactOutput:
+    | ResolversParentTypes["NumberFactSuccess"]
+    | ResolversParentTypes["NumberFactFailure"];
   Person: PersonModel;
   Adult: AdultModel;
   Underage: Underage;
@@ -715,6 +750,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryCompanyArgs, "input">
+  >;
+  numberFact?: Resolver<
+    ResolversTypes["NumberFactOutput"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryNumberFactArgs, "input">
   >;
   person?: Resolver<
     ResolversTypes["Person"],
@@ -951,6 +992,33 @@ export type TimestampResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type NumberFactSuccessResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["NumberFactSuccess"] = ResolversParentTypes["NumberFactSuccess"]
+> = ResolversObject<{
+  fact?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type NumberFactFailureResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["NumberFactFailure"] = ResolversParentTypes["NumberFactFailure"]
+> = ResolversObject<{
+  success?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type NumberFactOutputResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["NumberFactOutput"] = ResolversParentTypes["NumberFactOutput"]
+> = ResolversObject<{
+  __resolveType: TypeResolveFn<
+    "NumberFactSuccess" | "NumberFactFailure",
+    ParentType,
+    ContextType
+  >;
+}>;
+
 export type PersonResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"]
@@ -1126,6 +1194,9 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   EmailAddress?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
   Timestamp?: TimestampResolvers<ContextType>;
+  NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;
+  NumberFactFailure?: NumberFactFailureResolvers<ContextType>;
+  NumberFactOutput?: NumberFactOutputResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   Adult?: AdultResolvers<ContextType>;
   Underage?: UnderageResolvers<ContextType>;

@@ -1,0 +1,17 @@
+input NumberFactInput {
+  number: Int!
+}
+
+type NumberFactSuccess {
+  fact: String!
+}
+
+type NumberFactFailure {
+  success: Boolean
+}
+
+union NumberFactOutput = NumberFactSuccess | NumberFactFailure
+
+type Query {
+  numberFact(input: NumberFactInput!): NumberFactOutput!
+}

@@ -15,6 +15,7 @@ export const DATABASE_USER = "DATABASE_USER";
 export const DATABASE_PORT = "DATABASE_PORT";
 export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
 export const DATABASE_DATABASE_NAME = "DATABASE_DATABASE_NAME";
+export const NUMBER_API_MOCK_TOKEN = "NUMBER_API_MOCK_TOKEN";
 
 const requireEnv = (env: string): string => {
   const envVariable = process.env[env];
@@ -75,6 +76,12 @@ export const getDatabaseConfigFromEnv = () => ({
 
 export type DatabaseConfig = ReturnType<typeof getDatabaseConfigFromEnv>;
 
+export const getNumberFactConfigFromEnv = () => ({
+  token: requireEnv(NUMBER_API_MOCK_TOKEN),
+});
+
+export type NumberFactConfig = ReturnType<typeof getNumberFactConfigFromEnv>;
+
 export const getConfigFromEnv = () => ({
   apiPort: requireIntEnv(API_PORT),
   stdoutLogging: requireBoolean(STDOUT_LOGGING),
@@ -83,6 +90,8 @@ export const getConfigFromEnv = () => ({
 
   cookies: getCookiesConfigFromEnv(),
   database: getDatabaseConfigFromEnv(),
+
+  numberFact: getNumberFactConfigFromEnv(),
 });
 
 export type Config = ReturnType<typeof getConfigFromEnv>;

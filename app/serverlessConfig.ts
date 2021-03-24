@@ -19,6 +19,7 @@ import {
   DATABASE_PORT,
   DATABASE_PASSWORD,
   DATABASE_DATABASE_NAME,
+  NUMBER_API_MOCK_TOKEN,
 } from "~/config";
 
 export const getConfig = async (): Promise<Config> => {
@@ -94,6 +95,10 @@ export const getConfig = async (): Promise<Config> => {
       port: await requireIntEnv(DATABASE_PORT),
       password: await requireEnv(DATABASE_PASSWORD),
       databaseName: await requireEnv(DATABASE_DATABASE_NAME),
+    },
+
+    numberFact: {
+      token: await requireEnv(NUMBER_API_MOCK_TOKEN),
     },
   };
 };

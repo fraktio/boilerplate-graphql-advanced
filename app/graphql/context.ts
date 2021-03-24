@@ -2,12 +2,15 @@ import Logger from "bunyan";
 import { Request, Response } from "express";
 
 import { Config } from "~/config";
+import { DataSourcesInContext } from "~/dataSources";
 import { DBConnection } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
 import { UserTable } from "~/database/user/userDatabase";
 import { Maybe } from "~/generation/generated";
 
-export type Context = {
+export type Context = BaseContext & DataSourcesInContext;
+
+export type BaseContext = {
   logger: Logger;
   req: Request;
   res: Response;
