@@ -9,6 +9,8 @@ jobs:
     services:
       postgres:
         image: postgres
+        ports:
+          - 54321:5432
         env:
           POSTGRES_PASSWORD: graphql-boilerplate-test
           POSTGRES_USER: graphql-boilerplate-test
