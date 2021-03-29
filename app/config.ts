@@ -17,6 +17,42 @@ export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
 export const DATABASE_DATABASE_NAME = "DATABASE_DATABASE_NAME";
 export const NUMBER_API_MOCK_TOKEN = "NUMBER_API_MOCK_TOKEN";
 
+export const getEnvIntFallback = (envKey: string, fallback: number): number => {
+  const value = process.env[envKey];
+
+  if (!value) {
+    console.warn(
+      `Environment variable ${envKey} not provided, using fallback: ${fallback}`,
+    );
+
+    return fallback;
+  }
+
+  const parsed = parseInt(value, 10);
+
+  if (isNaN(parsed)) {
+    throw new Error(
+      `Environment variable ${envKey}. Received invalid value for INT: ${value}`,
+    );
+  }
+
+  return fallback;
+};
+
+export const getEnvFallback = (envKey: string, fallback: string): string => {
+  const value = process.env[envKey];
+
+  if (!value) {
+    console.warn(
+      `Environment variable ${envKey} not provided, using fallback: ${fallback}`,
+    );
+
+    return fallback;
+  }
+
+  return value;
+};
+
 const requireEnv = (env: string): string => {
   const envVariable = process.env[env];
 

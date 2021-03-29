@@ -10,10 +10,9 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: graphql-boilerplate-test
-          POSTGRES_USER: graphql-boilerplate-test
-          POSTGRES_DB: graphql-boilerplate-test
-          POSTGRES_PORT: 54321
+          POSTGRES_PASSWORD: graphql-boilerplate-ci
+          POSTGRES_USER: graphql-boilerplate-ci
+          POSTGRES_DB: graphql-boilerplate-ci
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -40,3 +39,8 @@ jobs:
 
     - name: Tests
       run: yarn test
+      env:
+        DATABASE_USER: graphql-boilerplate-ci
+        DATABASE_PORT: 5432
+        DATABASE_PASSWORD: graphql-boilerplate-ci
+        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
