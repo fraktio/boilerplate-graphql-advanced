@@ -36,7 +36,7 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
     );
   }
 
-  return fallback;
+  return parsed;
 };
 
 export const getEnvFallback = (envKey: string, fallback: string): string => {
