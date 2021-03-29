@@ -6,6 +6,19 @@ jobs:
     runs-on: ubuntu-latest
     container: node:15
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: graphql-boilerplate-test
+          POSTGRES_USER: graphql-boilerplate-test
+          POSTGRES_DB: graphql-boilerplate-test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v1
 
