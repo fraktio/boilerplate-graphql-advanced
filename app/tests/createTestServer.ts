@@ -1,6 +1,7 @@
 import {
   Config,
   DATABASE_DATABASE_NAME,
+  DATABASE_HOST,
   DATABASE_PASSWORD,
   DATABASE_PORT,
   DATABASE_USER,
@@ -23,7 +24,7 @@ const config: Config = {
   },
   database: {
     type: "pg",
-    host: "localhost",
+    host: getEnvFallback(DATABASE_HOST, "localhost"),
     user: getEnvFallback(DATABASE_USER, "graphql-boilerplate-test"),
     port: getEnvIntFallback(DATABASE_PORT, 54321),
     password: getEnvFallback(DATABASE_PASSWORD, "graphql-boilerplate-test"),
