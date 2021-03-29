@@ -9,12 +9,11 @@ jobs:
     services:
       postgres:
         image: postgres
-        ports:
-          - 54321:5432
         env:
           POSTGRES_PASSWORD: graphql-boilerplate-test
           POSTGRES_USER: graphql-boilerplate-test
           POSTGRES_DB: graphql-boilerplate-test
+          POSTGRES_PORT: 54321
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
