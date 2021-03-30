@@ -175,9 +175,7 @@ export type CompanyInput = {
   name: Scalars["String"];
 };
 
-export type AddCompanyOutput =
-  | AddCompanySuccess
-  | UniqueConstraintViolationFailure;
+export type AddCompanyOutput = AddCompanySuccess;
 
 export type AddCompanySuccess = {
   __typename?: "AddCompanySuccess";
@@ -538,9 +536,7 @@ export type ResolversTypes = ResolversObject<{
   AddCompanyInput: AddCompanyInput;
   EditCompanyInput: EditCompanyInput;
   CompanyInput: CompanyInput;
-  AddCompanyOutput:
-    | ResolversTypes["AddCompanySuccess"]
-    | ResolversTypes["UniqueConstraintViolationFailure"];
+  AddCompanyOutput: ResolversTypes["AddCompanySuccess"];
   AddCompanySuccess: ResolverTypeWrapper<
     Omit<AddCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
@@ -635,9 +631,7 @@ export type ResolversParentTypes = ResolversObject<{
   AddCompanyInput: AddCompanyInput;
   EditCompanyInput: EditCompanyInput;
   CompanyInput: CompanyInput;
-  AddCompanyOutput:
-    | ResolversParentTypes["AddCompanySuccess"]
-    | ResolversParentTypes["UniqueConstraintViolationFailure"];
+  AddCompanyOutput: ResolversParentTypes["AddCompanySuccess"];
   AddCompanySuccess: Omit<AddCompanySuccess, "company"> & {
     company: ResolversParentTypes["Company"];
   };
@@ -876,11 +870,7 @@ export type AddCompanyOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["AddCompanyOutput"] = ResolversParentTypes["AddCompanyOutput"]
 > = ResolversObject<{
-  __resolveType: TypeResolveFn<
-    "AddCompanySuccess" | "UniqueConstraintViolationFailure",
-    ParentType,
-    ContextType
-  >;
+  __resolveType: TypeResolveFn<"AddCompanySuccess", ParentType, ContextType>;
 }>;
 
 export type AddCompanySuccessResolvers<

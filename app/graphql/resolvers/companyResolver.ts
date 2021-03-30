@@ -13,9 +13,7 @@ import { Resolvers } from "~/generation/generated";
 export const companyResolver: Resolvers = {
   AddCompanyOutput: {
     __resolveType(registerFailureResponse) {
-      return (
-        registerFailureResponse.__typename ?? "UniqueConstraintViolationFailure"
-      );
+      return registerFailureResponse.__typename ?? "AddCompanySuccess";
     },
   },
 
