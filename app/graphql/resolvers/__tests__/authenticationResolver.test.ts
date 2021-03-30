@@ -87,14 +87,6 @@ describe("Graphql / endpoints", () => {
     );
   });
 
-  it("GetAuthenticatedUser no session", async () => {
-    const { body } = await gqlRequest(app, getIsReservedApartmentQuery);
-
-    expect(body.data.authenticatedUser.__typename).toBe(
-      "AuthenticatedUserFailure",
-    );
-  });
-
   it("logout", async () => {
     const { body, header } = await gqlRequest(app, logoutMutation);
 
