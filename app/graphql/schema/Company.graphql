@@ -33,7 +33,7 @@ input CompanyInput {
   # more later..
 }
 
-union AddCompanyOutput = AddCompanySuccess | UniqueConstraintViolationFailure
+union AddCompanyOutput = AddCompanySuccess
 
 type AddCompanySuccess {
   company: Company!

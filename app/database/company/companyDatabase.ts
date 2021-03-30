@@ -27,6 +27,10 @@ export type CompanyTable = {
   };
 };
 
+export type CreateCompanyParams = {
+  name: string;
+};
+
 export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
   id: row.id,
   UUID: row.uuid,
@@ -97,7 +101,7 @@ export const companyDB = {
 
   async create(params: {
     knex: DBConnection;
-    company: { name: string };
+    company: CreateCompanyParams;
   }): Promise<CompanyTable> {
     const companies = await params
       .knex<CompanyTableRow>(Table.COMPANY)

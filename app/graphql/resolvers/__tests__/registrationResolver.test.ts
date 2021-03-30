@@ -1,8 +1,10 @@
 import { gql } from "apollo-server-express";
 
+import { userDB } from "~/database/user/userDatabase";
 import { createTestServer } from "~/tests/createTestServer";
 import { gqlRequest } from "~/tests/graphqlTestUtils";
 import { registerTestHandlers } from "~/tests/registerTestHandlers";
+import { createUserRegistration } from "~/tests/testData";
 
 const registerMutation = gql`
   mutation Register($input: RegisterInput!) {
@@ -27,12 +29,7 @@ const registerMutation = gql`
 `;
 
 const successUser = {
-  input: {
-    username: "username",
-    password: "password",
-    email: "email@testmail.com",
-    phoneNumber: "+358400000000",
-  },
+  input: createUserRegistration(),
 };
 
 const failureUser = {
@@ -52,6 +49,12 @@ describe("Graphql / endpoints", () => {
   it("register / success", async () => {
     const { body } = await gqlRequest(app, registerMutation, successUser);
 
+    const user = await userDB.getByUsername({
+      knex,
+      username: successUser.input.username,
+    });
+
+    expect.objectContaining(user);
     expect(body.data.register).toBeTruthy();
   });
 });
