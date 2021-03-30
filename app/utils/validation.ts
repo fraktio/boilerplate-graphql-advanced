@@ -1,5 +1,3 @@
-import { EmailAddress } from "~/generation/scalars";
-
 export type Success<T> = Readonly<{
   value: T;
   success: true;
@@ -22,8 +20,4 @@ export function toFailure<F>(failure: F): Failure<F> {
     failure,
     success: false,
   };
-}
-
-export function validateEmail(email: string) {
-  return (email as unknown) as EmailAddress;
 }
