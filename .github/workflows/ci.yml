@@ -25,13 +25,10 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
-    - name: Typecheck
-      run: yarn typescript-check --noEmit
-
     - name: Generate codegen
       run: yarn codegen
     
-    - name: Rerun typecheck for generated contents
+    - name: Typecheck
       run: yarn typescript-check --noEmit
     
     - name: Lint
@@ -40,7 +37,7 @@ jobs:
     - name: Schema validation
       run: yarn validate-schema
     
-    - name: Migration Latest
+    - name: Database Migration Latest
       run: yarn database:migrate:latest
       env:
         DATABASE_TYPE: pg
@@ -50,7 +47,7 @@ jobs:
         DATABASE_PASSWORD: graphql-boilerplate-ci
         DATABASE_DATABASE_NAME: graphql-boilerplate-ci
 
-    - name: Seeds
+    - name: Database Seed
       run: yarn seed
       env:
         DATABASE_TYPE: pg
@@ -60,7 +57,7 @@ jobs:
         DATABASE_PASSWORD: graphql-boilerplate-ci
         DATABASE_DATABASE_NAME: graphql-boilerplate-ci
 
-    - name: Migration Down
+    - name: Database Migration Rollback
       run: yarn database:migrate:rollback
       env:
         DATABASE_TYPE: pg
