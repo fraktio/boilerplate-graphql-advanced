@@ -43,6 +43,23 @@ const addCompanyMutation = gql`
   }
 `;
 
+const updateCompanyMutation = gql`
+  mutation AddCompany($input: EditCompanyInput!) {
+    editCompany(input: $input) {
+      __typename
+      ...EditCompanySuccess
+    }
+  }
+
+  fragment EditCompanySuccess on EditCompanySuccess {
+    company {
+      __typename
+      UUID
+      name
+    }
+  }
+`;
+
 const { app, knex } = createTestServer();
 registerTestHandlers({ knex });
 
@@ -106,5 +123,26 @@ describe("Graphql / endpoints", () => {
     expect(body.data.addCompany.__typename).toBe("AddCompanySuccess");
     expect(body.data.addCompany.company.name).toBe(NAME);
     expect(body.data.addCompany.company.__typename).toBe("Company");
+  });
+
+  it("editCompany / success", async () => {
+    const company1 = await createDatabaseCompany({
+      knex,
+      overrides: { name: "Random name before" },
+    });
+    const newRandomName = "Random name after";
+    const params = {
+      input: {
+        UUID: company1.UUID,
+        company: {
+          name: newRandomName,
+        },
+      },
+    };
+    const { body } = await gqlRequest(app, updateCompanyMutation, params);
+
+    expect(body.data.editCompany.__typename).toBe("EditCompanySuccess");
+    expect(body.data.editCompany.company.name).toBe(newRandomName);
+    expect(body.data.editCompany.company.__typename).toBe("Company");
   });
 });

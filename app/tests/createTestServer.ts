@@ -10,7 +10,7 @@ import {
 } from "~/config";
 import { createServer } from "~/server";
 
-const config: Config = {
+export const createTestConfig = (): Config => ({
   apiPort: 4001,
   stdoutLogging: false,
   isProduction: true,
@@ -36,7 +36,8 @@ const config: Config = {
   numberFact: {
     token: "numberfactToken",
   },
-};
+});
 
 // Change `stdoutLogging` if you want logging when running tests
-export const createTestServer = () => createServer({ config });
+export const createTestServer = () =>
+  createServer({ config: createTestConfig() });

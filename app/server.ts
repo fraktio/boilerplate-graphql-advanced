@@ -40,5 +40,5 @@ export const createServer = ({ config }: { config: Config }) => {
     app.use(errorHandler);
   }
 
-  return { app, logger, knex };
+  return { app, logger, knex, config };
 };

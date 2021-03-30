@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Graphql / schema createExecutableSchema 1`] = `
+GraphQLSchema {
+  "__validationErrors": undefined,
+  "_directives": Array [
+    "@authenticated",
+    "@deprecated",
+    "@include",
+    "@skip",
+    "@specifiedBy",
+  ],
+  "_implementationsMap": Object {
+    "FailureOutput": Object {
+      "interfaces": Array [],
+      "objects": Array [
+        "UniqueConstraintViolationFailure",
+      ],
+    },
+    "Person": Object {
+      "interfaces": Array [],
+      "objects": Array [
+        "Adult",
+        "Underage",
+      ],
+    },
+  },
+  "_mutationType": "Mutation",
+  "_queryType": "Query",
+  "_subTypeMap": Object {},
+  "_subscriptionType": "Subscription",
+  "_typeMap": Object {
+    "AccessRight": "AccessRight",
+    "AddCompanyInput": "AddCompanyInput",
+    "AddCompanyOutput": "AddCompanyOutput",
+    "AddCompanySuccess": "AddCompanySuccess",
+    "AddEmployeeInput": "AddEmployeeInput",
+    "AddEmployeeOutput": "AddEmployeeOutput",
+    "AddEmployeeSuccess": "AddEmployeeSuccess",
+    "AddPersonInput": "AddPersonInput",
+    "AddPersonOutput": "AddPersonOutput",
+    "AddPersonPersonInput": "AddPersonPersonInput",
+    "AddPersonSuccess": "AddPersonSuccess",
+    "Adult": "Adult",
+    "AuthenticatedUserFailure": "AuthenticatedUserFailure",
+    "AuthenticatedUserResponse": "AuthenticatedUserResponse",
+    "AuthenticatedUserSuccess": "AuthenticatedUserSuccess",
+    "Boolean": "Boolean",
+    "Company": "Company",
+    "CompanyInput": "CompanyInput",
+    "CompanyQuery": "CompanyQuery",
+    "Date": "Date",
+    "DateFilter": "DateFilter",
+    "DateTime": "DateTime",
+    "EditCompanyInput": "EditCompanyInput",
+    "EditCompanyOutput": "EditCompanyOutput",
+    "EditCompanySuccess": "EditCompanySuccess",
+    "EditPersonInput": "EditPersonInput",
+    "EditPersonOutput": "EditPersonOutput",
+    "EditPersonSuccess": "EditPersonSuccess",
+    "Email": "Email",
+    "FailureOutput": "FailureOutput",
+    "Int": "Int",
+    "LoginUserFailure": "LoginUserFailure",
+    "LoginUserInput": "LoginUserInput",
+    "LoginUserResponse": "LoginUserResponse",
+    "LoginUserSuccess": "LoginUserSuccess",
+    "Mutation": "Mutation",
+    "NumberFact": "NumberFact",
+    "NumberFactFailure": "NumberFactFailure",
+    "NumberFactInput": "NumberFactInput",
+    "NumberFactOutput": "NumberFactOutput",
+    "NumberFactSuccess": "NumberFactSuccess",
+    "Person": "Person",
+    "PersonFilter": "PersonFilter",
+    "PersonInput": "PersonInput",
+    "Phone": "Phone",
+    "Query": "Query",
+    "RegisterFailure": "RegisterFailure",
+    "RegisterFailureAlreadyExists": "RegisterFailureAlreadyExists",
+    "RegisterInput": "RegisterInput",
+    "RegisterResponse": "RegisterResponse",
+    "RegisterSuccess": "RegisterSuccess",
+    "RemoveEmployeeInput": "RemoveEmployeeInput",
+    "RemoveEmployeeOutput": "RemoveEmployeeOutput",
+    "RemoveEmployeeSuccess": "RemoveEmployeeSuccess",
+    "String": "String",
+    "Subscription": "Subscription",
+    "TimeFilter": "TimeFilter",
+    "Timestamp": "Timestamp",
+    "UUID": "UUID",
+    "Underage": "Underage",
+    "UniqueConstraintViolationFailure": "UniqueConstraintViolationFailure",
+    "User": "User",
+    "__Directive": "__Directive",
+    "__DirectiveLocation": "__DirectiveLocation",
+    "__EnumValue": "__EnumValue",
+    "__Field": "__Field",
+    "__InputValue": "__InputValue",
+    "__Schema": "__Schema",
+    "__Type": "__Type",
+    "__TypeKind": "__TypeKind",
+  },
+  "astNode": Object {
+    "description": undefined,
+    "directives": Array [],
+    "kind": "SchemaDefinition",
+    "loc": Object {
+      "end": 69,
+      "start": 0,
+    },
+    "operationTypes": Array [
+      Object {
+        "kind": "OperationTypeDefinition",
+        "loc": Object {
+          "end": 21,
+          "start": 9,
+        },
+        "operation": "query",
+        "type": Object {
+          "kind": "NamedType",
+          "loc": Object {
+            "end": 21,
+            "start": 16,
+          },
+          "name": Object {
+            "kind": "Name",
+            "loc": Object {
+              "end": 21,
+              "start": 16,
+            },
+            "value": "Query",
+          },
+        },
+      },
+      Object {
+        "kind": "OperationTypeDefinition",
+        "loc": Object {
+          "end": 40,
+          "start": 22,
+        },
+        "operation": "mutation",
+        "type": Object {
+          "kind": "NamedType",
+          "loc": Object {
+            "end": 40,
+            "start": 32,
+          },
+          "name": Object {
+            "kind": "Name",
+            "loc": Object {
+              "end": 40,
+              "start": 32,
+            },
+            "value": "Mutation",
+          },
+        },
+      },
+      Object {
+        "kind": "OperationTypeDefinition",
+        "loc": Object {
+          "end": 67,
+          "start": 41,
+        },
+        "operation": "subscription",
+        "type": Object {
+          "kind": "NamedType",
+          "loc": Object {
+            "end": 67,
+            "start": 55,
+          },
+          "name": Object {
+            "kind": "Name",
+            "loc": Object {
+              "end": 67,
+              "start": 55,
+            },
+            "value": "Subscription",
+          },
+        },
+      },
+    ],
+  },
+  "description": undefined,
+  "extensionASTNodes": Array [],
+  "extensions": undefined,
+}
+`;
+
+exports[`Graphql / schema createSchema 1`] = `
+Object {
+  "allowUndefinedInResolve": false,
+  "inheritResolversFromInterfaces": true,
+  "resolverValidationOptions": Object {
+    "allowResolversNotInSchema": true,
+    "requireResolversForArgs": true,
+    "requireResolversForResolveType": true,
+  },
+}
+`;

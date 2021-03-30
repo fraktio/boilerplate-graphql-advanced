@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Graphql / schema COMPLEXITY_COST 1`] = `
+Object {
+  "listFactor": 20,
+  "objectCost": 10,
+  "scalarCost": 2,
+}
+`;
+
+exports[`Graphql / schema COMPLEXITY_LIMIT 1`] = `100000000000`;
+
+exports[`Graphql / schema DEPTH_VALUE_LIMIT 1`] = `6`;

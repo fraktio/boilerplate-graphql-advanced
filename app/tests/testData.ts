@@ -25,8 +25,8 @@ export const createUser = (params: CreateUserParams) => ({
 export const createUserRegistration = () => ({
   username: testUsername,
   password: testPassword,
-  email: "email@testmail.com",
-  phoneNumber: "+358400000000",
+  email: faker.internet.email(),
+  phoneNumber: faker.phone.phoneNumber("+358#########"),
 });
 
 export const createCompany = () => ({
