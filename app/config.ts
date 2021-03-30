@@ -21,10 +21,6 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
   const value = process.env[envKey];
 
   if (!value) {
-    console.warn(
-      `Environment variable ${envKey} not provided, using fallback: ${fallback}`,
-    );
-
     return fallback;
   }
 
@@ -43,10 +39,6 @@ export const getEnvFallback = (envKey: string, fallback: string): string => {
   const value = process.env[envKey];
 
   if (!value) {
-    console.warn(
-      `Environment variable ${envKey} not provided, using fallback: ${fallback}`,
-    );
-
     return fallback;
   }
 
