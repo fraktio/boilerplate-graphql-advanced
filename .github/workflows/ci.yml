@@ -39,6 +39,37 @@ jobs:
 
     - name: Schema validation
       run: yarn validate-schema
+    
+    - name: Migration Latest
+      run: yarn database:migrate:latest
+      env:
+        DATABASE_TYPE: pg
+        DATABASE_HOST: postgres
+        DATABASE_USER: graphql-boilerplate-ci
+        DATABASE_PORT: 5432
+        DATABASE_PASSWORD: graphql-boilerplate-ci
+        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+
+    - name: Seeds
+      run: yarn seed
+      env:
+        DATABASE_TYPE: pg
+        DATABASE_HOST: postgres
+        DATABASE_USER: graphql-boilerplate-ci
+        DATABASE_PORT: 5432
+        DATABASE_PASSWORD: graphql-boilerplate-ci
+        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+
+    - name: Migration Down
+      run: yarn database:migrate:rollback
+      env:
+        DATABASE_TYPE: pg
+        DATABASE_HOST: postgres
+        DATABASE_USER: graphql-boilerplate-ci
+        DATABASE_PORT: 5432
+        DATABASE_PASSWORD: graphql-boilerplate-ci
+        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+
 
     - name: Tests
       run: yarn test
@@ -48,3 +79,4 @@ jobs:
         DATABASE_HOST: postgres
         DATABASE_PASSWORD: graphql-boilerplate-ci
         DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+

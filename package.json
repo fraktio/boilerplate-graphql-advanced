@@ -17,7 +17,7 @@
     "test": "jest --forceExit --detectOpenHandles",
     "typescript-check": "yarn tsc",
     "database:migrate:latest": "knex migrate:latest",
-    "database:migrate:down": "knex migrate:down",
+    "database:migrate:rollback": "knex migrate:rollback --all",
     "seed": "knex seed:run",
     "validate-schema": "ts-node --files -r tsconfig-paths/register ./scripts/validate-schema.ts"
   },

@@ -1,7 +1,10 @@
 import { Knex } from "knex";
 
-import { resetTestDatabase } from "~/tests/testDatabase";
+import { Table } from "../app/database/tables";
 
 export const seed = async (knex: Knex): Promise<void> => {
-  await resetTestDatabase({ knex });
+  await knex(Table.EMPLOYEE).del();
+  await knex(Table.PERSONS).del();
+  await knex(Table.COMPANY).del();
+  await knex(Table.USERS).del();
 };

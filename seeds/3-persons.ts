@@ -4,8 +4,9 @@ import { Knex } from "knex";
 import { PersonTableRow } from "../app/database/person/personDatabase";
 import { createUUID, Table } from "../app/database/tables";
 
+import { doXTimes } from "./1-users";
+
 import { EmailAddress } from "~/generation/scalars";
-import { doXTimes } from "~/tests/testData";
 
 const createPerson = (): Omit<
   PersonTableRow,
