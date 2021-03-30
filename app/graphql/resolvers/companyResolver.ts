@@ -1,5 +1,3 @@
-import { UserInputError } from "apollo-server-express";
-
 import {
   addCompanyHandler,
   companiesHandler,
@@ -11,6 +9,12 @@ import {
 import { Resolvers } from "~/generation/generated";
 
 export const companyResolver: Resolvers = {
+  CompanyOutput: {
+    __resolveType(companyOutputResponse) {
+      return companyOutputResponse.__typename ?? "CompanyFailureNotFound";
+    },
+  },
+
   AddCompanyOutput: {
     __resolveType(registerFailureResponse) {
       return registerFailureResponse.__typename ?? "AddCompanySuccess";
@@ -40,11 +44,23 @@ export const companyResolver: Resolvers = {
     },
 
     async company(_, { input }, { knex, dataLoaders }) {
-      return await companyHandler({
+      const company = await companyHandler({
         knex,
         companyUUID: input.UUID,
         companyDL: dataLoaders.companyDL,
       });
+
+      if (!company) {
+        return {
+          __typename: "CompanyFailureNotFound",
+          success: false,
+        };
+      }
+
+      return {
+        __typename: "CompanySuccess",
+        company,
+      };
     },
   },
 
@@ -63,7 +79,7 @@ export const companyResolver: Resolvers = {
     },
 
     async editCompany(_, { input }, { knex, dataLoaders }) {
-      const company = editCompanyHandler({
+      const company = await editCompanyHandler({
         knex,
         companyUUID: input.UUID,
         company: { name: input.company.name },
@@ -71,7 +87,10 @@ export const companyResolver: Resolvers = {
       });
 
       if (!company) {
-        throw new UserInputError(`Invalid company uuid: ${input.UUID}`);
+        return {
+          __typename: "EditCompanyFailureNotFound",
+          success: false,
+        };
       }
 
       return {

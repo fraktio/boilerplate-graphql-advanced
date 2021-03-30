@@ -1,5 +1,3 @@
-import { UserInputError } from "apollo-server-express";
-
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDS } from "~/database/company/companyDataSource";
 import { CompanyID } from "~/database/company/companyDatabase";
@@ -19,19 +17,12 @@ export const companyHandler = async (params: {
   knex: DBConnection;
   companyUUID: UUID;
   companyDL: CompanyDataLoader;
-}) => {
-  const company = await companyDS.getByUUID({
+}) =>
+  await companyDS.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
     companyDL: params.companyDL,
   });
-
-  if (!company) {
-    throw new UserInputError(`Invalid company UUID: ${params.companyUUID}`);
-  }
-
-  return company;
-};
 
 type AddCompanyHandlerInput = {
   name: string;
@@ -60,10 +51,6 @@ export const editCompanyHandler = async (params: {
     company: { name: params.company.name },
     companyDL: params.companyDL,
   });
-
-  if (!company) {
-    throw new UserInputError(`Invalid company id: ${params.companyUUID}`);
-  }
 
   return company;
 };

@@ -10,9 +10,20 @@ const getCompanyQuery = gql`
   query GetCompany($input: CompanyQuery!) {
     company(input: $input) {
       __typename
+      ...CompanySuccess
+      ...CompanyFailureNotFound
+    }
+  }
+
+  fragment CompanySuccess on CompanySuccess {
+    company {
       UUID
       name
     }
+  }
+
+  fragment CompanyFailureNotFound on CompanyFailureNotFound {
+    success
   }
 `;
 
@@ -44,10 +55,11 @@ const addCompanyMutation = gql`
 `;
 
 const updateCompanyMutation = gql`
-  mutation AddCompany($input: EditCompanyInput!) {
+  mutation EditCompany($input: EditCompanyInput!) {
     editCompany(input: $input) {
       __typename
       ...EditCompanySuccess
+      ...EditCompanyFailureNotFound
     }
   }
 
@@ -57,6 +69,10 @@ const updateCompanyMutation = gql`
       UUID
       name
     }
+  }
+
+  fragment EditCompanyFailureNotFound on EditCompanyFailureNotFound {
+    success
   }
 `;
 
@@ -70,13 +86,12 @@ describe("Graphql / endpoints", () => {
       knex,
       overrides: { name: NAME },
     });
-    const params = {
-      input: { UUID: company.UUID },
-    };
+    const params = { input: { UUID: company.UUID } };
     const { body } = await gqlRequest(app, getCompanyQuery, params);
 
-    expect(body.data.company.__typename).toBe("Company");
-    expect(body.data.company.UUID).toBe(company.UUID);
+    expect(body.data.company.__typename).toBe("CompanySuccess");
+    expect(body.data.company.company.UUID).toBe(company.UUID);
+    expect(body.data.company.company.name).toBe(NAME);
   });
 
   it("company / failure", async () => {
@@ -85,8 +100,7 @@ describe("Graphql / endpoints", () => {
     };
     const { body } = await gqlRequest(app, getCompanyQuery, params);
 
-    expect(body.data).toBe(null);
-    expect(Array.isArray(body.errors)).toBeTruthy();
+    expect(body.data.company.__typename).toBe("CompanyFailureNotFound");
   });
 
   it("companies / success", async () => {
@@ -144,5 +158,19 @@ describe("Graphql / endpoints", () => {
     expect(body.data.editCompany.__typename).toBe("EditCompanySuccess");
     expect(body.data.editCompany.company.name).toBe(newRandomName);
     expect(body.data.editCompany.company.__typename).toBe("Company");
+  });
+
+  it("editCompany / failure", async () => {
+    const params = {
+      input: {
+        UUID: createUUID(),
+        company: {
+          name: "name",
+        },
+      },
+    };
+    const { body } = await gqlRequest(app, updateCompanyMutation, params);
+
+    expect(body.data.editCompany.__typename).toBe("EditCompanyFailureNotFound");
   });
 });

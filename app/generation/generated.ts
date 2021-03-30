@@ -66,7 +66,7 @@ export type Query = {
   __typename?: "Query";
   authenticatedUser: AuthenticatedUserResponse;
   companies: Array<Company>;
-  company: Company;
+  company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
   persons: Array<Maybe<Person>>;
@@ -162,6 +162,18 @@ export type CompanyQuery = {
   UUID: Scalars["UUID"];
 };
 
+export type CompanyOutput = CompanySuccess | CompanyFailureNotFound;
+
+export type CompanySuccess = {
+  __typename?: "CompanySuccess";
+  company: Company;
+};
+
+export type CompanyFailureNotFound = {
+  __typename?: "CompanyFailureNotFound";
+  success: Scalars["Boolean"];
+};
+
 export type AddCompanyInput = {
   company: CompanyInput;
 };
@@ -182,11 +194,16 @@ export type AddCompanySuccess = {
   company: Company;
 };
 
-export type EditCompanyOutput = EditCompanySuccess;
+export type EditCompanyOutput = EditCompanySuccess | EditCompanyFailureNotFound;
 
 export type EditCompanySuccess = {
   __typename?: "EditCompanySuccess";
   company: Company;
+};
+
+export type EditCompanyFailureNotFound = {
+  __typename?: "EditCompanyFailureNotFound";
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type AddEmployeeInput = {
@@ -533,6 +550,13 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   Company: ResolverTypeWrapper<CompanyModel>;
   CompanyQuery: CompanyQuery;
+  CompanyOutput:
+    | ResolversTypes["CompanySuccess"]
+    | ResolversTypes["CompanyFailureNotFound"];
+  CompanySuccess: ResolverTypeWrapper<
+    Omit<CompanySuccess, "company"> & { company: ResolversTypes["Company"] }
+  >;
+  CompanyFailureNotFound: ResolverTypeWrapper<CompanyFailureNotFound>;
   AddCompanyInput: AddCompanyInput;
   EditCompanyInput: EditCompanyInput;
   CompanyInput: CompanyInput;
@@ -540,10 +564,13 @@ export type ResolversTypes = ResolversObject<{
   AddCompanySuccess: ResolverTypeWrapper<
     Omit<AddCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
-  EditCompanyOutput: ResolversTypes["EditCompanySuccess"];
+  EditCompanyOutput:
+    | ResolversTypes["EditCompanySuccess"]
+    | ResolversTypes["EditCompanyFailureNotFound"];
   EditCompanySuccess: ResolverTypeWrapper<
     Omit<EditCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
+  EditCompanyFailureNotFound: ResolverTypeWrapper<EditCompanyFailureNotFound>;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversTypes["AddEmployeeSuccess"];
@@ -628,6 +655,13 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   Company: CompanyModel;
   CompanyQuery: CompanyQuery;
+  CompanyOutput:
+    | ResolversParentTypes["CompanySuccess"]
+    | ResolversParentTypes["CompanyFailureNotFound"];
+  CompanySuccess: Omit<CompanySuccess, "company"> & {
+    company: ResolversParentTypes["Company"];
+  };
+  CompanyFailureNotFound: CompanyFailureNotFound;
   AddCompanyInput: AddCompanyInput;
   EditCompanyInput: EditCompanyInput;
   CompanyInput: CompanyInput;
@@ -635,10 +669,13 @@ export type ResolversParentTypes = ResolversObject<{
   AddCompanySuccess: Omit<AddCompanySuccess, "company"> & {
     company: ResolversParentTypes["Company"];
   };
-  EditCompanyOutput: ResolversParentTypes["EditCompanySuccess"];
+  EditCompanyOutput:
+    | ResolversParentTypes["EditCompanySuccess"]
+    | ResolversParentTypes["EditCompanyFailureNotFound"];
   EditCompanySuccess: Omit<EditCompanySuccess, "company"> & {
     company: ResolversParentTypes["Company"];
   };
+  EditCompanyFailureNotFound: EditCompanyFailureNotFound;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversParentTypes["AddEmployeeSuccess"];
@@ -748,7 +785,7 @@ export type QueryResolvers<
     ContextType
   >;
   company?: Resolver<
-    ResolversTypes["Company"],
+    ResolversTypes["CompanyOutput"],
     ParentType,
     ContextType,
     RequireFields<QueryCompanyArgs, "input">
@@ -866,6 +903,33 @@ export type CompanyResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type CompanyOutputResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["CompanyOutput"] = ResolversParentTypes["CompanyOutput"]
+> = ResolversObject<{
+  __resolveType: TypeResolveFn<
+    "CompanySuccess" | "CompanyFailureNotFound",
+    ParentType,
+    ContextType
+  >;
+}>;
+
+export type CompanySuccessResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["CompanySuccess"] = ResolversParentTypes["CompanySuccess"]
+> = ResolversObject<{
+  company?: Resolver<ResolversTypes["Company"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CompanyFailureNotFoundResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["CompanyFailureNotFound"] = ResolversParentTypes["CompanyFailureNotFound"]
+> = ResolversObject<{
+  success?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type AddCompanyOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["AddCompanyOutput"] = ResolversParentTypes["AddCompanyOutput"]
@@ -885,7 +949,11 @@ export type EditCompanyOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["EditCompanyOutput"] = ResolversParentTypes["EditCompanyOutput"]
 > = ResolversObject<{
-  __resolveType: TypeResolveFn<"EditCompanySuccess", ParentType, ContextType>;
+  __resolveType: TypeResolveFn<
+    "EditCompanySuccess" | "EditCompanyFailureNotFound",
+    ParentType,
+    ContextType
+  >;
 }>;
 
 export type EditCompanySuccessResolvers<
@@ -893,6 +961,14 @@ export type EditCompanySuccessResolvers<
   ParentType extends ResolversParentTypes["EditCompanySuccess"] = ResolversParentTypes["EditCompanySuccess"]
 > = ResolversObject<{
   company?: Resolver<ResolversTypes["Company"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type EditCompanyFailureNotFoundResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["EditCompanyFailureNotFound"] = ResolversParentTypes["EditCompanyFailureNotFound"]
+> = ResolversObject<{
+  success?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1185,10 +1261,14 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   LoginUserResponse?: LoginUserResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
+  CompanyOutput?: CompanyOutputResolvers<ContextType>;
+  CompanySuccess?: CompanySuccessResolvers<ContextType>;
+  CompanyFailureNotFound?: CompanyFailureNotFoundResolvers<ContextType>;
   AddCompanyOutput?: AddCompanyOutputResolvers<ContextType>;
   AddCompanySuccess?: AddCompanySuccessResolvers<ContextType>;
   EditCompanyOutput?: EditCompanyOutputResolvers<ContextType>;
   EditCompanySuccess?: EditCompanySuccessResolvers<ContextType>;
+  EditCompanyFailureNotFound?: EditCompanyFailureNotFoundResolvers<ContextType>;
   AddEmployeeOutput?: AddEmployeeOutputResolvers<ContextType>;
   AddEmployeeSuccess?: AddEmployeeSuccessResolvers<ContextType>;
   RemoveEmployeeOutput?: RemoveEmployeeOutputResolvers<ContextType>;

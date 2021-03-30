@@ -9,9 +9,19 @@ input CompanyQuery {
   UUID: UUID!
 }
 
+union CompanyOutput = CompanySuccess | CompanyFailureNotFound
+
+type CompanySuccess {
+  company: Company!
+}
+
+type CompanyFailureNotFound {
+  success: Boolean!
+}
+
 type Query {
   companies: [Company!]!
-  company(input: CompanyQuery!): Company!
+  company(input: CompanyQuery!): CompanyOutput!
 }
 
 type Mutation {
@@ -39,8 +49,12 @@ type AddCompanySuccess {
   company: Company!
 }
 
-union EditCompanyOutput = EditCompanySuccess #| possible other failures
+union EditCompanyOutput = EditCompanySuccess | EditCompanyFailureNotFound
 
 type EditCompanySuccess {
   company: Company!
+}
+
+type EditCompanyFailureNotFound {
+  success: Boolean
 }
