@@ -1,10 +1,10 @@
+import { createUUID } from "~/database/tables";
 import {
   formatUserRow,
   UserID,
   UserTable,
   UserTableRow,
 } from "~/database/user/userDatabase";
-import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 
 const datetimeString =
@@ -12,7 +12,7 @@ const datetimeString =
 
 export const dbUserMockTableRow: UserTableRow = {
   id: (2 as unknown) as UserID,
-  uuid: ("valid-uuid" as unknown) as UUID,
+  uuid: createUUID(),
   username: "username",
   email: ("email" as unknown) as EmailAddress,
   phoneNumber: "valid-phonenumber",
