@@ -40,7 +40,7 @@ type Underage implements Person {
 }
 
 type Query {
-  persons(filter: PersonFilter): [Person]!  @authenticated
+  persons(filters: PersonFilterOperation): [Person]!  @authenticated
   person(input: PersonInput!): Person! @authenticated
 }
 
@@ -86,6 +86,19 @@ type EditPersonSuccess {
   person: Person!
 }
 
+input PersonFilterOperation {
+  operator: FilterOperator!
+  filterFields: [PersonFilterField!]!
+}
+
+input PersonFilterField {
+  filter: PersonFilter!
+  filterOperation: PersonFilterOperation
+}
+
 input PersonFilter {
   birthdayFilter: DateFilter
+  nameFilter: StringFilter
+  companyNameFilter: StringFilter
 }
+

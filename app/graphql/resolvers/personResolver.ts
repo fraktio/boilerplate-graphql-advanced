@@ -57,8 +57,12 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, __, { knex, dataLoaders }) {
-      return await personsHandler({ knex, personDL: dataLoaders.personDL });
+    async persons(_, { filters }, { knex, dataLoaders }) {
+      return await personsHandler({
+        knex,
+        personDL: dataLoaders.personDL,
+        filters: filters || undefined,
+      });
     },
   },
 

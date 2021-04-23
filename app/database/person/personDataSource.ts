@@ -11,6 +11,7 @@ import {
   PersonTable,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
+import { PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const personDS = {
@@ -38,7 +39,11 @@ export const personDS = {
     return person;
   },
 
-  async getAll(params: { knex: DBConnection; personDL: PersonDataLoader }) {
+  async getAll(params: {
+    knex: DBConnection;
+    personDL: PersonDataLoader;
+    filters?: PersonFilterOperation;
+  }) {
     const persons = await personDB.getAll(params);
 
     persons.forEach((person) => {

@@ -1,10 +1,21 @@
 import { FinnishSSN } from "finnish-ssn";
+import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
+import {
+  createDateFilterSql,
+  createTimeFilterSql,
+  InvalidFilterCountError,
+} from "../filters";
+
 import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
-import { Maybe } from "~/generation/generated";
+import {
+  Maybe,
+  PersonFilterOperation,
+  PersonFilter,
+} from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,
@@ -103,8 +114,13 @@ export const personDB = {
     return person ? formatPersonRow(person) : null;
   },
 
-  async getAll(params: { knex: DBConnection }): Promise<PersonTable[]> {
-    const persons = await params.knex<PersonTableRow>(Table.PERSONS);
+  async getAll(params: {
+    knex: DBConnection;
+    filters?: PersonFilterOperation;
+  }): Promise<PersonTable[]> {
+    const persons = await params
+      .knex<PersonTableRow>(Table.PERSONS)
+      .andWhere((qb) => addPersonFilters(qb, params.filters));
 
     return persons.map(formatPersonRow);
   },
@@ -169,3 +185,59 @@ export const personDB = {
     return personRows.map(formatPersonRow);
   },
 };
+
+export function addPersonFilters(
+  queryBuilder: Knex.QueryBuilder,
+  filters?: PersonFilterOperation,
+): Knex.QueryBuilder {
+  if (!filters) {
+    return queryBuilder;
+  }
+
+  filters.filterFields.map((filterField) => {
+    const personFilter = filterField.filter;
+
+    enforceOneFilter(personFilter);
+
+    for (const [filterName, filter] of Object.entries(personFilter)) {
+      if (!filter) {
+        continue;
+      }
+      if (filter === "PersonFilter") {
+        continue;
+      }
+
+      const fieldName = personFilterNameFieldMap(filterName);
+
+      if (filter) {
+        createDateFilterSql(queryBuilder, fieldName, filter);
+      }
+      /*
+      if (filter.timeFilter) {
+        createTimeFilterSql(queryBuilder, fieldName, filter.timeFilter);
+      } */
+    }
+
+    return true;
+  });
+
+  return queryBuilder;
+}
+
+function personFilterNameFieldMap(name: string): string {
+  switch (name) {
+    case "created_at":
+      return `${Table.PERSONS}.created_at`;
+  }
+
+  throw Error(`Filter ${name} not found in person filter field map!`);
+}
+
+function enforceOneFilter(filter: PersonFilter) {
+  const keys = Object.keys(filter);
+  if (keys.length !== 1) {
+    throw new InvalidFilterCountError(`Invalid filter count ${keys.length}`);
+  }
+
+  return filter;
+}
