@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { CookiesConfig } from "~/config";
+import { CookiesConfig } from "~/config/cookiesConfig";
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";

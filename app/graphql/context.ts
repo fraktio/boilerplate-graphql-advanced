@@ -1,7 +1,7 @@
 import Logger from "bunyan";
 import { Request, Response } from "express";
 
-import { Config } from "~/config";
+import { Config } from "~/config/config";
 import { DataSourcesInContext } from "~/dataSources";
 import { DBConnection } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";

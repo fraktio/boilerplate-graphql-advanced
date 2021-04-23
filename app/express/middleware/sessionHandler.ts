@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-import { CookiesConfig } from "~/config";
+import { CookiesConfig } from "~/config/cookiesConfig";
 import { DBConnection } from "~/database/connection";
 import { userDB } from "~/database/user/userDatabase";
 import { sessionUtils } from "~/utils/sessionUtils";
