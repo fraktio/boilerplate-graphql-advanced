@@ -1,0 +1,38 @@
+Type: AWS::RDS::DBCluster
+UpdateReplacePolicy: ${self:custom.dbUpdateReplacePolicy.${opt:stage, self:custom.defaultStage}}
+DeletionPolicy: ${self:custom.dbDeletionPolicy.${opt:stage, self:custom.defaultStage}}
+Properties:
+  MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:username}}' ]]
+  MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref DatabaseSecret, ':SecretString:password}}' ]]
+  DBSubnetGroupName:
+    Ref: ServerlessSubnetGroup
+  Engine: aurora-postgresql
+  EngineMode: provisioned
+  EngineVersion: "12.4"
+  DBClusterIdentifier: ${self:custom.dbClusterIdentifierName}
+  DatabaseName: ${self:custom.dbName}
+  BackupRetentionPeriod: ${self:custom.dbBackupRetentionPeriod.${opt:stage, self:custom.defaultStage}}
+  DeletionProtection: ${self:custom.dbDeletionProtection.${opt:stage, self:custom.defaultStage}}
+  DBClusterParameterGroupName:
+    Ref: AuroraRDSClusterParameter
+  VpcSecurityGroupIds:
+  - !Ref 'ServerlessSecurityGroup'
+
+DatabaseSecret:
+  Type: AWS::SecretsManager::Secret
+  Properties:
+    Name: ${self:custom.rds.clusterDatabaseSecretName}
+    Description: 'This is a Secrets Manager secret for an RDS DB instance'
+    GenerateSecretString:
+      SecretStringTemplate: '{"username": "${self:custom.dbUserName}"}'
+      GenerateStringKey: 'password'
+      PasswordLength: 30
+      ExcludeCharacters: '"@/\'
+
+
+SecretRDSInstanceAttachment:
+  Type: AWS::SecretsManager::SecretTargetAttachment
+  Properties:
+    SecretId: !Ref 'DatabaseSecret'
+    TargetId: !Ref 'AuroraRDSCluster'
+    TargetType: AWS::RDS::DBCluster

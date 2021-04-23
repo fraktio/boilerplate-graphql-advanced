@@ -1,0 +1,13 @@
+Type: AWS::EC2::VPC
+Properties:
+  CidrBlock: !Sub '10.0.0.0/16'
+  EnableDnsSupport: true
+  EnableDnsHostnames: true
+  InstanceTenancy: default
+  Tags: 
+    - 
+      Key: "Name"
+      Value: !Join
+                 - '_'
+                 - - ${self:provider.stackName}
+                   - 'ServerlessVPC'
