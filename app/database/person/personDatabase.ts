@@ -6,7 +6,15 @@ import { DBConnection } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
-import { EmailAddress } from "~/generation/scalars";
+import {
+  CountryCode,
+  EmailAddress,
+  FinnishPersonalIdentityCode,
+} from "~/generation/scalars";
+import {
+  asCountryCode,
+  asFinnishPersonalIdentityCode,
+} from "~/validation/converters";
 
 export interface PersonID extends ID {
   __PersonID: never;
@@ -23,7 +31,7 @@ export type PersonTableRow = Readonly<{
   createdAt: Date;
   updatedAt: Date | null;
   nationality: string;
-  personalIdentityCode: FinnishSSN;
+  personalIdentityCode: string;
 }>;
 
 export type PersonTable = {
@@ -38,6 +46,8 @@ export type PersonTable = {
     createdAt: DateTime;
     updatedAt: DateTime | null;
   };
+  nationality: string;
+  personalIdentityCode: FinnishSSN;
 };
 
 export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
@@ -48,6 +58,8 @@ export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
   phone: parsePhoneNumber(row.phone),
   email: row.email,
   birthday: DateTime.fromJSDate(row.birthday),
+  nationality: asCountryCode(row.nationality),
+  personalIdentityCode: asFinnishPersonalIdentityCode(row.personalIdentityCode),
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
     updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
@@ -60,6 +72,8 @@ export type CreatePersonOptions = {
   phone: PhoneNumber | null;
   email: EmailAddress;
   birthday: DateTime;
+  nationality: CountryCode;
+  personalIndentityCode: FinnishPersonalIdentityCode;
 };
 
 export type UpdatePersonOptions = CreatePersonOptions;
