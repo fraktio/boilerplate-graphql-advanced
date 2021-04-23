@@ -1,6 +1,8 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
-import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
+import { PhoneNumber } from "libphonenumber-js";
+
+import { validatePhoneNumber } from "~/validation/validators/phoneNumberValidator";
 
 const ERROR_MESSAGE =
   "Phone must be a valid a valid phone number in international format";
@@ -14,13 +16,12 @@ const formatDateToString = (phoneNumber: PhoneNumber) => {
 };
 
 const parseDateFromString = (value: string): PhoneNumber => {
-  const parsed = parsePhoneNumber(value);
+  const result = validatePhoneNumber(value);
 
-  if (!parsed.isValid()) {
-    throw new ValidationError(ERROR_MESSAGE);
+  if (result.success) {
+    return result.value;
   }
-
-  return parsed;
+  throw new ValidationError(ERROR_MESSAGE);
 };
 
 const parseLiteralPhoneNumber = (valueNode: ValueNode): PhoneNumber => {

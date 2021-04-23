@@ -80,7 +80,7 @@ input EditPersonInput {
   person: AddPersonPersonInput!
 }
 
-union EditPersonOutput = EditPersonSuccess # | possible failure
+union EditPersonOutput = EditPersonSuccess 
 
 type EditPersonSuccess {
   person: Person!
