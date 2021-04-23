@@ -18,6 +18,7 @@ const createPerson = (): Omit<
   phone: faker.phone.phoneNumber("+35840#######"),
   email: (faker.internet.email() as unknown) as EmailAddress,
   birthday: faker.date.past(),
+  nationality: faker.address.countryCode,
 });
 
 export async function seed(knex: Knex): Promise<void> {

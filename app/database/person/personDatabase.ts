@@ -1,3 +1,4 @@
+import { FinnishSSN } from "finnish-ssn";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
@@ -21,6 +22,8 @@ export type PersonTableRow = Readonly<{
   birthday: Date;
   createdAt: Date;
   updatedAt: Date | null;
+  nationality: string;
+  personalIdentityCode: FinnishSSN;
 }>;
 
 export type PersonTable = {
