@@ -1,7 +1,7 @@
 import { ApolloServerPlugin } from "apollo-server-plugin-base";
 import bunyan from "bunyan";
 
-import { Config } from "~/config";
+import { Config } from "~/config/config";
 import { Context } from "~/graphql/context";
 
 export const apolloServerLogger: ApolloServerPlugin<Context> = {
@@ -35,7 +35,7 @@ export const createLogger = (opts: { config: Config }) =>
   bunyan.createLogger({
     name: "graphql-boilerplate-api",
     streams: [
-      ...(opts.config.stdoutLogging
+      ...(opts.config.env.stdoutLogging
         ? [{ level: "info" as const, stream: process.stdout }]
         : []),
     ],

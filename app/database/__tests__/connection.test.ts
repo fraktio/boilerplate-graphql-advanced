@@ -1,6 +1,6 @@
 import { getConnection } from "../connection";
 
-import { DatabaseConfig } from "~/config";
+import { DatabaseConfig } from "~/config/databaseConfig";
 
 describe("database tests / connection", () => {
   it("createUUID", async () => {

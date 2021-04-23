@@ -1,6 +1,6 @@
 import knex, { Knex } from "knex";
 
-import { DatabaseConfig } from "~/config";
+import { DatabaseConfig } from "~/config/databaseConfig";
 
 export type DBConnection = Knex;
 

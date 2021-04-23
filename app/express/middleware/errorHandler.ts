@@ -7,7 +7,7 @@ import {
 import { ErrorRequestHandler } from "express";
 import { GraphQLError, GraphQLFormattedError } from "graphql";
 
-import { Config } from "~/config";
+import { Config } from "~/config/config";
 
 export const errorHandler: ErrorRequestHandler = (
   err,
@@ -28,7 +28,7 @@ export const errorHandler: ErrorRequestHandler = (
 export const apolloErrorHandler = (opts: { config: Config }) => (
   error: GraphQLError,
 ): GraphQLFormattedError => {
-  if (!opts.config.isProduction) {
+  if (!opts.config.env.isProduction) {
     return error;
   }
 

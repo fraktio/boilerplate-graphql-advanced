@@ -1,7 +1,7 @@
 import { ApolloServer, ApolloServerExpressConfig } from "apollo-server-express";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
 
-import { Config } from "~/config";
+import { Config } from "~/config/config";
 import { createDataSources } from "~/dataSources";
 import { apolloErrorHandler } from "~/express/middleware/errorHandler";
 import { createExecutableSchema } from "~/graphql/schema";
@@ -18,9 +18,9 @@ export const createApolloServer = (opts: CreateServerOpts) =>
     schema: createExecutableSchema(),
     formatError: apolloErrorHandler({ config: opts.config }),
     plugins: [apolloServerLogger, responseCachePlugin()],
-    introspection: !opts.config.isProduction,
+    introspection: !opts.config.env.isProduction,
     dataSources: createDataSources,
-    playground: opts.config.isProduction
+    playground: opts.config.env.isProduction
       ? false
       : { settings: { "request.credentials": "include" } },
     ...opts,

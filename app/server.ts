@@ -1,6 +1,6 @@
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-import { Config } from "~/config";
+import { Config } from "~/config/config";
 import { createKnex } from "~/database/connection";
 import { createExpress } from "~/express/express";
 import { errorHandler } from "~/express/middleware/errorHandler";
@@ -26,7 +26,7 @@ export const createServer = ({ config }: { config: Config }) => {
 
   apolloServer.applyMiddleware({ app, cors: false });
 
-  if (!config.isProduction) {
+  if (!config.env.isProduction) {
     // Used for proxy for cookies to work on certain endpoints
     app.use(
       createProxyMiddleware({
@@ -36,7 +36,7 @@ export const createServer = ({ config }: { config: Config }) => {
     );
   }
 
-  if (config.isProduction) {
+  if (config.env.isProduction) {
     app.use(errorHandler);
   }
 

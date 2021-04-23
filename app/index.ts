@@ -1,12 +1,12 @@
-import { getConfigFromEnv } from "~/config";
+import { createConfig } from "~/config/config";
 import { createServer } from "~/server";
 
-const config = getConfigFromEnv();
+const config = createConfig();
 
 const { app, logger, knex } = createServer({ config });
 
-const server = app.listen({ port: config.apiPort }, () => {
-  logger.info(`🚀 Server ready, listening on port ${config.apiPort}`);
+const server = app.listen({ port: config.env.apiPort }, () => {
+  logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
 });
 
 process.on("SIGINT", () => {
