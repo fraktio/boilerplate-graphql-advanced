@@ -25,7 +25,7 @@ import {
   DATABASE_TYPE,
   DATABASE_USER,
   getEnv,
-} from "./variables";
+} from "./variablesConfig";
 
 export const ConfigDecoder = t.interface({
   env: EnvConfigDecoder,
