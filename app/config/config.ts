@@ -1,5 +1,5 @@
 /* eslint-disable no-process-env */
-import { isRight } from "fp-ts/lib/Either";
+import { isLeft } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import reporter from "io-ts-reporters";
 
@@ -7,28 +7,27 @@ import { CookiesConfigDecoder } from "./cookiesConfig";
 import { DatabaseConfigDecoder } from "./databaseConfig";
 import { EnvConfigDecoder } from "./envConfig";
 import { NumberFactConfigDecoder } from "./numberFactConfig";
+import {
+  ACCESS_TOKEN_AGE_SECONDS,
+  API_CORS_ENDPOINT,
+  API_PORT,
+  NUMBER_API_MOCK_TOKEN,
+  PRODUCTION,
+  REFRESH_TOKEN_AGE_SECONDS,
+  STDOUT_LOGGING,
+  TOKEN_DOMAIN,
+  TOKEN_PATH,
+  TOKEN_SECRET,
+  DATABASE_DATABASE_NAME,
+  DATABASE_HOST,
+  DATABASE_PASSWORD,
+  DATABASE_PORT,
+  DATABASE_TYPE,
+  DATABASE_USER,
+  getEnv,
+} from "./variables";
 
-export const API_PORT = "API_PORT";
-export const STDOUT_LOGGING = "STDOUT_LOGGING";
-export const PRODUCTION = "PRODUCTION";
-export const API_CORS_ENDPOINT = "API_CORS_ENDPOINT";
-export const TOKEN_PATH = "TOKEN_PATH";
-export const TOKEN_DOMAIN = "TOKEN_DOMAIN";
-export const TOKEN_SECRET = "TOKEN_SECRET";
-export const ACCESS_TOKEN_AGE_SECONDS = "ACCESS_TOKEN_AGE_SECONDS";
-export const REFRESH_TOKEN_AGE_SECONDS = "REFRESH_TOKEN_AGE_SECONDS";
-export const DATABASE_TYPE = "DATABASE_TYPE";
-export const DATABASE_HOST = "DATABASE_HOST";
-export const DATABASE_USER = "DATABASE_USER";
-export const DATABASE_PORT = "DATABASE_PORT";
-export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
-export const DATABASE_DATABASE_NAME = "DATABASE_DATABASE_NAME";
-export const NUMBER_API_MOCK_TOKEN = "NUMBER_API_MOCK_TOKEN";
-
-export const getEnv = (env: string): string | undefined =>
-  process.env[env] || undefined; // prevent empty strings
-
-export const ConfigDecoder = t.type({
+export const ConfigDecoder = t.interface({
   env: EnvConfigDecoder,
   cookies: CookiesConfigDecoder,
   database: DatabaseConfigDecoder,
@@ -40,7 +39,7 @@ export type Config = t.TypeOf<typeof ConfigDecoder>;
 export const validateConfig = (config: unknown) => {
   const validated = ConfigDecoder.decode(config);
 
-  if (!isRight(validated)) {
+  if (isLeft(validated)) {
     const errors = reporter.report(validated);
     const message = `\n ${errors.join(
       "\n",

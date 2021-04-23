@@ -1,17 +1,16 @@
 import SSM from "aws-sdk/clients/ssm";
 
+import { Config, validateConfig } from "./config";
 import {
   ACCESS_TOKEN_AGE_SECONDS,
   API_CORS_ENDPOINT,
   API_PORT,
-  Config,
   DATABASE_DATABASE_NAME,
   DATABASE_HOST,
   DATABASE_PASSWORD,
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
-  getEnv,
   NUMBER_API_MOCK_TOKEN,
   PRODUCTION,
   REFRESH_TOKEN_AGE_SECONDS,
@@ -19,8 +18,8 @@ import {
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
-  validateConfig,
-} from "./config";
+  getEnv,
+} from "./variables";
 
 const getParams = async (ssm: SSM) => {
   try {

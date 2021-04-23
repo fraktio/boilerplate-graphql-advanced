@@ -13,7 +13,7 @@ import {
   DATABASE_TYPE,
   DATABASE_USER,
   getEnv,
-} from "./config";
+} from "./variables";
 
 export const DatabaseConfigDecoder = t.type({
   type: t.string,
