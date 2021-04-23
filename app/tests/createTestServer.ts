@@ -1,4 +1,4 @@
-import { createTestConfig } from "~/config/tests";
+import { createTestConfig } from "~/config/testConfig";
 import { createServer } from "~/server";
 
 export const createTestServer = () =>

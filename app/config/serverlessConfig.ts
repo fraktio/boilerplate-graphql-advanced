@@ -19,7 +19,7 @@ import {
   TOKEN_PATH,
   TOKEN_SECRET,
   getEnv,
-} from "./variables";
+} from "./variablesConfig";
 
 const getParams = async (ssm: SSM) => {
   try {
@@ -43,7 +43,7 @@ const getParams = async (ssm: SSM) => {
   }
 };
 
-export const createConfig = async (): Promise<Config> => {
+export const createServerlessConfig = async (): Promise<Config> => {
   // eslint-disable-next-line no-process-env
   const ssm = new SSM({ region: process.env.AWS_REGION });
 

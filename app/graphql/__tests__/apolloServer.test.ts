@@ -1,6 +1,6 @@
 import { createApolloServer } from "../apolloServer";
 
-import { createTestConfig } from "~/config/tests";
+import { createTestConfig } from "~/config/testConfig";
 
 const config = createTestConfig();
 
