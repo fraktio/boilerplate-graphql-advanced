@@ -1,5 +1,7 @@
 import faker from "faker";
+import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
+import { CountryCode } from "libphonenumber-js";
 
 import { PersonTableRow } from "../app/database/person/personDatabase";
 import { createUUID, Table } from "../app/database/tables";
@@ -18,6 +20,13 @@ const createPerson = (): Omit<
   phone: faker.phone.phoneNumber("+35840#######"),
   email: (faker.internet.email() as unknown) as EmailAddress,
   birthday: faker.date.past(),
+  nationality: (faker.address.countryCode() as unknown) as CountryCode,
+  personalIdentityCode: FinnishSSN.createWithAge(
+    faker.random.number({
+      min: 15,
+      max: 65,
+    }),
+  ),
 });
 
 export async function seed(knex: Knex): Promise<void> {
