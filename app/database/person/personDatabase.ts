@@ -4,17 +4,18 @@ import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import {
-  createDateFilterSql,
-  createTimeFilterSql,
+  applyDateFilters,
+  applyStringFilters,
   InvalidFilterCountError,
 } from "../filters";
 
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table } from "~/database/tables";
+import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
   Maybe,
   PersonFilterOperation,
   PersonFilter,
+  FilterOperator,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
@@ -170,8 +171,6 @@ export const personDB = {
     if (persons.length === 0) {
       return null;
     }
-
-    return formatPersonRow(persons[0]);
   },
 
   async getPersonsByIds(params: {
@@ -188,54 +187,60 @@ export const personDB = {
 
 export function addPersonFilters(
   queryBuilder: Knex.QueryBuilder,
-  filters?: PersonFilterOperation,
+  filterOperation?: PersonFilterOperation,
 ): Knex.QueryBuilder {
-  if (!filters) {
+  if (!filterOperation) {
     return queryBuilder;
   }
 
-  filters.filterFields.map((filterField) => {
-    const personFilter = filterField.filter;
+  if (!filterOperation.filters) {
+    return queryBuilder;
+  }
 
-    enforceOneFilter(personFilter);
-
-    for (const [filterName, filter] of Object.entries(personFilter)) {
-      if (!filter) {
-        continue;
-      }
-      if (filter === "PersonFilter") {
-        continue;
-      }
-
-      const fieldName = personFilterNameFieldMap(filterName);
-
-      if (filter) {
-        createDateFilterSql(queryBuilder, fieldName, filter);
-      }
-      /*
-      if (filter.timeFilter) {
-        createTimeFilterSql(queryBuilder, fieldName, filter.timeFilter);
-      } */
-    }
-
-    return true;
+  filterOperation.filters.forEach((filterField) => {
+    getFilter(queryBuilder, filterOperation.operator, filterField);
   });
+
+  const ops = filterOperation.filterOperation;
+  if (ops) {
+    if (filterOperation.operator === FilterOperator.Or) {
+      queryBuilder.orWhere((qb) => addPersonFilters(qb, ops));
+    } else {
+      queryBuilder.andWhere((qb) => addPersonFilters(qb, ops));
+    }
+  }
 
   return queryBuilder;
 }
 
-function personFilterNameFieldMap(name: string): string {
-  switch (name) {
-    case "created_at":
-      return `${Table.PERSONS}.created_at`;
+function getFilter(
+  queryBuilder: Knex.QueryBuilder,
+  filterOperator: FilterOperator,
+  personFilter: PersonFilter,
+): Knex.QueryBuilder {
+  if (personFilter.birthdayFilter) {
+    applyDateFilters({
+      queryBuilder,
+      filterOperator,
+      field: tableColumn(Table.PERSONS, "birthday"),
+      dateFilter: personFilter.birthdayFilter,
+    });
+  }
+  if (personFilter.nameFilter) {
+    return applyStringFilters({
+      queryBuilder,
+      filterOperator,
+      field: tableColumn(Table.PERSONS, "firstName"),
+      stringFilter: personFilter.nameFilter,
+    });
   }
 
-  throw Error(`Filter ${name} not found in person filter field map!`);
+  return queryBuilder;
 }
 
-function enforceOneFilter(filter: PersonFilter) {
+export function enforceOneFilter(filter: PersonFilter) {
   const keys = Object.keys(filter);
-  if (keys.length !== 1) {
+  if (keys.length === 0) {
     throw new InvalidFilterCountError(`Invalid filter count ${keys.length}`);
   }
 

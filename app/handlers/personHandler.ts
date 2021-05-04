@@ -1,5 +1,3 @@
-import { Maybe } from "graphql/jsutils/Maybe";
-
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDS } from "~/database/company/companyDataSource";
 import { DBConnection } from "~/database/connection";

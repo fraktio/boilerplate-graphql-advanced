@@ -312,6 +312,7 @@ export type Person = {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["String"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -325,6 +326,7 @@ export type Adult = Person & {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["String"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
   employers: Array<Company>;
@@ -339,6 +341,7 @@ export type Underage = Person & {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["String"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -387,16 +390,11 @@ export type EditPersonSuccess = {
 
 export type PersonFilterOperation = {
   operator: FilterOperator;
-  filterFields: Array<PersonFilterField>;
-};
-
-export type PersonFilterField = {
-  filter: PersonFilter;
+  filters?: Maybe<Array<PersonFilter>>;
   filterOperation?: Maybe<PersonFilterOperation>;
 };
 
 export type PersonFilter = {
-  __typename?: "PersonFilter";
   birthdayFilter?: Maybe<DateFilter>;
   nameFilter?: Maybe<StringFilter>;
   companyNameFilter?: Maybe<StringFilter>;
@@ -648,8 +646,7 @@ export type ResolversTypes = ResolversObject<{
     Omit<EditPersonSuccess, "person"> & { person: ResolversTypes["Person"] }
   >;
   PersonFilterOperation: PersonFilterOperation;
-  PersonFilterField: PersonFilterField;
-  PersonFilter: ResolverTypeWrapper<PersonFilter>;
+  PersonFilter: PersonFilter;
   RegisterSuccess: ResolverTypeWrapper<RegisterSuccess>;
   RegisterFailure: ResolverTypeWrapper<RegisterFailure>;
   RegisterFailureAlreadyExists: ResolverTypeWrapper<RegisterFailureAlreadyExists>;
@@ -753,7 +750,6 @@ export type ResolversParentTypes = ResolversObject<{
     person: ResolversParentTypes["Person"];
   };
   PersonFilterOperation: PersonFilterOperation;
-  PersonFilterField: PersonFilterField;
   PersonFilter: PersonFilter;
   RegisterSuccess: RegisterSuccess;
   RegisterFailure: RegisterFailure;
@@ -1148,6 +1144,7 @@ export type PersonResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
 }>;
@@ -1165,6 +1162,7 @@ export type AdultResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   employers?: Resolver<
@@ -1188,6 +1186,7 @@ export type UnderageResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1236,28 +1235,6 @@ export type EditPersonSuccessResolvers<
   ParentType extends ResolversParentTypes["EditPersonSuccess"] = ResolversParentTypes["EditPersonSuccess"]
 > = ResolversObject<{
   person?: Resolver<ResolversTypes["Person"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type PersonFilterResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["PersonFilter"] = ResolversParentTypes["PersonFilter"]
-> = ResolversObject<{
-  birthdayFilter?: Resolver<
-    Maybe<ResolversTypes["DateFilter"]>,
-    ParentType,
-    ContextType
-  >;
-  nameFilter?: Resolver<
-    Maybe<ResolversTypes["StringFilter"]>,
-    ParentType,
-    ContextType
-  >;
-  companyNameFilter?: Resolver<
-    Maybe<ResolversTypes["StringFilter"]>,
-    ParentType,
-    ContextType
-  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1347,7 +1324,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   AddPersonSuccess?: AddPersonSuccessResolvers<ContextType>;
   EditPersonOutput?: EditPersonOutputResolvers<ContextType>;
   EditPersonSuccess?: EditPersonSuccessResolvers<ContextType>;
-  PersonFilter?: PersonFilterResolvers<ContextType>;
   RegisterSuccess?: RegisterSuccessResolvers<ContextType>;
   RegisterFailure?: RegisterFailureResolvers<ContextType>;
   RegisterFailureAlreadyExists?: RegisterFailureAlreadyExistsResolvers<ContextType>;

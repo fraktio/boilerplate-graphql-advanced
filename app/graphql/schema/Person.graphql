@@ -6,6 +6,7 @@ interface Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
+  nationality: String!
   birthday: Date!
   timestamp: Timestamp!
 }
@@ -20,6 +21,7 @@ type Adult implements Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
+  nationality: String!
   birthday: Date!
   timestamp: Timestamp!
   employers: [Company!]!
@@ -35,12 +37,14 @@ type Underage implements Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
+  nationality: String!
   birthday: Date!
   timestamp: Timestamp!
+
 }
 
 type Query {
-  persons(filters: PersonFilterOperation): [Person]!  @authenticated
+  persons(filters: PersonFilterOperation): [Person]!  
   person(input: PersonInput!): Person! @authenticated
 }
 
@@ -88,11 +92,7 @@ type EditPersonSuccess {
 
 input PersonFilterOperation {
   operator: FilterOperator!
-  filterFields: [PersonFilterField!]!
-}
-
-input PersonFilterField {
-  filter: PersonFilter!
+  filters: [PersonFilter!]
   filterOperation: PersonFilterOperation
 }
 
@@ -101,4 +101,3 @@ input PersonFilter {
   nameFilter: StringFilter
   companyNameFilter: StringFilter
 }
-

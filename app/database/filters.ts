@@ -1,7 +1,13 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import { Knex } from "knex";
+import { DateTime } from "luxon";
 
-import { DateFilter, TimeFilter } from "~/generation/generated";
+import {
+  DateFilter,
+  TimeFilter,
+  StringFilter,
+  FilterOperator,
+} from "~/generation/generated";
 
 export class InvalidFilterCountError extends Error {}
 
@@ -16,85 +22,78 @@ export type Filter = Readonly<{
   dateFilter?: Maybe<DateFilter>;
 }>;
 
-export function addFilters(
-  queryBuilder: Knex.QueryBuilder,
-  filters: Maybe<Filters>,
-  fieldMap: FieldMap,
-): Knex.QueryBuilder {
-  if (!filters) {
-    return queryBuilder;
-  }
+const filterOperatorMap = {
+  equal: "=",
+  notEqual: "<>",
+  lessThan: "<",
+  lessOrEqualThan: "<=",
+  greaterThan: ">",
+  greaterOrEqualThan: ">=",
+};
 
-  for (const [fieldNameIndex, filter] of Object.entries(filters)) {
-    if (!filter) {
-      continue;
+export function createTimeFilterSql(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  field: string;
+  timeFilter: TimeFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, field, timeFilter } = input;
+  const operatorNames = Object.keys(timeFilter);
+
+  operatorNames.forEach((operatorName) => {
+    const operator = filterOperatorMap[operatorName];
+
+    if (filterOperator === FilterOperator.Or) {
+      queryBuilder.orWhere(field, operator, timeFilter[operatorName]);
+    } else {
+      queryBuilder.andWhere(field, operator, timeFilter[operatorName]);
     }
-    const fieldName = fieldMap(fieldNameIndex);
-    if (filter.dateFilter) {
-      createDateFilterSql(queryBuilder, fieldName, filter.dateFilter);
-    }
-    if (filter.timeFilter) {
-      createTimeFilterSql(queryBuilder, fieldName, filter.timeFilter);
-    }
-  }
+  });
 
   return queryBuilder;
 }
 
-export function createTimeFilterSql(
-  queryBuilder: Knex.QueryBuilder,
-  timeField: string,
-  timeFilter: TimeFilter,
-): Knex.QueryBuilder {
-  if (timeFilter.equal) {
-    queryBuilder.andWhere(timeField, "=", timeFilter.equal);
-  }
-  if (timeFilter.notEqual) {
-    queryBuilder.andWhere(timeField, "<>", timeFilter.notEqual);
-  }
-  if (timeFilter.lessThan) {
-    queryBuilder.andWhere(timeField, "<", timeFilter.lessThan);
-  }
-  if (timeFilter.lessOrEqualThan) {
-    queryBuilder.andWhere(timeField, "<=", timeFilter.lessOrEqualThan);
-  }
-  if (timeFilter.greaterThan) {
-    queryBuilder.andWhere(timeField, ">", timeFilter.greaterThan);
-  }
-  if (timeFilter.greaterOrEqualThan) {
-    queryBuilder.andWhere(timeField, ">=", timeFilter.greaterOrEqualThan);
-  }
+export function applyDateFilters(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  field: string;
+  dateFilter: DateFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, field, dateFilter } = input;
+  const operatorNames = Object.keys(dateFilter);
+
+  operatorNames.forEach((operatorName) => {
+    const operator = filterOperatorMap[operatorName];
+
+    if (filterOperator === FilterOperator.Or) {
+      queryBuilder.orWhere(field, operator, dateFilter[operatorName]);
+    } else {
+      queryBuilder.andWhere(field, operator, dateFilter[operatorName]);
+    }
+  });
 
   return queryBuilder;
 }
 
-export function createDateFilterSql(
-  queryBuilder: Knex.QueryBuilder,
-  dateField: string,
-  dateFilter: DateFilter,
-): Knex.QueryBuilder {
-  if (dateFilter.equal) {
-    queryBuilder.andWhere(dateField, "=", dateFilter.equal);
+export function applyStringFilters(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  field: string;
+  stringFilter: StringFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, field, stringFilter } = input;
+
+  if (stringFilter.like) {
+    if (filterOperator === FilterOperator.Or) {
+      queryBuilder.orWhere(field, "LIKE", stringFilter.like);
+    } else {
+      queryBuilder.andWhere(field, "LIKE", stringFilter.like);
+    }
   }
-  if (dateFilter.notEqual) {
-    queryBuilder.andWhere(dateField, "<>", dateFilter.notEqual);
-  }
-  if (dateFilter.lessThan) {
-    queryBuilder.andWhere(dateField, "<", dateFilter.lessThan);
-  }
-  if (dateFilter.lessOrEqualThan) {
-    queryBuilder.andWhere(dateField, "<=", dateFilter.lessOrEqualThan);
-  }
-  if (dateFilter.greaterThan) {
-    queryBuilder.andWhere(dateField, ">", dateFilter.greaterThan);
-  }
-  if (dateFilter.greaterOrEqualThan) {
-    queryBuilder.andWhere(dateField, ">=", dateFilter.greaterOrEqualThan);
+
+  if (stringFilter.in) {
+    queryBuilder.whereIn(field, stringFilter.in);
   }
 
   return queryBuilder;
 }
-
-// TArkista filteröinti kirjasto!??!
-
-// https://dev.to/mgustus/filtering-graphql-query-using-typescript-and-typeorm-2l49
