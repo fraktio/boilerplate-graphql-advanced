@@ -39,8 +39,12 @@ export const companyResolver: Resolvers = {
   },
 
   Query: {
-    async companies(_, __, { knex, dataLoaders }) {
-      return await companiesHandler({ knex, companyDL: dataLoaders.companyDL });
+    async companies(_, { filters }, { knex, dataLoaders }) {
+      return await companiesHandler({
+        knex,
+        companyDL: dataLoaders.companyDL,
+        filters: filters || undefined,
+      });
     },
 
     async company(_, { input }, { knex, dataLoaders }) {

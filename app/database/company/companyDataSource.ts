@@ -11,6 +11,7 @@ import {
 } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { PersonID } from "~/database/person/personDatabase";
+import { PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export type CompanyTable = {
@@ -80,7 +81,11 @@ export const companyDS = {
     return company;
   },
 
-  async getAll(params: { knex: DBConnection; companyDL: CompanyDataLoader }) {
+  async getAll(params: {
+    knex: DBConnection;
+    companyDL: CompanyDataLoader;
+    filters?: PersonFilterOperation;
+  }) {
     const companies = await companyDB.getAll(params);
 
     const dataloader = params.companyDL.getLoader({ knex: params.knex });

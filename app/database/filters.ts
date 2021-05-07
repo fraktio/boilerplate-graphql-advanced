@@ -6,20 +6,58 @@ import {
   TimeFilter,
   StringFilter,
   FilterOperator,
+  PersonFilterOperation,
+  CompanyFilterOperation,
 } from "~/generation/generated";
 
 export class InvalidFilterCountError extends Error {}
 
 export type FieldMap = (name: string) => string;
 
+export type FilterOperation = CompanyFilterOperation | PersonFilterOperation;
+
 export type Filters = Readonly<{
   [fieldName: string]: Maybe<Filter>;
 }>;
 
-export type Filter = Readonly<{
-  timeFilter?: Maybe<TimeFilter>;
-  dateFilter?: Maybe<DateFilter>;
-}>;
+export type Filter = TimeFilter | DateFilter | StringFilter;
+
+export function buildFilterQuery(
+  queryBuilder: Knex.QueryBuilder,
+  getFilters: (input: {
+    queryBuilder: Knex.QueryBuilder;
+    filterOperator: FilterOperator;
+    filters: Filters;
+  }) => Knex.QueryBuilder,
+  filterOperation?: FilterOperation,
+) {
+  if (!filterOperation) {
+    return queryBuilder;
+  }
+
+  if (!filterOperation.filters) {
+    return queryBuilder;
+  }
+
+  filterOperation.filters.forEach((filters) => {
+    getFilters({
+      queryBuilder,
+      filterOperator: filterOperation.operator,
+      filters,
+    });
+  });
+
+  const ops = filterOperation.filterOperation;
+  if (ops) {
+    if (filterOperation.operator === FilterOperator.Or) {
+      queryBuilder.orWhere((qb) => buildFilterQuery(qb, getFilters, ops));
+    } else {
+      queryBuilder.andWhere((qb) => buildFilterQuery(qb, getFilters, ops));
+    }
+  }
+
+  return queryBuilder;
+}
 
 const filterOperatorMap = {
   equal: "=",

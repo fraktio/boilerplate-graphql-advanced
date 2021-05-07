@@ -1,8 +1,16 @@
+import { Knex } from "knex";
 import { DateTime } from "luxon";
 
+import { applyStringFilters, buildFilterQuery } from "../filters";
+
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table } from "~/database/tables";
-import { Maybe } from "~/generation/generated";
+import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import {
+  CompanyFilter,
+  CompanyFilterOperation,
+  FilterOperator,
+  Maybe,
+} from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export interface CompanyID extends ID {
@@ -93,8 +101,13 @@ export const companyDB = {
     return persons.map(formatCompanyRow);
   },
 
-  async getAll(params: { knex: DBConnection }): Promise<CompanyTable[]> {
-    const companies = await params.knex<CompanyTableRow>(Table.COMPANY);
+  async getAll(params: {
+    knex: DBConnection;
+    filters?: CompanyFilterOperation;
+  }): Promise<CompanyTable[]> {
+    const companies = await params
+      .knex<CompanyTableRow>(Table.COMPANY)
+      .andWhere((qb) => addCompanyFilters(qb, params.filters));
 
     return companies.map(formatCompanyRow);
   },
@@ -143,3 +156,29 @@ export const companyDB = {
     return companyRows.map(formatCompanyRow);
   },
 };
+
+export function addCompanyFilters(
+  queryBuilder: Knex.QueryBuilder,
+  filterOperation?: CompanyFilterOperation,
+): Knex.QueryBuilder {
+  return buildFilterQuery(queryBuilder, applyCompanyFilters, filterOperation);
+}
+
+function applyCompanyFilters(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  filters: CompanyFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, filters } = input;
+
+  if (filters.nameFilter) {
+    return applyStringFilters({
+      queryBuilder,
+      filterOperator,
+      field: tableColumn(Table.COMPANY, "name"),
+      stringFilter: filters.nameFilter,
+    });
+  }
+
+  return queryBuilder;
+}

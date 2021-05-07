@@ -4,9 +4,9 @@ import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import {
+  buildFilterQuery,
   applyDateFilters,
   applyStringFilters,
-  InvalidFilterCountError,
 } from "../filters";
 
 import { DBConnection } from "~/database/connection";
@@ -171,6 +171,8 @@ export const personDB = {
     if (persons.length === 0) {
       return null;
     }
+
+    return formatPersonRow(persons[0]);
   },
 
   async getPersonsByIds(params: {
@@ -189,60 +191,31 @@ export function addPersonFilters(
   queryBuilder: Knex.QueryBuilder,
   filterOperation?: PersonFilterOperation,
 ): Knex.QueryBuilder {
-  if (!filterOperation) {
-    return queryBuilder;
-  }
-
-  if (!filterOperation.filters) {
-    return queryBuilder;
-  }
-
-  filterOperation.filters.forEach((filterField) => {
-    getFilter(queryBuilder, filterOperation.operator, filterField);
-  });
-
-  const ops = filterOperation.filterOperation;
-  if (ops) {
-    if (filterOperation.operator === FilterOperator.Or) {
-      queryBuilder.orWhere((qb) => addPersonFilters(qb, ops));
-    } else {
-      queryBuilder.andWhere((qb) => addPersonFilters(qb, ops));
-    }
-  }
-
-  return queryBuilder;
+  return buildFilterQuery(queryBuilder, applyPersonFilters, filterOperation);
 }
 
-function getFilter(
-  queryBuilder: Knex.QueryBuilder,
-  filterOperator: FilterOperator,
-  personFilter: PersonFilter,
-): Knex.QueryBuilder {
-  if (personFilter.birthdayFilter) {
+function applyPersonFilters(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  filters: PersonFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, filters } = input;
+  if (filters.birthdayFilter) {
     applyDateFilters({
       queryBuilder,
       filterOperator,
       field: tableColumn(Table.PERSONS, "birthday"),
-      dateFilter: personFilter.birthdayFilter,
+      dateFilter: filters.birthdayFilter,
     });
   }
-  if (personFilter.nameFilter) {
+  if (filters.nameFilter) {
     return applyStringFilters({
       queryBuilder,
       filterOperator,
       field: tableColumn(Table.PERSONS, "firstName"),
-      stringFilter: personFilter.nameFilter,
+      stringFilter: filters.nameFilter,
     });
   }
 
   return queryBuilder;
-}
-
-export function enforceOneFilter(filter: PersonFilter) {
-  const keys = Object.keys(filter);
-  if (keys.length === 0) {
-    throw new InvalidFilterCountError(`Invalid filter count ${keys.length}`);
-  }
-
-  return filter;
 }

@@ -72,6 +72,10 @@ export type Query = {
   persons: Array<Maybe<Person>>;
 };
 
+export type QueryCompaniesArgs = {
+  filters?: Maybe<CompanyFilterOperation>;
+};
+
 export type QueryCompanyArgs = {
   input: CompanyQuery;
 };
@@ -204,6 +208,16 @@ export type EditCompanySuccess = {
 export type EditCompanyFailureNotFound = {
   __typename?: "EditCompanyFailureNotFound";
   success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type CompanyFilterOperation = {
+  operator: FilterOperator;
+  filters?: Maybe<Array<CompanyFilter>>;
+  filterOperation?: Maybe<CompanyFilterOperation>;
+};
+
+export type CompanyFilter = {
+  nameFilter?: Maybe<StringFilter>;
 };
 
 export type AddEmployeeInput = {
@@ -395,7 +409,6 @@ export type PersonFilterOperation = {
 export type PersonFilter = {
   birthdayFilter?: Maybe<DateFilter>;
   nameFilter?: Maybe<StringFilter>;
-  companyNameFilter?: Maybe<StringFilter>;
 };
 
 export type RegisterSuccess = {
@@ -592,6 +605,8 @@ export type ResolversTypes = ResolversObject<{
     Omit<EditCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
   EditCompanyFailureNotFound: ResolverTypeWrapper<EditCompanyFailureNotFound>;
+  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilter: CompanyFilter;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversTypes["AddEmployeeSuccess"];
@@ -700,6 +715,8 @@ export type ResolversParentTypes = ResolversObject<{
     company: ResolversParentTypes["Company"];
   };
   EditCompanyFailureNotFound: EditCompanyFailureNotFound;
+  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilter: CompanyFilter;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversParentTypes["AddEmployeeSuccess"];
@@ -808,7 +825,8 @@ export type QueryResolvers<
   companies?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QueryCompaniesArgs, never>
   >;
   company?: Resolver<
     ResolversTypes["CompanyOutput"],

@@ -99,5 +99,4 @@ input PersonFilterOperation {
 input PersonFilter {
   birthdayFilter: DateFilter
   nameFilter: StringFilter
-  companyNameFilter: StringFilter
 }
