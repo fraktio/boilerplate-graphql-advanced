@@ -1,6 +1,5 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import { Knex } from "knex";
-import { DateTime } from "luxon";
 
 import {
   DateFilter,
@@ -31,22 +30,41 @@ const filterOperatorMap = {
   greaterOrEqualThan: ">=",
 };
 
-export function createTimeFilterSql(input: {
+function prop<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key];
+}
+
+function getSqlOperator(input: { operatorName: any }) {
+  if (!(input.operatorName in filterOperatorMap)) {
+    throw new Error(`Inavalid operator name ${input.operatorName}`);
+  }
+
+  return prop(filterOperatorMap, input.operatorName);
+}
+
+declare const OperatorObject: {
+  keys<T extends Record<string, unknown>>(object: T): (keyof T)[];
+};
+
+export function applyTimeFilters(input: {
   queryBuilder: Knex.QueryBuilder;
   filterOperator: FilterOperator;
   field: string;
   timeFilter: TimeFilter;
 }): Knex.QueryBuilder {
   const { queryBuilder, filterOperator, field, timeFilter } = input;
-  const operatorNames = Object.keys(timeFilter);
+  const operatorNames = OperatorObject.keys(timeFilter);
 
   operatorNames.forEach((operatorName) => {
-    const operator = filterOperatorMap[operatorName];
-
+    const operator = getSqlOperator({ operatorName });
+    const filter = timeFilter[operatorName];
+    if (!filter) {
+      return queryBuilder;
+    }
     if (filterOperator === FilterOperator.Or) {
-      queryBuilder.orWhere(field, operator, timeFilter[operatorName]);
+      queryBuilder.orWhere(field, operator, filter);
     } else {
-      queryBuilder.andWhere(field, operator, timeFilter[operatorName]);
+      queryBuilder.andWhere(field, operator, filter);
     }
   });
 
@@ -60,15 +78,18 @@ export function applyDateFilters(input: {
   dateFilter: DateFilter;
 }): Knex.QueryBuilder {
   const { queryBuilder, filterOperator, field, dateFilter } = input;
-  const operatorNames = Object.keys(dateFilter);
+  const operatorNames = OperatorObject.keys(dateFilter);
 
   operatorNames.forEach((operatorName) => {
-    const operator = filterOperatorMap[operatorName];
-
+    const operator = getSqlOperator({ operatorName });
+    const filter = dateFilter[operatorName];
+    if (!filter) {
+      return queryBuilder;
+    }
     if (filterOperator === FilterOperator.Or) {
-      queryBuilder.orWhere(field, operator, dateFilter[operatorName]);
+      queryBuilder.orWhere(field, operator, filter);
     } else {
-      queryBuilder.andWhere(field, operator, dateFilter[operatorName]);
+      queryBuilder.andWhere(field, operator, filter);
     }
   });
 

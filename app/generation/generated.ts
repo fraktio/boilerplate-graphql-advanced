@@ -254,7 +254,6 @@ export type TimeFilter = {
   lessOrEqualThan?: Maybe<Scalars["DateTime"]>;
   greaterThan?: Maybe<Scalars["DateTime"]>;
   greaterOrEqualThan?: Maybe<Scalars["DateTime"]>;
-  in?: Maybe<Array<Scalars["DateTime"]>>;
 };
 
 export type DateFilter = {
@@ -264,7 +263,6 @@ export type DateFilter = {
   lessOrEqualThan?: Maybe<Scalars["Date"]>;
   greaterThan?: Maybe<Scalars["Date"]>;
   greaterOrEqualThan?: Maybe<Scalars["Date"]>;
-  in?: Maybe<Array<Scalars["Date"]>>;
 };
 
 export type StringFilter = {

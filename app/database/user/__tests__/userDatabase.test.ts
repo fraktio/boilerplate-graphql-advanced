@@ -11,7 +11,7 @@ import { EmailAddress } from "~/generation/scalars";
 const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
 
-export const dbPersonMockTableRow: UserTableRow = {
+export const dbUserMockTableRow: UserTableRow = {
   id: (2 as unknown) as UserID,
   uuid: ("valid-uuid" as unknown) as UUID,
   username: "username",
@@ -22,23 +22,23 @@ export const dbPersonMockTableRow: UserTableRow = {
   updatedAt: null,
 };
 
-export const dbPersonMockTableRowUpdated: UserTableRow = {
-  ...dbPersonMockTableRow,
+export const dbUserMockTableRowUpdated: UserTableRow = {
+  ...dbUserMockTableRow,
   updatedAt: new Date(datetimeString),
 };
 
-export const createFakeUserTable = (person = dbPersonMockTableRow): UserTable =>
-  formatUserRow(person);
+export const createFakeUserTable = (user = dbUserMockTableRow): UserTable =>
+  formatUserRow(user);
 
 describe("database tests / user", () => {
   it("formatUserRow", async () => {
-    const result = formatUserRow(dbPersonMockTableRow);
+    const result = formatUserRow(dbUserMockTableRow);
 
     expect(result).toMatchSnapshot();
   });
 
   it("formatUserRow updated", async () => {
-    const result = formatUserRow(dbPersonMockTableRowUpdated);
+    const result = formatUserRow(dbUserMockTableRowUpdated);
 
     expect(result).toMatchSnapshot();
   });

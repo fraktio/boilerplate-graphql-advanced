@@ -1,9 +1,10 @@
+import faker from "faker";
 import { StringValueNode } from "graphql";
 import { parsePhoneNumber } from "libphonenumber-js";
 
 import { PhoneNumberResolver } from "../PhoneNumberResolver";
 
-const phoneNumberString = "+358400000000";
+const phoneNumberString = faker.phone.phoneNumber("+358#########");
 const phoneNumber = parsePhoneNumber(phoneNumberString);
 const phoneNumberFormatted = phoneNumber.formatInternational();
 
