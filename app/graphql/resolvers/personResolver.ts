@@ -74,6 +74,8 @@ export const personResolver: Resolvers = {
         phone: input.person.phone || null,
         email: input.person.email,
         birthday: input.person.birthday,
+        nationality: input.person.nationality,
+        personalIdentityCode: input.person.personalIdentityCode,
       };
 
       const person = addPersonHandler({
@@ -92,6 +94,8 @@ export const personResolver: Resolvers = {
         phone: input.person.phone ?? null,
         email: input.person.email,
         birthday: input.person.birthday,
+        nationality: input.person.nationality,
+        personalIdentityCode: input.person.personalIdentityCode,
       };
 
       const person = await modifyPerson({

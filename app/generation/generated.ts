@@ -46,6 +46,8 @@ export type Scalars = {
   DateTime: DateTime;
   EmailAddress: EmailAddress;
   PhoneNumber: PhoneNumber;
+  personalIdentityCode: any;
+  CountryCode: any;
 };
 
 export type AuthenticatedUserSuccess = {
@@ -373,6 +375,8 @@ export type AddPersonPersonInput = {
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
   birthday: Scalars["Date"];
+  nationality: Scalars["CountryCode"];
+  personalIdentityCode: Scalars["personalIdentityCode"];
 };
 
 export type AddPersonInput = {
@@ -630,6 +634,8 @@ export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
+  personalIdentityCode: ResolverTypeWrapper<Scalars["personalIdentityCode"]>;
+  CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
   AccessRight: AccessRight;
   Timestamp: ResolverTypeWrapper<Timestamp>;
   NumberFact: ResolverTypeWrapper<NumberFact>;
@@ -737,6 +743,8 @@ export type ResolversParentTypes = ResolversObject<{
   DateTime: Scalars["DateTime"];
   EmailAddress: Scalars["EmailAddress"];
   PhoneNumber: Scalars["PhoneNumber"];
+  personalIdentityCode: Scalars["personalIdentityCode"];
+  CountryCode: Scalars["CountryCode"];
   Timestamp: Timestamp;
   NumberFact: NumberFact;
   Int: Scalars["Int"];
@@ -1097,6 +1105,16 @@ export interface PhoneNumberScalarConfig
   name: "PhoneNumber";
 }
 
+export interface PersonalIdentityCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["personalIdentityCode"], any> {
+  name: "personalIdentityCode";
+}
+
+export interface CountryCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["CountryCode"], any> {
+  name: "CountryCode";
+}
+
 export type TimestampResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Timestamp"] = ResolversParentTypes["Timestamp"]
@@ -1327,6 +1345,8 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
+  personalIdentityCode?: GraphQLScalarType;
+  CountryCode?: GraphQLScalarType;
   Timestamp?: TimestampResolvers<ContextType>;
   NumberFact?: NumberFactResolvers<ContextType>;
   NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;

@@ -59,20 +59,35 @@ export function buildFilterQuery(
   return queryBuilder;
 }
 
+enum ComparisonOperator {
+  EQUAL = "=",
+  NOTEQUAL = "<>",
+  LESSTHAN = "<",
+  LESSOREQUALTHAN = "<=",
+  GREATERTHAN = ">",
+  GREATEROREQUALTHAN = ">=",
+}
+
 const filterOperatorMap = {
-  equal: "=",
-  notEqual: "<>",
-  lessThan: "<",
-  lessOrEqualThan: "<=",
-  greaterThan: ">",
-  greaterOrEqualThan: ">=",
+  equal: ComparisonOperator.EQUAL,
+  notEqual: ComparisonOperator.NOTEQUAL,
+  lessThan: ComparisonOperator.LESSTHAN,
+  lessOrEqualThan: ComparisonOperator.LESSOREQUALTHAN,
+  greaterThan: ComparisonOperator.GREATERTHAN,
+  greaterOrEqualThan: ComparisonOperator.GREATEROREQUALTHAN,
 };
 
 function prop<T, K extends keyof T>(obj: T, key: K) {
   return obj[key];
 }
 
-function getSqlOperator(input: { operatorName: any }) {
+type OperatorName = keyof typeof filterOperatorMap;
+
+// type ValueOf<T> = T[keyof T];
+// ValueOf<typeof filterOperatorMap>
+function getSqlOperator(input: {
+  operatorName: OperatorName;
+}): ComparisonOperator {
   if (!(input.operatorName in filterOperatorMap)) {
     throw new Error(`Inavalid operator name ${input.operatorName}`);
   }

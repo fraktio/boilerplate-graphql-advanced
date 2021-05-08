@@ -2,6 +2,7 @@
 
 exports[`graphql scalars / scalarsResolver createScalarResolvers 1`] = `
 Object {
+  "CountryCode": "CountryCode",
   "Date": "Date",
   "DateTime": "DateTime",
   "EmailAddress": "Email",

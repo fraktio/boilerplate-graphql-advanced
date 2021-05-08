@@ -67,6 +67,8 @@ input AddPersonPersonInput {
   phone: PhoneNumber
   email: EmailAddress!
   birthday: Date!
+  nationality: CountryCode!
+  personalIdentityCode: personalIdentityCode!
 }
 
 input AddPersonInput {

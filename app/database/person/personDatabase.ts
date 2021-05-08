@@ -85,7 +85,7 @@ export type CreatePersonOptions = {
   email: EmailAddress;
   birthday: DateTime;
   nationality: CountryCode;
-  personalIndentityCode: FinnishPersonalIdentityCode;
+  personalIdentityCode: FinnishPersonalIdentityCode;
 };
 
 export type UpdatePersonOptions = CreatePersonOptions;
