@@ -61,26 +61,6 @@ export function buildFilterQuery(
     }
   });
 
-  /*
-filterOperation.filters.forEach((filters) => {
-    getFilters({
-      queryBuilder,
-      filterOperator: filterOperation.operator,
-      filters,
-    });
-  });
-
-  const ops = filterOperation.filterOperation;
-  if (ops) {
-    if (filterOperation.operator === FilterOperator.Or) {
-      queryBuilder.orWhere((qb) => buildFilterQuery(qb, getFilters, ops));
-    } else {
-      queryBuilder.andWhere((qb) => buildFilterQuery(qb, getFilters, ops));
-    }
-  }
-
-*/
-
   return queryBuilder;
 }
 

@@ -92,6 +92,7 @@ export type QueryPersonArgs = {
 
 export type QueryPersonsArgs = {
   filters?: Maybe<PersonFilterOperation>;
+  sort?: Maybe<Array<PersonSort>>;
 };
 
 export type LoginUserSuccess = {
@@ -415,6 +416,22 @@ export type PersonFilter = {
   nameFilter?: Maybe<StringFilter>;
 };
 
+export enum PersonSortField {
+  Birthday = "birthday",
+  FirstName = "firstName",
+  LastName = "lastName",
+}
+
+export enum SortOrder {
+  Asc = "ASC",
+  Desc = "DESC",
+}
+
+export type PersonSort = {
+  field: PersonSortField;
+  order: SortOrder;
+};
+
 export type RegisterSuccess = {
   __typename?: "RegisterSuccess";
   success: Scalars["Boolean"];
@@ -666,6 +683,9 @@ export type ResolversTypes = ResolversObject<{
   >;
   PersonFilterOperation: PersonFilterOperation;
   PersonFilter: PersonFilter;
+  PersonSortField: PersonSortField;
+  SortOrder: SortOrder;
+  PersonSort: PersonSort;
   RegisterSuccess: ResolverTypeWrapper<RegisterSuccess>;
   RegisterFailure: ResolverTypeWrapper<RegisterFailure>;
   RegisterFailureAlreadyExists: ResolverTypeWrapper<RegisterFailureAlreadyExists>;
@@ -774,6 +794,7 @@ export type ResolversParentTypes = ResolversObject<{
   };
   PersonFilterOperation: PersonFilterOperation;
   PersonFilter: PersonFilter;
+  PersonSort: PersonSort;
   RegisterSuccess: RegisterSuccess;
   RegisterFailure: RegisterFailure;
   RegisterFailureAlreadyExists: RegisterFailureAlreadyExists;

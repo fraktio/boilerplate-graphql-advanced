@@ -44,7 +44,7 @@ type Underage implements Person {
 }
 
 type Query {
-  persons(filters: PersonFilterOperation): [Person]! 
+  persons(filters: PersonFilterOperation, sort: [PersonSort!]): [Person]!  @authenticated
   person(input: PersonInput!): Person! @authenticated
 }
 
@@ -101,4 +101,20 @@ input PersonFilter {
   filterOperations: [PersonFilterOperation!]
   birthdayFilter: DateFilter
   nameFilter: StringFilter
+}
+
+enum PersonSortField {
+  birthday
+  firstName
+  lastName
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input PersonSort {
+  field: PersonSortField!
+  order: SortOrder!
 }

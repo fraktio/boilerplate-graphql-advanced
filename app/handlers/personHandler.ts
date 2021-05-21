@@ -9,7 +9,7 @@ import {
   PersonID,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
-import { PersonFilterOperation } from "~/generation/generated";
+import { PersonFilterOperation, PersonSort } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const personHandler = async (params: {
@@ -27,11 +27,13 @@ export const personsHandler = async (params: {
   knex: DBConnection;
   personDL: PersonDataLoader;
   filters?: PersonFilterOperation;
+  sort?: PersonSort[];
 }) =>
   await personDS.getAll({
     knex: params.knex,
     personDL: params.personDL,
     filters: params.filters,
+    sort: params.sort,
   });
 
 export const addPersonHandler = async (params: {

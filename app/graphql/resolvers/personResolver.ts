@@ -57,11 +57,12 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, { filters }, { knex, dataLoaders }) {
+    async persons(_, { filters, sort }, { knex, dataLoaders }) {
       return await personsHandler({
         knex,
         personDL: dataLoaders.personDL,
         filters: filters || undefined,
+        sort: sort || undefined,
       });
     },
   },

@@ -16,6 +16,8 @@ import {
   PersonFilterOperation,
   PersonFilter,
   FilterOperator,
+  PersonSort,
+  SortOrder,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
@@ -118,10 +120,12 @@ export const personDB = {
   async getAll(params: {
     knex: DBConnection;
     filters?: PersonFilterOperation;
+    sort?: PersonSort[];
   }): Promise<PersonTable[]> {
     const persons = await params
       .knex<PersonTableRow>(Table.PERSONS)
-      .andWhere((qb) => addPersonFilters(qb, params.filters));
+      .andWhere((qb) => addPersonFilters(qb, params.filters))
+      .orderBy(applyPersonSort(params.sort));
 
     return persons.map(formatPersonRow);
   },
@@ -186,6 +190,17 @@ export const personDB = {
     return personRows.map(formatPersonRow);
   },
 };
+
+function applyPersonSort(sort?: PersonSort[]) {
+  if (!sort) {
+    return [{ column: "firstName", order: SortOrder.Asc }];
+  }
+
+  return sort.map((element) => ({
+    column: element.field,
+    order: element.order,
+  }));
+}
 
 export function addPersonFilters(
   queryBuilder: Knex.QueryBuilder,
