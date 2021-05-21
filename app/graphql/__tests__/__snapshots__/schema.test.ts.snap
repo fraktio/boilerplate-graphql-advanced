@@ -83,6 +83,7 @@ GraphQLSchema {
     "PersonFilter": "PersonFilter",
     "PersonFilterOperation": "PersonFilterOperation",
     "PersonInput": "PersonInput",
+    "PersonalIdentityCode": "PersonalIdentityCode",
     "Phone": "Phone",
     "Query": "Query",
     "RegisterFailure": "RegisterFailure",
@@ -110,7 +111,6 @@ GraphQLSchema {
     "__Schema": "__Schema",
     "__Type": "__Type",
     "__TypeKind": "__TypeKind",
-    "personalIdentityCode": "personalIdentityCode",
   },
   "astNode": Object {
     "description": undefined,

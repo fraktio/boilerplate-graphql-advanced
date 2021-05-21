@@ -12,8 +12,6 @@ import {
 
 export class InvalidFilterCountError extends Error {}
 
-export type FieldMap = (name: string) => string;
-
 export type FilterOperation = CompanyFilterOperation | PersonFilterOperation;
 
 export type Filters = Readonly<{

@@ -6,7 +6,7 @@ interface Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: String!
+  nationality: CountryCode!
   birthday: Date!
   timestamp: Timestamp!
 }
@@ -21,7 +21,7 @@ type Adult implements Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: String!
+  nationality: CountryCode!
   birthday: Date!
   timestamp: Timestamp!
   employers: [Company!]!
@@ -37,7 +37,7 @@ type Underage implements Person {
   lastName: String!
   phone: PhoneNumber
   email: EmailAddress!
-  nationality: String!
+  nationality: CountryCode!
   birthday: Date!
   timestamp: Timestamp!
 
@@ -68,7 +68,7 @@ input AddPersonPersonInput {
   email: EmailAddress!
   birthday: Date!
   nationality: CountryCode!
-  personalIdentityCode: personalIdentityCode!
+  personalIdentityCode: PersonalIdentityCode!
 }
 
 input AddPersonInput {
