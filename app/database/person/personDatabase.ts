@@ -197,23 +197,23 @@ export function addPersonFilters(
 function applyPersonFilters(input: {
   queryBuilder: Knex.QueryBuilder;
   filterOperator: FilterOperator;
-  filters: PersonFilter;
+  filter: PersonFilter;
 }): Knex.QueryBuilder {
-  const { queryBuilder, filterOperator, filters } = input;
-  if (filters.birthdayFilter) {
+  const { queryBuilder, filterOperator, filter } = input;
+  if (filter.birthdayFilter) {
     applyDateFilters({
       queryBuilder,
       filterOperator,
       field: tableColumn(Table.PERSONS, "birthday"),
-      dateFilter: filters.birthdayFilter,
+      dateFilter: filter.birthdayFilter,
     });
   }
-  if (filters.nameFilter) {
+  if (filter.nameFilter) {
     return applyStringFilters({
       queryBuilder,
       filterOperator,
       field: tableColumn(Table.PERSONS, "firstName"),
-      stringFilter: filters.nameFilter,
+      stringFilter: filter.nameFilter,
     });
   }
 

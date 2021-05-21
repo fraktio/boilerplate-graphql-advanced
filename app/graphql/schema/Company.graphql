@@ -62,9 +62,9 @@ type EditCompanyFailureNotFound {
 input CompanyFilterOperation {
   operator: FilterOperator!
   filters: [CompanyFilter!]
-  filterOperation: CompanyFilterOperation
 }
 
 input CompanyFilter {
+  filterOperations: [CompanyFilterOperation!]
   nameFilter: StringFilter
 }

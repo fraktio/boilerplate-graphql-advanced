@@ -15,17 +15,17 @@ export class InvalidFilterCountError extends Error {}
 export type FilterOperation = CompanyFilterOperation | PersonFilterOperation;
 
 export type Filters = Readonly<{
-  [fieldName: string]: Maybe<Filter>;
+  [fieldName: string]: Maybe<Filter | FilterOperation[]>;
 }>;
 
 export type Filter = TimeFilter | DateFilter | StringFilter;
 
 export function buildFilterQuery(
   queryBuilder: Knex.QueryBuilder,
-  getFilters: (input: {
+  applyFilters: (input: {
     queryBuilder: Knex.QueryBuilder;
     filterOperator: FilterOperator;
-    filters: Filters;
+    filter: Filters;
   }) => Knex.QueryBuilder,
   filterOperation?: FilterOperation,
 ) {
@@ -33,11 +33,36 @@ export function buildFilterQuery(
     return queryBuilder;
   }
 
-  if (!filterOperation.filters) {
+  const operationFilters = filterOperation.filters;
+  if (!operationFilters) {
     return queryBuilder;
   }
 
-  filterOperation.filters.forEach((filters) => {
+  operationFilters.forEach((filter) => {
+    applyFilters({
+      queryBuilder,
+      filterOperator: filterOperation.operator,
+      filter: filter,
+    });
+    const subOperations = filter.filterOperations;
+
+    if (subOperations) {
+      subOperations.forEach((subOperation) => {
+        if (filterOperation.operator === FilterOperator.Or) {
+          queryBuilder.orWhere((qb) =>
+            buildFilterQuery(qb, applyFilters, subOperation),
+          );
+        } else {
+          queryBuilder.andWhere((qb) =>
+            buildFilterQuery(qb, applyFilters, subOperation),
+          );
+        }
+      });
+    }
+  });
+
+  /*
+filterOperation.filters.forEach((filters) => {
     getFilters({
       queryBuilder,
       filterOperator: filterOperation.operator,
@@ -53,6 +78,8 @@ export function buildFilterQuery(
       queryBuilder.andWhere((qb) => buildFilterQuery(qb, getFilters, ops));
     }
   }
+
+*/
 
   return queryBuilder;
 }
@@ -93,10 +120,6 @@ function getSqlOperator(input: {
   return prop(filterOperatorMap, input.operatorName);
 }
 
-declare const OperatorObject: {
-  keys<T extends Record<string, unknown>>(object: T): (keyof T)[];
-};
-
 export function applyTimeFilters(input: {
   queryBuilder: Knex.QueryBuilder;
   filterOperator: FilterOperator;
@@ -104,7 +127,8 @@ export function applyTimeFilters(input: {
   timeFilter: TimeFilter;
 }): Knex.QueryBuilder {
   const { queryBuilder, filterOperator, field, timeFilter } = input;
-  const operatorNames = OperatorObject.keys(timeFilter);
+
+  const operatorNames = Object.keys(timeFilter) as (keyof TimeFilter)[];
 
   operatorNames.forEach((operatorName) => {
     const operator = getSqlOperator({ operatorName });
@@ -129,7 +153,8 @@ export function applyDateFilters(input: {
   dateFilter: DateFilter;
 }): Knex.QueryBuilder {
   const { queryBuilder, filterOperator, field, dateFilter } = input;
-  const operatorNames = OperatorObject.keys(dateFilter);
+
+  const operatorNames = Object.keys(dateFilter) as (keyof DateFilter)[];
 
   operatorNames.forEach((operatorName) => {
     const operator = getSqlOperator({ operatorName });

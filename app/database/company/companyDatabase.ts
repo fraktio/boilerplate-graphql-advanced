@@ -167,16 +167,16 @@ export function addCompanyFilters(
 function applyCompanyFilters(input: {
   queryBuilder: Knex.QueryBuilder;
   filterOperator: FilterOperator;
-  filters: CompanyFilter;
+  filter: CompanyFilter;
 }): Knex.QueryBuilder {
-  const { queryBuilder, filterOperator, filters } = input;
+  const { queryBuilder, filterOperator, filter } = input;
 
-  if (filters.nameFilter) {
+  if (filter.nameFilter) {
     return applyStringFilters({
       queryBuilder,
       filterOperator,
       field: tableColumn(Table.COMPANY, "name"),
-      stringFilter: filters.nameFilter,
+      stringFilter: filter.nameFilter,
     });
   }
 
