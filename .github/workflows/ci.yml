@@ -77,3 +77,6 @@ jobs:
         DATABASE_PASSWORD: graphql-boilerplate-ci
         DATABASE_DATABASE_NAME: graphql-boilerplate-ci
 
+    - name: Check for non generated files
+      run: git diff --exit-code
+
