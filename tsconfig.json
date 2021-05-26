@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "lib": ["es2020"],
+    "module": "ES2020",
+    "lib": ["es2020", "ES6"],
     "moduleResolution": "Node",
     "target": "ES6",
     "outDir": "dist",

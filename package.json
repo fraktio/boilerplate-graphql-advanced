@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "nodemon --ext ts,json,graphql --exec babel-node --extensions '.ts' -r dotenv/config app/index.ts | ./node_modules/.bin/bunyan",
+    "devw": "webpack --config webpack.dev.js --watch",
     "dev:debug": "DEBUG=knex:query yarn dev",
     "codegen": "graphql-codegen && yarn codegen:disable-rules && yarn codegen:lint",
     "codegen:lint": "eslint app/generation/generated.ts --fix",
@@ -106,6 +107,7 @@
     "morgan": "^1.10.0",
     "nock": "^13.0.11",
     "nodemon": "^2.0.7",
+    "nodemon-webpack-plugin": "^4.5.2",
     "prettier": "^2.2.1",
     "serverless": "^2.29.0",
     "serverless-offline": "^6.8.0",
@@ -118,8 +120,10 @@
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.2.3",
-    "webpack": "^5.25.0",
-    "webpack-node-externals": "^2.5.2"
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-merge": "^5.7.3",
+    "webpack-node-externals": "^3.0.0"
   },
   "pre-commit": [
     "lint",
