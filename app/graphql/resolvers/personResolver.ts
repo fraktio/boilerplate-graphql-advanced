@@ -57,8 +57,13 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, __, { knex, dataLoaders }) {
-      return await personsHandler({ knex, personDL: dataLoaders.personDL });
+    async persons(_, { filters, sort }, { knex, dataLoaders }) {
+      return await personsHandler({
+        knex,
+        personDL: dataLoaders.personDL,
+        filters: filters || undefined,
+        sort: sort || undefined,
+      });
     },
   },
 
@@ -70,6 +75,8 @@ export const personResolver: Resolvers = {
         phone: input.person.phone || null,
         email: input.person.email,
         birthday: input.person.birthday,
+        nationality: input.person.nationality,
+        personalIdentityCode: input.person.personalIdentityCode,
       };
 
       const person = addPersonHandler({
@@ -88,6 +95,8 @@ export const personResolver: Resolvers = {
         phone: input.person.phone ?? null,
         email: input.person.email,
         birthday: input.person.birthday,
+        nationality: input.person.nationality,
+        personalIdentityCode: input.person.personalIdentityCode,
       };
 
       const person = await modifyPerson({

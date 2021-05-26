@@ -8,6 +8,8 @@ Object {
   "firstName": "firstname",
   "id": 2,
   "lastName": "lastname",
+  "nationality": "FI",
+  "personalIdentityCode": "230488-577C",
   "phone": PhoneNumber {
     "country": "FI",
     "countryCallingCode": "358",
@@ -9979,6 +9981,8 @@ Object {
   "firstName": "firstname",
   "id": 2,
   "lastName": "lastname",
+  "nationality": "FI",
+  "personalIdentityCode": "230488-577C",
   "phone": PhoneNumber {
     "country": "FI",
     "countryCallingCode": "358",

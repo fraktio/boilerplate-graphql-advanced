@@ -5,13 +5,19 @@ import { DBConnection } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
+import { PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const companiesHandler = async (params: {
   knex: DBConnection;
   companyDL: CompanyDataLoader;
+  filters?: PersonFilterOperation;
 }) =>
-  await companyDS.getAll({ knex: params.knex, companyDL: params.companyDL });
+  await companyDS.getAll({
+    knex: params.knex,
+    companyDL: params.companyDL,
+    filters: params.filters,
+  });
 
 export const companyHandler = async (params: {
   knex: DBConnection;

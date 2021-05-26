@@ -9,8 +9,8 @@ export function validatePhoneNumber(
 ): Try<PhoneNumber, ValidationErrorFailure> {
   const parsed = parsePhoneNumberFromString(value, "FI");
 
-  if (parsed && parsed.isValid() && parsed.number === value) {
-    return toSuccess((value as unknown) as PhoneNumber);
+  if (parsed && parsed.isValid()) {
+    return toSuccess((parsed as unknown) as PhoneNumber);
   }
 
   return toFailure(new ValidationErrorFailure("Phone", value));

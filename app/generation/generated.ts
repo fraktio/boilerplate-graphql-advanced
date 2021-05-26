@@ -46,6 +46,8 @@ export type Scalars = {
   DateTime: DateTime;
   EmailAddress: EmailAddress;
   PhoneNumber: PhoneNumber;
+  PersonalIdentityCode: any;
+  CountryCode: any;
 };
 
 export type AuthenticatedUserSuccess = {
@@ -72,6 +74,10 @@ export type Query = {
   persons: Array<Maybe<Person>>;
 };
 
+export type QueryCompaniesArgs = {
+  filters?: Maybe<CompanyFilterOperation>;
+};
+
 export type QueryCompanyArgs = {
   input: CompanyQuery;
 };
@@ -85,7 +91,8 @@ export type QueryPersonArgs = {
 };
 
 export type QueryPersonsArgs = {
-  filter?: Maybe<PersonFilter>;
+  filters?: Maybe<PersonFilterOperation>;
+  sort?: Maybe<Array<PersonSort>>;
 };
 
 export type LoginUserSuccess = {
@@ -206,6 +213,16 @@ export type EditCompanyFailureNotFound = {
   success?: Maybe<Scalars["Boolean"]>;
 };
 
+export type CompanyFilterOperation = {
+  operator: FilterOperator;
+  filters?: Maybe<Array<CompanyFilter>>;
+};
+
+export type CompanyFilter = {
+  filterOperations?: Maybe<Array<CompanyFilterOperation>>;
+  nameFilter?: Maybe<StringFilter>;
+};
+
 export type AddEmployeeInput = {
   companyUUID: Scalars["UUID"];
   personUUID: Scalars["UUID"];
@@ -242,6 +259,11 @@ export type UniqueConstraintViolationFailure = FailureOutput & {
   field: Scalars["String"];
 };
 
+export enum FilterOperator {
+  And = "AND",
+  Or = "OR",
+}
+
 export type TimeFilter = {
   equal?: Maybe<Scalars["DateTime"]>;
   notEqual?: Maybe<Scalars["DateTime"]>;
@@ -258,6 +280,11 @@ export type DateFilter = {
   lessOrEqualThan?: Maybe<Scalars["Date"]>;
   greaterThan?: Maybe<Scalars["Date"]>;
   greaterOrEqualThan?: Maybe<Scalars["Date"]>;
+};
+
+export type StringFilter = {
+  like?: Maybe<Scalars["String"]>;
+  in?: Maybe<Array<Scalars["String"]>>;
 };
 
 export enum AccessRight {
@@ -300,6 +327,7 @@ export type Person = {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -313,6 +341,7 @@ export type Adult = Person & {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
   employers: Array<Company>;
@@ -327,6 +356,7 @@ export type Underage = Person & {
   lastName: Scalars["String"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
+  nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
 };
@@ -346,6 +376,8 @@ export type AddPersonPersonInput = {
   phone?: Maybe<Scalars["PhoneNumber"]>;
   email: Scalars["EmailAddress"];
   birthday: Scalars["Date"];
+  nationality: Scalars["CountryCode"];
+  personalIdentityCode: Scalars["PersonalIdentityCode"];
 };
 
 export type AddPersonInput = {
@@ -373,8 +405,31 @@ export type EditPersonSuccess = {
   person: Person;
 };
 
+export type PersonFilterOperation = {
+  operator: FilterOperator;
+  filters?: Maybe<Array<PersonFilter>>;
+};
+
 export type PersonFilter = {
+  filterOperations?: Maybe<Array<PersonFilterOperation>>;
   birthdayFilter?: Maybe<DateFilter>;
+  nameFilter?: Maybe<StringFilter>;
+};
+
+export enum PersonSortField {
+  Birthday = "birthday",
+  FirstName = "firstName",
+  LastName = "lastName",
+}
+
+export enum SortOrder {
+  Asc = "ASC",
+  Desc = "DESC",
+}
+
+export type PersonSort = {
+  field: PersonSortField;
+  order: SortOrder;
 };
 
 export type RegisterSuccess = {
@@ -571,6 +626,8 @@ export type ResolversTypes = ResolversObject<{
     Omit<EditCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
   EditCompanyFailureNotFound: ResolverTypeWrapper<EditCompanyFailureNotFound>;
+  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilter: CompanyFilter;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversTypes["AddEmployeeSuccess"];
@@ -585,13 +642,17 @@ export type ResolversTypes = ResolversObject<{
   >;
   FailureOutput: ResolversTypes["UniqueConstraintViolationFailure"];
   UniqueConstraintViolationFailure: ResolverTypeWrapper<UniqueConstraintViolationFailure>;
+  FilterOperator: FilterOperator;
   TimeFilter: TimeFilter;
   DateFilter: DateFilter;
+  StringFilter: StringFilter;
   UUID: ResolverTypeWrapper<Scalars["UUID"]>;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
+  PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
+  CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
   AccessRight: AccessRight;
   Timestamp: ResolverTypeWrapper<Timestamp>;
   NumberFact: ResolverTypeWrapper<NumberFact>;
@@ -620,7 +681,11 @@ export type ResolversTypes = ResolversObject<{
   EditPersonSuccess: ResolverTypeWrapper<
     Omit<EditPersonSuccess, "person"> & { person: ResolversTypes["Person"] }
   >;
+  PersonFilterOperation: PersonFilterOperation;
   PersonFilter: PersonFilter;
+  PersonSortField: PersonSortField;
+  SortOrder: SortOrder;
+  PersonSort: PersonSort;
   RegisterSuccess: ResolverTypeWrapper<RegisterSuccess>;
   RegisterFailure: ResolverTypeWrapper<RegisterFailure>;
   RegisterFailureAlreadyExists: ResolverTypeWrapper<RegisterFailureAlreadyExists>;
@@ -676,6 +741,8 @@ export type ResolversParentTypes = ResolversObject<{
     company: ResolversParentTypes["Company"];
   };
   EditCompanyFailureNotFound: EditCompanyFailureNotFound;
+  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilter: CompanyFilter;
   AddEmployeeInput: AddEmployeeInput;
   RemoveEmployeeInput: RemoveEmployeeInput;
   AddEmployeeOutput: ResolversParentTypes["AddEmployeeSuccess"];
@@ -690,11 +757,14 @@ export type ResolversParentTypes = ResolversObject<{
   UniqueConstraintViolationFailure: UniqueConstraintViolationFailure;
   TimeFilter: TimeFilter;
   DateFilter: DateFilter;
+  StringFilter: StringFilter;
   UUID: Scalars["UUID"];
   Date: Scalars["Date"];
   DateTime: Scalars["DateTime"];
   EmailAddress: Scalars["EmailAddress"];
   PhoneNumber: Scalars["PhoneNumber"];
+  PersonalIdentityCode: Scalars["PersonalIdentityCode"];
+  CountryCode: Scalars["CountryCode"];
   Timestamp: Timestamp;
   NumberFact: NumberFact;
   Int: Scalars["Int"];
@@ -722,7 +792,9 @@ export type ResolversParentTypes = ResolversObject<{
   EditPersonSuccess: Omit<EditPersonSuccess, "person"> & {
     person: ResolversParentTypes["Person"];
   };
+  PersonFilterOperation: PersonFilterOperation;
   PersonFilter: PersonFilter;
+  PersonSort: PersonSort;
   RegisterSuccess: RegisterSuccess;
   RegisterFailure: RegisterFailure;
   RegisterFailureAlreadyExists: RegisterFailureAlreadyExists;
@@ -782,7 +854,8 @@ export type QueryResolvers<
   companies?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
-    ContextType
+    ContextType,
+    RequireFields<QueryCompaniesArgs, never>
   >;
   company?: Resolver<
     ResolversTypes["CompanyOutput"],
@@ -1053,6 +1126,16 @@ export interface PhoneNumberScalarConfig
   name: "PhoneNumber";
 }
 
+export interface PersonalIdentityCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["PersonalIdentityCode"], any> {
+  name: "PersonalIdentityCode";
+}
+
+export interface CountryCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["CountryCode"], any> {
+  name: "CountryCode";
+}
+
 export type TimestampResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Timestamp"] = ResolversParentTypes["Timestamp"]
@@ -1116,6 +1199,11 @@ export type PersonResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<
+    ResolversTypes["CountryCode"],
+    ParentType,
+    ContextType
+  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
 }>;
@@ -1133,6 +1221,11 @@ export type AdultResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<
+    ResolversTypes["CountryCode"],
+    ParentType,
+    ContextType
+  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   employers?: Resolver<
@@ -1156,6 +1249,11 @@ export type UnderageResolvers<
     ContextType
   >;
   email?: Resolver<ResolversTypes["EmailAddress"], ParentType, ContextType>;
+  nationality?: Resolver<
+    ResolversTypes["CountryCode"],
+    ParentType,
+    ContextType
+  >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1280,6 +1378,8 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
+  PersonalIdentityCode?: GraphQLScalarType;
+  CountryCode?: GraphQLScalarType;
   Timestamp?: TimestampResolvers<ContextType>;
   NumberFact?: NumberFactResolvers<ContextType>;
   NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;

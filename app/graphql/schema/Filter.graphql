@@ -1,3 +1,8 @@
+ enum FilterOperator {
+  AND
+  OR
+}
+
 input TimeFilter {
   equal: DateTime
   notEqual: DateTime
@@ -15,3 +20,10 @@ input DateFilter {
   greaterThan: Date
   greaterOrEqualThan: Date
 }
+
+input StringFilter {
+  like: String
+  in: [String!]
+}
+
+ 

@@ -21,6 +21,8 @@ export const dbPersonMockTableRow: PersonTableRow = {
   birthday: new Date(datetimeString),
   createdAt: new Date(datetimeString),
   updatedAt: null,
+  nationality: "FI",
+  personalIdentityCode: "230488-577C",
 };
 
 export const dbPersonMockTableRowUpdated: PersonTableRow = {

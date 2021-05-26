@@ -3,6 +3,8 @@ scalar Date
 scalar DateTime
 scalar EmailAddress
 scalar PhoneNumber
+scalar PersonalIdentityCode
+scalar CountryCode
 
 enum AccessRight {
   USER

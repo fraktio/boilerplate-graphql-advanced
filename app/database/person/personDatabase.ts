@@ -1,10 +1,24 @@
 import { FinnishSSN } from "finnish-ssn";
+import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
+import {
+  buildFilterQuery,
+  applyDateFilters,
+  applyStringFilters,
+} from "../filters";
+
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table } from "~/database/tables";
-import { Maybe } from "~/generation/generated";
+import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import {
+  Maybe,
+  PersonFilterOperation,
+  PersonFilter,
+  FilterOperator,
+  PersonSort,
+  SortOrder,
+} from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,
@@ -73,7 +87,7 @@ export type CreatePersonOptions = {
   email: EmailAddress;
   birthday: DateTime;
   nationality: CountryCode;
-  personalIndentityCode: FinnishPersonalIdentityCode;
+  personalIdentityCode: FinnishPersonalIdentityCode;
 };
 
 export type UpdatePersonOptions = CreatePersonOptions;
@@ -103,8 +117,15 @@ export const personDB = {
     return person ? formatPersonRow(person) : null;
   },
 
-  async getAll(params: { knex: DBConnection }): Promise<PersonTable[]> {
-    const persons = await params.knex<PersonTableRow>(Table.PERSONS);
+  async getAll(params: {
+    knex: DBConnection;
+    filters?: PersonFilterOperation;
+    sort?: PersonSort[];
+  }): Promise<PersonTable[]> {
+    const persons = await params
+      .knex<PersonTableRow>(Table.PERSONS)
+      .andWhere((qb) => addPersonFilters(qb, params.filters))
+      .orderBy(applyPersonSort(params.sort));
 
     return persons.map(formatPersonRow);
   },
@@ -169,3 +190,47 @@ export const personDB = {
     return personRows.map(formatPersonRow);
   },
 };
+
+function applyPersonSort(sort?: PersonSort[]) {
+  if (!sort) {
+    return [{ column: "firstName", order: SortOrder.Asc }];
+  }
+
+  return sort.map((element) => ({
+    column: element.field,
+    order: element.order,
+  }));
+}
+
+export function addPersonFilters(
+  queryBuilder: Knex.QueryBuilder,
+  filterOperation?: PersonFilterOperation,
+): Knex.QueryBuilder {
+  return buildFilterQuery(queryBuilder, applyPersonFilters, filterOperation);
+}
+
+function applyPersonFilters(input: {
+  queryBuilder: Knex.QueryBuilder;
+  filterOperator: FilterOperator;
+  filter: PersonFilter;
+}): Knex.QueryBuilder {
+  const { queryBuilder, filterOperator, filter } = input;
+  if (filter.birthdayFilter) {
+    applyDateFilters({
+      queryBuilder,
+      filterOperator,
+      field: tableColumn(Table.PERSONS, "birthday"),
+      dateFilter: filter.birthdayFilter,
+    });
+  }
+  if (filter.nameFilter) {
+    return applyStringFilters({
+      queryBuilder,
+      filterOperator,
+      field: tableColumn(Table.PERSONS, "firstName"),
+      stringFilter: filter.nameFilter,
+    });
+  }
+
+  return queryBuilder;
+}
