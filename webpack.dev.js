@@ -1,21 +1,24 @@
-const NodemonPlugin = require('nodemon-webpack-plugin')
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
-const dotenv = require('dotenv')
-const path = require("path")
+/* eslint-disable @typescript-eslint/no-var-requires */
+const dotenv = require("dotenv");
+const NodemonPlugin = require("nodemon-webpack-plugin");
+const path = require("path");
+const { merge } = require("webpack-merge");
 
-dotenv.config({ path: path.join(__dirname,'.env.development') });
+const common = require("./webpack.common.js");
+
+dotenv.config({ path: path.join(__dirname, ".env.development") });
 
 module.exports = merge(common, {
-  mode: 'development',
-  plugins: [
-    new NodemonPlugin(),
-  ],
+  mode: "development",
+  optimization: {
+    minimize: false,
+  },
+  plugins: [new NodemonPlugin()],
   devServer: {
     noInfo: true,
   },
   watchOptions: {
     ignored: /node_modules/,
   },
-  stats: 'errors-only',
+  stats: "errors-only",
 });

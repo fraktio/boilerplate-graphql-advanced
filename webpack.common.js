@@ -1,39 +1,48 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
-const path = require("path")
-const webpack = require("webpack")
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
+
+const outputFolder = path.resolve(process.cwd(), "dist");
 
 module.exports = {
-  entry: './app/index.ts',
-  target: 'node',
+  entry: path.join(process.cwd(), "/app/index.ts"),
+  target: "node",
   output: {
-    filename: 'main.js',
-    libraryTarget: "commonjs2"
+    path: outputFolder,
+    filename: "main.js",
+    libraryTarget: "commonjs2",
   },
   stats: {
-    errorDetails: true
+    errorDetails: true,
   },
   resolve: {
-    modules: ['node_modules'],
-    extensions: ['.ts', '.js', '.json', '.graphql'],
+    modules: ["node_modules"],
+    extensions: [".ts", ".js", ".json", ".graphql"],
     alias: {
       "~": path.resolve(__dirname, "./app"),
-    }
+    },
   },
   module: {
     rules: [
       {
         use: {
-          loader: 'ts-loader',
+          loader: "ts-loader",
           options: {
-            transpileOnly: true
-          }
+            transpileOnly: true,
+          },
         },
-        exclude: /node_modules/,
       },
     ],
   },
-  externals: ["knex", "pg", "vue", "@vue/compiler-sfc"],
+  externals: [nodeExternals()],
   plugins: [
+    new CleanWebpackPlugin({
+      output: {
+        path: outputFolder,
+      },
+    }),
     new CopyPlugin({
       patterns: [
         {
