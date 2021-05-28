@@ -40,9 +40,9 @@ const createPerson = (): Omit<
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     phone: faker.phone.phoneNumber("+35840#######"),
-    email: (faker.internet.email() as unknown) as EmailAddress,
+    email: faker.internet.email() as unknown as EmailAddress,
     birthday: parsedssn.dateOfBirth,
-    nationality: (faker.address.countryCode() as unknown) as CountryCode,
+    nationality: faker.address.countryCode() as unknown as CountryCode,
     personalIdentityCode: ssn,
   };
 };

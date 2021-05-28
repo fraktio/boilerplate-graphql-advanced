@@ -11,10 +11,10 @@ const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
 
 export const dbUserMockTableRow: UserTableRow = {
-  id: (2 as unknown) as UserID,
-  uuid: ("valid-uuid" as unknown) as UUID,
+  id: 2 as unknown as UserID,
+  uuid: "valid-uuid" as unknown as UUID,
   username: "username",
-  email: ("email" as unknown) as EmailAddress,
+  email: "email" as unknown as EmailAddress,
   phoneNumber: "valid-phonenumber",
   hashedPassword: "valid-hashed-password",
   createdAt: new Date(datetimeString),

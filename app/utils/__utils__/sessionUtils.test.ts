@@ -7,9 +7,9 @@ import { UserTable } from "~/database/user/userDatabase";
 describe("utils / hashing", () => {
   it("generateRefreshToken & verifyRefreshPayload", async () => {
     const SECRET = "secret";
-    const mockUser = ({
+    const mockUser = {
       UUID: "mockUUID",
-    } as unknown) as UserTable;
+    } as unknown as UserTable;
 
     const refreshToken = sessionUtils.generateRefreshToken({
       user: mockUser,
@@ -31,9 +31,9 @@ describe("utils / hashing", () => {
 
   it("generateRefreshToken & verifyRefreshPayload", async () => {
     const SECRET = "secret";
-    const mockUser = ({
+    const mockUser = {
       UUID: "mockUUID",
-    } as unknown) as UserTable;
+    } as unknown as UserTable;
 
     const accessToken = sessionUtils.generateAccessToken({
       user: mockUser,

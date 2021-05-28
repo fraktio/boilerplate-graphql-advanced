@@ -29,7 +29,7 @@ type Args = [
 interface GraphQLFieldWithAuth<
   TSource,
   TContext,
-  TArgs = { [key: string]: unknown }
+  TArgs = { [key: string]: unknown },
 > extends GraphQLField<TSource, TContext, TArgs> {
   _requiredAuthRole: UserAccessLevel;
 }
@@ -68,7 +68,7 @@ export class AuthenticatedDirective extends SchemaDirectiveVisitor {
     const fields = objectType.getFields();
 
     Object.keys(fields).forEach((fieldName) => {
-      const field = (fields[fieldName] as unknown) as GraphQLFieldWithAuth<
+      const field = fields[fieldName] as unknown as GraphQLFieldWithAuth<
         unknown,
         Context,
         { [key: string]: unknown }

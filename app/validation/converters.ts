@@ -30,7 +30,7 @@ export function asEmail(value: string): EmailAddress {
 }
 
 export function asUUID(value: string): UUID {
-  return (String(value) as unknown) as UUID;
+  return String(value) as unknown as UUID;
 }
 
 export function asLanguage(value: string): Language {

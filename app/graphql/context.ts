@@ -20,15 +20,14 @@ export type BaseContext = {
   authenticatedUser: Maybe<UserTable>;
 };
 
-export const createContext = (params: {
-  knex: DBConnection;
-  config: Config;
-}) => (app: { req: Request; res: Response }) => ({
-  logger: app.req.logger,
-  req: app.req,
-  res: app.res,
-  config: params.config,
-  knex: params.knex,
-  dataLoaders: createDataLoaders(),
-  authenticatedUser: app.req.user || null,
-});
+export const createContext =
+  (params: { knex: DBConnection; config: Config }) =>
+  (app: { req: Request; res: Response }) => ({
+    logger: app.req.logger,
+    req: app.req,
+    res: app.res,
+    config: params.config,
+    knex: params.knex,
+    dataLoaders: createDataLoaders(),
+    authenticatedUser: app.req.user || null,
+  });

@@ -10,7 +10,7 @@ export function validatePhoneNumber(
   const parsed = parsePhoneNumberFromString(value, "FI");
 
   if (parsed && parsed.isValid()) {
-    return toSuccess((parsed as unknown) as PhoneNumber);
+    return toSuccess(parsed as unknown as PhoneNumber);
   }
 
   return toFailure(new ValidationErrorFailure("Phone", value));

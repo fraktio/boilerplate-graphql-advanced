@@ -18,7 +18,7 @@ export interface ID extends Number {
   _ID: never;
 }
 
-export const createUUID = () => (uuidv4() as unknown) as UUID;
+export const createUUID = () => uuidv4() as unknown as UUID;
 
 type TableColumns<T extends Table> = T extends Table.USERS
   ? UserTableRow

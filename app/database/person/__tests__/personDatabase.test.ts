@@ -12,12 +12,12 @@ const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
 
 export const dbPersonMockTableRow: PersonTableRow = {
-  id: (2 as unknown) as PersonID,
-  uuid: ("valid-uuid" as unknown) as UUID,
+  id: 2 as unknown as PersonID,
+  uuid: "valid-uuid" as unknown as UUID,
   firstName: "firstname",
   lastName: "lastname",
   phone: "+358400000000",
-  email: ("valid-email" as unknown) as EmailAddress,
+  email: "valid-email" as unknown as EmailAddress,
   birthday: new Date(datetimeString),
   createdAt: new Date(datetimeString),
   updatedAt: null,

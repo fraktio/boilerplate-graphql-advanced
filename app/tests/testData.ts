@@ -17,7 +17,7 @@ type CreateUserParams = {
 export const createUser = (params: CreateUserParams) => ({
   uuid: uuidv4(),
   username: params?.username || faker.internet.userName(),
-  email: (faker.internet.email() as unknown) as EmailAddress,
+  email: faker.internet.email() as unknown as EmailAddress,
   phoneNumber: parsePhoneNumber(faker.phone.phoneNumber("+358#########")),
   hashedPassword: params?.hashedPassword,
 });
