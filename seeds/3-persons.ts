@@ -12,7 +12,7 @@ import { EmailAddress } from "~/generation/scalars";
 
 const createValidSsn = (): string => {
   const ssn = FinnishSSN.createWithAge(
-    faker.random.number({
+    faker.datatype.number({
       min: 15,
       max: 65,
     }),
