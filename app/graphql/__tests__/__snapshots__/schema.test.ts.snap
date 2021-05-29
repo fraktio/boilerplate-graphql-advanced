@@ -116,32 +116,18 @@ GraphQLSchema {
     "__TypeKind": "__TypeKind",
   },
   "astNode": Object {
-    "description": undefined,
-    "directives": Array [],
     "kind": "SchemaDefinition",
-    "loc": Object {
-      "end": 69,
-      "start": 0,
-    },
     "operationTypes": Array [
       Object {
         "kind": "OperationTypeDefinition",
-        "loc": Object {
-          "end": 21,
-          "start": 9,
-        },
         "operation": "query",
         "type": Object {
           "kind": "NamedType",
-          "loc": Object {
-            "end": 21,
-            "start": 16,
-          },
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 21,
-              "start": 16,
+              "end": 872,
+              "start": 867,
             },
             "value": "Query",
           },
@@ -149,22 +135,14 @@ GraphQLSchema {
       },
       Object {
         "kind": "OperationTypeDefinition",
-        "loc": Object {
-          "end": 40,
-          "start": 22,
-        },
         "operation": "mutation",
         "type": Object {
           "kind": "NamedType",
-          "loc": Object {
-            "end": 40,
-            "start": 32,
-          },
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 40,
-              "start": 32,
+              "end": 371,
+              "start": 363,
             },
             "value": "Mutation",
           },
@@ -172,22 +150,14 @@ GraphQLSchema {
       },
       Object {
         "kind": "OperationTypeDefinition",
-        "loc": Object {
-          "end": 67,
-          "start": 41,
-        },
         "operation": "subscription",
         "type": Object {
           "kind": "NamedType",
-          "loc": Object {
-            "end": 67,
-            "start": 55,
-          },
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 67,
-              "start": 55,
+              "end": 1076,
+              "start": 1064,
             },
             "value": "Subscription",
           },
