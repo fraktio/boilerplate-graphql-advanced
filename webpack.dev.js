@@ -18,9 +18,6 @@ module.exports = merge(common, {
       ext: "ts,json,graphql",
     }),
   ],
-  devServer: {
-    noInfo: true,
-  },
   watchOptions: {
     ignored: /node_modules/,
   },

@@ -5,8 +5,9 @@ import express from "express";
 import helmet from "helmet";
 
 import { Config } from "~/config/config";
+import { DBConnection } from "~/database/connection";
 
-const getHelmet = (params: { isProduction: boolean }) => {
+const getHelmetOptions = (params: { isProduction: boolean }) => {
   if (params.isProduction) {
     return undefined;
   }
@@ -16,15 +17,23 @@ const getHelmet = (params: { isProduction: boolean }) => {
   };
 };
 
-export const createExpress = (opts: { config: Config }) => {
+export const createExpress = (opts: { config: Config; knex: DBConnection }) => {
   const app = express();
 
   // https://github.com/helmetjs/helmet
-  app.use(helmet(getHelmet({ isProduction: opts.config.env.isProduction })));
+  app.use(
+    helmet(getHelmetOptions({ isProduction: opts.config.env.isProduction })),
+  );
 
   app.use(cors({ origin: opts.config.env.apiCorsEndpoint, credentials: true }));
   app.use(cookieParser());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(
+    bodyParser.urlencoded({
+      extended: true,
+      limit: "20mb",
+      parameterLimit: 20,
+    }),
+  );
 
   return app;
 };
