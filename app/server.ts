@@ -1,5 +1,7 @@
 import { createProxyMiddleware } from "http-proxy-middleware";
 
+import { createRoutes } from "./express/routes/routes";
+
 import { Config } from "~/config/config";
 import { createKnex } from "~/database/connection";
 import { createExpress } from "~/express/express";
@@ -14,9 +16,10 @@ export const createServer = ({ config }: { config: Config }) => {
   const logger = createLogger({ config });
 
   const knex = createKnex({ databaseConfig: config.database });
-  const app = createExpress({ config });
+  const app = createExpress({ config, knex });
 
   app.use(loggerHandler({ logger }));
+  app.use(createRoutes({ knex }));
   app.use(sessionHandler({ cookiesConfig: config.cookies, knex }));
 
   const apolloServer = createApolloServer({

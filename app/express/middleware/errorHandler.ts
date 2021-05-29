@@ -11,18 +11,17 @@ import { Config } from "~/config/config";
 
 export const errorHandler: ErrorRequestHandler = (
   err,
-  _,
+  req,
   res,
   // need four parameters because it's an error handler
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   __,
   // eslint-disable-next-line max-params
 ) => {
-  if (err) {
-    res.status(500).json({
-      message: "Internal server error",
-    });
-  }
+  req.logger.error(err);
+  res.status(500).json({
+    message: "Internal server error",
+  });
 };
 
 export const apolloErrorHandler =

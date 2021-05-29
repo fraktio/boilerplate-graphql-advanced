@@ -15,9 +15,6 @@ module.exports = {
     filename: "main.js",
     libraryTarget: "commonjs2",
   },
-  stats: {
-    errorDetails: true,
-  },
   resolve: {
     modules: ["node_modules"],
     extensions: [".ts", ".js", ".json", ".graphql"],
@@ -46,6 +43,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
+        "package.json",
         {
           context: "./app/graphql/schema/",
           from: "*",
