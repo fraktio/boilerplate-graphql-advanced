@@ -1,6 +1,12 @@
 import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
+import { Maybe } from "~/generation/generated";
 import { BaseContext } from "~/graphql/context";
+
+export type FactResponse = {
+  fact: string;
+  number: number;
+};
 
 export class NumberFactApi extends RESTDataSource<BaseContext> {
   constructor() {
@@ -8,11 +14,13 @@ export class NumberFactApi extends RESTDataSource<BaseContext> {
     this.baseURL = "http://numbersapi.com/";
   }
 
-  protected willSendRequest(request: RequestOptions) {
+  protected willSendRequest(request: RequestOptions): void {
     request.headers.set("Authorization", this.context.config.numberFact.token);
   }
 
-  public async getFact(params: { number: number }) {
+  public async getFact(params: {
+    number: number;
+  }): Promise<Maybe<FactResponse>> {
     try {
       const response = await this.get<string>(`/${params.number}/math`);
 

@@ -100,5 +100,6 @@ module.exports = {
       },
     ],
     "max-lines": ["error", 400],
+    "@typescript-eslint/explicit-function-return-type": ["error"],
   },
 };

@@ -11,7 +11,7 @@ import {
 } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { PersonID } from "~/database/person/personDatabase";
-import { PersonFilterOperation } from "~/generation/generated";
+import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export type CompanyTable = {
@@ -39,7 +39,7 @@ export const companyDS = {
     knex: DBConnection;
     companyId: CompanyID;
     companyDL: CompanyDataLoader;
-  }) {
+  }): Promise<Maybe<CompanyTable>> {
     const company = await companyDB.get(params);
 
     if (company) {
@@ -55,7 +55,7 @@ export const companyDS = {
     knex: DBConnection;
     companyId: CompanyID;
     companyDL: CompanyDataLoader;
-  }) {
+  }): Promise<CompanyTable> {
     const company = await companyDB.tryGet(params);
 
     params.companyDL
@@ -69,7 +69,7 @@ export const companyDS = {
     knex: DBConnection;
     companyUUID: UUID;
     companyDL: CompanyDataLoader;
-  }) {
+  }): Promise<Maybe<CompanyTable>> {
     const company = await companyDB.getByUUID(params);
 
     if (company) {
@@ -85,7 +85,7 @@ export const companyDS = {
     knex: DBConnection;
     companyDL: CompanyDataLoader;
     filters?: PersonFilterOperation;
-  }) {
+  }): Promise<CompanyTable[]> {
     const companies = await companyDB.getAll(params);
 
     const dataloader = params.companyDL.getLoader({ knex: params.knex });
@@ -100,7 +100,7 @@ export const companyDS = {
     knex: DBConnection;
     newCompany: { name: string };
     companyDL: CompanyDataLoader;
-  }) {
+  }): Promise<CompanyTable> {
     const company = await companyDB.create({
       knex: params.knex,
       company: params.newCompany,
@@ -118,7 +118,7 @@ export const companyDS = {
     companyUUID: UUID;
     company: { name: string };
     companyDL: CompanyDataLoader;
-  }) {
+  }): Promise<Maybe<CompanyTable>> {
     const company = await companyDB.updateByUUID(params);
 
     if (company) {
@@ -135,7 +135,7 @@ export const companyDS = {
     personId: PersonID;
     companyDL: CompanyDataLoader;
     companiesOfPersonDL: CompaniesOfPersonDataLoader;
-  }) {
+  }): Promise<CompanyTable[]> {
     const companyIds = await params.companiesOfPersonDL
       .getLoader({ knex: params.knex })
       .load(params.personId);

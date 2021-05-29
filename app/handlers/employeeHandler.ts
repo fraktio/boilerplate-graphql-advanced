@@ -1,11 +1,11 @@
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
-import { companyDS } from "~/database/company/companyDataSource";
+import { companyDS, CompanyTable } from "~/database/company/companyDataSource";
 import { DBConnection } from "~/database/connection";
 import { employeeDS } from "~/database/employee/employeeDataSource";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDS } from "~/database/person/personDataSource";
 import { UUID } from "~/generation/mappers";
-import { toFailure, toSuccess } from "~/utils/validation";
+import { toFailure, toSuccess, Try } from "~/utils/validation";
 
 export enum AddEmployeeHandlerErrors {
   InvalidPersonUUID = "invalid-person-uuid",
@@ -18,7 +18,7 @@ export const addEmployeeHandler = async (params: {
   personUUID: UUID;
   companyDL: CompanyDataLoader;
   personDL: PersonDataLoader;
-}) => {
+}): Promise<Try<CompanyTable, AddEmployeeHandlerErrors>> => {
   const company = await companyDS.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
@@ -59,7 +59,7 @@ export const removeEmployeeHandler = async (params: {
   personUUID: UUID;
   companyDL: CompanyDataLoader;
   personDL: PersonDataLoader;
-}) => {
+}): Promise<Try<CompanyTable, RemoveEmployeeHandlerErrors>> => {
   const company = await companyDS.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,

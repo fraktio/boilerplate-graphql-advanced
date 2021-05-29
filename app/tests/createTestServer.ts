@@ -1,5 +1,5 @@
 import { createTestConfig } from "~/config/testConfig";
-import { createServer } from "~/server";
+import { createServer, CreateServerResponse } from "~/server";
 
-export const createTestServer = () =>
+export const createTestServer = (): CreateServerResponse =>
   createServer({ config: createTestConfig() });

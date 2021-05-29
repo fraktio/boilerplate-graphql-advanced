@@ -10,7 +10,7 @@ export const sessionHandler =
     knex: DBConnection;
     cookiesConfig: CookiesConfig;
   }): RequestHandler =>
-  async (req, _, next) => {
+  async (req, _, next): Promise<void> => {
     const token = sessionUtils.getRefreshToken({ req });
 
     if (!token) {

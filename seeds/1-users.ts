@@ -9,9 +9,20 @@ import { hashingUtils } from "../app/utils/hashingUtils";
 export const testUsername = "username";
 export const testPassword = "password";
 
-export const doXTimes = (count: number) => [...Array(count).keys()];
+export const doXTimes = (count: number): number[] => [...Array(count).keys()];
 
-const createUser = (opts: { username?: string; password: string }) => ({
+type CreateUser = {
+  uuid: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  hashedPassword: string;
+};
+
+const createUser = (opts: {
+  username?: string;
+  password: string;
+}): CreateUser => ({
   uuid: uuidv4(),
   username: opts?.username || faker.internet.userName(),
   email: faker.internet.email(),

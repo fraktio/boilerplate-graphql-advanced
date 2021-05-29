@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { DBConnection } from "~/database/connection";
 
-export const createHealthRoutes = (params: { knex: DBConnection }) => {
+export const createHealthRoutes = (params: { knex: DBConnection }): Router => {
   const router = Router();
 
   router.get("/", async (_, res) => {

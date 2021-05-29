@@ -7,7 +7,7 @@ import { validatePhoneNumber } from "~/validation/validators/phoneNumberValidato
 const ERROR_MESSAGE =
   "Phone must be a valid a valid phone number in international format";
 
-const formatDateToString = (phoneNumber: PhoneNumber) => {
+const formatDateToString = (phoneNumber: PhoneNumber): string => {
   if (!phoneNumber.isValid()) {
     throw new ValidationError(ERROR_MESSAGE);
   }
@@ -36,7 +36,7 @@ export const PhoneNumberResolver = new GraphQLScalarType({
   name: "Phone",
   description: "Phone scalar type",
 
-  serialize: (value: PhoneNumber) => formatDateToString(value),
-  parseValue: (value: string) => parseDateFromString(value),
-  parseLiteral: (valueNode: ValueNode) => parseLiteralPhoneNumber(valueNode),
+  serialize: formatDateToString,
+  parseValue: parseDateFromString,
+  parseLiteral: parseLiteralPhoneNumber,
 });

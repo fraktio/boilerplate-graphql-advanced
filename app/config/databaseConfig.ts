@@ -26,7 +26,7 @@ export const DatabaseConfigDecoder = t.type({
 
 export type DatabaseConfig = t.TypeOf<typeof DatabaseConfigDecoder>;
 
-export const validateDatabaseConfig = (config: unknown) => {
+export const validateDatabaseConfig = (config: unknown): DatabaseConfig => {
   const validated = DatabaseConfigDecoder.decode(config);
 
   if (isLeft(validated)) {
@@ -38,7 +38,7 @@ export const validateDatabaseConfig = (config: unknown) => {
   return validated.right;
 };
 
-export const createDatabaseConfig = () => {
+export const createDatabaseConfig = (): DatabaseConfig => {
   const dbConfig = {
     type: getEnv(DATABASE_TYPE),
     host: getEnv(DATABASE_HOST),

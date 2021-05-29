@@ -13,7 +13,7 @@ const getVersion = (): string | null => {
 
 const version = getVersion();
 
-export const createVersionRoutes = () => {
+export const createVersionRoutes = (): Router => {
   const router = Router();
 
   router.get("/", (_, res) => {

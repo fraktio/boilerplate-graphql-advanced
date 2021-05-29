@@ -5,7 +5,7 @@ import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDS } from "~/database/user/UserDataSource";
 import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
-import { toFailure, toSuccess } from "~/utils/validation";
+import { Try, toFailure, toSuccess } from "~/utils/validation";
 
 type CreateUser = {
   username: string;
@@ -18,11 +18,13 @@ export enum RegisterHandlerErrors {
   UsernameAlreadyExists = "username-alreay-exists",
 }
 
+type RegisterHandler = Try<null, RegisterHandlerErrors>;
+
 export const registerHandler = async (params: {
   knex: DBConnection;
   newUser: CreateUser;
   userDL: UserDataLoader;
-}) => {
+}): Promise<RegisterHandler> => {
   const user = await userDS.getByUsername({
     knex: params.knex,
     username: params.newUser.username,

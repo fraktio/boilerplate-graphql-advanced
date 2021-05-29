@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 
 const ERROR_MESSAGE = "Date is not a valid date format yyyy-MM-dd";
 
-export const parseDateFromString = (value: string) => {
+export const parseDateFromString = (value: string): DateTime => {
   const date = DateTime.fromFormat(value, "yyyy-MM-dd", { zone: "utc" });
 
   if (!date.isValid) {
@@ -14,7 +14,7 @@ export const parseDateFromString = (value: string) => {
   return date;
 };
 
-export const formatDateToString = (dateTime: DateTime) => {
+export const formatDateToString = (dateTime: DateTime): string => {
   if (!dateTime.isValid) {
     throw new ValidationError(ERROR_MESSAGE);
   }
@@ -34,7 +34,7 @@ export const DateResolver = new GraphQLScalarType({
   name: "Date",
   description: "Date without time or timezone",
 
-  serialize: (date: DateTime) => formatDateToString(date),
-  parseValue: (value: string) => parseDateFromString(value),
-  parseLiteral: (valueNode: ValueNode) => parseLiteralDate(valueNode),
+  serialize: formatDateToString,
+  parseValue: parseDateFromString,
+  parseLiteral: parseLiteralDate,
 });

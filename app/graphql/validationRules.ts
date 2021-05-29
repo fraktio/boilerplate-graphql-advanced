@@ -1,3 +1,4 @@
+import { ValidationContext } from "graphql";
 import depthLimit from "graphql-depth-limit";
 import { createComplexityLimitRule } from "graphql-validation-complexity";
 
@@ -9,7 +10,9 @@ export const COMPLEXITY_COST = {
   listFactor: 20,
 };
 
-export const createValidationRules = () => {
+type ValidationRule = (context: ValidationContext) => unknown;
+
+export const createValidationRules = (): ValidationRule[] => {
   const depthLimitRule = depthLimit(DEPTH_VALUE_LIMIT);
   const complexityRule = createComplexityLimitRule(
     COMPLEXITY_LIMIT,

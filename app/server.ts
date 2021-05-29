@@ -1,9 +1,11 @@
+import Logger from "bunyan";
+import { Express } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { createRoutes } from "./express/routes/routes";
 
 import { Config } from "~/config/config";
-import { createKnex } from "~/database/connection";
+import { createKnex, DBConnection } from "~/database/connection";
 import { createExpress } from "~/express/express";
 import { errorHandler } from "~/express/middleware/errorHandler";
 import { loggerHandler } from "~/express/middleware/loggerHandler";
@@ -12,7 +14,18 @@ import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
 import { createLogger } from "~/logger";
 
-export const createServer = ({ config }: { config: Config }) => {
+export type CreateServerResponse = {
+  app: Express;
+  logger: Logger;
+  knex: DBConnection;
+  config: Config;
+};
+
+type CreateSercerFunction = (params: {
+  config: Config;
+}) => CreateServerResponse;
+
+export const createServer: CreateSercerFunction = ({ config }) => {
   const logger = createLogger({ config });
 
   const knex = createKnex({ databaseConfig: config.database });

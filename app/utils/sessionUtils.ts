@@ -18,8 +18,18 @@ export type JWTRefreshPayload = {
   uuid: UUID;
 };
 
+type GenerateRefreshTokenResponse = {
+  refreshToken: string;
+  expiresAt: DateTime;
+};
+
+type GenerateAccessTokenResponse = {
+  accessToken: string;
+  expiresAt: DateTime;
+};
+
 export const sessionUtils = {
-  getTokenExpireDate(opts: { age: number }) {
+  getTokenExpireDate(opts: { age: number }): DateTime {
     return DateTime.utc().plus({
       second: opts.age * 1000,
     });
@@ -29,7 +39,7 @@ export const sessionUtils = {
     user: UserTable;
     secret: string;
     tokenAgeSeconds: number;
-  }) {
+  }): GenerateRefreshTokenResponse {
     const signObj: JWTRefreshPayload = { uuid: params.user.UUID };
     const expiresAt = sessionUtils.getTokenExpireDate({
       age: params.tokenAgeSeconds,
@@ -49,7 +59,7 @@ export const sessionUtils = {
     user: UserTable;
     secret: string;
     tokenAgeSeconds: number;
-  }) {
+  }): GenerateAccessTokenResponse {
     const signObj: JWTAccessPayload = { uuid: params.user.UUID };
     const expiresAt = sessionUtils.getTokenExpireDate({
       age: params.tokenAgeSeconds,
@@ -70,7 +80,7 @@ export const sessionUtils = {
     accessToken: string;
     tokenAgeSeconds: number;
     tokenDomain: string;
-  }) {
+  }): void {
     params.res.cookie(Cookie.AccessToken, params.accessToken, {
       expires: sessionUtils
         .getTokenExpireDate({
@@ -88,7 +98,7 @@ export const sessionUtils = {
     refreshTokenAgeSeconds: number;
     domain: string;
     tokenPath: string;
-  }) {
+  }): void {
     params.res.cookie(Cookie.RefreshToken, params.refreshToken, {
       expires: sessionUtils
         .getTokenExpireDate({
@@ -104,7 +114,10 @@ export const sessionUtils = {
     });
   },
 
-  verifyAccessPayload(params: { token: string; secret: string }) {
+  verifyAccessPayload(params: {
+    token: string;
+    secret: string;
+  }): null | JWTAccessPayload {
     try {
       return verify(params.token, params.secret) as JWTAccessPayload;
     } catch (e) {
@@ -112,7 +125,10 @@ export const sessionUtils = {
     }
   },
 
-  verifyRefreshPayload(params: { token: string; tokenSecret: string }) {
+  verifyRefreshPayload(params: {
+    token: string;
+    tokenSecret: string;
+  }): null | JWTRefreshPayload {
     try {
       return verify(params.token, params.tokenSecret) as JWTRefreshPayload;
     } catch (e) {

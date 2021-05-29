@@ -20,9 +20,13 @@ export type BaseContext = {
   authenticatedUser: Maybe<UserTable>;
 };
 
+type CreateContextParams = { knex: DBConnection; config: Config };
+
+type ApplyMiddlewareApp = { req: Request; res: Response };
+
 export const createContext =
-  (params: { knex: DBConnection; config: Config }) =>
-  (app: { req: Request; res: Response }) => ({
+  (params: CreateContextParams) =>
+  (app: ApplyMiddlewareApp): BaseContext => ({
     logger: app.req.logger,
     req: app.req,
     res: app.res,

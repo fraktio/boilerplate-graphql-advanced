@@ -36,7 +36,7 @@ export const ConfigDecoder = t.interface({
 
 export type Config = t.TypeOf<typeof ConfigDecoder>;
 
-export const validateConfig = (config: unknown) => {
+export const validateConfig = (config: unknown): Config => {
   const validated = ConfigDecoder.decode(config);
 
   if (isLeft(validated)) {
@@ -50,7 +50,7 @@ export const validateConfig = (config: unknown) => {
   return validated.right;
 };
 
-export const createConfig = () => {
+export const createConfig = (): Config => {
   const config = {
     env: {
       apiPort: getEnv(API_PORT),

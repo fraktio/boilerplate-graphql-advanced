@@ -182,7 +182,7 @@ export const personDB = {
   async getPersonsByIds(params: {
     knex: DBConnection;
     personIds: readonly PersonID[];
-  }) {
+  }): Promise<PersonTable[]> {
     const personRows = await params
       .knex<PersonTableRow>(Table.PERSONS)
       .whereIn("id", params.personIds);
@@ -191,7 +191,12 @@ export const personDB = {
   },
 };
 
-function applyPersonSort(sort?: PersonSort[]) {
+type ApplyPersonSortResponse = {
+  column: string;
+  order: SortOrder;
+};
+
+function applyPersonSort(sort?: PersonSort[]): ApplyPersonSortResponse[] {
   if (!sort) {
     return [{ column: "firstName", order: SortOrder.Asc }];
   }

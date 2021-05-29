@@ -12,7 +12,7 @@ type CreateServerOpts = ApolloServerExpressConfig & {
   config: Config;
 };
 
-export const createApolloServer = (opts: CreateServerOpts) =>
+export const createApolloServer = (opts: CreateServerOpts): ApolloServer =>
   new ApolloServer({
     validationRules: createValidationRules(),
     schema: createExecutableSchema(),

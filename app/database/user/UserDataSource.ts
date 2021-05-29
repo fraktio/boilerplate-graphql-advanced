@@ -3,7 +3,8 @@ import { PhoneNumber } from "libphonenumber-js";
 import { UserDataLoader } from "./UserDataLoader";
 
 import { DBConnection } from "~/database/connection";
-import { userDB, UserID } from "~/database/user/userDatabase";
+import { userDB, UserID, UserTable } from "~/database/user/userDatabase";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 
@@ -19,7 +20,7 @@ export const userDS = {
     knex: DBConnection;
     userId: UserID;
     userDL: UserDataLoader;
-  }) {
+  }): Promise<Maybe<UserTable>> {
     const user = await userDB.get({ knex: params.knex, userId: params.userId });
 
     if (user) {
@@ -33,7 +34,7 @@ export const userDS = {
     knex: DBConnection;
     username: string;
     userDL: UserDataLoader;
-  }) {
+  }): Promise<Maybe<UserTable>> {
     const user = await userDB.getByUsername({
       knex: params.knex,
       username: params.username,
@@ -50,7 +51,7 @@ export const userDS = {
     knex: DBConnection;
     userUUID: UUID;
     userDL: UserDataLoader;
-  }) {
+  }): Promise<Maybe<UserTable>> {
     const user = await userDB.getByUUID({
       knex: params.knex,
       userUUID: params.userUUID,
@@ -67,7 +68,7 @@ export const userDS = {
     knex: DBConnection;
     newUser: CreateUser;
     userDL: UserDataLoader;
-  }) {
+  }): Promise<UserTable> {
     const user = await userDB.create({
       knex: params.knex,
       newUser: params.newUser,
