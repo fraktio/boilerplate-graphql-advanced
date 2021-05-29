@@ -1,5 +1,4 @@
-import { loadFilesSync } from "@graphql-tools/load-files";
-import { mergeTypeDefs } from "@graphql-tools/merge";
+import { loadFilesSync, mergeTypeDefs } from "graphql-tools";
 import path from "path";
 
 const schemaFolderLocation = path.join(process.cwd(), "./app/graphql/schema");

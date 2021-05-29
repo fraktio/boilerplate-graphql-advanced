@@ -43,7 +43,7 @@ custom:
         httpPort: 4000
 
     webpack:
-        webpackConfig: webpack.config.js
+        webpackConfig: webpack.serverless.js
         packager: 'yarn'
         includeModules:
             forceExclude:
