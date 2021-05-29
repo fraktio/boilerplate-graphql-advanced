@@ -13,7 +13,11 @@ module.exports = merge(common, {
   optimization: {
     minimize: false,
   },
-  plugins: [new NodemonPlugin()],
+  plugins: [
+    new NodemonPlugin({
+      ext: "ts,json,graphql",
+    }),
+  ],
   devServer: {
     noInfo: true,
   },

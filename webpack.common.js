@@ -7,6 +7,7 @@ const nodeExternals = require("webpack-node-externals");
 const outputFolder = path.resolve(process.cwd(), "dist");
 
 module.exports = {
+  mode: "production",
   entry: path.join(process.cwd(), "/app/index.ts"),
   target: "node",
   output: {
