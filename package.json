@@ -11,6 +11,7 @@
     "dev": "webpack --config webpack.dev.js --watch",
     "dev:debug": "DEBUG=knex:query webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
+    "build:serverless": "serverless deploy",
     "codegen": "graphql-codegen && yarn codegen:disable-rules && yarn codegen:lint",
     "codegen:lint": "eslint app/generation/generated.ts --fix",
     "codegen:disable-rules": "ts-node ./scripts/add-comments-to-generated.ts",
