@@ -25,28 +25,28 @@ export const errorHandler: ErrorRequestHandler = (
   }
 };
 
-export const apolloErrorHandler = (opts: { config: Config }) => (
-  error: GraphQLError,
-): GraphQLFormattedError => {
-  if (!opts.config.env.isProduction) {
-    return error;
-  }
+export const apolloErrorHandler =
+  (opts: { config: Config }) =>
+  (error: GraphQLError): GraphQLFormattedError => {
+    if (!opts.config.env.isProduction) {
+      return error;
+    }
 
-  if (error.originalError instanceof AuthenticationError) {
-    return new Error("Authentication error");
-  }
+    if (error.originalError instanceof AuthenticationError) {
+      return new Error("Authentication error");
+    }
 
-  if (error.originalError instanceof UserInputError) {
-    return new Error("UserInputError error");
-  }
+    if (error.originalError instanceof UserInputError) {
+      return new Error("UserInputError error");
+    }
 
-  if (error.originalError instanceof ValidationError) {
-    return new Error("ValidationError error");
-  }
+    if (error.originalError instanceof ValidationError) {
+      return new Error("ValidationError error");
+    }
 
-  if (error.originalError instanceof ApolloError) {
-    return new Error("ApolloError error");
-  }
+    if (error.originalError instanceof ApolloError) {
+      return new Error("ApolloError error");
+    }
 
-  return new Error("Internal server error");
-};
+    return new Error("Internal server error");
+  };

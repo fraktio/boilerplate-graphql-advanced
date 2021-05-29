@@ -8,7 +8,7 @@ import { toFailure, toSuccess, Try } from "~/utils/validation";
 export function validateCountryCode(
   value: string,
 ): Try<CountryCode, ValidationErrorFailure> {
-  const code = (value as unknown) as CountryCode;
+  const code = value as unknown as CountryCode;
 
   if (ISO_3166_ALPHA_2.includes(code)) {
     return toSuccess(code);

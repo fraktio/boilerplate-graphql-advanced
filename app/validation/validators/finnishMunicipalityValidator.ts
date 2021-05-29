@@ -7,7 +7,7 @@ export function validateFinnishMunicipality(
   value: string,
 ): Try<FinnishMunicipality, ValidationErrorFailure> {
   if (municipalities.includes(value)) {
-    return toSuccess((value as unknown) as FinnishMunicipality);
+    return toSuccess(value as unknown as FinnishMunicipality);
   }
 
   return toFailure(new ValidationErrorFailure("Municipality", value));
