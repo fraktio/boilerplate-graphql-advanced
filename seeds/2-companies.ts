@@ -7,7 +7,12 @@ import { Table } from "../app/database/tables";
 
 import { doXTimes } from "./1-users";
 
-const createCompany = () => ({
+type CreateCompany = {
+  uuid: string;
+  name: string;
+};
+
+const createCompany = (): CreateCompany => ({
   uuid: uuidv4(),
   name: faker.company.companyName(),
 });

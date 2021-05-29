@@ -21,7 +21,7 @@ import {
   getEnv,
 } from "./variablesConfig";
 
-const getParams = async (ssm: SSM) => {
+const getParams = async (ssm: SSM): Promise<SSM.ParameterList> => {
   try {
     const data = await ssm
       .getParameters({
@@ -49,7 +49,7 @@ export const createServerlessConfig = async (): Promise<Config> => {
 
   const params = await getParams(ssm);
 
-  const getParam = (name: string) => {
+  const getParam = (name: string): string | null => {
     const param = params.find((p) => p.Name === name);
 
     return param?.Value ?? null;

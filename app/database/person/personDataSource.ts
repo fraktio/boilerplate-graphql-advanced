@@ -11,7 +11,11 @@ import {
   PersonTable,
   UpdatePersonOptions,
 } from "~/database/person/personDatabase";
-import { PersonFilterOperation, PersonSort } from "~/generation/generated";
+import {
+  Maybe,
+  PersonFilterOperation,
+  PersonSort,
+} from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const personDS = {
@@ -19,7 +23,7 @@ export const personDS = {
     knex: DBConnection;
     personId: PersonID;
     personDL: PersonDataLoader;
-  }) {
+  }): Promise<Maybe<PersonTable>> {
     return params.personDL
       .getLoader({ knex: params.knex })
       .load(params.personId);
@@ -29,7 +33,7 @@ export const personDS = {
     knex: DBConnection;
     personUUID: UUID;
     personDL: PersonDataLoader;
-  }) {
+  }): Promise<Maybe<PersonTable>> {
     const person = await personDB.getByUUID(params);
 
     if (person) {
@@ -44,7 +48,7 @@ export const personDS = {
     personDL: PersonDataLoader;
     filters?: PersonFilterOperation;
     sort?: PersonSort[];
-  }) {
+  }): Promise<PersonTable[]> {
     const persons = await personDB.getAll(params);
 
     persons.forEach((person) => {
@@ -59,7 +63,7 @@ export const personDS = {
     knex: DBConnection;
     person: CreatePersonOptions;
     personDL: PersonDataLoader;
-  }) {
+  }): Promise<PersonTable> {
     const person = await personDB.create(params);
 
     params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
@@ -72,7 +76,7 @@ export const personDS = {
     personUUID: UUID;
     person: UpdatePersonOptions;
     personDL: PersonDataLoader;
-  }) {
+  }): Promise<Maybe<PersonTable>> {
     const person = await personDB.updateByUUID(params);
 
     if (person) {
@@ -87,7 +91,7 @@ export const personDS = {
     companyId: CompanyID;
     personDL: PersonDataLoader;
     personsOfCompanyDL: PersonsOfCompanyDataLoader;
-  }) {
+  }): Promise<PersonTable[]> {
     const personIds = await params.personsOfCompanyDL
       .getLoader({ knex: params.knex })
       .load(params.companyId);

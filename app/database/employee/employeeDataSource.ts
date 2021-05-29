@@ -1,6 +1,9 @@
 import { CompanyID } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
-import { employeeDB } from "~/database/employee/employeeDatabase";
+import {
+  employeeDB,
+  EmployeeTable,
+} from "~/database/employee/employeeDatabase";
 import { PersonID } from "~/database/person/personDatabase";
 
 export const employeeDS = {
@@ -8,7 +11,7 @@ export const employeeDS = {
     knex: DBConnection;
     companyId: CompanyID;
     personId: PersonID;
-  }) {
+  }): Promise<EmployeeTable> {
     return await employeeDB.create(params);
   },
 
@@ -16,7 +19,7 @@ export const employeeDS = {
     knex: DBConnection;
     companyId: CompanyID;
     personId: PersonID;
-  }) {
+  }): Promise<boolean> {
     return await employeeDB.remove(params);
   },
 };

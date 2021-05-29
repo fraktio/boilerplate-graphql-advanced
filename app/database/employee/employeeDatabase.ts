@@ -72,7 +72,7 @@ export const employeeDB = {
   async getEmployeesOfCompanies(params: {
     knex: DBConnection;
     companyIds: readonly CompanyID[];
-  }) {
+  }): Promise<EmployeeTable[]> {
     const employees = await params
       .knex<EmployeeTableRow>(Table.EMPLOYEE)
       .whereIn("companyId", params.companyIds);
@@ -83,7 +83,7 @@ export const employeeDB = {
   async getEmployeesOfPersons(params: {
     knex: DBConnection;
     personIds: readonly PersonID[];
-  }) {
+  }): Promise<EmployeeTable[]> {
     const employees = await params
       .knex<EmployeeTableRow>(Table.EMPLOYEE)
       .whereIn("personId", params.personIds);

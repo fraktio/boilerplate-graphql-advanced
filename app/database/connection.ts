@@ -8,7 +8,28 @@ export const createKnex = (params: {
   databaseConfig: DatabaseConfig;
 }): DBConnection => knex(getConnection(params));
 
-export const getConnection = (params: { databaseConfig: DatabaseConfig }) => ({
+// I'm not perfect add values to me if needed :^)
+type KnexConfig = {
+  client: string;
+  connection: {
+    host: string;
+    user: string;
+    port: number;
+    password: string;
+    database: string;
+  };
+  migrations: {
+    directory: string;
+  };
+  seeds: {
+    directory: string;
+  };
+  useNullAsDefault: boolean;
+};
+
+export const getConnection = (params: {
+  databaseConfig: DatabaseConfig;
+}): KnexConfig => ({
   client: params.databaseConfig.type,
   connection: {
     host: params.databaseConfig.host,

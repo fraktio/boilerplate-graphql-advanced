@@ -28,7 +28,7 @@ export const EmailResolver = new GraphQLScalarType({
   name: "Email",
   description: "Email custom scalar type",
 
-  serialize: (value: EmailAddress) => formatEmailToString(value),
-  parseValue: (value: string) => parseEmailFromString(value),
-  parseLiteral: (valueNode: ValueNode) => parseLiteralEmail(valueNode),
+  serialize: formatEmailToString,
+  parseValue: parseEmailFromString,
+  parseLiteral: parseLiteralEmail,
 });

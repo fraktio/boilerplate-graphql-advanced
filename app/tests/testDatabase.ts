@@ -4,18 +4,25 @@ import { createCompany, createUser, testPassword } from "./testData";
 
 import {
   companyDB,
+  CompanyTable,
   CreateCompanyParams,
 } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { Table } from "~/database/tables";
-import { userDB } from "~/database/user/userDatabase";
+import { userDB, UserTable } from "~/database/user/userDatabase";
 import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 
-export const migrateTestDatabase = async (params: { knex: DBConnection }) => {
+export const migrateTestDatabase = async (params: {
+  knex: DBConnection;
+}): Promise<void> => {
   await params.knex.migrate.latest();
 };
-export const resetTestDatabase = async ({ knex }: { knex: DBConnection }) => {
+export const resetTestDatabase = async ({
+  knex,
+}: {
+  knex: DBConnection;
+}): Promise<void> => {
   await knex(Table.EMPLOYEE).del();
   await knex(Table.PERSONS).del();
   await knex(Table.COMPANY).del();
@@ -32,7 +39,7 @@ type CreateDBUserOver = {
 export const createDatabaseUser = async (params: {
   knex: DBConnection;
   overrides?: Partial<CreateDBUserOver>;
-}) => {
+}): Promise<UserTable> => {
   const hashedPassword = await hashingUtils.hashPassword({
     password: params.overrides?.password ?? testPassword,
   });
@@ -54,7 +61,7 @@ export const createDatabaseUser = async (params: {
 export const createDatabaseCompany = async (params: {
   knex: DBConnection;
   overrides: Partial<CreateCompanyParams>;
-}) => {
+}): Promise<CompanyTable> => {
   const company = createCompany();
 
   return await companyDB.create({

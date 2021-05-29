@@ -52,14 +52,14 @@ export class AuthenticatedDirective extends SchemaDirectiveVisitor {
     details: {
       objectType: GraphQLObjectTypeWithAuth | GraphQLInterfaceType;
     },
-  ) {
+  ): void {
     if (details.objectType instanceof GraphQLObjectType) {
       this.ensureFieldsWrapped(details.objectType);
       field._requiredAuthRole = this.args.requires;
     }
   }
 
-  ensureFieldsWrapped(objectType: GraphQLObjectTypeWithAuth) {
+  ensureFieldsWrapped(objectType: GraphQLObjectTypeWithAuth): void {
     if (objectType._authFieldsWrapped) {
       return;
     }
@@ -77,7 +77,7 @@ export class AuthenticatedDirective extends SchemaDirectiveVisitor {
       if (!resolve) {
         return;
       }
-      field.resolve = async function (...args) {
+      field.resolve = async function (...args): Promise<unknown> {
         // Get the required Role from the field first, falling back
         // to the objectType if no Role is required by the field:
         const requiredRole =

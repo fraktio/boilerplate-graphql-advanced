@@ -1,5 +1,9 @@
 import { AuthenticatedDirective } from "~/graphql/directives/authenticatedDirective";
 
-export const createSchemaDirectives = () => ({
+type ChemaDirectives = {
+  authenticated: typeof AuthenticatedDirective;
+};
+
+export const createSchemaDirectives = (): ChemaDirectives => ({
   authenticated: AuthenticatedDirective,
 });

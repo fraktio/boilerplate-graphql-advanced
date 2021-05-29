@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 
 const ERROR_MESSAGE = "Datetime is not a valid date";
 
-export const parseDateTimeFromString = (value: string) => {
+export const parseDateTimeFromString = (value: string): DateTime => {
   const date = DateTime.fromISO(value);
 
   if (!date.isValid) {
@@ -14,7 +14,7 @@ export const parseDateTimeFromString = (value: string) => {
   return date;
 };
 
-export const formatDateTimeToString = (dateTime: DateTime) => {
+export const formatDateTimeToString = (dateTime: DateTime): string => {
   if (!dateTime.isValid) {
     throw new ValidationError(`${dateTime.toString()} is not a valid date`);
   }
@@ -34,7 +34,7 @@ export const DateTimeResolver = new GraphQLScalarType({
   name: "DateTime",
   description: "Date and time with offset",
 
-  serialize: (date: DateTime) => formatDateTimeToString(date),
-  parseValue: (value: string) => parseDateTimeFromString(value),
-  parseLiteral: (valueNode: ValueNode) => parseLiteralDateTime(valueNode),
+  serialize: formatDateTimeToString,
+  parseValue: parseDateTimeFromString,
+  parseLiteral: parseLiteralDateTime,
 });

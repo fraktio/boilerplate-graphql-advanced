@@ -1,12 +1,12 @@
 import { Express } from "express";
 import { DocumentNode, print } from "graphql";
-import request from "supertest";
+import request, { Test } from "supertest";
 
 export const gqlRequest = (
   server: Express,
   node: DocumentNode,
   variables?: Record<string, unknown>,
-) => {
+): Test => {
   if (!server) {
     throw new Error("Server not initialized!");
   }

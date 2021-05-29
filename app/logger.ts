@@ -1,4 +1,4 @@
-import { ApolloServerPlugin } from "apollo-server-plugin-base";
+import { ApolloServerPlugin, ValueOrPromise } from "apollo-server-plugin-base";
 import bunyan from "bunyan";
 
 import { Config } from "~/config/config";
@@ -15,7 +15,7 @@ export const apolloServerLogger: ApolloServerPlugin<Context> = {
     );
 
     return {
-      didEncounterErrors: (requestContext) => {
+      didEncounterErrors: (requestContext): ValueOrPromise<void> => {
         requestContext.context.logger.error(
           {
             errors: requestContext.errors.map((error) => ({
@@ -31,7 +31,7 @@ export const apolloServerLogger: ApolloServerPlugin<Context> = {
   },
 };
 
-export const createLogger = (opts: { config: Config }) =>
+export const createLogger = (opts: { config: Config }): bunyan =>
   bunyan.createLogger({
     name: "graphql-boilerplate-api",
     streams: [

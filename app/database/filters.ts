@@ -28,7 +28,7 @@ export function buildFilterQuery(
     filter: Filters;
   }) => Knex.QueryBuilder,
   filterOperation?: FilterOperation,
-) {
+): Knex.QueryBuilder {
   if (!filterOperation) {
     return queryBuilder;
   }
@@ -82,7 +82,7 @@ const filterOperatorMap = {
   greaterOrEqualThan: ComparisonOperator.GREATEROREQUALTHAN,
 };
 
-function prop<T, K extends keyof T>(obj: T, key: K) {
+function prop<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];
 }
 

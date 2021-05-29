@@ -7,11 +7,11 @@ import { userDS } from "~/database/user/UserDataSource";
 import { UserTable } from "~/database/user/userDatabase";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
-import { toFailure, toSuccess } from "~/utils/validation";
+import { toFailure, toSuccess, Try } from "~/utils/validation";
 
 export const authenticatedUserHandler = async (params: {
   authenticatedUser: UserTable;
-}) => params.authenticatedUser;
+}): Promise<UserTable> => params.authenticatedUser;
 
 type LoginHandlerInput = {
   password: string;
@@ -29,7 +29,7 @@ export const loginHandler = async (params: {
   input: LoginHandlerInput;
   cookiesConfig: CookiesConfig;
   userDL: UserDataLoader;
-}) => {
+}): Promise<Try<UserTable, LogInHandlerErrors>> => {
   const user = await userDS.getByUsername({
     knex: params.knex,
     username: params.input.username,
@@ -69,7 +69,7 @@ export const loginHandler = async (params: {
 export const logoutHandler = async (params: {
   res: Response;
   cookiesConfig: CookiesConfig;
-}) => {
+}): Promise<boolean> => {
   sessionUtils.clearSessions({
     res: params.res,
     path: params.cookiesConfig.path,
