@@ -1,13 +1,13 @@
 /* eslint-disable no-process-env */
 
-import { Config, validateConfig } from "./config";
+import { Config, validateConfig } from "~/config/config";
 import {
   DATABASE_DATABASE_NAME,
   DATABASE_HOST,
   DATABASE_PASSWORD,
   DATABASE_PORT,
   DATABASE_USER,
-} from "./variablesConfig";
+} from "~/config/variablesConfig";
 
 export const getEnvFallback = (envKey: string, fallback: string): string => {
   const value = process.env[envKey];

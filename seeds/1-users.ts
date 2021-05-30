@@ -2,9 +2,9 @@ import faker from "faker";
 import { Knex } from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { Table } from "../app/database/tables";
-import { UserTableRow } from "../app/database/user/userQueries";
-import { hashingUtils } from "../app/utils/hashingUtils";
+import { Table } from "~/database/tables";
+import { UserTableRow } from "~/database/user/userQueries";
+import { hashingUtils } from "~/utils/hashingUtils";
 
 export const testUsername = "username";
 export const testPassword = "password";

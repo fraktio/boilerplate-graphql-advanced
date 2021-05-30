@@ -3,10 +3,10 @@ import { isLeft } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import reporter from "io-ts-reporters";
 
-import { CookiesConfigDecoder } from "./cookiesConfig";
-import { DatabaseConfigDecoder } from "./databaseConfig";
-import { EnvConfigDecoder } from "./envConfig";
-import { NumberFactConfigDecoder } from "./numberFactConfig";
+import { CookiesConfigDecoder } from "~/config/cookiesConfig";
+import { DatabaseConfigDecoder } from "~/config/databaseConfig";
+import { EnvConfigDecoder } from "~/config/envConfig";
+import { NumberFactConfigDecoder } from "~/config/numberFactConfig";
 import {
   ACCESS_TOKEN_AGE_SECONDS,
   API_CORS_ENDPOINT,
@@ -25,7 +25,7 @@ import {
   DATABASE_TYPE,
   DATABASE_USER,
   getEnv,
-} from "./variablesConfig";
+} from "~/config/variablesConfig";
 
 export const ConfigDecoder = t.interface({
   env: EnvConfigDecoder,

@@ -1,10 +1,10 @@
 import { Knex } from "knex";
 
-import { CompanyTableRow } from "../app/database/company/companyQueries";
-import { EmployeeTableRow } from "../app/database/employee/employeeQueries";
-import { PersonTableRow } from "../app/database/person/personQueries";
-import { Table } from "../app/database/tables";
-import { mathUtils } from "../app/utils/mathUtils";
+import { CompanyTableRow } from "~/database/company/companyQueries";
+import { EmployeeTableRow } from "~/database/employee/employeeQueries";
+import { PersonTableRow } from "~/database/person/personQueries";
+import { Table } from "~/database/tables";
+import { mathUtils } from "~/utils/mathUtils";
 
 function getRandomItemsFromArray<T>(array: T[], count: number): T[] {
   return mathUtils.shuffleList(array).slice(0, count);

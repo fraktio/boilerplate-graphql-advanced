@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const fs = require("fs");
+import fs from "fs";
 
 const rules = [
   "/* eslint-disable max-len */",

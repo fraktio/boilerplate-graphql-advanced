@@ -1,9 +1,6 @@
-/* eslint-disable no-process-env */
 import { isLeft } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import reporter from "io-ts-reporters";
-
-import { NumberFromString } from "../utils/decoders";
 
 import {
   DATABASE_DATABASE_NAME,
@@ -13,7 +10,8 @@ import {
   DATABASE_TYPE,
   DATABASE_USER,
   getEnv,
-} from "./variablesConfig";
+} from "~/config/variablesConfig";
+import { NumberFromString } from "~/utils/decoders";
 
 export const DatabaseConfigDecoder = t.type({
   type: t.string,

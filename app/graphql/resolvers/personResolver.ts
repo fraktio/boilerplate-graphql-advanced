@@ -1,14 +1,13 @@
 import { UserInputError } from "apollo-server-express";
 
+import { Resolvers } from "~/generation/generated";
 import {
   addPersonHandler,
   adultEmployersHandler,
   modifyPerson,
   personHandler,
   personsHandler,
-} from "../../handlers/personHandler";
-
-import { Resolvers } from "~/generation/generated";
+} from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
   AddPersonOutput: {

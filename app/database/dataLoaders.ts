@@ -1,9 +1,8 @@
-import { CompanyDataLoader } from "./company/CompanyDataLoader";
-import { CompaniesOfPersonDataLoader } from "./employee/CompaniesOfPersonDataLoader";
-import { PersonsOfCompanyDataLoader } from "./employee/PersonsOfCompanyDataLoader";
-import { UserDataLoader } from "./user/UserDataLoader";
-
+import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
+import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
+import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
+import { UserDataLoader } from "~/database/user/UserDataLoader";
 
 export type DataLoaders = {
   companyDL: CompanyDataLoader;

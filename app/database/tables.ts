@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { CompanyTableRow } from "./company/companyQueries";
-import { EmployeeTableRow } from "./employee/employeeQueries";
-import { PersonTableRow } from "./person/personQueries";
-import { UserTableRow } from "./user/userQueries";
-
+import { CompanyTableRow } from "~/database/company/companyQueries";
+import { EmployeeTableRow } from "~/database/employee/employeeQueries";
+import { PersonTableRow } from "~/database/person/personQueries";
+import { UserTableRow } from "~/database/user/userQueries";
 import { UUID } from "~/generation/mappers";
 
 export enum Table {

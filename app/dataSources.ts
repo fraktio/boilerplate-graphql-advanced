@@ -1,4 +1,4 @@
-import { NumberFactApi } from "./services/NumberFactApi";
+import { NumberFactApi } from "~/services/NumberFactApi";
 
 export type DataSources = {
   numberFactApi: NumberFactApi;
