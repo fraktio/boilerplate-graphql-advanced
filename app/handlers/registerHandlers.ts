@@ -2,7 +2,7 @@ import { PhoneNumber } from "libphonenumber-js";
 
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
-import { userDB } from "~/database/user/UserDatabase";
+import { userDB } from "~/database/user/userDatabase";
 import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { Try, toFailure, toSuccess } from "~/utils/validation";

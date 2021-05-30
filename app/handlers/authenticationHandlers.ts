@@ -3,7 +3,7 @@ import { Response } from "express";
 import { CookiesConfig } from "~/config/cookiesConfig";
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
-import { userDB } from "~/database/user/UserDatabase";
+import { userDB } from "~/database/user/userDatabase";
 import { UserTable } from "~/database/user/userQueries";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
