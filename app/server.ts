@@ -1,4 +1,3 @@
-import Logger from "bunyan";
 import { Express } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
@@ -12,7 +11,7 @@ import { loggerHandler } from "~/express/middleware/loggerHandler";
 import { sessionHandler } from "~/express/middleware/sessionHandler";
 import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
-import { createLogger } from "~/logger";
+import { createLogger, Logger } from "~/logger";
 
 export type CreateServerResponse = {
   app: Express;

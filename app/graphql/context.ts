@@ -1,4 +1,3 @@
-import Logger from "bunyan";
 import { Request, Response } from "express";
 
 import { Config } from "~/config/config";
@@ -7,6 +6,7 @@ import { DBConnection } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
 import { UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
+import { Logger } from "~/logger";
 
 export type Context = BaseContext & DataSourcesInContext;
 

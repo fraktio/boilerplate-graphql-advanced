@@ -1,5 +1,6 @@
-import Logger from "bunyan";
 import { RequestHandler } from "express";
+
+import { Logger } from "~/logger";
 
 export const loggerHandler =
   (opts: { logger: Logger }): RequestHandler =>

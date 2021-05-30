@@ -31,7 +31,9 @@ export const apolloServerLogger: ApolloServerPlugin<Context> = {
   },
 };
 
-export const createLogger = (opts: { config: Config }): bunyan =>
+export type Logger = bunyan;
+
+export const createLogger = (opts: { config: Config }): Logger =>
   bunyan.createLogger({
     name: "graphql-boilerplate-api",
     streams: [
