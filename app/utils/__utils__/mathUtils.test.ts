@@ -6,16 +6,6 @@ describe("utils / math", () => {
     expect(randomNumber).toBe(123);
   });
 
-  it("parseStringToNumber, success", async () => {
-    const parsed = mathUtils.parseStringToNumber("1234");
-    expect(parsed).toMatchObject({ number: 1234 });
-  });
-
-  it("parseStringToNumber, failure", async () => {
-    const parsed = mathUtils.parseStringToNumber("abcd");
-    expect(parsed).toBeNull();
-  });
-
   it("shuffleList", async () => {
     const suffledNumbers = mathUtils.shuffleList([1, 2, 3]);
 
