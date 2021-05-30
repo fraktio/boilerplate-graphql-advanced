@@ -3,6 +3,9 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "eslint.format.enable": true,
-  "eslint.validate": ["typescript"],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": ["typescript", "graphql"],
+  "eslint.options": {
+    "extentions": [".js", ".ts", ".json", ".graphql"]
+  }
 }
