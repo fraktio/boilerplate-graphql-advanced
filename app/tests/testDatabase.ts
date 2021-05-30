@@ -3,13 +3,13 @@ import { PhoneNumber } from "libphonenumber-js";
 import { createCompany, createUser, testPassword } from "./testData";
 
 import {
-  companyDB,
+  companyQueries,
   CompanyTable,
   CreateCompanyParams,
-} from "~/database/company/companyDatabase";
+} from "~/database/company/companyQueries";
 import { DBConnection } from "~/database/connection";
 import { Table } from "~/database/tables";
-import { userDB, UserTable } from "~/database/user/userDatabase";
+import { userQueries, UserTable } from "~/database/user/userQueries";
 import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 
@@ -52,7 +52,7 @@ export const createDatabaseUser = async (params: {
     phoneNumber: params.overrides?.phoneNumber ?? mockUser.phoneNumber,
   };
 
-  return await userDB.create({
+  return await userQueries.create({
     knex: params.knex,
     newUser,
   });
@@ -64,7 +64,7 @@ export const createDatabaseCompany = async (params: {
 }): Promise<CompanyTable> => {
   const company = createCompany();
 
-  return await companyDB.create({
+  return await companyQueries.create({
     knex: params.knex,
     company: { name: params.overrides.name ?? company.name },
   });

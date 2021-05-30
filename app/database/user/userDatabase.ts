@@ -1,61 +1,14 @@
 import { PhoneNumber } from "libphonenumber-js";
-import { DateTime } from "luxon";
+
+import { UserDataLoader } from "./UserDataLoader";
 
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table } from "~/database/tables";
+import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 
-export interface UserID extends ID {
-  __UserID: never;
-}
-
-export enum UserAccessLevel {
-  USER = "USER",
-  ADMIN = "ADMIN",
-}
-
-export type UserTableRow = Readonly<{
-  id: UserID;
-  uuid: UUID;
-  username: string;
-  email: EmailAddress;
-  phoneNumber: string;
-  hashedPassword: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-}>;
-
-export type UserTable = {
-  id: UserID;
-  UUID: UUID;
-  username: string;
-  email: EmailAddress;
-  phoneNumber: string;
-  hashedPassword: string;
-  accessLevel: [UserAccessLevel];
-  timestamp: {
-    createdAt: DateTime;
-    updatedAt: DateTime | null;
-  };
-};
-
-export const formatUserRow = (row: UserTableRow): UserTable => ({
-  id: row.id,
-  UUID: row.uuid,
-  accessLevel: [UserAccessLevel.USER],
-  username: row.username,
-  email: row.email,
-  phoneNumber: row.phoneNumber,
-  hashedPassword: row.hashedPassword,
-  timestamp: {
-    createdAt: DateTime.fromJSDate(row.createdAt),
-    updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
-  },
-});
-
-type CreateUserValues = {
+export type CreateUser = {
   username: string;
   email: EmailAddress;
   hashedPassword: string;
@@ -66,65 +19,66 @@ export const userDB = {
   async get(params: {
     knex: DBConnection;
     userId: UserID;
+    userDL: UserDataLoader;
   }): Promise<Maybe<UserTable>> {
-    const user = await params
-      .knex<UserTableRow>(Table.USERS)
-      .where({ id: params.userId })
-      .first();
+    const user = await userQueries.get({
+      knex: params.knex,
+      userId: params.userId,
+    });
 
-    return user ? formatUserRow(user) : null;
-  },
+    if (user) {
+      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+    }
 
-  async getByUUID(params: {
-    knex: DBConnection;
-    userUUID: UUID;
-  }): Promise<Maybe<UserTable>> {
-    const user = await params
-      .knex<UserTableRow>(Table.USERS)
-      .where({ uuid: params.userUUID })
-      .first();
-
-    return user ? formatUserRow(user) : null;
+    return user;
   },
 
   async getByUsername(params: {
     knex: DBConnection;
     username: string;
+    userDL: UserDataLoader;
   }): Promise<Maybe<UserTable>> {
-    const user = await params
-      .knex<UserTableRow>(Table.USERS)
-      .where({ username: params.username })
-      .first();
+    const user = await userQueries.getByUsername({
+      knex: params.knex,
+      username: params.username,
+    });
 
-    return user ? formatUserRow(user) : null;
+    if (user) {
+      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+    }
+
+    return user;
   },
 
-  async create(params: {
+  async getByUUID(params: {
     knex: DBConnection;
-    newUser: CreateUserValues;
+    userUUID: UUID;
+    userDL: UserDataLoader;
+  }): Promise<Maybe<UserTable>> {
+    const user = await userQueries.getByUUID({
+      knex: params.knex,
+      userUUID: params.userUUID,
+    });
+
+    if (user) {
+      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+    }
+
+    return user;
+  },
+
+  async createUser(params: {
+    knex: DBConnection;
+    newUser: CreateUser;
+    userDL: UserDataLoader;
   }): Promise<UserTable> {
-    const users = await params
-      .knex<UserTableRow>(Table.USERS)
-      .insert({
-        uuid: createUUID(),
-        username: params.newUser.username,
-        email: params.newUser.email,
-        hashedPassword: params.newUser.hashedPassword,
-        phoneNumber: params.newUser.phoneNumber.formatInternational(),
-      })
-      .returning("*");
+    const user = await userQueries.create({
+      knex: params.knex,
+      newUser: params.newUser,
+    });
 
-    return formatUserRow(users[0]);
-  },
+    params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
 
-  async getUsersByIds(params: {
-    knex: DBConnection;
-    userIds: readonly UserID[];
-  }): Promise<UserTable[]> {
-    const userRows = await params
-      .knex<UserTableRow>(Table.PERSONS)
-      .whereIn("id", params.userIds);
-
-    return userRows.map(formatUserRow);
+    return user;
   },
 };

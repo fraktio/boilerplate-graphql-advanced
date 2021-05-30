@@ -1,6 +1,6 @@
 import type Bunyan from "bunyan";
 
-import { UserTable } from "~/database/user/userDatabase";
+import { UserTable } from "~/database/user/userQueries";
 
 declare global {
   namespace Express {

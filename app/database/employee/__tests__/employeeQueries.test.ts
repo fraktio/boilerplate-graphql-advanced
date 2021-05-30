@@ -3,10 +3,10 @@ import {
   EmployeeTable,
   EmployeeTableRow,
   formatEmployeeRow,
-} from "../employeeDatabase";
+} from "../employeeQueries";
 
-import { CompanyID } from "~/database/company/companyDatabase";
-import { PersonID } from "~/database/person/personDatabase";
+import { CompanyID } from "~/database/company/companyQueries";
+import { PersonID } from "~/database/person/personQueries";
 
 const datatimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";

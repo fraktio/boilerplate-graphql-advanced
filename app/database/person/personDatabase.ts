@@ -1,241 +1,103 @@
-import { FinnishSSN } from "finnish-ssn";
-import { Knex } from "knex";
-import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
-import { DateTime } from "luxon";
+import { PersonsOfCompanyDataLoader } from "../employee/PersonsOfCompanyDataLoader";
 
-import {
-  buildFilterQuery,
-  applyDateFilters,
-  applyStringFilters,
-} from "../filters";
+import { PersonDataLoader } from "./PersonDataLoader";
 
+import { CompanyID } from "~/database/company/companyQueries";
 import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import {
+  CreatePersonOptions,
+  personQueries,
+  PersonID,
+  PersonTable,
+  UpdatePersonOptions,
+} from "~/database/person/personQueries";
 import {
   Maybe,
   PersonFilterOperation,
-  PersonFilter,
-  FilterOperator,
   PersonSort,
-  SortOrder,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
-import {
-  CountryCode,
-  EmailAddress,
-  FinnishPersonalIdentityCode,
-} from "~/generation/scalars";
-import {
-  asCountryCode,
-  asFinnishPersonalIdentityCode,
-} from "~/validation/converters";
-
-export interface PersonID extends ID {
-  __PersonID: never;
-}
-
-export type PersonTableRow = Readonly<{
-  id: PersonID;
-  uuid: UUID;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: EmailAddress;
-  birthday: Date;
-  createdAt: Date;
-  updatedAt: Date | null;
-  nationality: string;
-  personalIdentityCode: string;
-}>;
-
-export type PersonTable = {
-  id: PersonID;
-  UUID: UUID;
-  firstName: string;
-  lastName: string;
-  phone: PhoneNumber;
-  email: EmailAddress;
-  birthday: DateTime;
-  timestamp: {
-    createdAt: DateTime;
-    updatedAt: DateTime | null;
-  };
-  nationality: string;
-  personalIdentityCode: FinnishSSN;
-};
-
-export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
-  id: row.id,
-  UUID: row.uuid,
-  firstName: row.firstName,
-  lastName: row.lastName,
-  phone: parsePhoneNumber(row.phone),
-  email: row.email,
-  birthday: DateTime.fromJSDate(row.birthday),
-  nationality: asCountryCode(row.nationality),
-  personalIdentityCode: asFinnishPersonalIdentityCode(row.personalIdentityCode),
-  timestamp: {
-    createdAt: DateTime.fromJSDate(row.createdAt),
-    updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
-  },
-});
-
-export type CreatePersonOptions = {
-  firstName: string;
-  lastName: string;
-  phone: PhoneNumber | null;
-  email: EmailAddress;
-  birthday: DateTime;
-  nationality: CountryCode;
-  personalIdentityCode: FinnishPersonalIdentityCode;
-};
-
-export type UpdatePersonOptions = CreatePersonOptions;
 
 export const personDB = {
   async get(params: {
     knex: DBConnection;
-    id: PersonID;
+    personId: PersonID;
+    personDL: PersonDataLoader;
   }): Promise<Maybe<PersonTable>> {
-    const person = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .where({ id: params.id })
-      .first();
-
-    return person ? formatPersonRow(person) : null;
+    return params.personDL
+      .getLoader({ knex: params.knex })
+      .load(params.personId);
   },
 
   async getByUUID(params: {
     knex: DBConnection;
     personUUID: UUID;
+    personDL: PersonDataLoader;
   }): Promise<Maybe<PersonTable>> {
-    const person = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .where({ uuid: params.personUUID })
-      .first();
+    const person = await personQueries.getByUUID(params);
 
-    return person ? formatPersonRow(person) : null;
+    if (person) {
+      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+    }
+
+    return person;
   },
 
   async getAll(params: {
     knex: DBConnection;
+    personDL: PersonDataLoader;
     filters?: PersonFilterOperation;
     sort?: PersonSort[];
   }): Promise<PersonTable[]> {
-    const persons = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .andWhere((qb) => addPersonFilters(qb, params.filters))
-      .orderBy(applyPersonSort(params.sort));
+    const persons = await personQueries.getAll(params);
 
-    return persons.map(formatPersonRow);
+    persons.forEach((person) => {
+      const dataLoader = params.personDL.getLoader({ knex: params.knex });
+      dataLoader.prime(person.id, person);
+    });
+
+    return persons;
   },
 
   async create(params: {
     knex: DBConnection;
     person: CreatePersonOptions;
+    personDL: PersonDataLoader;
   }): Promise<PersonTable> {
-    const phone = params.person.phone?.formatInternational();
-    const birthday = params.person.birthday.toJSDate();
+    const person = await personQueries.create(params);
 
-    const persons = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .insert({
-        uuid: createUUID(),
-        firstName: params.person.firstName,
-        lastName: params.person.lastName,
-        phone,
-        email: params.person.email,
-        birthday,
-      })
-      .returning("*");
+    params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
 
-    return formatPersonRow(persons[0]);
+    return person;
   },
 
   async updateByUUID(params: {
     knex: DBConnection;
     personUUID: UUID;
     person: UpdatePersonOptions;
+    personDL: PersonDataLoader;
   }): Promise<Maybe<PersonTable>> {
-    const phone = params.person.phone?.formatInternational();
-    const birthday = params.person.birthday.toJSDate();
+    const person = await personQueries.updateByUUID(params);
 
-    const persons = await params
-      .knex(Table.PERSONS)
-      .update({
-        firstName: params.person.firstName,
-        lastName: params.person.lastName,
-        phone,
-        email: params.person.email,
-        birthday,
-      })
-      .where({ uuid: params.personUUID })
-      .returning("*");
-
-    if (persons.length === 0) {
-      return null;
+    if (person) {
+      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
     }
 
-    return formatPersonRow(persons[0]);
+    return person;
   },
 
-  async getPersonsByIds(params: {
+  async getPersonsOfCompany(params: {
     knex: DBConnection;
-    personIds: readonly PersonID[];
+    companyId: CompanyID;
+    personDL: PersonDataLoader;
+    personsOfCompanyDL: PersonsOfCompanyDataLoader;
   }): Promise<PersonTable[]> {
-    const personRows = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .whereIn("id", params.personIds);
+    const personIds = await params.personsOfCompanyDL
+      .getLoader({ knex: params.knex })
+      .load(params.companyId);
 
-    return personRows.map(formatPersonRow);
+    return (await params.personDL
+      .getLoader({ knex: params.knex })
+      .loadMany(personIds)) as PersonTable[];
   },
 };
-
-type ApplyPersonSortResponse = {
-  column: string;
-  order: SortOrder;
-};
-
-function applyPersonSort(sort?: PersonSort[]): ApplyPersonSortResponse[] {
-  if (!sort) {
-    return [{ column: "firstName", order: SortOrder.Asc }];
-  }
-
-  return sort.map((element) => ({
-    column: element.field,
-    order: element.order,
-  }));
-}
-
-export function addPersonFilters(
-  queryBuilder: Knex.QueryBuilder,
-  filterOperation?: PersonFilterOperation,
-): Knex.QueryBuilder {
-  return buildFilterQuery(queryBuilder, applyPersonFilters, filterOperation);
-}
-
-function applyPersonFilters(input: {
-  queryBuilder: Knex.QueryBuilder;
-  filterOperator: FilterOperator;
-  filter: PersonFilter;
-}): Knex.QueryBuilder {
-  const { queryBuilder, filterOperator, filter } = input;
-  if (filter.birthdayFilter) {
-    applyDateFilters({
-      queryBuilder,
-      filterOperator,
-      field: tableColumn(Table.PERSONS, "birthday"),
-      dateFilter: filter.birthdayFilter,
-    });
-  }
-  if (filter.nameFilter) {
-    return applyStringFilters({
-      queryBuilder,
-      filterOperator,
-      field: tableColumn(Table.PERSONS, "firstName"),
-      stringFilter: filter.nameFilter,
-    });
-  }
-
-  return queryBuilder;
-}

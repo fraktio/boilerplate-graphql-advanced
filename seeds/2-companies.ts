@@ -2,7 +2,7 @@ import faker from "faker";
 import { Knex } from "knex";
 import { v4 as uuidv4 } from "uuid";
 
-import { CompanyTableRow } from "../app/database/company/companyDatabase";
+import { CompanyTableRow } from "../app/database/company/companyQueries";
 import { Table } from "../app/database/tables";
 
 import { doXTimes } from "./1-users";

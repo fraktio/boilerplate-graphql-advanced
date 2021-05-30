@@ -5,7 +5,7 @@ import { Config } from "~/config/config";
 import { DataSourcesInContext } from "~/dataSources";
 import { DBConnection } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
-import { UserTable } from "~/database/user/userDatabase";
+import { UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
 
 export type Context = BaseContext & DataSourcesInContext;

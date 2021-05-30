@@ -5,17 +5,18 @@ import {
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
 import {
-  personDB,
+  personQueries,
   PersonID,
   PersonTable,
-} from "~/database/person/personDatabase";
+} from "~/database/person/personQueries";
+import { Maybe } from "~/generation/generated";
 
-export type PersonLoader = DataLoader<PersonID, PersonTable | null>;
+export type PersonLoader = DataLoader<PersonID, Maybe<PersonTable>>;
 
 export class PersonDataLoader extends AbstractDataLoaderBase<PersonLoader> {
   protected createLoader(params: DataLoaderParams): PersonLoader {
     const personLoader: PersonLoader = new DataLoader(async (ids) => {
-      const employees = await personDB.getPersonsByIds({
+      const employees = await personQueries.getPersonsByIds({
         knex: params.knex,
         personIds: ids,
       });

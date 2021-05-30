@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 import { CookiesConfig } from "~/config/cookiesConfig";
 import { DBConnection } from "~/database/connection";
-import { userDB } from "~/database/user/userDatabase";
+import { userQueries } from "~/database/user/userQueries";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 export const sessionHandler =
@@ -26,7 +26,7 @@ export const sessionHandler =
       return next();
     }
 
-    const user = await userDB.getByUUID({
+    const user = await userQueries.getByUUID({
       knex: params.knex,
       userUUID: jwtPayload.uuid,
     });

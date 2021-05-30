@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { CompanyTableRow } from "./company/companyDatabase";
-import { EmployeeTableRow } from "./employee/employeeDatabase";
-import { PersonTableRow } from "./person/personDatabase";
-import { UserTableRow } from "./user/userDatabase";
+import { CompanyTableRow } from "./company/companyQueries";
+import { EmployeeTableRow } from "./employee/employeeQueries";
+import { PersonTableRow } from "./person/personQueries";
+import { UserTableRow } from "./user/userQueries";
 
 import { UUID } from "~/generation/mappers";
 

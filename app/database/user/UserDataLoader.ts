@@ -1,18 +1,19 @@
 import DataLoader from "dataloader";
 
-import { userDB, UserID, UserTable } from "./userDatabase";
+import { userQueries, UserID, UserTable } from "./userQueries";
 
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
+import { Maybe } from "~/generation/generated";
 
-export type UserLoader = DataLoader<UserID, UserTable | null>;
+export type UserLoader = DataLoader<UserID, Maybe<UserTable>>;
 
 export class UserDataLoader extends AbstractDataLoaderBase<UserLoader> {
   protected createLoader(params: DataLoaderParams): UserLoader {
     const userLoader: UserLoader = new DataLoader(async (ids) => {
-      const users = await userDB.getUsersByIds({
+      const users = await userQueries.getUsersByIds({
         knex: params.knex,
         userIds: ids,
       });

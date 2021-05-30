@@ -3,7 +3,7 @@ import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
 import { CountryCode } from "libphonenumber-js";
 
-import { PersonTableRow } from "../app/database/person/personDatabase";
+import { PersonTableRow } from "../app/database/person/personQueries";
 import { createUUID, Table } from "../app/database/tables";
 
 import { doXTimes } from "./1-users";

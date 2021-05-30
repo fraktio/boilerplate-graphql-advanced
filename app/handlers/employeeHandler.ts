@@ -1,9 +1,9 @@
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
-import { companyDS, CompanyTable } from "~/database/company/companyDataSource";
+import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
-import { employeeDS } from "~/database/employee/employeeDataSource";
+import { employeeDB } from "~/database/employee/employeeDatabase";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
-import { personDS } from "~/database/person/personDataSource";
+import { personDB } from "~/database/person/personDatabase";
 import { UUID } from "~/generation/mappers";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
 
@@ -19,7 +19,7 @@ export const addEmployeeHandler = async (params: {
   companyDL: CompanyDataLoader;
   personDL: PersonDataLoader;
 }): Promise<Try<CompanyTable, AddEmployeeHandlerErrors>> => {
-  const company = await companyDS.getByUUID({
+  const company = await companyDB.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
     companyDL: params.companyDL,
@@ -29,7 +29,7 @@ export const addEmployeeHandler = async (params: {
     return toFailure(AddEmployeeHandlerErrors.InvalidCompanyUUID);
   }
 
-  const person = await personDS.getByUUID({
+  const person = await personDB.getByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
     personDL: params.personDL,
@@ -39,7 +39,7 @@ export const addEmployeeHandler = async (params: {
     return toFailure(AddEmployeeHandlerErrors.InvalidPersonUUID);
   }
 
-  await employeeDS.create({
+  await employeeDB.create({
     knex: params.knex,
     companyId: company.id,
     personId: person.id,
@@ -60,7 +60,7 @@ export const removeEmployeeHandler = async (params: {
   companyDL: CompanyDataLoader;
   personDL: PersonDataLoader;
 }): Promise<Try<CompanyTable, RemoveEmployeeHandlerErrors>> => {
-  const company = await companyDS.getByUUID({
+  const company = await companyDB.getByUUID({
     knex: params.knex,
     companyUUID: params.companyUUID,
     companyDL: params.companyDL,
@@ -70,7 +70,7 @@ export const removeEmployeeHandler = async (params: {
     return toFailure(RemoveEmployeeHandlerErrors.InvalidCompanyUUID);
   }
 
-  const person = await personDS.getByUUID({
+  const person = await personDB.getByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
     personDL: params.personDL,
@@ -80,7 +80,7 @@ export const removeEmployeeHandler = async (params: {
     return toFailure(RemoveEmployeeHandlerErrors.InvalidCompanyUUID);
   }
 
-  await employeeDS.remove({
+  await employeeDB.remove({
     knex: params.knex,
     companyId: company.id,
     personId: person.id,

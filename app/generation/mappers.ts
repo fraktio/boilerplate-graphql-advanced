@@ -1,6 +1,6 @@
-import { CompanyTable } from "~/database/company/companyDatabase";
-import { PersonTable } from "~/database/person/personDatabase";
-import { UserTable } from "~/database/user/userDatabase";
+import { CompanyTable } from "~/database/company/companyQueries";
+import { PersonTable } from "~/database/person/personQueries";
+import { UserTable } from "~/database/user/userQueries";
 import { Adult, Company, Person, User } from "~/generation/generated";
 
 export interface UUID extends String {

@@ -3,7 +3,7 @@ import {
   UserID,
   UserTable,
   UserTableRow,
-} from "~/database/user/userDatabase";
+} from "~/database/user/userQueries";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 

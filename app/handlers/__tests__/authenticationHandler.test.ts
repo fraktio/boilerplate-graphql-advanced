@@ -1,6 +1,6 @@
 import { authenticatedUserHandler } from "../authenticationHandlers";
 
-import { createFakeUserTable } from "~/database/company/__tests__/companyDatabase.test";
+import { createFakeUserTable } from "~/database/company/__tests__/companyQueries.test";
 
 describe("authenticationHandlers tests", () => {
   it("authenticatedUserHandler", async () => {

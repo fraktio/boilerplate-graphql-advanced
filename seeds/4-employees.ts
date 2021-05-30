@@ -1,8 +1,8 @@
 import { Knex } from "knex";
 
-import { CompanyTableRow } from "../app/database/company/companyDatabase";
-import { EmployeeTableRow } from "../app/database/employee/employeeDatabase";
-import { PersonTableRow } from "../app/database/person/personDatabase";
+import { CompanyTableRow } from "../app/database/company/companyQueries";
+import { EmployeeTableRow } from "../app/database/employee/employeeQueries";
+import { PersonTableRow } from "../app/database/person/personQueries";
 import { Table } from "../app/database/tables";
 import { mathUtils } from "../app/utils/mathUtils";
 

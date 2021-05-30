@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-express";
 
-import { userDB } from "~/database/user/userDatabase";
+import { userQueries } from "~/database/user/userQueries";
 import { createTestServer } from "~/tests/createTestServer";
 import { gqlRequest } from "~/tests/graphqlTestUtils";
 import { registerTestHandlers } from "~/tests/registerTestHandlers";
@@ -49,7 +49,7 @@ describe("Graphql / endpoints", () => {
   it("register / success", async () => {
     const { body } = await gqlRequest(app, registerMutation, successUser);
 
-    const user = await userDB.getByUsername({
+    const user = await userQueries.getByUsername({
       knex,
       username: successUser.input.username,
     });

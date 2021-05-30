@@ -1,18 +1,19 @@
 import DataLoader from "dataloader";
 
-import { companyDB, CompanyID, CompanyTable } from "./companyDatabase";
+import { companyQueries, CompanyID, CompanyTable } from "./companyQueries";
 
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
+import { Maybe } from "~/generation/generated";
 
-export type CompanyLoader = DataLoader<CompanyID, CompanyTable | null>;
+export type CompanyLoader = DataLoader<CompanyID, Maybe<CompanyTable>>;
 
 export class CompanyDataLoader extends AbstractDataLoaderBase<CompanyLoader> {
   protected createLoader(params: DataLoaderParams): CompanyLoader {
     const companyLoader: CompanyLoader = new DataLoader(async (ids) => {
-      const companies = await companyDB.getCompaniesByIds({
+      const companies = await companyQueries.getCompaniesByIds({
         knex: params.knex,
         companyIds: ids,
       });

@@ -2,7 +2,7 @@ import { PhoneNumber } from "libphonenumber-js";
 
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
-import { userDS } from "~/database/user/UserDataSource";
+import { userDB } from "~/database/user/UserDatabase";
 import { EmailAddress } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { Try, toFailure, toSuccess } from "~/utils/validation";
@@ -25,7 +25,7 @@ export const registerHandler = async (params: {
   newUser: CreateUser;
   userDL: UserDataLoader;
 }): Promise<RegisterHandler> => {
-  const user = await userDS.getByUsername({
+  const user = await userDB.getByUsername({
     knex: params.knex,
     username: params.newUser.username,
     userDL: params.userDL,
@@ -39,7 +39,7 @@ export const registerHandler = async (params: {
     password: params.newUser.password,
   });
 
-  await userDS.createUser({
+  await userDB.createUser({
     knex: params.knex,
     newUser: {
       username: params.newUser.username,

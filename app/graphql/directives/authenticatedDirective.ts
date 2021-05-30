@@ -10,7 +10,7 @@ import {
   GraphQLResolveInfo,
 } from "graphql";
 
-import { UserAccessLevel } from "~/database/user/userDatabase";
+import { UserAccessLevel } from "~/database/user/userQueries";
 import { Context } from "~/graphql/context";
 
 // Visitor methods for nested types like fields and arguments

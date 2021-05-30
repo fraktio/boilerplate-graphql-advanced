@@ -1,9 +1,9 @@
 import DataLoader from "dataloader";
 
-import { CompanyID } from "../company/companyDatabase";
-import { PersonID } from "../person/personDatabase";
+import { CompanyID } from "../company/companyQueries";
+import { PersonID } from "../person/personQueries";
 
-import { employeeDB, EmployeeTable } from "./employeeDatabase";
+import { employeeQueries, EmployeeTable } from "./employeeQueries";
 
 import {
   AbstractDataLoaderBase,
@@ -35,7 +35,7 @@ export class CompaniesOfPersonDataLoader extends AbstractDataLoaderBase<Companie
   protected createLoader(params: DataLoaderParams): CompaniesOfPersonLoader {
     const companiesOfPersonLoader: CompaniesOfPersonLoader = new DataLoader(
       async (ids) => {
-        const employees = await employeeDB.getEmployeesOfPersons({
+        const employees = await employeeQueries.getEmployeesOfPersons({
           knex: params.knex,
           personIds: ids,
         });

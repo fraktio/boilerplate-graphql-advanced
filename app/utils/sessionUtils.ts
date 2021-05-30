@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import { DateTime } from "luxon";
 
-import { UserTable } from "~/database/user/userDatabase";
+import { UserTable } from "~/database/user/userQueries";
 import { UUID } from "~/generation/mappers";
 
 export enum Cookie {

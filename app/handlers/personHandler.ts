@@ -1,15 +1,15 @@
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
-import { companyDS, CompanyTable } from "~/database/company/companyDataSource";
+import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
 import { DBConnection } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
-import { personDS } from "~/database/person/personDataSource";
+import { personDB } from "~/database/person/personDatabase";
 import {
   CreatePersonOptions,
   PersonID,
   PersonTable,
   UpdatePersonOptions,
-} from "~/database/person/personDatabase";
+} from "~/database/person/personQueries";
 import {
   Maybe,
   PersonFilterOperation,
@@ -22,7 +22,7 @@ export const personHandler = async (params: {
   personUUID: UUID;
   personDL: PersonDataLoader;
 }): Promise<Maybe<PersonTable>> =>
-  await personDS.getByUUID({
+  await personDB.getByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
     personDL: params.personDL,
@@ -34,7 +34,7 @@ export const personsHandler = async (params: {
   filters?: PersonFilterOperation;
   sort?: PersonSort[];
 }): Promise<PersonTable[]> =>
-  await personDS.getAll({
+  await personDB.getAll({
     knex: params.knex,
     personDL: params.personDL,
     filters: params.filters,
@@ -46,7 +46,7 @@ export const addPersonHandler = async (params: {
   person: CreatePersonOptions;
   personDL: PersonDataLoader;
 }): Promise<PersonTable> =>
-  await personDS.create({
+  await personDB.create({
     knex: params.knex,
     person: params.person,
     personDL: params.personDL,
@@ -58,7 +58,7 @@ export const modifyPerson = async (params: {
   modifiedPerson: UpdatePersonOptions;
   personDL: PersonDataLoader;
 }): Promise<Maybe<PersonTable>> =>
-  await personDS.updateByUUID({
+  await personDB.updateByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
     person: params.modifiedPerson,
@@ -71,7 +71,7 @@ export const adultEmployersHandler = async (params: {
   companyDL: CompanyDataLoader;
   companiesOfPersonDL: CompaniesOfPersonDataLoader;
 }): Promise<CompanyTable[]> =>
-  await companyDS.getCompaniesOfPerson({
+  await companyDB.getCompaniesOfPerson({
     knex: params.knex,
     personId: params.personId,
     companyDL: params.companyDL,

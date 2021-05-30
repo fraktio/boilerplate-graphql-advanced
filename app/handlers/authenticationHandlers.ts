@@ -3,8 +3,8 @@ import { Response } from "express";
 import { CookiesConfig } from "~/config/cookiesConfig";
 import { DBConnection } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
-import { userDS } from "~/database/user/UserDataSource";
-import { UserTable } from "~/database/user/userDatabase";
+import { userDB } from "~/database/user/UserDatabase";
+import { UserTable } from "~/database/user/userQueries";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { sessionUtils } from "~/utils/sessionUtils";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
@@ -30,7 +30,7 @@ export const loginHandler = async (params: {
   cookiesConfig: CookiesConfig;
   userDL: UserDataLoader;
 }): Promise<Try<UserTable, LogInHandlerErrors>> => {
-  const user = await userDS.getByUsername({
+  const user = await userDB.getByUsername({
     knex: params.knex,
     username: params.input.username,
     userDL: params.userDL,

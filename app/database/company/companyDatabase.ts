@@ -1,29 +1,18 @@
-import { Knex } from "knex";
 import { DateTime } from "luxon";
 
-import { applyStringFilters, buildFilterQuery } from "../filters";
+import { CompaniesOfPersonDataLoader } from "../employee/CompaniesOfPersonDataLoader";
 
-import { DBConnection } from "~/database/connection";
-import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import { CompanyDataLoader } from "./CompanyDataLoader";
+
 import {
-  CompanyFilter,
-  CompanyFilterOperation,
-  FilterOperator,
-  Maybe,
-} from "~/generation/generated";
+  companyQueries,
+  CompanyID,
+  CompanyTableRow,
+} from "~/database/company/companyQueries";
+import { DBConnection } from "~/database/connection";
+import { PersonID } from "~/database/person/personQueries";
+import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
-
-export interface CompanyID extends ID {
-  __CompanyID: never;
-}
-
-export type CompanyTableRow = Readonly<{
-  id: CompanyID;
-  uuid: UUID;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-}>;
 
 export type CompanyTable = {
   id: CompanyID;
@@ -33,10 +22,6 @@ export type CompanyTable = {
     createdAt: DateTime;
     updatedAt: DateTime | null;
   };
-};
-
-export type CreateCompanyParams = {
-  name: string;
 };
 
 export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
@@ -53,27 +38,29 @@ export const companyDB = {
   async get(params: {
     knex: DBConnection;
     companyId: CompanyID;
+    companyDL: CompanyDataLoader;
   }): Promise<Maybe<CompanyTable>> {
-    const company = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .where({ id: params.companyId })
-      .first();
+    const company = await companyQueries.get(params);
 
-    return company ? formatCompanyRow(company) : null;
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
+    }
+
+    return company;
   },
 
   async tryGet(params: {
     knex: DBConnection;
     companyId: CompanyID;
+    companyDL: CompanyDataLoader;
   }): Promise<CompanyTable> {
-    const company = await companyDB.get({
-      knex: params.knex,
-      companyId: params.companyId,
-    });
+    const company = await companyQueries.tryGet(params);
 
-    if (!company) {
-      throw new Error("Invalid companyId");
-    }
+    params.companyDL
+      .getLoader({ knex: params.knex })
+      .prime(company.id, company);
 
     return company;
   },
@@ -81,104 +68,82 @@ export const companyDB = {
   async getByUUID(params: {
     knex: DBConnection;
     companyUUID: UUID;
+    companyDL: CompanyDataLoader;
   }): Promise<Maybe<CompanyTable>> {
-    const company = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .where({ uuid: params.companyUUID })
-      .first();
+    const company = await companyQueries.getByUUID(params);
 
-    return company ? formatCompanyRow(company) : null;
-  },
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
+    }
 
-  async getByIds(params: {
-    knex: DBConnection;
-    companyIds: CompanyID[];
-  }): Promise<CompanyTable[]> {
-    const persons = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .whereIn("id", params.companyIds);
-
-    return persons.map(formatCompanyRow);
+    return company;
   },
 
   async getAll(params: {
     knex: DBConnection;
-    filters?: CompanyFilterOperation;
+    companyDL: CompanyDataLoader;
+    filters?: PersonFilterOperation;
   }): Promise<CompanyTable[]> {
-    const companies = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .andWhere((qb) => addCompanyFilters(qb, params.filters));
+    const companies = await companyQueries.getAll(params);
 
-    return companies.map(formatCompanyRow);
+    const dataloader = params.companyDL.getLoader({ knex: params.knex });
+    companies.forEach((company) => {
+      dataloader.prime(company.id, company);
+    });
+
+    return companies;
   },
 
   async create(params: {
     knex: DBConnection;
-    company: CreateCompanyParams;
+    newCompany: { name: string };
+    companyDL: CompanyDataLoader;
   }): Promise<CompanyTable> {
-    const companies = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .insert({
-        uuid: createUUID(),
-        name: params.company.name,
-      })
-      .returning("*");
+    const company = await companyQueries.create({
+      knex: params.knex,
+      company: params.newCompany,
+    });
 
-    return formatCompanyRow(companies[0]);
+    params.companyDL
+      .getLoader({ knex: params.knex })
+      .prime(company.id, company);
+
+    return company;
   },
 
   async updateByUUID(params: {
     knex: DBConnection;
     companyUUID: UUID;
     company: { name: string };
+    companyDL: CompanyDataLoader;
   }): Promise<Maybe<CompanyTable>> {
-    const companies = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .update({ name: params.company.name })
-      .where({ uuid: params.companyUUID })
-      .returning("*");
+    const company = await companyQueries.updateByUUID(params);
 
-    if (companies.length === 0) {
-      return null;
+    if (company) {
+      params.companyDL
+        .getLoader({ knex: params.knex })
+        .prime(company.id, company);
     }
 
-    return formatCompanyRow(companies[0]);
+    return company;
   },
 
-  async getCompaniesByIds(params: {
+  async getCompaniesOfPerson(params: {
     knex: DBConnection;
-    companyIds: readonly CompanyID[];
+    personId: PersonID;
+    companyDL: CompanyDataLoader;
+    companiesOfPersonDL: CompaniesOfPersonDataLoader;
   }): Promise<CompanyTable[]> {
-    const companyRows = await params
-      .knex<CompanyTableRow>(Table.COMPANY)
-      .whereIn("id", params.companyIds);
+    const companyIds = await params.companiesOfPersonDL
+      .getLoader({ knex: params.knex })
+      .load(params.personId);
 
-    return companyRows.map(formatCompanyRow);
+    const companies = await params.companyDL
+      .getLoader({ knex: params.knex })
+      .loadMany(companyIds);
+
+    return companies as CompanyTable[];
   },
 };
-
-export function addCompanyFilters(
-  queryBuilder: Knex.QueryBuilder,
-  filterOperation?: CompanyFilterOperation,
-): Knex.QueryBuilder {
-  return buildFilterQuery(queryBuilder, applyCompanyFilters, filterOperation);
-}
-
-function applyCompanyFilters(input: {
-  queryBuilder: Knex.QueryBuilder;
-  filterOperator: FilterOperator;
-  filter: CompanyFilter;
-}): Knex.QueryBuilder {
-  const { queryBuilder, filterOperator, filter } = input;
-
-  if (filter.nameFilter) {
-    return applyStringFilters({
-      queryBuilder,
-      filterOperator,
-      field: tableColumn(Table.COMPANY, "name"),
-      stringFilter: filter.nameFilter,
-    });
-  }
-
-  return queryBuilder;
-}

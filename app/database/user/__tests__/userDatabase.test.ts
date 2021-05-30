@@ -1,9 +1,4 @@
-import {
-  formatUserRow,
-  UserID,
-  UserTable,
-  UserTableRow,
-} from "../userDatabase";
+import { formatUserRow, UserID, UserTable, UserTableRow } from "../userQueries";
 
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
