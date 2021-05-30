@@ -24,6 +24,12 @@
 
   - Playground is by default running @ `http://localhost:4000/graphql`
 
+## Utilities
+
+- `/health` shows if the API is ready and running
+
+- `/version` shows the current version
+
 ## Deployment
 
 #### AWS
