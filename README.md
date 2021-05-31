@@ -26,7 +26,7 @@
 
 ## Utilities
 
-- `/health` shows if the API is ready and running
+- `/health` shows if the API is ready and running 200 OK
 
 - `/version` shows the current version
 
