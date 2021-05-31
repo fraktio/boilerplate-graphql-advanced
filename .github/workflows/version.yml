@@ -17,10 +17,8 @@ jobs:
     
     - name: Commit files # commit the output folder
       run: |
-        git config --local user.email "test@github.com"
-        git config --local user.name "GitHub Action test"
-        git add ./output
-        git commit -m "bump version"
+        git add .
+        git commit -a -m "bump version"
     - name: Push changes # push the output folder to your repo
       uses: ad-m/github-push-action@master
       with:
