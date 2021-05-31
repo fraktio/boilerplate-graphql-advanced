@@ -3,13 +3,12 @@ import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
+import { DBConnection } from "~/database/connection";
 import {
   buildFilterQuery,
   applyDateFilters,
   applyStringFilters,
-} from "../filters";
-
-import { DBConnection } from "~/database/connection";
+} from "~/database/filters";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
   Maybe,

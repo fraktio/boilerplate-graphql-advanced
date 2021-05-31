@@ -1,7 +1,7 @@
 import { StringValueNode } from "graphql";
 import { DateTime } from "luxon";
 
-import { DateResolver } from "../DateResolver";
+import { DateResolver } from "~/graphql/scalars/DateResolver";
 
 const presetDateString = "2000-01-20";
 const presetDate = DateTime.fromFormat(presetDateString, "yyyy-MM-dd", {

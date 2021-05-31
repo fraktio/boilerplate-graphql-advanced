@@ -1,11 +1,10 @@
+import { Resolvers } from "~/generation/generated";
 import {
   addEmployeeHandler,
   AddEmployeeHandlerErrors,
   removeEmployeeHandler,
   RemoveEmployeeHandlerErrors,
-} from "../../handlers/employeeHandler";
-
-import { Resolvers } from "~/generation/generated";
+} from "~/handlers/employeeHandler";
 
 export const employeeResolver: Resolvers = {
   AddEmployeeOutput: {

@@ -1,9 +1,8 @@
+import { Resolvers } from "~/generation/generated";
 import {
   registerHandler,
   RegisterHandlerErrors,
-} from "../../handlers/registerHandlers";
-
-import { Resolvers } from "~/generation/generated";
+} from "~/handlers/registerHandlers";
 
 export const registrationResolver: Resolvers = {
   RegisterResponse: {

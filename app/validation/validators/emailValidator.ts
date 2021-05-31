@@ -1,9 +1,8 @@
 import emailValidator from "email-validator";
 
-import { ValidationErrorFailure } from "../validationFailure";
-
 import { EmailAddress } from "~/generation/scalars";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
+import { ValidationErrorFailure } from "~/validation/validationFailure";
 
 export function validateEmail(
   value: string,

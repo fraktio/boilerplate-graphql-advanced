@@ -1,13 +1,12 @@
 import { mergeResolvers } from "graphql-tools";
 
-import { authenticationResolver } from "./authenticationResolver";
-import { companyResolver } from "./companyResolver";
-import { employeeResolver } from "./employeeResolver";
-import { genericResolver } from "./genericResolver";
-import { numberFactResolver } from "./numberFactResolver";
-import { personResolver } from "./personResolver";
-import { registrationResolver } from "./registrationResolver";
-
+import { authenticationResolver } from "~/graphql/resolvers/authenticationResolver";
+import { companyResolver } from "~/graphql/resolvers/companyResolver";
+import { employeeResolver } from "~/graphql/resolvers/employeeResolver";
+import { genericResolver } from "~/graphql/resolvers/genericResolver";
+import { numberFactResolver } from "~/graphql/resolvers/numberFactResolver";
+import { personResolver } from "~/graphql/resolvers/personResolver";
+import { registrationResolver } from "~/graphql/resolvers/registrationResolver";
 import { createScalarResolvers } from "~/graphql/scalars/scalarsResolver";
 
 const resolversArray = [

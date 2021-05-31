@@ -3,11 +3,11 @@ import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
 import { CountryCode } from "libphonenumber-js";
 
-import { PersonTableRow } from "../app/database/person/personQueries";
-import { createUUID, Table } from "../app/database/tables";
-
+// eslint-disable-next-line no-restricted-imports
 import { doXTimes } from "./1-users";
 
+import { PersonTableRow } from "~/database/person/personQueries";
+import { createUUID, Table } from "~/database/tables";
 import { EmailAddress } from "~/generation/scalars";
 
 const createValidSsn = (): string => {

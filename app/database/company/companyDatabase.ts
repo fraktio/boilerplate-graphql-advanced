@@ -1,15 +1,13 @@
 import { DateTime } from "luxon";
 
-import { CompaniesOfPersonDataLoader } from "../employee/CompaniesOfPersonDataLoader";
-
-import { CompanyDataLoader } from "./CompanyDataLoader";
-
+import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import {
   companyQueries,
   CompanyID,
   CompanyTableRow,
 } from "~/database/company/companyQueries";
 import { DBConnection } from "~/database/connection";
+import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
 import { PersonID } from "~/database/person/personQueries";
 import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";

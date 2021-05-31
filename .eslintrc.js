@@ -105,7 +105,7 @@ module.exports = {
         ],
         "array-bracket-newline": ["error", "consistent"],
         "no-else-return": ["error", { allowElseIf: false }],
-        "import/no-cycle": [2, { maxDepth: 2, ignoreExternal: true }],
+        "import/no-cycle": [2, { maxDepth: 3, ignoreExternal: false }],
         "import/no-self-import": "error",
         "no-restricted-syntax": [
           "error",
@@ -114,8 +114,15 @@ module.exports = {
             message: "Prefer named exports",
           },
         ],
+        "no-restricted-imports": [
+          "error",
+          {
+            patterns: [".*"],
+          },
+        ],
         "max-lines": ["error", 400],
         "@typescript-eslint/explicit-function-return-type": ["error"],
+        "prefer-const": "error",
       },
     },
   ],

@@ -1,4 +1,3 @@
-/* eslint-disable no-process-env */
 import * as t from "io-ts";
 
 export const NumberFactConfigDecoder = t.interface({

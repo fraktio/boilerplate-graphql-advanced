@@ -1,7 +1,6 @@
-/* eslint-disable no-process-env */
 import * as t from "io-ts";
 
-import { NumberFromString } from "../utils/decoders";
+import { NumberFromString } from "~/utils/decoders";
 
 export const CookiesConfigDecoder = t.type({
   path: t.string,

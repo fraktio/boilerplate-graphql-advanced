@@ -1,12 +1,11 @@
+import { Resolvers } from "~/generation/generated";
 import {
   addCompanyHandler,
   companiesHandler,
   companyEmployees,
   companyHandler,
   editCompanyHandler,
-} from "../../handlers/companyHandlers";
-
-import { Resolvers } from "~/generation/generated";
+} from "~/handlers/companyHandlers";
 
 export const companyResolver: Resolvers = {
   CompanyOutput: {

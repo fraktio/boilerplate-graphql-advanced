@@ -1,6 +1,6 @@
 import { StringValueNode } from "graphql";
 
-import { EmailResolver } from "../EmailResolver";
+import { EmailResolver } from "~/graphql/scalars/EmailResolver";
 
 const email = "testuser@domain.com";
 

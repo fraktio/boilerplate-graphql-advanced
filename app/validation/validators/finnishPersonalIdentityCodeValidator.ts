@@ -1,9 +1,8 @@
 import { FinnishSSN } from "finnish-ssn";
 
-import { ValidationErrorFailure } from "../validationFailure";
-
 import { FinnishPersonalIdentityCode } from "~/generation/scalars";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
+import { ValidationErrorFailure } from "~/validation/validationFailure";
 
 export function validateFinnishPersonalIdentityCode(
   value: string,

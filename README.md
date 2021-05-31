@@ -4,20 +4,20 @@
 
 1. Dependencies
 
-    1. Populate `.env` file with values found in `.env.example`
-    2. `yarn` to install packages
+    1. Populate `.env.development` file with values found in `.env.example`
+    2. `npm install` to install packages
 
 2. Start database
 
     1. `docker-compose up` turn database on
-    2. `yarn database:migrate:latest` add database structure
-    3. `yarn seed` add mock data
+    2. `npm run database:migrate:latest` add database structure
+    3. `npm run seed` add mock data
 
 2. Start the api
 
-    3. `yarn dev`
+    3. `npm run dev`
 
-3. When making `schema` changes run `yarn codegen` to generate types
+3. When making `schema` changes run `npm run codegen` to generate types
 
 ## Playground
   - Test user credentials: `username` / `password`

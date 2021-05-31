@@ -1,7 +1,7 @@
 import { StringValueNode } from "graphql";
 import { DateTime } from "luxon";
 
-import { DateTimeResolver } from "../DateTimeResolver";
+import { DateTimeResolver } from "~/graphql/scalars/DateTimeResolver";
 
 const presetDateTimeString = "2021-03-14T02:49:03.095Z";
 const presetDateTime = DateTime.fromISO(presetDateTimeString);

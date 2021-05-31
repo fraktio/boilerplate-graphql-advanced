@@ -1,4 +1,4 @@
-import { toFailure, toSuccess } from "../validation";
+import { toFailure, toSuccess } from "~/utils/validation";
 
 describe("utils / validation", () => {
   it("toSuccess", async () => {

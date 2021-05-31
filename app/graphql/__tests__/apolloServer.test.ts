@@ -1,6 +1,5 @@
-import { createApolloServer } from "../apolloServer";
-
 import { createTestConfig } from "~/config/testConfig";
+import { createApolloServer } from "~/graphql/apolloServer";
 
 const config = createTestConfig();
 

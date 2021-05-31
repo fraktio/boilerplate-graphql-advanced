@@ -1,8 +1,7 @@
 import { PhoneNumber } from "libphonenumber-js";
 
-import { UserDataLoader } from "./UserDataLoader";
-
 import { DBConnection } from "~/database/connection";
+import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";

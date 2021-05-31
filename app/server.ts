@@ -1,14 +1,13 @@
 import { Express } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-import { createRoutes } from "./express/routes/routes";
-
 import { Config } from "~/config/config";
 import { createKnex, DBConnection } from "~/database/connection";
 import { createExpress } from "~/express/express";
 import { errorHandler } from "~/express/middleware/errorHandler";
 import { loggerHandler } from "~/express/middleware/loggerHandler";
 import { sessionHandler } from "~/express/middleware/sessionHandler";
+import { createRoutes } from "~/express/routes/routes";
 import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
 import { createLogger, Logger } from "~/logger";

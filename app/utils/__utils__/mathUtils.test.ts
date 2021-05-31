@@ -1,4 +1,4 @@
-import { mathUtils } from "../mathUtils";
+import { mathUtils } from "~/utils/mathUtils";
 
 describe("utils / math", () => {
   it("getRandomArbitrary", async () => {

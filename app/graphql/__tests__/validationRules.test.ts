@@ -3,7 +3,7 @@ import {
   COMPLEXITY_LIMIT,
   createValidationRules,
   DEPTH_VALUE_LIMIT,
-} from "../validationRules";
+} from "~/graphql/validationRules";
 
 describe("Graphql / schema", () => {
   it("createValidationRules", async () => {

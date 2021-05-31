@@ -44,7 +44,7 @@ custom:
 
     webpack:
         webpackConfig: webpack.serverless.js
-        packager: 'yarn'
+        packager: 'npm'
         includeModules:
             forceExclude:
               - aws-sdk

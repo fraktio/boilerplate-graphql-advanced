@@ -1,7 +1,6 @@
-import { ValidationErrorFailure } from "../validationFailure";
-
 import { FinnishMunicipality } from "~/generation/scalars";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
+import { ValidationErrorFailure } from "~/validation/validationFailure";
 
 export function validateFinnishMunicipality(
   value: string,

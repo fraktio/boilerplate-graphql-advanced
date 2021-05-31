@@ -1,11 +1,10 @@
 import DataLoader from "dataloader";
 
-import { userQueries, UserID, UserTable } from "./userQueries";
-
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
+import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
 
 export type UserLoader = DataLoader<UserID, Maybe<UserTable>>;

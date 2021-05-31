@@ -1,4 +1,4 @@
-import { createExecutableSchema, createSchema } from "../schema";
+import { createExecutableSchema, createSchema } from "~/graphql/schema";
 
 describe("Graphql / schema", () => {
   it("createSchema", async () => {
