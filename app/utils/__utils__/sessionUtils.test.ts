@@ -1,8 +1,7 @@
 import { verify } from "jsonwebtoken";
 
-import { sessionUtils } from "../sessionUtils";
-
 import { UserTable } from "~/database/user/userQueries";
+import { sessionUtils } from "~/utils/sessionUtils";
 
 describe("utils / hashing", () => {
   it("generateRefreshToken & verifyRefreshPayload", async () => {

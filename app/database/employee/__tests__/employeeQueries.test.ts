@@ -1,11 +1,10 @@
+import { CompanyID } from "~/database/company/companyQueries";
 import {
   EmployeeID,
   EmployeeTable,
   EmployeeTableRow,
   formatEmployeeRow,
-} from "../employeeQueries";
-
-import { CompanyID } from "~/database/company/companyQueries";
+} from "~/database/employee/employeeQueries";
 import { PersonID } from "~/database/person/personQueries";
 
 const datatimeString =

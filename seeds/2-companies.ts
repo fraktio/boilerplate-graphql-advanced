@@ -2,6 +2,7 @@ import faker from "faker";
 import { Knex } from "knex";
 import { v4 as uuidv4 } from "uuid";
 
+// eslint-disable-next-line no-restricted-imports
 import { doXTimes } from "./1-users";
 
 import { CompanyTableRow } from "~/database/company/companyQueries";

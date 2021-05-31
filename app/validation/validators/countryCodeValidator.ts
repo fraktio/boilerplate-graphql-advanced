@@ -1,9 +1,8 @@
 import { ISO_3166_ALPHA_2 } from "iso-3166-ts";
 
-import { ValidationErrorFailure } from "../validationFailure";
-
 import { CountryCode } from "~/generation/scalars";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
+import { ValidationErrorFailure } from "~/validation/validationFailure";
 
 export function validateCountryCode(
   value: string,

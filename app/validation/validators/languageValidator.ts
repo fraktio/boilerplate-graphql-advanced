@@ -1,7 +1,6 @@
-import { ValidationErrorFailure } from "../validationFailure";
-
 import { Language } from "~/generation/scalars";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
+import { ValidationErrorFailure } from "~/validation/validationFailure";
 
 export function validateLanguage(
   value: string,

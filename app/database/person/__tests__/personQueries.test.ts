@@ -3,8 +3,7 @@ import {
   PersonID,
   PersonTable,
   PersonTableRow,
-} from "../personQueries";
-
+} from "~/database/person/personQueries";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 

@@ -1,4 +1,4 @@
-import { hashingUtils } from "../hashingUtils";
+import { hashingUtils } from "~/utils/hashingUtils";
 
 const password = "password";
 

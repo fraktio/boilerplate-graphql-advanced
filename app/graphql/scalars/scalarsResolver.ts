@@ -1,12 +1,11 @@
 import { UUIDResolver } from "graphql-scalars";
 
-import { CountryCodeResolver } from "./CountryCodeResolver";
-import { DateResolver } from "./DateResolver";
-import { DateTimeResolver } from "./DateTimeResolver";
-import { EmailResolver } from "./EmailResolver";
-import { PhoneNumberResolver } from "./PhoneNumberResolver";
-
 import { Resolvers } from "~/generation/generated";
+import { CountryCodeResolver } from "~/graphql/scalars/CountryCodeResolver";
+import { DateResolver } from "~/graphql/scalars/DateResolver";
+import { DateTimeResolver } from "~/graphql/scalars/DateTimeResolver";
+import { EmailResolver } from "~/graphql/scalars/EmailResolver";
+import { PhoneNumberResolver } from "~/graphql/scalars/PhoneNumberResolver";
 
 export const createScalarResolvers = (): Resolvers => ({
   UUID: UUIDResolver,

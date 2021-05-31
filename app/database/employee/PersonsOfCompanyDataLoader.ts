@@ -1,14 +1,15 @@
 import DataLoader from "dataloader";
 
-import { CompanyID } from "../company/companyQueries";
-import { PersonID } from "../person/personQueries";
-
-import { employeeQueries, EmployeeTable } from "./employeeQueries";
-
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
+import { CompanyID } from "~/database/company/companyQueries";
+import {
+  employeeQueries,
+  EmployeeTable,
+} from "~/database/employee/employeeQueries";
+import { PersonID } from "~/database/person/personQueries";
 
 export type PersonsOfCompanyLoader = DataLoader<CompanyID, PersonID[]>;
 

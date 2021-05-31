@@ -1,4 +1,4 @@
-import { createDataLoaders } from "../dataLoaders";
+import { createDataLoaders } from "~/database/dataLoaders";
 
 describe("database tests / loaders", () => {
   it("createDataLoaders", async () => {

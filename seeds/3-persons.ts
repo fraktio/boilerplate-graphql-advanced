@@ -3,6 +3,7 @@ import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
 import { CountryCode } from "libphonenumber-js";
 
+// eslint-disable-next-line no-restricted-imports
 import { doXTimes } from "./1-users";
 
 import { PersonTableRow } from "~/database/person/personQueries";

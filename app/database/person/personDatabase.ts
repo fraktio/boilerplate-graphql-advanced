@@ -1,9 +1,7 @@
-import { PersonsOfCompanyDataLoader } from "../employee/PersonsOfCompanyDataLoader";
-
-import { PersonDataLoader } from "./PersonDataLoader";
-
 import { CompanyID } from "~/database/company/companyQueries";
 import { DBConnection } from "~/database/connection";
+import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
+import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import {
   CreatePersonOptions,
   personQueries,

@@ -1,9 +1,8 @@
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
-import { applyStringFilters, buildFilterQuery } from "../filters";
-
 import { DBConnection } from "~/database/connection";
+import { applyStringFilters, buildFilterQuery } from "~/database/filters";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
   CompanyFilter,

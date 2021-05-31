@@ -5,6 +5,7 @@ const rules = [
   "/* eslint-disable @typescript-eslint/no-explicit-any */",
   "/* eslint-disable @typescript-eslint/ban-types */",
   "/* eslint-disable max-lines */",
+  "/* eslint-disable no-restricted-imports */",
 ];
 
 const data = fs.readFileSync("./app/generation/generated.ts"); // read existing contents into data

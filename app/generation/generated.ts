@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable max-lines */
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from "graphql";
 import { PhoneNumber } from "libphonenumber-js";
-/* eslint-disable max-lines */ import { DateTime } from "luxon";
+/* eslint-disable no-restricted-imports */ import { DateTime } from "luxon";
 
 import { Context } from "../graphql/context";
 

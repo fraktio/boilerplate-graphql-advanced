@@ -1,7 +1,5 @@
 import { PhoneNumber } from "libphonenumber-js";
 
-import { createCompany, createUser, testPassword } from "./testData";
-
 import {
   companyQueries,
   CompanyTable,
@@ -11,6 +9,7 @@ import { DBConnection } from "~/database/connection";
 import { Table } from "~/database/tables";
 import { userQueries, UserTable } from "~/database/user/userQueries";
 import { EmailAddress } from "~/generation/scalars";
+import { createCompany, createUser, testPassword } from "~/tests/testData";
 import { hashingUtils } from "~/utils/hashingUtils";
 
 export const migrateTestDatabase = async (params: {
