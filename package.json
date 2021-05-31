@@ -20,7 +20,7 @@
     "codegen:lint": "eslint app/generation/generated.ts --fix",
     "codegen:disable-rules": "npm run script -- ./scripts/add-comments-to-generated.ts",
     "validate-schema": "npm run script -- ./scripts/validate-schema.ts",
-    "typescript-check": "npm tsc",
+    "typescript-check": "node_modules/.bin/tsc",
     "database:migrate:latest": "npm run knex -- migrate:latest",
     "database:migrate:rollback": "npm run knex -- migrate:rollback --all",
     "seed": "npm run knex -- seed:run",
