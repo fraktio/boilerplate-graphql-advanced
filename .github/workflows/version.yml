@@ -10,14 +10,15 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
       - run: git config --global user.name 'Boilerplate'
       - run: git config --global user.email 'boilerplate@fraktio.fi'
       - name: Patch
         run: npm version patch
-      - name: Add
-        run: git add .
       - name: Commit
-        run: git commit -m "bump version"
+        run: git commit -a -m "bump version"
       - name: Push
         run: git push
       - name: Push changes
