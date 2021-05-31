@@ -19,8 +19,6 @@ jobs:
         run: npm version patch --no-git-tag-version
       - name: Commit
         run: git commit -a -m "bump version"
-      - name: Push
-        run: git push
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
