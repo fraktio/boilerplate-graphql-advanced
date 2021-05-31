@@ -5,23 +5,14 @@ on:
       - master
 
 jobs:
-  update-version:
+  version:
     runs-on: ubuntu-latest
-    container: node:15
-
+    if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Bump version
-      run: npm version patch
-    
-    - name: Commit files # commit the output folder
-      run: |
-        git add .
-        git commit -a -m "bump version"
-    - name: Push changes # push the output folder to your repo
-      uses: ad-m/github-push-action@master
-      with:
-        # branch: B77 #ignore if your branch is master
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+      - run: git config --global user.name 'Boilerplate'
+      - run: git config --global user.email 'boilerplate@fraktio.fi'
+      - run: npm version patch
+      - run: git push
