@@ -10,9 +10,18 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[RELEASE]')"
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
       - run: git config --global user.name 'Boilerplate'
       - run: git config --global user.email 'boilerplate@fraktio.fi'
-      - run: npm version patch
-      - run: git push
+      - name: Patch
+        run: npm version patch
+      - name: Add
+        run: git add .
+      - name: Commit
+        run: git commit -m "bump version"
+      - name: Push
+        run: git push
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
