@@ -5,7 +5,7 @@ export default {
   globalSetup: "<rootDir>/app/tests/globalSetup.ts",
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
   moduleFileExtensions: ["ts", "js", "json", "node"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/"],
+  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/dist/"],
   moduleNameMapper: {
     "~/(.*)": "<rootDir>/app/$1",
   },
