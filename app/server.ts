@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Express, Router } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { Config } from "~/config/config";
@@ -38,7 +38,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
     context: createContext({ knex, config }),
   });
 
-  apolloServer.applyMiddleware({ app, cors: false });
+  app.use(apolloServer.getMiddleware({ cors: false }) as Router);
 
   if (!config.env.isProduction) {
     // Used for proxy for cookies to work on certain endpoints
