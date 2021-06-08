@@ -15,7 +15,7 @@
     "lint": "eslint . --ext ts,js",
     "test": "jest --forceExit --detectOpenHandles",
     "script": "ts-node --files -r tsconfig-paths/register",
-    "knex": "ts-node -r tsconfig-paths/register node_modules/.bin/knex",
+    "knex": "ts-node -r tsconfig-paths/register node_modules/knex/bin/cli.js",
     "codegen": "graphql-codegen && npm run codegen:disable-rules && npm  run codegen:lint",
     "codegen:lint": "eslint app/generation/generated.ts --fix",
     "codegen:disable-rules": "npm run script -- ./scripts/add-comments-to-generated.ts",
