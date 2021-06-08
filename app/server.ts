@@ -33,21 +33,19 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   app.use(createRoutes({ knex }));
   app.use(sessionHandler({ cookiesConfig: config.cookies, knex }));
 
-  const apolloServer = createApolloServer({
-    config,
-    context: createContext({ knex, config }),
-  });
+  const context = createContext({ knex, config });
+  const apolloServer = createApolloServer({ config, context });
 
   app.use(apolloServer.getMiddleware({ cors: false }) as Router);
 
   if (!config.env.isProduction) {
     // Used for proxy for cookies to work on certain endpoints
-    app.use(
-      createProxyMiddleware({
-        target: "http://localhost:3000",
-        changeOrigin: true,
-      }),
-    );
+    const proxyMiddleware = createProxyMiddleware({
+      target: "http://localhost:3000",
+      changeOrigin: true,
+    });
+
+    app.use(proxyMiddleware);
   }
 
   if (config.env.isProduction) {

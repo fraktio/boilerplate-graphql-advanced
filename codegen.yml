@@ -14,7 +14,9 @@ generates:
         UUID: ./mappers#UUID
         Date: luxon#DateTime
         DateTime: luxon#DateTime
+        CountryCode: ./scalars#CountryCode
         EmailAddress: ./scalars#EmailAddress
+        PersonalIdentityCode: ./scalars#FinnishPersonalIdentityCode
         PhoneNumber: "libphonenumber-js#PhoneNumber"
     plugins:
       - typescript

@@ -5,7 +5,10 @@ import {
   PersonTableRow,
 } from "~/database/person/personQueries";
 import { UUID } from "~/generation/mappers";
-import { EmailAddress } from "~/generation/scalars";
+import {
+  EmailAddress,
+  FinnishPersonalIdentityCode,
+} from "~/generation/scalars";
 
 const datetimeString =
   "Fri Mar 12 2021 13:16:56 GMT+0200 (Eastern European Standard Time)";
@@ -21,7 +24,7 @@ export const dbPersonMockTableRow: PersonTableRow = {
   createdAt: new Date(datetimeString),
   updatedAt: null,
   nationality: "FI",
-  personalIdentityCode: "230488-577C",
+  personalIdentityCode: "230488-577C" as unknown as FinnishPersonalIdentityCode,
 };
 
 export const dbPersonMockTableRowUpdated: PersonTableRow = {

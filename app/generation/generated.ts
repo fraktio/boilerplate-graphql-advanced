@@ -2,13 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable max-lines */
+/* eslint-disable no-restricted-imports */
+
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from "graphql";
 import { PhoneNumber } from "libphonenumber-js";
-/* eslint-disable no-restricted-imports */ import { DateTime } from "luxon";
+import { DateTime } from "luxon";
 
 import { Context } from "../graphql/context";
 
@@ -19,7 +21,11 @@ import {
   AdultModel,
   UserModel,
 } from "./mappers";
-import { EmailAddress } from "./scalars";
+import {
+  CountryCode,
+  EmailAddress,
+  FinnishPersonalIdentityCode,
+} from "./scalars";
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -41,11 +47,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  CountryCode: any;
+  CountryCode: CountryCode;
   Date: DateTime;
   DateTime: DateTime;
   EmailAddress: EmailAddress;
-  PersonalIdentityCode: any;
+  PersonalIdentityCode: FinnishPersonalIdentityCode;
   PhoneNumber: PhoneNumber;
   UUID: UUID;
 };

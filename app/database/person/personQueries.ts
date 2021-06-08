@@ -1,4 +1,3 @@
-import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
@@ -24,10 +23,7 @@ import {
   EmailAddress,
   FinnishPersonalIdentityCode,
 } from "~/generation/scalars";
-import {
-  asCountryCode,
-  asFinnishPersonalIdentityCode,
-} from "~/validation/converters";
+import { asCountryCode } from "~/validation/converters";
 
 export interface PersonID extends ID {
   __PersonID: never;
@@ -43,8 +39,8 @@ export type PersonTableRow = Readonly<{
   birthday: Date;
   createdAt: Date;
   updatedAt: Date | null;
-  nationality: string;
-  personalIdentityCode: string;
+  nationality: CountryCode;
+  personalIdentityCode: FinnishPersonalIdentityCode;
 }>;
 
 export type PersonTable = {
@@ -59,8 +55,8 @@ export type PersonTable = {
     createdAt: DateTime;
     updatedAt: DateTime | null;
   };
-  nationality: string;
-  personalIdentityCode: FinnishSSN;
+  nationality: CountryCode;
+  personalIdentityCode: FinnishPersonalIdentityCode;
 };
 
 export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
@@ -72,7 +68,7 @@ export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
   email: row.email,
   birthday: DateTime.fromJSDate(row.birthday),
   nationality: asCountryCode(row.nationality),
-  personalIdentityCode: asFinnishPersonalIdentityCode(row.personalIdentityCode),
+  personalIdentityCode: row.personalIdentityCode,
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
     updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,

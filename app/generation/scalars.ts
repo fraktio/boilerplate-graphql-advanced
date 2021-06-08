@@ -1,5 +1,5 @@
 import { Maybe } from "graphql/jsutils/Maybe";
-import countryCodes from "iso-3166-ts";
+import { Iso3166Alpha2Code } from "iso-3166-ts";
 import { DateTime } from "luxon";
 
 export interface UUID extends String {
@@ -21,7 +21,7 @@ export enum Language {
   SE = "SE",
 }
 
-export type CountryCode = countryCodes.Iso3166Alpha2Code;
+export type CountryCode = Iso3166Alpha2Code;
 
 export interface FinnishPostalCode extends String {
   _postalCode: never;

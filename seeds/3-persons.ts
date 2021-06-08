@@ -1,14 +1,17 @@
 import faker from "faker";
 import { FinnishSSN } from "finnish-ssn";
 import { Knex } from "knex";
-import { CountryCode } from "libphonenumber-js";
 
 // eslint-disable-next-line no-restricted-imports
 import { doXTimes } from "./1-users";
 
 import { PersonTableRow } from "~/database/person/personQueries";
 import { createUUID, Table } from "~/database/tables";
-import { EmailAddress } from "~/generation/scalars";
+import {
+  CountryCode,
+  EmailAddress,
+  FinnishPersonalIdentityCode,
+} from "~/generation/scalars";
 
 const createValidSsn = (): string => {
   const ssn = FinnishSSN.createWithAge(
@@ -43,7 +46,7 @@ const createPerson = (): Omit<
     email: faker.internet.email() as unknown as EmailAddress,
     birthday: parsedssn.dateOfBirth,
     nationality: faker.address.countryCode() as unknown as CountryCode,
-    personalIdentityCode: ssn,
+    personalIdentityCode: ssn as unknown as FinnishPersonalIdentityCode,
   };
 };
 
