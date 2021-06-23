@@ -27,15 +27,18 @@ jobs:
 
     - name: Generate codegen
       run: npm run codegen
+
+    - name: Schema Scalars validation
+      run: npm run validate-schema:scalars
+
+    - name: Schema Build validation
+      run: npm run validate-schema:build
     
     - name: Typecheck
       run: npm run typescript-check --noEmit
     
     - name: Lint
       run: npm run lint
-
-    - name: Schema validation
-      run: npm run validate-schema
     
     - name: Database Migration Latest
       run: npm run database:migrate:latest
