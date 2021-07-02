@@ -156,8 +156,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1076,
-              "start": 1064,
+              "end": 1060,
+              "start": 1048,
             },
             "value": "Subscription",
           },
