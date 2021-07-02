@@ -14,7 +14,3 @@ export const DATABASE_PORT = "DATABASE_PORT";
 export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
 export const DATABASE_DATABASE_NAME = "DATABASE_DATABASE_NAME";
 export const NUMBER_API_MOCK_TOKEN = "NUMBER_API_MOCK_TOKEN";
-
-export const getEnv = (env: string): string | undefined =>
-  // eslint-disable-next-line no-process-env
-  process.env[env] || undefined; // prevent empty strings

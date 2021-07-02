@@ -1,6 +1,6 @@
 import SSM from "aws-sdk/clients/ssm";
 
-import { Config, validateConfig } from "~/config/config";
+import { Config, getEnv, validateConfig } from "~/config/config";
 import {
   ACCESS_TOKEN_AGE_SECONDS,
   API_CORS_ENDPOINT,
@@ -18,7 +18,6 @@ import {
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
-  getEnv,
 } from "~/config/variablesConfig";
 
 const getParams = async (ssm: SSM): Promise<SSM.ParameterList> => {

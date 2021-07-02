@@ -24,8 +24,11 @@ import {
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
-  getEnv,
 } from "~/config/variablesConfig";
+
+export const getEnv = (env: string): string | undefined =>
+  // eslint-disable-next-line no-process-env
+  process.env[env] || undefined; // prevent empty strings
 
 export const ConfigDecoder = t.interface({
   env: EnvConfigDecoder,

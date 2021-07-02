@@ -2,6 +2,7 @@ import { isLeft } from "fp-ts/lib/Either";
 import * as t from "io-ts";
 import reporter from "io-ts-reporters";
 
+import { getEnv } from "~/config/config";
 import {
   DATABASE_DATABASE_NAME,
   DATABASE_HOST,
@@ -9,7 +10,6 @@ import {
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
-  getEnv,
 } from "~/config/variablesConfig";
 import { NumberFromString } from "~/utils/decoders";
 
