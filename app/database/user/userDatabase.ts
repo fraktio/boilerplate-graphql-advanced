@@ -1,6 +1,6 @@
 import { PhoneNumber } from "libphonenumber-js";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
@@ -16,7 +16,7 @@ export type CreateUser = {
 
 export const userDB = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     userId: UserID;
     userDL: UserDataLoader;
   }): Promise<Maybe<UserTable>> {
@@ -33,7 +33,7 @@ export const userDB = {
   },
 
   async getByUsername(params: {
-    knex: DBConnection;
+    knex: DBSession;
     username: string;
     userDL: UserDataLoader;
   }): Promise<Maybe<UserTable>> {
@@ -50,7 +50,7 @@ export const userDB = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     userUUID: UUID;
     userDL: UserDataLoader;
   }): Promise<Maybe<UserTable>> {
@@ -67,7 +67,7 @@ export const userDB = {
   },
 
   async createUser(params: {
-    knex: DBConnection;
+    knex: DBSession;
     newUser: CreateUser;
     userDL: UserDataLoader;
   }): Promise<UserTable> {

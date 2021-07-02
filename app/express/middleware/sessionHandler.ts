@@ -1,15 +1,12 @@
 import { RequestHandler } from "express";
 
 import { CookiesConfig } from "~/config/cookiesConfig";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { userQueries } from "~/database/user/userQueries";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 export const sessionHandler =
-  (params: {
-    knex: DBConnection;
-    cookiesConfig: CookiesConfig;
-  }): RequestHandler =>
+  (params: { knex: DBSession; cookiesConfig: CookiesConfig }): RequestHandler =>
   async (req, _, next): Promise<void> => {
     const token = sessionUtils.getRefreshToken({ req });
 

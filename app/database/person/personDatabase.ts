@@ -1,5 +1,5 @@
 import { CompanyID } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import {
@@ -18,7 +18,7 @@ import { UUID } from "~/generation/mappers";
 
 export const personDB = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personId: PersonID;
     personDL: PersonDataLoader;
   }): Promise<Maybe<PersonTable>> {
@@ -28,7 +28,7 @@ export const personDB = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personUUID: UUID;
     personDL: PersonDataLoader;
   }): Promise<Maybe<PersonTable>> {
@@ -42,7 +42,7 @@ export const personDB = {
   },
 
   async getAll(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personDL: PersonDataLoader;
     filters?: PersonFilterOperation;
     sort?: PersonSort[];
@@ -58,7 +58,7 @@ export const personDB = {
   },
 
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     person: CreatePersonOptions;
     personDL: PersonDataLoader;
   }): Promise<PersonTable> {
@@ -70,7 +70,7 @@ export const personDB = {
   },
 
   async updateByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personUUID: UUID;
     person: UpdatePersonOptions;
     personDL: PersonDataLoader;
@@ -85,7 +85,7 @@ export const personDB = {
   },
 
   async getPersonsOfCompany(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     personDL: PersonDataLoader;
     personsOfCompanyDL: PersonsOfCompanyDataLoader;

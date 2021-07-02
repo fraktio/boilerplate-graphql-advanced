@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 import { CookiesConfig } from "~/config/cookiesConfig";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";
 import { UserTable } from "~/database/user/userQueries";
@@ -24,7 +24,7 @@ export enum LogInHandlerErrors {
 }
 
 export const loginHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   res: Response;
   input: LoginHandlerInput;
   cookiesConfig: CookiesConfig;

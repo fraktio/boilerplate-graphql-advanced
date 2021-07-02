@@ -5,11 +5,11 @@ import express, { Express } from "express";
 import helmet from "helmet";
 
 import { Config } from "~/config/config";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 
 export const createExpress = (opts: {
   config: Config;
-  knex: DBConnection;
+  knex: DBSession;
 }): Express => {
   const app = express();
 

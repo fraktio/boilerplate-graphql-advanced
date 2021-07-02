@@ -44,7 +44,7 @@ type Underage implements Person {
 }
 
 type Query {
-  persons(filters: PersonFilterOperation, sort: [PersonSort!]): [Person]!  @authenticated
+  persons(filters: PersonFilterOperation, sort: [PersonSort!]): [Person]!
   person(input: PersonInput!): Person! @authenticated
 }
 

@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import {
   buildFilterQuery,
   applyDateFilters,
@@ -89,7 +89,7 @@ export type UpdatePersonOptions = CreatePersonOptions;
 
 export const personQueries = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     id: PersonID;
   }): Promise<Maybe<PersonTable>> {
     const person = await params
@@ -101,7 +101,7 @@ export const personQueries = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personUUID: UUID;
   }): Promise<Maybe<PersonTable>> {
     const person = await params
@@ -113,7 +113,7 @@ export const personQueries = {
   },
 
   async getAll(params: {
-    knex: DBConnection;
+    knex: DBSession;
     filters?: PersonFilterOperation;
     sort?: PersonSort[];
   }): Promise<PersonTable[]> {
@@ -126,7 +126,7 @@ export const personQueries = {
   },
 
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     person: CreatePersonOptions;
   }): Promise<PersonTable> {
     const phone = params.person.phone?.formatInternational();
@@ -148,7 +148,7 @@ export const personQueries = {
   },
 
   async updateByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personUUID: UUID;
     person: UpdatePersonOptions;
   }): Promise<Maybe<PersonTable>> {
@@ -175,7 +175,7 @@ export const personQueries = {
   },
 
   async getPersonsByIds(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personIds: readonly PersonID[];
   }): Promise<PersonTable[]> {
     const personRows = await params

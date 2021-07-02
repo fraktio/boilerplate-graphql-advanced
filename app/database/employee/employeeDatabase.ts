@@ -1,5 +1,5 @@
 import { CompanyID } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import {
   employeeQueries,
   EmployeeTable,
@@ -8,7 +8,7 @@ import { PersonID } from "~/database/person/personQueries";
 
 export const employeeDB = {
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     personId: PersonID;
   }): Promise<EmployeeTable> {
@@ -16,7 +16,7 @@ export const employeeDB = {
   },
 
   async remove(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     personId: PersonID;
   }): Promise<boolean> {

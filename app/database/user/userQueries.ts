@@ -1,7 +1,7 @@
 import { PhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
 import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
@@ -64,7 +64,7 @@ type CreateUserValues = {
 
 export const userQueries = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     userId: UserID;
   }): Promise<Maybe<UserTable>> {
     const user = await params
@@ -76,7 +76,7 @@ export const userQueries = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     userUUID: UUID;
   }): Promise<Maybe<UserTable>> {
     const user = await params
@@ -88,7 +88,7 @@ export const userQueries = {
   },
 
   async getByUsername(params: {
-    knex: DBConnection;
+    knex: DBSession;
     username: string;
   }): Promise<Maybe<UserTable>> {
     const user = await params
@@ -100,7 +100,7 @@ export const userQueries = {
   },
 
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     newUser: CreateUserValues;
   }): Promise<UserTable> {
     const users = await params
@@ -118,7 +118,7 @@ export const userQueries = {
   },
 
   async getUsersByIds(params: {
-    knex: DBConnection;
+    knex: DBSession;
     userIds: readonly UserID[];
   }): Promise<UserTable[]> {
     const userRows = await params

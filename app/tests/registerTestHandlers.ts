@@ -1,7 +1,7 @@
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { migrateTestDatabase, resetTestDatabase } from "~/tests/testDatabase";
 
-export const registerTestHandlers = (params: { knex: DBConnection }): void => {
+export const registerTestHandlers = (params: { knex: DBSession }): void => {
   beforeAll(async () => {
     await migrateTestDatabase({ knex: params.knex });
   });

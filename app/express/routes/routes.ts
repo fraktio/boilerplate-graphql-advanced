@@ -1,10 +1,10 @@
 import { Router } from "express";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { createHealthRoutes } from "~/express/routes/health";
 import { createVersionRoutes } from "~/express/routes/version";
 
-export const createRoutes = (params: { knex: DBConnection }): Router => {
+export const createRoutes = (params: { knex: DBSession }): Router => {
   const router = Router();
 
   router.use("/version", createVersionRoutes());

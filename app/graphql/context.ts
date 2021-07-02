@@ -2,10 +2,14 @@ import { Request, Response } from "express";
 
 import { Config } from "~/config/config";
 import { DataSourcesInContext } from "~/dataSources";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
 import { UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
+import {
+  createTransaction,
+  DBTransaction,
+} from "~/graphql/plugins/MutationTransaction";
 import { Logger } from "~/logger";
 
 export type Context = BaseContext & DataSourcesInContext;
@@ -15,12 +19,13 @@ export type BaseContext = {
   req: Request;
   res: Response;
   config: Config;
-  knex: DBConnection;
+  knex: DBSession;
   dataLoaders: DataLoaders;
+  transaction: DBTransaction;
   authenticatedUser: Maybe<UserTable>;
 };
 
-type CreateContextParams = { knex: DBConnection; config: Config };
+type CreateContextParams = { knex: DBSession; config: Config };
 
 type ApplyMiddlewareApp = { req: Request; res: Response };
 
@@ -33,5 +38,6 @@ export const createContext =
     config: params.config,
     knex: params.knex,
     dataLoaders: createDataLoaders(),
+    transaction: createTransaction({ knex: params.knex }),
     authenticatedUser: app.req.user || null,
   });

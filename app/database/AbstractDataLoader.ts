@@ -1,7 +1,7 @@
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 
 export type DataLoaderParams = {
-  knex: DBConnection;
+  knex: DBSession;
 };
 
 export abstract class AbstractDataLoaderBase<Loaders> {

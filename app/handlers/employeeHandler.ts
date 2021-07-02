@@ -1,6 +1,6 @@
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { employeeDB } from "~/database/employee/employeeDatabase";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDB } from "~/database/person/personDatabase";
@@ -13,7 +13,7 @@ export enum AddEmployeeHandlerErrors {
 }
 
 export const addEmployeeHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyUUID: UUID;
   personUUID: UUID;
   companyDL: CompanyDataLoader;
@@ -54,7 +54,7 @@ export enum RemoveEmployeeHandlerErrors {
 }
 
 export const removeEmployeeHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyUUID: UUID;
   personUUID: UUID;
   companyDL: CompanyDataLoader;

@@ -2,11 +2,12 @@ import knex, { Knex } from "knex";
 
 import { DatabaseConfig } from "~/config/databaseConfig";
 
-export type DBConnection = Knex;
+export type Transaction = Knex.Transaction;
+export type DBSession = Knex | Transaction;
 
 export const createKnex = (params: {
   databaseConfig: DatabaseConfig;
-}): DBConnection => knex(getConnection(params));
+}): DBSession => knex(getConnection(params));
 
 // I'm not perfect add values to me if needed :^)
 type KnexConfig = {

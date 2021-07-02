@@ -1,6 +1,6 @@
 import { PhoneNumber } from "libphonenumber-js";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";
 import { EmailAddress } from "~/generation/scalars";
@@ -21,7 +21,7 @@ export enum RegisterHandlerErrors {
 type RegisterHandler = Try<null, RegisterHandlerErrors>;
 
 export const registerHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   newUser: CreateUser;
   userDL: UserDataLoader;
 }): Promise<RegisterHandler> => {

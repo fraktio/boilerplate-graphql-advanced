@@ -1,9 +1,9 @@
 import { Express, Router } from "express";
-import { createProxyMiddleware } from "http-proxy-middleware";
 
 import { Config } from "~/config/config";
-import { createKnex, DBConnection } from "~/database/connection";
+import { createKnex, DBSession } from "~/database/connection";
 import { createExpress } from "~/express/express";
+import { devFrontendProxy } from "~/express/middleware/devFrontendProxy";
 import { errorHandler } from "~/express/middleware/errorHandler";
 import { loggerHandler } from "~/express/middleware/loggerHandler";
 import { sessionHandler } from "~/express/middleware/sessionHandler";
@@ -15,7 +15,7 @@ import { createLogger, Logger } from "~/logger";
 export type CreateServerResponse = {
   app: Express;
   logger: Logger;
-  knex: DBConnection;
+  knex: DBSession;
   config: Config;
 };
 
@@ -39,13 +39,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   app.use(apolloServer.getMiddleware({ cors: false }) as Router);
 
   if (!config.env.isProduction) {
-    // Used for proxy for cookies to work on certain endpoints
-    const proxyMiddleware = createProxyMiddleware({
-      target: "http://localhost:3000",
-      changeOrigin: true,
-    });
-
-    app.use(proxyMiddleware);
+    app.use(devFrontendProxy());
   }
 
   if (config.env.isProduction) {

@@ -5,7 +5,7 @@ import {
   CompanyTable,
   CreateCompanyParams,
 } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { Table } from "~/database/tables";
 import { userQueries, UserTable } from "~/database/user/userQueries";
 import { EmailAddress } from "~/generation/scalars";
@@ -13,14 +13,14 @@ import { createCompany, createUser, testPassword } from "~/tests/testData";
 import { hashingUtils } from "~/utils/hashingUtils";
 
 export const migrateTestDatabase = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
 }): Promise<void> => {
   await params.knex.migrate.latest();
 };
 export const resetTestDatabase = async ({
   knex,
 }: {
-  knex: DBConnection;
+  knex: DBSession;
 }): Promise<void> => {
   await knex(Table.EMPLOYEE).del();
   await knex(Table.PERSONS).del();
@@ -36,7 +36,7 @@ type CreateDBUserOver = {
 };
 
 export const createDatabaseUser = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   overrides?: Partial<CreateDBUserOver>;
 }): Promise<UserTable> => {
   const hashedPassword = await hashingUtils.hashPassword({
@@ -58,7 +58,7 @@ export const createDatabaseUser = async (params: {
 };
 
 export const createDatabaseCompany = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   overrides: Partial<CreateCompanyParams>;
 }): Promise<CompanyTable> => {
   const company = createCompany();

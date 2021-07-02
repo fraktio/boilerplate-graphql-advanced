@@ -6,7 +6,7 @@ import {
   CompanyID,
   CompanyTableRow,
 } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
 import { PersonID } from "~/database/person/personQueries";
 import { Maybe, PersonFilterOperation } from "~/generation/generated";
@@ -34,7 +34,7 @@ export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
 
 export const companyDB = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     companyDL: CompanyDataLoader;
   }): Promise<Maybe<CompanyTable>> {
@@ -50,7 +50,7 @@ export const companyDB = {
   },
 
   async tryGet(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     companyDL: CompanyDataLoader;
   }): Promise<CompanyTable> {
@@ -64,7 +64,7 @@ export const companyDB = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyUUID: UUID;
     companyDL: CompanyDataLoader;
   }): Promise<Maybe<CompanyTable>> {
@@ -80,7 +80,7 @@ export const companyDB = {
   },
 
   async getAll(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyDL: CompanyDataLoader;
     filters?: PersonFilterOperation;
   }): Promise<CompanyTable[]> {
@@ -95,7 +95,7 @@ export const companyDB = {
   },
 
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     newCompany: { name: string };
     companyDL: CompanyDataLoader;
   }): Promise<CompanyTable> {
@@ -112,7 +112,7 @@ export const companyDB = {
   },
 
   async updateByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyUUID: UUID;
     company: { name: string };
     companyDL: CompanyDataLoader;
@@ -129,7 +129,7 @@ export const companyDB = {
   },
 
   async getCompaniesOfPerson(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personId: PersonID;
     companyDL: CompanyDataLoader;
     companiesOfPersonDL: CompaniesOfPersonDataLoader;

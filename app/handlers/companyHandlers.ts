@@ -1,7 +1,7 @@
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB } from "~/database/company/companyDatabase";
 import { CompanyID, CompanyTable } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDB } from "~/database/person/personDatabase";
@@ -10,7 +10,7 @@ import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const companiesHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyDL: CompanyDataLoader;
   filters?: PersonFilterOperation;
 }): Promise<CompanyTable[]> =>
@@ -21,7 +21,7 @@ export const companiesHandler = async (params: {
   });
 
 export const companyHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyUUID: UUID;
   companyDL: CompanyDataLoader;
 }): Promise<Maybe<CompanyTable>> =>
@@ -36,7 +36,7 @@ type AddCompanyHandlerInput = {
 };
 
 export const addCompanyHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   input: AddCompanyHandlerInput;
   companyDL: CompanyDataLoader;
 }): Promise<CompanyTable> =>
@@ -47,7 +47,7 @@ export const addCompanyHandler = async (params: {
   });
 
 export const editCompanyHandler = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyUUID: UUID;
   company: { name: string };
   companyDL: CompanyDataLoader;
@@ -63,7 +63,7 @@ export const editCompanyHandler = async (params: {
 };
 
 export const companyEmployees = async (params: {
-  knex: DBConnection;
+  knex: DBSession;
   companyId: CompanyID;
   personDL: PersonDataLoader;
   personsOfCompanyDL: PersonsOfCompanyDataLoader;

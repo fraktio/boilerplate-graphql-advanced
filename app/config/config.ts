@@ -30,12 +30,15 @@ export const getEnv = (env: string): string | undefined =>
   // eslint-disable-next-line no-process-env
   process.env[env] || undefined; // prevent empty strings
 
-export const ConfigDecoder = t.interface({
-  env: EnvConfigDecoder,
-  cookies: CookiesConfigDecoder,
-  database: DatabaseConfigDecoder,
-  numberFact: NumberFactConfigDecoder,
-});
+export const ConfigDecoder = t.interface(
+  {
+    env: EnvConfigDecoder,
+    cookies: CookiesConfigDecoder,
+    database: DatabaseConfigDecoder,
+    numberFact: NumberFactConfigDecoder,
+  },
+  "configDecoder",
+);
 
 export type Config = t.TypeOf<typeof ConfigDecoder>;
 

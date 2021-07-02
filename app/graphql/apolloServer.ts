@@ -4,6 +4,7 @@ import responseCachePlugin from "apollo-server-plugin-response-cache";
 import { Config } from "~/config/config";
 import { createDataSources } from "~/dataSources";
 import { apolloErrorHandler } from "~/express/middleware/errorHandler";
+import { mutationTransactions } from "~/graphql/plugins/MutationTransaction";
 import { createExecutableSchema } from "~/graphql/schema";
 import { createValidationRules } from "~/graphql/validationRules";
 import { apolloServerLogger } from "~/logger";
@@ -17,7 +18,7 @@ export const createApolloServer = (opts: CreateServerOpts): ApolloServer =>
     validationRules: createValidationRules(),
     schema: createExecutableSchema(),
     formatError: apolloErrorHandler({ config: opts.config }),
-    plugins: [apolloServerLogger, responseCachePlugin()],
+    plugins: [apolloServerLogger, responseCachePlugin(), mutationTransactions],
     introspection: !opts.config.env.isProduction,
     dataSources: createDataSources,
     playground: opts.config.env.isProduction

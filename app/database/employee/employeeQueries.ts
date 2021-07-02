@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 
 import { CompanyID } from "~/database/company/companyQueries";
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { PersonID } from "~/database/person/personQueries";
 import { ID, Table } from "~/database/tables";
 
@@ -38,7 +38,7 @@ export const formatEmployeeRow = (row: EmployeeTableRow): EmployeeTable => ({
 
 export const employeeQueries = {
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     personId: PersonID;
   }): Promise<EmployeeTable> {
@@ -54,7 +54,7 @@ export const employeeQueries = {
   },
 
   async remove(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
     personId: PersonID;
   }): Promise<boolean> {
@@ -70,7 +70,7 @@ export const employeeQueries = {
   },
 
   async getEmployeesOfCompanies(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyIds: readonly CompanyID[];
   }): Promise<EmployeeTable[]> {
     const employees = await params
@@ -81,7 +81,7 @@ export const employeeQueries = {
   },
 
   async getEmployeesOfPersons(params: {
-    knex: DBConnection;
+    knex: DBSession;
     personIds: readonly PersonID[];
   }): Promise<EmployeeTable[]> {
     const employees = await params

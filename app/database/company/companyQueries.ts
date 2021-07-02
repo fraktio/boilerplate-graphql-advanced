@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
-import { DBConnection } from "~/database/connection";
+import { DBSession } from "~/database/connection";
 import { applyStringFilters, buildFilterQuery } from "~/database/filters";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
@@ -50,7 +50,7 @@ export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
 
 export const companyQueries = {
   async get(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
   }): Promise<Maybe<CompanyTable>> {
     const company = await params
@@ -62,7 +62,7 @@ export const companyQueries = {
   },
 
   async tryGet(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyId: CompanyID;
   }): Promise<CompanyTable> {
     const company = await companyQueries.get({
@@ -78,7 +78,7 @@ export const companyQueries = {
   },
 
   async getByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyUUID: UUID;
   }): Promise<Maybe<CompanyTable>> {
     const company = await params
@@ -90,7 +90,7 @@ export const companyQueries = {
   },
 
   async getByIds(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyIds: CompanyID[];
   }): Promise<CompanyTable[]> {
     const persons = await params
@@ -101,7 +101,7 @@ export const companyQueries = {
   },
 
   async getAll(params: {
-    knex: DBConnection;
+    knex: DBSession;
     filters?: CompanyFilterOperation;
   }): Promise<CompanyTable[]> {
     const companies = await params
@@ -112,7 +112,7 @@ export const companyQueries = {
   },
 
   async create(params: {
-    knex: DBConnection;
+    knex: DBSession;
     company: CreateCompanyParams;
   }): Promise<CompanyTable> {
     const companies = await params
@@ -127,7 +127,7 @@ export const companyQueries = {
   },
 
   async updateByUUID(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyUUID: UUID;
     company: { name: string };
   }): Promise<Maybe<CompanyTable>> {
@@ -145,7 +145,7 @@ export const companyQueries = {
   },
 
   async getCompaniesByIds(params: {
-    knex: DBConnection;
+    knex: DBSession;
     companyIds: readonly CompanyID[];
   }): Promise<CompanyTable[]> {
     const companyRows = await params
