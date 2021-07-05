@@ -8,10 +8,10 @@ import { doXTimes } from "./1-users";
 import { PersonTableRow } from "~/database/person/personQueries";
 import { createUUID, Table } from "~/database/tables";
 import {
-  CountryCode,
-  EmailAddress,
-  FinnishPersonalIdentityCode,
-} from "~/generation/scalars";
+  asEmail,
+  asCountryCode,
+  asFinnishPersonalIdentityCode,
+} from "~/validation/converters";
 
 const createValidSsn = (): string => {
   const ssn = FinnishSSN.createWithAge(
@@ -43,10 +43,10 @@ const createPerson = (): Omit<
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     phone: faker.phone.phoneNumber("+35840#######"),
-    email: faker.internet.email() as unknown as EmailAddress,
+    email: asEmail(faker.internet.email()),
     birthday: parsedssn.dateOfBirth,
-    nationality: faker.address.countryCode() as unknown as CountryCode,
-    personalIdentityCode: ssn as unknown as FinnishPersonalIdentityCode,
+    nationality: asCountryCode(faker.address.countryCode()),
+    personalIdentityCode: asFinnishPersonalIdentityCode(ssn),
   };
 };
 
