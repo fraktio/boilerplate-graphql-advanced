@@ -1,5 +1,4 @@
-import { Maybe } from "graphql/jsutils/Maybe";
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
 import {
   DateFilter,
@@ -8,6 +7,7 @@ import {
   FilterOperator,
   PersonFilterOperation,
   CompanyFilterOperation,
+  Maybe,
 } from "~/generation/generated";
 
 export class InvalidFilterCountError extends Error {}
