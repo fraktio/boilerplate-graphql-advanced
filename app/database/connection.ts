@@ -30,28 +30,9 @@ export const createKnex = (params: {
   databaseConfig: DatabaseConfig;
 }): DBSession => knex(getConnection(params));
 
-// I'm not perfect add values to me if needed :^)
-type KnexConfig = {
-  client: string;
-  connection: {
-    host: string;
-    user: string;
-    port: number;
-    password: string;
-    database: string;
-  };
-  migrations: {
-    directory: string;
-  };
-  seeds: {
-    directory: string;
-  };
-  useNullAsDefault: boolean;
-};
-
 export const getConnection = (params: {
   databaseConfig: DatabaseConfig;
-}): KnexConfig => ({
+}): Knex.Config => ({
   client: params.databaseConfig.type,
   connection: {
     host: params.databaseConfig.host,

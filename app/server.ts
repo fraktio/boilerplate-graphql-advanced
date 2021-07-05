@@ -1,4 +1,4 @@
-import { Express, Router } from "express";
+import { Express } from "express";
 
 import { Config } from "~/config/config";
 import { createKnex, DBSession } from "~/database/connection";
@@ -36,7 +36,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   const context = createContext({ knex, config });
   const apolloServer = createApolloServer({ config, context });
 
-  app.use(apolloServer.getMiddleware({ cors: false }) as Router);
+  apolloServer.applyMiddleware({ app, cors: false });
 
   if (!config.env.isProduction) {
     app.use(devFrontendProxy());
