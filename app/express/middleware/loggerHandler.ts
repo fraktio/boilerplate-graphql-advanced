@@ -14,9 +14,11 @@ export const loggerHandler =
     // eslint-disable-next-line no-param-reassign
     req.logger = params.logger.child(requestID);
 
+    /*
     res.on("finish", function responseSent() {
       params.logger.info(requestID, "end of request");
     });
+    */
 
     return next();
   };
