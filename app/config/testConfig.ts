@@ -1,6 +1,7 @@
 /* eslint-disable no-process-env */
 
 import { Config, validateConfig } from "~/config/config";
+import { getPackageName, getPackageVersion } from "~/config/loggingConfig";
 import {
   DATABASE_DATABASE_NAME,
   DATABASE_HOST,
@@ -40,9 +41,13 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
 // Change `stdoutLogging` if you want logging when running tests
 export const createTestConfig = (): Config => {
   const config: Config = {
+    logging: {
+      stdoutLogging: false,
+      version: getPackageVersion(),
+      name: getPackageName(),
+    },
     env: {
       apiPort: 4001,
-      stdoutLogging: false,
       isProduction: true,
       apiCorsEndpoint: "*",
     },

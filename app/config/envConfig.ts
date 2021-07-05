@@ -4,7 +4,6 @@ import { BooleanFromString, NumberFromString } from "~/utils/decoders";
 
 export const EnvConfigDecoder = t.type({
   apiPort: NumberFromString,
-  stdoutLogging: BooleanFromString,
   isProduction: BooleanFromString,
   apiCorsEndpoint: t.string,
 });

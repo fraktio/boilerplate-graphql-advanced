@@ -30,7 +30,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   const app = createExpress({ config, knex });
 
   app.use(loggerHandler({ logger }));
-  app.use(createRoutes({ knex }));
+  app.use(createRoutes({ knex, loggingConfig: config.logging }));
   app.use(sessionHandler({ cookiesConfig: config.cookies, knex }));
 
   const context = createContext({ knex, config });

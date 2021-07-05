@@ -1,5 +1,6 @@
 import { Resolvers } from "~/generation/generated";
 import { numberFactHandler } from "~/handlers/numberFactHandlers";
+import { toGraphqlFailure } from "~/utils/validation";
 
 export const numberFactResolver: Resolvers = {
   NumberFactOutput: {
@@ -16,10 +17,7 @@ export const numberFactResolver: Resolvers = {
       });
 
       if (!numberFact) {
-        return {
-          __typename: "NumberFactFailure",
-          success: false,
-        };
+        return toGraphqlFailure("NumberFactFailure");
       }
 
       return {

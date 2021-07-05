@@ -3,6 +3,7 @@ import {
   registerHandler,
   RegisterHandlerErrors,
 } from "~/handlers/registerHandlers";
+import { toGraphqlFailure } from "~/utils/validation";
 
 export const registrationResolver: Resolvers = {
   RegisterResponse: {
@@ -12,9 +13,10 @@ export const registrationResolver: Resolvers = {
   },
 
   Mutation: {
-    async register(_, { input }, { knex, dataLoaders }) {
+    async register(_, { input }, { knex, dataLoaders, logger }) {
       const createdUser = await registerHandler({
         knex,
+        logger,
         newUser: {
           username: input.username,
           email: input.email,
@@ -33,10 +35,10 @@ export const registrationResolver: Resolvers = {
 
       switch (createdUser.failure) {
         case RegisterHandlerErrors.UsernameAlreadyExists:
-          return {
-            success: false,
-            __typename: "RegisterFailure",
-          };
+          return toGraphqlFailure("RegisterFailureAlreadyExists");
+
+        default:
+          return toGraphqlFailure("RegisterFailure");
       }
     },
   },

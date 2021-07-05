@@ -6,10 +6,6 @@ import { DBSession } from "~/database/connection";
 import { createDataLoaders, DataLoaders } from "~/database/dataLoaders";
 import { UserTable } from "~/database/user/userQueries";
 import { Maybe } from "~/generation/generated";
-import {
-  createTransaction,
-  DBTransaction,
-} from "~/graphql/plugins/MutationTransaction";
 import { Logger } from "~/logger";
 
 export type Context = BaseContext & DataSourcesInContext;
@@ -21,7 +17,6 @@ export type BaseContext = {
   config: Config;
   knex: DBSession;
   dataLoaders: DataLoaders;
-  transaction: DBTransaction;
   authenticatedUser: Maybe<UserTable>;
 };
 
@@ -38,6 +33,5 @@ export const createContext =
     config: params.config,
     knex: params.knex,
     dataLoaders: createDataLoaders(),
-    transaction: createTransaction({ knex: params.knex }),
     authenticatedUser: app.req.user || null,
   });

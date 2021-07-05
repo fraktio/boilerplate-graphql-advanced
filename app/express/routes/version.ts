@@ -1,28 +1,15 @@
 import { Router } from "express";
-import fs from "fs";
 
-const getVersion = (): string | null => {
-  try {
-    const obj = JSON.parse(fs.readFileSync("package.json", "utf8"));
+import { LoggingConfig } from "~/config/loggingConfig";
 
-    return obj.version;
-  } catch (e) {
-    return null;
-  }
-};
-
-const version = getVersion();
-
-export const createVersionRoutes = (): Router => {
+export const createVersionRoutes = (params: {
+  loggingConfig: LoggingConfig;
+}): Router => {
   const router = Router();
 
-  router.get("/", (_, res) => {
-    if (version) {
-      return res.status(200).send(version);
-    }
-
-    return res.status(500).send("missing version");
-  });
+  router.get("/", (_, res) =>
+    res.status(200).send(params.loggingConfig.version),
+  );
 
   return router;
 };

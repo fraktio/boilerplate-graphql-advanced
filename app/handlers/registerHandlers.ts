@@ -1,9 +1,10 @@
 import { PhoneNumber } from "libphonenumber-js";
 
-import { DBSession } from "~/database/connection";
+import { DBSession, withTransaction } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";
 import { EmailAddress } from "~/generation/scalars";
+import { Logger } from "~/logger";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { Try, toFailure, toSuccess } from "~/utils/validation";
 
@@ -15,40 +16,51 @@ type CreateUser = {
 };
 
 export enum RegisterHandlerErrors {
+  TransactionError = "transaction-error",
   UsernameAlreadyExists = "username-alreay-exists",
 }
-
-type RegisterHandler = Try<null, RegisterHandlerErrors>;
 
 export const registerHandler = async (params: {
   knex: DBSession;
   newUser: CreateUser;
   userDL: UserDataLoader;
-}): Promise<RegisterHandler> => {
-  const user = await userDB.getByUsername({
-    knex: params.knex,
-    username: params.newUser.username,
-    userDL: params.userDL,
-  });
+  logger: Logger;
+}): Promise<Try<null, RegisterHandlerErrors>> => {
+  const result = await withTransaction(
+    { knex: params.knex, logger: params.logger },
+    async ({ transaction }) => {
+      const user = await userDB.getByUsername({
+        knex: transaction,
+        username: params.newUser.username,
+        userDL: params.userDL,
+      });
 
-  if (user) {
-    return toFailure(RegisterHandlerErrors.UsernameAlreadyExists);
+      if (user) {
+        return toFailure(RegisterHandlerErrors.UsernameAlreadyExists);
+      }
+
+      const hashedPassword = await hashingUtils.hashPassword({
+        password: params.newUser.password,
+      });
+
+      await userDB.createUser({
+        knex: transaction,
+        newUser: {
+          username: params.newUser.username,
+          email: params.newUser.email,
+          hashedPassword,
+          phoneNumber: params.newUser.phoneNumber,
+        },
+        userDL: params.userDL,
+      });
+
+      return toSuccess(null);
+    },
+  );
+
+  if (result.success) {
+    return result.value;
   }
 
-  const hashedPassword = await hashingUtils.hashPassword({
-    password: params.newUser.password,
-  });
-
-  await userDB.createUser({
-    knex: params.knex,
-    newUser: {
-      username: params.newUser.username,
-      email: params.newUser.email,
-      hashedPassword,
-      phoneNumber: params.newUser.phoneNumber,
-    },
-    userDL: params.userDL,
-  });
-
-  return toSuccess(null);
+  return toFailure(RegisterHandlerErrors.TransactionError);
 };

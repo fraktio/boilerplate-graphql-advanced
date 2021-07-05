@@ -31,3 +31,13 @@ export function trySuccess<T, F>(result: Try<T, F>): T {
 
   throw result.failure;
 }
+
+type GraphqlFailure<T> = {
+  __typename: T;
+  success: false;
+};
+
+export const toGraphqlFailure = <T>(typename: T): GraphqlFailure<T> => ({
+  __typename: typename,
+  success: false,
+});

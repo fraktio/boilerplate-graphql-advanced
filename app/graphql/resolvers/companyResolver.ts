@@ -6,6 +6,7 @@ import {
   companyHandler,
   editCompanyHandler,
 } from "~/handlers/companyHandlers";
+import { toGraphqlFailure } from "~/utils/validation";
 
 export const companyResolver: Resolvers = {
   CompanyOutput: {
@@ -54,10 +55,7 @@ export const companyResolver: Resolvers = {
       });
 
       if (!company) {
-        return {
-          __typename: "CompanyFailureNotFound",
-          success: false,
-        };
+        return toGraphqlFailure("CompanyFailureNotFound");
       }
 
       return {
@@ -90,10 +88,7 @@ export const companyResolver: Resolvers = {
       });
 
       if (!company) {
-        return {
-          __typename: "EditCompanyFailureNotFound",
-          success: false,
-        };
+        return toGraphqlFailure("EditCompanyFailureNotFound");
       }
 
       return {

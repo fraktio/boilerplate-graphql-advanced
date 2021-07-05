@@ -35,9 +35,10 @@ export type Logger = bunyan;
 
 export const createLogger = (opts: { config: Config }): Logger =>
   bunyan.createLogger({
-    name: "graphql-boilerplate-api",
+    name: opts.config.logging.name,
+    version: opts.config.logging.version,
     streams: [
-      ...(opts.config.env.stdoutLogging
+      ...(opts.config.logging.stdoutLogging
         ? [{ level: "info" as const, stream: process.stdout }]
         : []),
     ],

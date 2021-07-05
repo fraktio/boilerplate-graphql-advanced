@@ -6,6 +6,11 @@ import reporter from "io-ts-reporters";
 import { CookiesConfigDecoder } from "~/config/cookiesConfig";
 import { DatabaseConfigDecoder } from "~/config/databaseConfig";
 import { EnvConfigDecoder } from "~/config/envConfig";
+import {
+  getPackageName,
+  getPackageVersion,
+  LoggingConfigDecoder,
+} from "~/config/loggingConfig";
 import { NumberFactConfigDecoder } from "~/config/numberFactConfig";
 import {
   ACCESS_TOKEN_AGE_SECONDS,
@@ -32,6 +37,7 @@ export const getEnv = (env: string): string | undefined =>
 
 export const ConfigDecoder = t.interface(
   {
+    logging: LoggingConfigDecoder,
     env: EnvConfigDecoder,
     cookies: CookiesConfigDecoder,
     database: DatabaseConfigDecoder,
@@ -58,9 +64,14 @@ export const validateConfig = (config: unknown): Config => {
 
 export const createConfig = (): Config => {
   const config = {
+    logging: {
+      stdoutLogging: getEnv(STDOUT_LOGGING),
+      version: getPackageVersion(),
+      name: getPackageName(),
+    },
+
     env: {
       apiPort: getEnv(API_PORT),
-      stdoutLogging: getEnv(STDOUT_LOGGING),
       isProduction: getEnv(PRODUCTION),
       apiCorsEndpoint: getEnv(API_CORS_ENDPOINT),
     },

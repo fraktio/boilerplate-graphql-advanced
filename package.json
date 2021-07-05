@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "webpack --config webpack.dev.js --watch",
+    "dev:log": "webpack --config webpack.dev.js --watch | bunyan",
     "dev:debug": "DEBUG=knex:query webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
     "build:serverless": "serverless package",

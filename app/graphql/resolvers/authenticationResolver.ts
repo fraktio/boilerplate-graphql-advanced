@@ -5,6 +5,7 @@ import {
   LogInHandlerErrors,
   logoutHandler,
 } from "~/handlers/authenticationHandlers";
+import { toGraphqlFailure } from "~/utils/validation";
 
 export const authenticationResolver: Resolvers = {
   LoginUserResponse: {
@@ -22,10 +23,7 @@ export const authenticationResolver: Resolvers = {
   Query: {
     async authenticatedUser(_, __, { authenticatedUser }) {
       if (!authenticatedUser) {
-        return {
-          __typename: "AuthenticatedUserFailure",
-          success: false,
-        };
+        return toGraphqlFailure("AuthenticatedUserFailure");
       }
 
       const user = await authenticatedUserHandler({ authenticatedUser });
@@ -37,10 +35,7 @@ export const authenticationResolver: Resolvers = {
         };
       }
 
-      return {
-        __typename: "AuthenticatedUserFailure",
-        success: false,
-      };
+      return toGraphqlFailure("AuthenticatedUserFailure");
     },
   },
 
@@ -63,16 +58,9 @@ export const authenticationResolver: Resolvers = {
 
       switch (response.failure) {
         case LogInHandlerErrors.UserNotFound:
-          return {
-            __typename: "LoginUserFailure",
-            success: false,
-          };
-
         case LogInHandlerErrors.InvalidPassword:
-          return {
-            __typename: "LoginUserFailure",
-            success: false,
-          };
+        default:
+          return toGraphqlFailure("LoginUserFailure");
       }
     },
 
