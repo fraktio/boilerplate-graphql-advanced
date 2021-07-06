@@ -12,16 +12,19 @@ type CreateServerOpts = ApolloServerExpressConfig & {
   config: Config;
 };
 
-export const createApolloServer = (opts: CreateServerOpts): ApolloServer =>
+export const createApolloServer = ({
+  config,
+  ...rest
+}: CreateServerOpts): ApolloServer =>
   new ApolloServer({
     validationRules: createValidationRules(),
     schema: createExecutableSchema(),
-    formatError: apolloErrorHandler({ config: opts.config }),
+    formatError: apolloErrorHandler({ config }),
     plugins: [apolloServerLogger, responseCachePlugin()],
-    introspection: !opts.config.env.isProduction,
+    introspection: !config.env.isProduction,
     dataSources: createDataSources,
-    playground: opts.config.env.isProduction
+    playground: config.env.isProduction
       ? false
       : { settings: { "request.credentials": "include" } },
-    ...opts,
+    ...rest,
   });
