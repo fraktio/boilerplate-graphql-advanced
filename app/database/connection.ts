@@ -19,7 +19,7 @@ export const withTransaction = async <T>(
 
     return toSuccess(result);
   } catch (error) {
-    transaction.rollback();
+    await transaction.rollback();
     params.logger.fatal(error, "Transaction error");
 
     return toFailure(error);
