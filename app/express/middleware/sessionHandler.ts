@@ -8,24 +8,18 @@ import { sessionUtils } from "~/utils/sessionUtils";
 export const sessionHandler =
   (params: { knex: DBSession; cookiesConfig: CookiesConfig }): RequestHandler =>
   async (req, _, next): Promise<void> => {
-    const token = sessionUtils.getRefreshToken({ req });
-
-    if (!token) {
-      return next();
-    }
-
-    const jwtPayload = sessionUtils.verifyRefreshPayload({
-      token,
-      tokenSecret: params.cookiesConfig.secret,
+    const tokenResponse = sessionUtils.authentication.verifyToken({
+      req,
+      cookiesConfig: params.cookiesConfig,
     });
 
-    if (!jwtPayload) {
+    if (!tokenResponse.success) {
       return next();
     }
 
     const user = await userQueries.getByUUID({
       knex: params.knex,
-      userUUID: jwtPayload.uuid,
+      userUUID: tokenResponse.value.uuid,
     });
 
     if (user) {

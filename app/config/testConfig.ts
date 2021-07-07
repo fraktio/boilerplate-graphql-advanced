@@ -42,7 +42,7 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
 export const createTestConfig = (): Config => {
   const config: Config = {
     logging: {
-      loggingLevel: "info",
+      loggingLevel: "fatal",
       version: getPackageVersion(),
       name: getPackageName(),
     },
@@ -55,8 +55,7 @@ export const createTestConfig = (): Config => {
       path: "/",
       domain: "localhost",
       secret: "cookieSecret",
-      accessAgeSeconds: 86400,
-      refreshAgeSeconds: 86400,
+      accessTokenAgeSeconds: 86400,
     },
     database: {
       type: "pg",

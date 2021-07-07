@@ -92,10 +92,8 @@ describe("Graphql / endpoints", () => {
 
     expect(body.data.logout).toBeTruthy();
     expect(header["set-cookie"][0]).toBe(
-      "refresh-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+      "authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
     );
-    expect(header["set-cookie"][1]).toBe(
-      "access-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
-    );
+    expect(header["set-cookie"][1]).toBe(undefined);
   });
 });

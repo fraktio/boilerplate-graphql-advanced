@@ -6,8 +6,7 @@ export const CookiesConfigDecoder = t.type({
   path: t.string,
   domain: t.string,
   secret: t.string,
-  accessAgeSeconds: NumberFromString,
-  refreshAgeSeconds: NumberFromString,
+  accessTokenAgeSeconds: NumberFromString,
 });
 
 export type CookiesConfig = t.TypeOf<typeof CookiesConfigDecoder>;

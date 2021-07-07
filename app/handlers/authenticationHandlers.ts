@@ -1,6 +1,7 @@
 import { Response } from "express";
 
 import { CookiesConfig } from "~/config/cookiesConfig";
+import { EnvConfig } from "~/config/envConfig";
 import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";
@@ -28,6 +29,7 @@ export const loginHandler = async (params: {
   res: Response;
   input: LoginHandlerInput;
   cookiesConfig: CookiesConfig;
+  envConfig: EnvConfig;
   userDL: UserDataLoader;
 }): Promise<Try<UserTable, LogInHandlerErrors>> => {
   const user = await userDB.getByUsername({
@@ -49,18 +51,11 @@ export const loginHandler = async (params: {
     return toFailure(LogInHandlerErrors.InvalidPassword);
   }
 
-  const { refreshToken } = sessionUtils.generateRefreshToken({
-    user,
-    secret: params.cookiesConfig.secret,
-    tokenAgeSeconds: params.cookiesConfig.refreshAgeSeconds,
-  });
-
-  sessionUtils.setRefreshToken({
+  sessionUtils.authentication.generateAndSetToken({
     res: params.res,
-    refreshToken,
-    refreshTokenAgeSeconds: params.cookiesConfig.refreshAgeSeconds,
-    domain: params.cookiesConfig.domain,
-    tokenPath: params.cookiesConfig.path,
+    user,
+    cookieConfig: params.cookiesConfig,
+    envConfig: params.envConfig,
   });
 
   return toSuccess(user);
@@ -70,7 +65,7 @@ export const logoutHandler = async (params: {
   res: Response;
   cookiesConfig: CookiesConfig;
 }): Promise<boolean> => {
-  sessionUtils.clearSessions({
+  sessionUtils.authentication.clear({
     res: params.res,
     path: params.cookiesConfig.path,
   });

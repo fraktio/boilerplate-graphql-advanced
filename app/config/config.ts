@@ -18,7 +18,6 @@ import {
   API_PORT,
   NUMBER_API_MOCK_TOKEN,
   PRODUCTION,
-  REFRESH_TOKEN_AGE_SECONDS,
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
@@ -62,8 +61,16 @@ export const validateConfig = (config: unknown): Config => {
   return validated.right;
 };
 
+type ObjectKeys<T> = T extends Record<string, unknown>
+  ? {
+      [K in keyof T]: ObjectKeys<T[K]>;
+    }
+  : unknown;
+
+export type ConfigStructure = ObjectKeys<Config>;
+
 export const createConfig = (): Config => {
-  const config = {
+  const config: ConfigStructure = {
     logging: {
       loggingLevel: getEnv(LOGGING_LEVEL)?.toLowerCase(),
       version: getPackageVersion(),
@@ -80,8 +87,7 @@ export const createConfig = (): Config => {
       path: getEnv(TOKEN_PATH),
       domain: getEnv(TOKEN_DOMAIN),
       secret: getEnv(TOKEN_SECRET),
-      accessAgeSeconds: getEnv(ACCESS_TOKEN_AGE_SECONDS),
-      refreshAgeSeconds: getEnv(REFRESH_TOKEN_AGE_SECONDS),
+      accessTokenAgeSeconds: getEnv(ACCESS_TOKEN_AGE_SECONDS),
     },
 
     database: {

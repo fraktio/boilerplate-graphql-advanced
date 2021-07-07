@@ -1,54 +1,71 @@
+import { Response, Request } from "express";
 import { verify } from "jsonwebtoken";
 
+import { CookiesConfig } from "~/config/cookiesConfig";
+import { EnvConfig } from "~/config/envConfig";
 import { UserTable } from "~/database/user/userQueries";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 describe("utils / hashing", () => {
+  const SECRET = "secret";
+  const mockCookiesConfig: CookiesConfig = {
+    path: "/",
+    domain: "domain",
+    secret: SECRET,
+    accessTokenAgeSeconds: 999,
+  };
+
+  const mockEnvConfig: EnvConfig = {
+    apiPort: 999,
+    isProduction: true,
+    apiCorsEndpoint: "endpoint",
+  };
+
   it("generateRefreshToken & verifyRefreshPayload", async () => {
+    const mockCallback = jest.fn();
     const SECRET = "secret";
     const mockUser = {
       UUID: "mockUUID",
     } as unknown as UserTable;
 
-    const refreshToken = sessionUtils.generateRefreshToken({
+    const accessToken = sessionUtils.authentication.generateAndSetToken({
+      res: {
+        cookie: mockCallback,
+      } as unknown as Response,
       user: mockUser,
-      secret: SECRET,
-      tokenAgeSeconds: 1234,
-    });
-
-    expect(verify(refreshToken.refreshToken, SECRET)).toMatchObject({
-      uuid: mockUser.UUID,
-    });
-
-    const result = sessionUtils.verifyRefreshPayload({
-      token: refreshToken.refreshToken,
-      tokenSecret: SECRET,
-    });
-
-    expect(result?.uuid).toBe(mockUser.UUID);
-  });
-
-  it("generateRefreshToken & verifyRefreshPayload", async () => {
-    const SECRET = "secret";
-    const mockUser = {
-      UUID: "mockUUID",
-    } as unknown as UserTable;
-
-    const accessToken = sessionUtils.generateAccessToken({
-      user: mockUser,
-      secret: SECRET,
-      tokenAgeSeconds: 1234,
+      cookieConfig: mockCookiesConfig,
+      envConfig: mockEnvConfig,
     });
 
     expect(verify(accessToken.accessToken, SECRET)).toMatchObject({
       uuid: mockUser.UUID,
     });
 
-    const result = sessionUtils.verifyAccessPayload({
-      token: accessToken.accessToken,
-      secret: SECRET,
+    const result = sessionUtils.authentication.verifyToken({
+      req: {
+        cookies: {
+          authorization: accessToken.accessToken,
+        },
+      } as unknown as Request,
+      cookiesConfig: mockCookiesConfig,
     });
 
-    expect(result?.uuid).toBe(mockUser.UUID);
+    expect(result).toMatchObject({
+      success: true,
+      value: { uuid: "mockUUID" },
+    });
+
+    expect(mockCallback.mock.calls.length).toBe(1);
+    expect(mockCallback.mock.calls).toMatchObject([
+      [
+        "authorization",
+        expect.any(String),
+        {
+          domain: "domain",
+          expires: expect.any(Date),
+          sameSite: "strict",
+        },
+      ],
+    ]);
   });
 });

@@ -46,6 +46,7 @@ export const authenticationResolver: Resolvers = {
         res,
         input,
         cookiesConfig: config.cookies,
+        envConfig: config.env,
         userDL: dataLoaders.userDL,
       });
 

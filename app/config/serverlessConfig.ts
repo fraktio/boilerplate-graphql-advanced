@@ -13,7 +13,6 @@ import {
   DATABASE_USER,
   NUMBER_API_MOCK_TOKEN,
   PRODUCTION,
-  REFRESH_TOKEN_AGE_SECONDS,
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
@@ -65,7 +64,6 @@ export const createServerlessConfig = async (): Promise<Config> => {
       domain: getEnv(TOKEN_DOMAIN),
       secret: getParam(TOKEN_SECRET),
       accessAgeSeconds: getEnv(ACCESS_TOKEN_AGE_SECONDS),
-      refreshAgeSeconds: getEnv(REFRESH_TOKEN_AGE_SECONDS),
     },
 
     database: {
