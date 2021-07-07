@@ -38,8 +38,9 @@ export const createLogger = (opts: { config: Config }): Logger =>
     name: opts.config.logging.name,
     version: opts.config.logging.version,
     streams: [
-      ...(opts.config.logging.stdoutLogging
-        ? [{ level: "info" as const, stream: process.stdout }]
-        : []),
+      {
+        level: opts.config.logging.loggingLevel,
+        stream: process.stdout,
+      },
     ],
   });

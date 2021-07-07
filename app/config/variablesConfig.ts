@@ -1,5 +1,5 @@
+export const LOGGING_LEVEL = "LOGGING_LEVEL";
 export const API_PORT = "API_PORT";
-export const STDOUT_LOGGING = "STDOUT_LOGGING";
 export const PRODUCTION = "PRODUCTION";
 export const API_CORS_ENDPOINT = "API_CORS_ENDPOINT";
 export const TOKEN_PATH = "TOKEN_PATH";

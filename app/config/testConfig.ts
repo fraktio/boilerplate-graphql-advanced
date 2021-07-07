@@ -42,7 +42,7 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
 export const createTestConfig = (): Config => {
   const config: Config = {
     logging: {
-      stdoutLogging: false,
+      loggingLevel: "info",
       version: getPackageVersion(),
       name: getPackageName(),
     },

@@ -19,7 +19,6 @@ import {
   NUMBER_API_MOCK_TOKEN,
   PRODUCTION,
   REFRESH_TOKEN_AGE_SECONDS,
-  STDOUT_LOGGING,
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
@@ -29,6 +28,7 @@ import {
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
+  LOGGING_LEVEL,
 } from "~/config/variablesConfig";
 
 export const getEnv = (env: string): string | undefined =>
@@ -65,7 +65,7 @@ export const validateConfig = (config: unknown): Config => {
 export const createConfig = (): Config => {
   const config = {
     logging: {
-      stdoutLogging: getEnv(STDOUT_LOGGING),
+      loggingLevel: getEnv(LOGGING_LEVEL)?.toLowerCase(),
       version: getPackageVersion(),
       name: getPackageName(),
     },

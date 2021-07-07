@@ -1,10 +1,17 @@
 import fs from "fs";
 import * as t from "io-ts";
 
-import { BooleanFromString } from "~/utils/decoders";
+const loggingLevel = {
+  trace: "trace",
+  debug: "debug",
+  info: "info",
+  warn: "warn",
+  error: "error",
+  fatal: "fatal",
+};
 
 export const LoggingConfigDecoder = t.interface({
-  stdoutLogging: BooleanFromString,
+  loggingLevel: t.keyof(loggingLevel),
   version: t.string,
   name: t.string,
 });

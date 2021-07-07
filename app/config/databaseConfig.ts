@@ -30,7 +30,7 @@ export const validateDatabaseConfig = (config: unknown): DatabaseConfig => {
   if (isLeft(validated)) {
     const errors = reporter.report(validated);
     console.error(errors.join("\n"));
-    throw new Error("Invalid environmental configation");
+    throw new Error("Invalid environmental configuration");
   }
 
   return validated.right;

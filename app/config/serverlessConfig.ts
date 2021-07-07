@@ -14,7 +14,6 @@ import {
   NUMBER_API_MOCK_TOKEN,
   PRODUCTION,
   REFRESH_TOKEN_AGE_SECONDS,
-  STDOUT_LOGGING,
   TOKEN_DOMAIN,
   TOKEN_PATH,
   TOKEN_SECRET,
@@ -57,7 +56,6 @@ export const createServerlessConfig = async (): Promise<Config> => {
   const config = {
     env: {
       apiPort: getEnv(API_PORT),
-      stdoutLogging: getEnv(STDOUT_LOGGING),
       isProduction: getEnv(PRODUCTION),
       apiCorsEndpoint: getEnv(API_CORS_ENDPOINT),
     },

@@ -84,7 +84,6 @@ provider:
     
     environment:
         API_PORT: ${env:API_PORT}
-        STDOUT_LOGGING: ${env:STDOUT_LOGGING}
         PRODUCTION: ${env:PRODUCTION}
         API_CORS_ENDPOINT: ${env:API_CORS_ENDPOINT}
         TOKEN_PATH: ${env:TOKEN_PATH}
