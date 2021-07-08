@@ -18,6 +18,8 @@ export type BaseContext = {
   knex: DBSession;
   dataLoaders: DataLoaders;
   authenticatedUser: Maybe<UserTable>;
+  requestId: string;
+  startTime: number;
 };
 
 type CreateContextParams = { knex: DBSession; config: Config };
@@ -34,4 +36,6 @@ export const createContext =
     knex: params.knex,
     dataLoaders: createDataLoaders(),
     authenticatedUser: app.req.user || null,
+    requestId: app.req.requestId,
+    startTime: Date.now(),
   });

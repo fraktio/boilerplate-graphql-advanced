@@ -5,6 +5,7 @@ import { UserTable } from "~/database/user/userQueries";
 declare global {
   namespace Express {
     interface Request {
+      requestId: string;
       logger: Bunyan;
       user?: UserTable;
     }
