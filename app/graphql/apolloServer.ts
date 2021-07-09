@@ -22,6 +22,7 @@ export const createApolloServer = ({
     plugins: createPlugins(),
     introspection: !config.env.isProduction,
     dataSources: createDataSources,
+    persistedQueries: { ttl: 43200 /* 12h */ },
     playground: config.env.isProduction
       ? false
       : { settings: { "request.credentials": "include" } },

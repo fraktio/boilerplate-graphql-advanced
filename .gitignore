@@ -5,6 +5,8 @@ build
 .webpack
 .webpackCache
 
+coverage
+
 node_modules
 yarn-error.log
 .DS_Stores
