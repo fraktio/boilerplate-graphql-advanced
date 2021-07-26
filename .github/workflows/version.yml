@@ -13,8 +13,8 @@ jobs:
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-      - run: git config --global user.name 'Aleksi Vuorio'
-      - run: git config --global user.email 'aleksi.vuorio@fraktio.fi'
+      - run: git config --global user.name 'Fraktio'
+      - run: git config --global user.email 'fraktio@fraktio.fi'
       - name: Patch
         run: npm version patch --no-git-tag-version
       - name: Commit
