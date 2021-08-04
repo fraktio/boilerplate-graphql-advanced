@@ -40,11 +40,20 @@ type Underage implements Person {
   nationality: CountryCode!
   birthday: Date!
   timestamp: Timestamp!
+}
 
+type PersonsPaginationEdge {
+  cursor: String!
+  node: Person!
+}
+
+type PersonsPaginationResponse {
+  edges: [PersonsPaginationEdge!]!
+  pageInfo: PageInfo!
 }
 
 type Query {
-  persons(filters: PersonFilterOperation, sort: [PersonSort!]): [Person]!
+  persons(filters: PersonFilterOperation, sort: [PersonSort!], pagination: PaginationCursorInput): PersonsPaginationResponse!
   person(input: PersonInput!): Person!
 }
 
