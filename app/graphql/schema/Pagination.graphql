@@ -1,0 +1,7 @@
+type PageInfo {
+  hasNextPage: Boolean!
+}
+
+input PaginationCursorInput {
+  cursor: String!
+}
