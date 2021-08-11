@@ -1,7 +1,11 @@
+scalar Cursor
+
+input Pagination {
+  limit: Int,
+  cursor: Cursor,
+}
+
 type PageInfo {
   hasNextPage: Boolean!
 }
 
-input PaginationCursorInput {
-  cursor: String!
-}

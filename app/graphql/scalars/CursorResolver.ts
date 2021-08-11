@@ -2,22 +2,35 @@ import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
 import * as t from "io-ts";
 
+import { UUID } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
+import { asUUID } from "~/validation/converters";
 
 const ERROR_MESSAGE = "Cursor is not a valid cursor";
 
 export const CursorDecoder = t.interface(
   {
-    page: t.number,
-    perPage: t.number,
-    offset: t.number,
+    queryCursor: t.string,
   },
   "cursorDecoder",
 );
 
-export type Cursor = t.TypeOf<typeof CursorDecoder>;
+export type RawCursor = t.TypeOf<typeof CursorDecoder>;
+
+export type Cursor = {
+  queryCursor: UUID;
+};
 
 export const parseCursorFromString = (value: string): Cursor => {
+  const raw = parseRawCursorFromString(value);
+
+  return {
+    ...raw,
+    queryCursor: asUUID(raw.queryCursor),
+  };
+};
+
+export const parseRawCursorFromString = (value: string): RawCursor => {
   try {
     const decoded = hashingUtils.base64ToString(value);
     const cursor = JSON.parse(decoded);

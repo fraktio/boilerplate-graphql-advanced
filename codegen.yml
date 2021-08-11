@@ -18,6 +18,7 @@ generates:
         EmailAddress: ./scalars#EmailAddress
         PersonalIdentityCode: ./scalars#FinnishPersonalIdentityCode
         PhoneNumber: "libphonenumber-js#PhoneNumber"
+        Cursor: ./scalars#Cursor
     plugins:
       - typescript
       - typescript-resolvers

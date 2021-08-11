@@ -2,19 +2,21 @@ import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
+import { ValueOf } from "~/@types/global";
 import { DBSession } from "~/database/connection";
 import {
   buildFilterQuery,
   applyDateFilters,
   applyStringFilters,
 } from "~/database/filters";
+import { QueryCursor } from "~/database/pagination";
+import { SortColumn } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
   Maybe,
   PersonFilterOperation,
   PersonFilter,
   FilterOperator,
-  PersonSort,
   SortOrder,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
@@ -115,12 +117,16 @@ export const personQueries = {
   async getAll(params: {
     knex: DBSession;
     filters?: PersonFilterOperation;
-    sort?: PersonSort[];
+    sort: SortColumn[];
+    queryCursor?: QueryCursor<ValueOf<PersonTable>>[];
+    limit: number;
   }): Promise<PersonTable[]> {
     const persons = await params
       .knex<PersonTableRow>(Table.PERSONS)
+      .andWhere((qb) => addQueryCursorFilters(qb, params.queryCursor))
       .andWhere((qb) => addPersonFilters(qb, params.filters))
-      .orderBy(applyPersonSort(params.sort));
+      .limit(params.limit)
+      .orderBy(params.sort);
 
     return persons.map(formatPersonRow);
   },
@@ -186,20 +192,42 @@ export const personQueries = {
   },
 };
 
-type ApplyPersonSortResponse = {
-  column: string;
-  order: SortOrder;
-};
-
-function applyPersonSort(sort?: PersonSort[]): ApplyPersonSortResponse[] {
-  if (!sort) {
-    return [{ column: "firstName", order: SortOrder.Asc }];
+export function addQueryCursorFilters<T>(
+  queryBuilder: Knex.QueryBuilder,
+  queryCursors?: QueryCursor<T>[],
+): Knex.QueryBuilder {
+  if (!queryCursors) {
+    return queryBuilder;
   }
 
-  return sort.map((element) => ({
-    column: element.field,
-    order: element.order,
-  }));
+  queryCursors.forEach((_, index) => {
+    queryBuilder.orWhere((qb) =>
+      buildCursorFilter(qb, queryCursors.slice(0, index + 1)),
+    );
+  });
+
+  return queryBuilder;
+}
+
+function buildCursorFilter<T>(
+  queryBuilder: Knex.QueryBuilder,
+  queryCursors: QueryCursor<T>[],
+): Knex.QueryBuilder {
+  const filterLength = queryCursors.length;
+  queryCursors.forEach((queryCursor, index) => {
+    if (queryCursor.column === "uuid") {
+      queryBuilder.andWhere(queryCursor.column, ">", queryCursor.value);
+    } else {
+      const comparatorDirection =
+        queryCursor.order === SortOrder.Asc ? ">" : "<";
+
+      const comparator = filterLength === index + 1 ? comparatorDirection : "=";
+
+      queryBuilder.andWhere(queryCursor.column, comparator, queryCursor.value);
+    }
+  });
+
+  return queryBuilder;
 }
 
 export function addPersonFilters(

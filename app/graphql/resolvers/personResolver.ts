@@ -56,13 +56,16 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, { filters, sort }, { knex, dataLoaders }) {
-      return await personsHandler({
+    async persons(_, { filters, sort, pagination }, { knex, dataLoaders }) {
+      const personsResponse = await personsHandler({
         knex,
         personDL: dataLoaders.personDL,
         filters: filters || undefined,
         sort: sort || undefined,
+        pagination: pagination,
       });
+
+      return personsResponse;
     },
   },
 

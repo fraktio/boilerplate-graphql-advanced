@@ -88,8 +88,6 @@ function prop<T, K extends keyof T>(obj: T, key: K): T[K] {
 
 type OperatorName = keyof typeof filterOperatorMap;
 
-// type ValueOf<T> = T[keyof T];
-// ValueOf<typeof filterOperatorMap>
 function getSqlOperator(input: {
   operatorName: OperatorName;
 }): ComparisonOperator {

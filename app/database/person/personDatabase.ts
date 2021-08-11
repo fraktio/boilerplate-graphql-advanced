@@ -1,6 +1,8 @@
+import { ValueOf } from "~/@types/global";
 import { CompanyID } from "~/database/company/companyQueries";
 import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
+import { QueryCursor } from "~/database/pagination";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import {
   CreatePersonOptions,
@@ -9,11 +11,8 @@ import {
   PersonTable,
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
-import {
-  Maybe,
-  PersonFilterOperation,
-  PersonSort,
-} from "~/generation/generated";
+import { SortColumn } from "~/database/sort";
+import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const personDB = {
@@ -41,11 +40,26 @@ export const personDB = {
     return person;
   },
 
+  async tryGetByUUID(params: {
+    knex: DBSession;
+    personUUID: UUID;
+    personDL: PersonDataLoader;
+  }): Promise<PersonTable> {
+    const person = await this.getByUUID(params);
+    if (!person) {
+      throw new Error(`Invalid person UUID: ${params.personUUID}`);
+    }
+
+    return person;
+  },
+
   async getAll(params: {
     knex: DBSession;
     personDL: PersonDataLoader;
     filters?: PersonFilterOperation;
-    sort?: PersonSort[];
+    sort: SortColumn[];
+    queryCursor?: QueryCursor<ValueOf<PersonTable>>[];
+    limit: number;
   }): Promise<PersonTable[]> {
     const persons = await personQueries.getAll(params);
 
