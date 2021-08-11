@@ -2,8 +2,16 @@ name: CI
 on: [push]
 
 jobs:
+  docker: 
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Build Docker image 
+      run: docker build -t title .
+  
   ci:
     runs-on: ubuntu-latest
+    container: node:15
 
     services:
       postgres:
@@ -81,9 +89,6 @@ jobs:
 
     - name: Check for non generated files
       run: git diff --exit-code
-
-    - name: Build Docker image 
-      run: docker build -t title .
 
     - name: Check serverless package (correct packages in dependency list)
       run: npm run build:serverless
