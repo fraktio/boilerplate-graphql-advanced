@@ -44,6 +44,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         "package.json",
+        "package-lock.json",
         {
           context: "./app/graphql/schema/",
           from: "*",
