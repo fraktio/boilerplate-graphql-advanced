@@ -83,5 +83,8 @@ jobs:
     - name: Check for non generated files
       run: git diff --exit-code
 
+    - name: Build Docker image 
+      run: docker build -t title .
+
     - name: Check serverless package (correct packages in dependency list)
       run: npm run build:serverless
