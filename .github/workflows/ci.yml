@@ -64,6 +64,9 @@ jobs:
     
     - name: Lint
       run: npm run lint
+
+    - name: Check for non generated files
+      run: git diff --exit-code
     
     - name: Database Migration Latest
       run: npm run database:migrate:latest
@@ -104,6 +107,3 @@ jobs:
         DATABASE_HOST: postgres
         DATABASE_PASSWORD: graphql-boilerplate-ci
         DATABASE_DATABASE_NAME: graphql-boilerplate-ci
-
-    - name: Check for non generated files
-      run: git diff --exit-code
