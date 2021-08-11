@@ -7,7 +7,7 @@ jobs:
     
     steps:
     - name: Build Docker image 
-      run: docker build -t title ./boilerplate-graphql-advanced/Dockerfile
+      run: docker build -t title ./Dockerfile
 
   ci:
     runs-on: ubuntu-latest
