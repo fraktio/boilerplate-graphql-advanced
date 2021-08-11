@@ -2,6 +2,17 @@ name: CI
 on: [push]
 
 jobs:
+  serverless: 
+    runs-on: ubuntu-latest
+    container: node:15
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Check serverless package (correct packages in dependency list)
+      run: npm run build:serverless
+      
   docker: 
     runs-on: ubuntu-latest
     
@@ -93,6 +104,3 @@ jobs:
 
     - name: Check for non generated files
       run: git diff --exit-code
-
-    - name: Check serverless package (correct packages in dependency list)
-      run: npm run build:serverless
