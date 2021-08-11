@@ -43,7 +43,7 @@ type Underage implements Person {
 }
 
 type PersonsPaginationEdge {
-  cursor: String!
+  cursor: Cursor!
   node: Person!
 }
 
@@ -53,7 +53,7 @@ type PersonsPaginationResponse {
 }
 
 type Query {
-  persons(filters: PersonFilterOperation, sort: [PersonSort!], pagination: PaginationCursorInput): PersonsPaginationResponse!
+  persons(filters: PersonFilterOperation, sort: [PersonSort!], pagination: Pagination!): PersonsPaginationResponse!
   person(input: PersonInput!): Person! @authenticated
 }
 
@@ -116,6 +116,7 @@ enum PersonSortField {
   birthday
   firstName
   lastName
+  createdAt
 }
 
 enum SortOrder {

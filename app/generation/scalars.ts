@@ -2,9 +2,10 @@ import { Maybe } from "graphql/jsutils/Maybe";
 import { Iso3166Alpha2Code } from "iso-3166-ts";
 import { DateTime } from "luxon";
 
-export interface UUID extends String {
-  _id: never;
-}
+import { UUID as GeneratedUUID } from "~/generation/mappers";
+import { Cursor as CursorResolverCursor } from "~/graphql/scalars/CursorResolver";
+
+export type UUID = GeneratedUUID;
 
 export interface EmailAddress extends String {
   _email: never;
@@ -30,6 +31,8 @@ export interface FinnishPostalCode extends String {
 export interface FinnishMunicipality extends String {
   _municipality: never;
 }
+
+export type Cursor = CursorResolverCursor;
 
 export type Timestamp = Readonly<{
   createdAt: DateTime;

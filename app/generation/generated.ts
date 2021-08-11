@@ -23,6 +23,7 @@ import {
 } from "./mappers";
 import {
   CountryCode,
+  Cursor,
   EmailAddress,
   FinnishPersonalIdentityCode,
 } from "./scalars";
@@ -48,6 +49,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   CountryCode: CountryCode;
+  Cursor: Cursor;
   Date: DateTime;
   DateTime: DateTime;
   EmailAddress: EmailAddress;
@@ -306,6 +308,16 @@ export type NumberFactSuccess = {
   numberFact: NumberFact;
 };
 
+export type PageInfo = {
+  __typename?: "PageInfo";
+  hasNextPage: Scalars["Boolean"];
+};
+
+export type Pagination = {
+  limit?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<Scalars["Cursor"]>;
+};
+
 export type Person = {
   /** Requires authentication and ADMIN privileges */
   UUID: Scalars["UUID"];
@@ -342,7 +354,20 @@ export enum PersonSortField {
   Birthday = "birthday",
   FirstName = "firstName",
   LastName = "lastName",
+  CreatedAt = "createdAt",
 }
+
+export type PersonsPaginationEdge = {
+  __typename?: "PersonsPaginationEdge";
+  cursor: Scalars["Cursor"];
+  node: Person;
+};
+
+export type PersonsPaginationResponse = {
+  __typename?: "PersonsPaginationResponse";
+  edges: Array<PersonsPaginationEdge>;
+  pageInfo: PageInfo;
+};
 
 export type Query = {
   __typename?: "Query";
@@ -351,7 +376,7 @@ export type Query = {
   company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
-  persons: Array<Maybe<Person>>;
+  persons: PersonsPaginationResponse;
 };
 
 export type QueryCompaniesArgs = {
@@ -373,6 +398,7 @@ export type QueryPersonArgs = {
 export type QueryPersonsArgs = {
   filters?: Maybe<PersonFilterOperation>;
   sort?: Maybe<Array<PersonSort>>;
+  pagination: Pagination;
 };
 
 export type RegisterFailure = {
@@ -476,6 +502,10 @@ export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+
 export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
   fragment: string;
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
@@ -490,6 +520,7 @@ export type StitchingResolver<TResult, TParent, TContext, TArgs> =
   | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>
   | StitchingResolver<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
@@ -632,6 +663,7 @@ export type ResolversTypes = ResolversObject<{
     Omit<CompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
   CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
+  Cursor: ResolverTypeWrapper<Scalars["Cursor"]>;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateFilter: DateFilter;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
@@ -668,6 +700,8 @@ export type ResolversTypes = ResolversObject<{
     | ResolversTypes["NumberFactSuccess"]
     | ResolversTypes["NumberFactFailure"];
   NumberFactSuccess: ResolverTypeWrapper<NumberFactSuccess>;
+  PageInfo: ResolverTypeWrapper<PageInfo>;
+  Pagination: Pagination;
   Person: ResolverTypeWrapper<PersonModel>;
   PersonFilter: PersonFilter;
   PersonFilterOperation: PersonFilterOperation;
@@ -675,6 +709,14 @@ export type ResolversTypes = ResolversObject<{
   PersonSort: PersonSort;
   PersonSortField: PersonSortField;
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
+  PersonsPaginationEdge: ResolverTypeWrapper<
+    Omit<PersonsPaginationEdge, "node"> & { node: ResolversTypes["Person"] }
+  >;
+  PersonsPaginationResponse: ResolverTypeWrapper<
+    Omit<PersonsPaginationResponse, "edges"> & {
+      edges: Array<ResolversTypes["PersonsPaginationEdge"]>;
+    }
+  >;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   Query: ResolverTypeWrapper<{}>;
   RegisterFailure: ResolverTypeWrapper<RegisterFailure>;
@@ -746,6 +788,7 @@ export type ResolversParentTypes = ResolversObject<{
     company: ResolversParentTypes["Company"];
   };
   CountryCode: Scalars["CountryCode"];
+  Cursor: Scalars["Cursor"];
   Date: Scalars["Date"];
   DateFilter: DateFilter;
   DateTime: Scalars["DateTime"];
@@ -781,12 +824,20 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes["NumberFactSuccess"]
     | ResolversParentTypes["NumberFactFailure"];
   NumberFactSuccess: NumberFactSuccess;
+  PageInfo: PageInfo;
+  Pagination: Pagination;
   Person: PersonModel;
   PersonFilter: PersonFilter;
   PersonFilterOperation: PersonFilterOperation;
   PersonInput: PersonInput;
   PersonSort: PersonSort;
   PersonalIdentityCode: Scalars["PersonalIdentityCode"];
+  PersonsPaginationEdge: Omit<PersonsPaginationEdge, "node"> & {
+    node: ResolversParentTypes["Person"];
+  };
+  PersonsPaginationResponse: Omit<PersonsPaginationResponse, "edges"> & {
+    edges: Array<ResolversParentTypes["PersonsPaginationEdge"]>;
+  };
   PhoneNumber: Scalars["PhoneNumber"];
   Query: {};
   RegisterFailure: RegisterFailure;
@@ -966,6 +1017,11 @@ export type CompanySuccessResolvers<
 export interface CountryCodeScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["CountryCode"], any> {
   name: "CountryCode";
+}
+
+export interface CursorScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Cursor"], any> {
+  name: "Cursor";
 }
 
 export interface DateScalarConfig
@@ -1156,6 +1212,14 @@ export type NumberFactSuccessResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type PageInfoResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["PageInfo"] = ResolversParentTypes["PageInfo"],
+> = ResolversObject<{
+  hasNextPage?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type PersonResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"],
@@ -1183,6 +1247,28 @@ export interface PersonalIdentityCodeScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["PersonalIdentityCode"], any> {
   name: "PersonalIdentityCode";
 }
+
+export type PersonsPaginationEdgeResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["PersonsPaginationEdge"] = ResolversParentTypes["PersonsPaginationEdge"],
+> = ResolversObject<{
+  cursor?: Resolver<ResolversTypes["Cursor"], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes["Person"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PersonsPaginationResponseResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["PersonsPaginationResponse"] = ResolversParentTypes["PersonsPaginationResponse"],
+> = ResolversObject<{
+  edges?: Resolver<
+    Array<ResolversTypes["PersonsPaginationEdge"]>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes["PageInfo"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export interface PhoneNumberScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["PhoneNumber"], any> {
@@ -1223,10 +1309,10 @@ export type QueryResolvers<
     RequireFields<QueryPersonArgs, "input">
   >;
   persons?: Resolver<
-    Array<Maybe<ResolversTypes["Person"]>>,
+    ResolversTypes["PersonsPaginationResponse"],
     ParentType,
     ContextType,
-    RequireFields<QueryPersonsArgs, never>
+    RequireFields<QueryPersonsArgs, "pagination">
   >;
 }>;
 
@@ -1371,6 +1457,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   CompanyOutput?: CompanyOutputResolvers<ContextType>;
   CompanySuccess?: CompanySuccessResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
+  Cursor?: GraphQLScalarType;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   EditCompanyFailureNotFound?: EditCompanyFailureNotFoundResolvers<ContextType>;
@@ -1388,8 +1475,11 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   NumberFactFailure?: NumberFactFailureResolvers<ContextType>;
   NumberFactOutput?: NumberFactOutputResolvers<ContextType>;
   NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;
+  PageInfo?: PageInfoResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   PersonalIdentityCode?: GraphQLScalarType;
+  PersonsPaginationEdge?: PersonsPaginationEdgeResolvers<ContextType>;
+  PersonsPaginationResponse?: PersonsPaginationResponseResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   RegisterFailure?: RegisterFailureResolvers<ContextType>;
