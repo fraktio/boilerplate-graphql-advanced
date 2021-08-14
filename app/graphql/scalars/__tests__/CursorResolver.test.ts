@@ -1,12 +1,11 @@
 import { StringValueNode } from "graphql";
 
+import { createUUID } from "~/database/tables";
 import { Cursor, CursorResolver } from "~/graphql/scalars/CursorResolver";
 import { hashingUtils } from "~/utils/hashingUtils";
 
 const mockCursor: Cursor = {
-  page: 1,
-  perPage: 1,
-  offset: 1,
+  queryCursor: createUUID(),
 };
 
 const cursorString = JSON.stringify(mockCursor);

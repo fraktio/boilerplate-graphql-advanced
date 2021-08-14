@@ -55,6 +55,7 @@ GraphQLSchema {
     "CompanyQuery": "CompanyQuery",
     "CompanySuccess": "CompanySuccess",
     "CountryCode": "CountryCode",
+    "Cursor": "Cursor",
     "Date": "Date",
     "DateFilter": "DateFilter",
     "DateTime": "DateTime",
@@ -79,6 +80,8 @@ GraphQLSchema {
     "NumberFactInput": "NumberFactInput",
     "NumberFactOutput": "NumberFactOutput",
     "NumberFactSuccess": "NumberFactSuccess",
+    "PageInfo": "PageInfo",
+    "Pagination": "Pagination",
     "Person": "Person",
     "PersonFilter": "PersonFilter",
     "PersonFilterOperation": "PersonFilterOperation",
@@ -86,6 +89,8 @@ GraphQLSchema {
     "PersonSort": "PersonSort",
     "PersonSortField": "PersonSortField",
     "PersonalIdentityCode": "PersonalIdentityCode",
+    "PersonsPaginationEdge": "PersonsPaginationEdge",
+    "PersonsPaginationResponse": "PersonsPaginationResponse",
     "Phone": "Phone",
     "Query": "Query",
     "RegisterFailure": "RegisterFailure",
@@ -126,8 +131,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 872,
-              "start": 867,
+              "end": 1030,
+              "start": 1025,
             },
             "value": "Query",
           },
@@ -156,8 +161,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1060,
-              "start": 1048,
+              "end": 1260,
+              "start": 1248,
             },
             "value": "Subscription",
           },
