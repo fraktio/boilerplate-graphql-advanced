@@ -20,9 +20,9 @@ import {
 import { createSortParams, SortColumn } from "~/database/sort";
 import {
   Maybe,
+  Pagination,
   PersonFilterOperation,
   PersonSort,
-  PersonPagination,
   PersonSortField,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
@@ -56,25 +56,13 @@ export const personsHandler = async (params: {
   personDL: PersonDataLoader;
   filters?: PersonFilterOperation;
   sort?: PersonSort[];
-  pagination: PersonPagination;
+  pagination: Pagination;
 }): Promise<PersonsPaginationResponse> => {
   const sort = createSortParams({
     sort: params.sort,
     defaultSortField: PersonSortField.Birthday,
   });
   const { pagination, knex, personDL, filters } = params;
-
-  /*
-  if (!pagination) {
-    const results = await personDB.getAll({
-      knex: knex,
-      personDL: personDL,
-      filters: filters,
-      sort,
-    });
-
-    return results;
-  } */
 
   const queryCursors = await getPersonPaginationCursors({
     knex: knex,
@@ -94,19 +82,14 @@ export const personsHandler = async (params: {
     limit: limit + PAGINATION_LIMIT_OVERFLOW,
   });
 
-  let hasNextPage = false;
-  if (results.length > limit) {
-    hasNextPage = true;
+  const hasNextPage = results.length > limit;
+
+  if (hasNextPage) {
     results.pop();
   }
 
   const edges = results.map((result) => ({
-    cursor: {
-      page: 1,
-      offset: 0,
-      limit: limit,
-      queryCursor: result.UUID,
-    },
+    cursor: { queryCursor: result.UUID },
     node: result,
   }));
 
