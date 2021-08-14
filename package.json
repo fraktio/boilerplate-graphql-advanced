@@ -26,7 +26,8 @@
     "database:migrate:latest": "npm run knex -- migrate:latest",
     "database:migrate:rollback": "npm run knex -- migrate:rollback --all",
     "seed": "npm run knex -- seed:run",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "postinstall": "node-prune"
   },
   "dependencies": {
     "apollo-datasource-rest": "^0.14.0",
@@ -96,6 +97,7 @@
     "faker": "^5.5.3",
     "jest": "^27.0.6",
     "nock": "^13.1.1",
+    "node-prune": "^1.0.2",
     "nodemon-webpack-plugin": "^4.5.2",
     "prettier": "^2.3.2",
     "serverless": "^2.50.0",

@@ -55,7 +55,9 @@ export const validateConfig = (config: unknown): Config => {
     const message = `\n ${errors.join(
       "\n",
     )} \n\n Invalid environmental configation`;
-    throw new Error(message);
+
+    console.error(message);
+    process.exit();
   }
 
   return validated.right;
