@@ -1,4 +1,8 @@
 .vscode/
 .github/
 dist/
+.serverless
 node_modules/
+migrations
+scripts
+seeds

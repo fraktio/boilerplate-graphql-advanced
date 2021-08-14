@@ -2,8 +2,7 @@ FROM node:14-slim as build
 WORKDIR /app
 
 # Copy application dependency manifests to the container image.
-COPY package.json ./
-COPY package-lock.json ./
+COPY ["package.json ./", "package-lock.json", "./"]
 RUN npm ci
 
 # Copy local code to the container image and build
