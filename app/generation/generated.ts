@@ -151,14 +151,14 @@ export type CompanyFailureNotFound = {
   success: Scalars["Boolean"];
 };
 
-export type CompanyFilter = {
-  filterOperations?: Maybe<Array<CompanyFilterOperation>>;
+export type CompanyFilterInput = {
+  filterOperations?: Maybe<Array<CompanyFilterOperationInput>>;
   nameFilter?: Maybe<StringFilter>;
 };
 
-export type CompanyFilterOperation = {
+export type CompanyFilterOperationInput = {
   operator: FilterOperator;
-  filters?: Maybe<Array<CompanyFilter>>;
+  filters?: Maybe<Array<CompanyFilterInput>>;
 };
 
 export type CompanyInput = {
@@ -313,7 +313,7 @@ export type PageInfo = {
   hasNextPage: Scalars["Boolean"];
 };
 
-export type Pagination = {
+export type PaginationInput = {
   limit?: Maybe<Scalars["Int"]>;
   cursor?: Maybe<Scalars["Cursor"]>;
 };
@@ -330,24 +330,19 @@ export type Person = {
   timestamp: Timestamp;
 };
 
-export type PersonFilter = {
-  filterOperations?: Maybe<Array<PersonFilterOperation>>;
+export type PersonFilterInput = {
+  filterOperations?: Maybe<Array<PersonFilterOperationInput>>;
   birthdayFilter?: Maybe<DateFilter>;
   nameFilter?: Maybe<StringFilter>;
 };
 
-export type PersonFilterOperation = {
+export type PersonFilterOperationInput = {
   operator: FilterOperator;
-  filters?: Maybe<Array<PersonFilter>>;
+  filters?: Maybe<Array<PersonFilterInput>>;
 };
 
 export type PersonInput = {
   UUID: Scalars["UUID"];
-};
-
-export type PersonSort = {
-  field: PersonSortField;
-  order: SortOrder;
 };
 
 export enum PersonSortField {
@@ -356,6 +351,11 @@ export enum PersonSortField {
   LastName = "lastName",
   CreatedAt = "createdAt",
 }
+
+export type PersonSortInput = {
+  field: PersonSortField;
+  order: SortOrder;
+};
 
 export type PersonsPaginationEdge = {
   __typename?: "PersonsPaginationEdge";
@@ -380,7 +380,7 @@ export type Query = {
 };
 
 export type QueryCompaniesArgs = {
-  filters?: Maybe<CompanyFilterOperation>;
+  filters?: Maybe<CompanyFilterOperationInput>;
 };
 
 export type QueryCompanyArgs = {
@@ -396,9 +396,9 @@ export type QueryPersonArgs = {
 };
 
 export type QueryPersonsArgs = {
-  filters?: Maybe<PersonFilterOperation>;
-  sort?: Maybe<Array<PersonSort>>;
-  pagination: Pagination;
+  filters?: Maybe<PersonFilterOperationInput>;
+  sort?: Maybe<Array<PersonSortInput>>;
+  pagination: PaginationInput;
 };
 
 export type RegisterFailure = {
@@ -647,8 +647,8 @@ export type ResolversTypes = ResolversObject<{
   >;
   Company: ResolverTypeWrapper<CompanyModel>;
   CompanyFailureNotFound: ResolverTypeWrapper<CompanyFailureNotFound>;
-  CompanyFilter: CompanyFilter;
-  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilterInput: CompanyFilterInput;
+  CompanyFilterOperationInput: CompanyFilterOperationInput;
   CompanyInput: CompanyInput;
   CompanyOutput:
     | ResolversTypes["CompanySuccess"]
@@ -696,13 +696,13 @@ export type ResolversTypes = ResolversObject<{
     | ResolversTypes["NumberFactFailure"];
   NumberFactSuccess: ResolverTypeWrapper<NumberFactSuccess>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
-  Pagination: Pagination;
+  PaginationInput: PaginationInput;
   Person: ResolverTypeWrapper<PersonModel>;
-  PersonFilter: PersonFilter;
-  PersonFilterOperation: PersonFilterOperation;
+  PersonFilterInput: PersonFilterInput;
+  PersonFilterOperationInput: PersonFilterOperationInput;
   PersonInput: PersonInput;
-  PersonSort: PersonSort;
   PersonSortField: PersonSortField;
+  PersonSortInput: PersonSortInput;
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
   PersonsPaginationEdge: ResolverTypeWrapper<
     Omit<PersonsPaginationEdge, "node"> & { node: ResolversTypes["Person"] }
@@ -772,8 +772,8 @@ export type ResolversParentTypes = ResolversObject<{
   };
   Company: CompanyModel;
   CompanyFailureNotFound: CompanyFailureNotFound;
-  CompanyFilter: CompanyFilter;
-  CompanyFilterOperation: CompanyFilterOperation;
+  CompanyFilterInput: CompanyFilterInput;
+  CompanyFilterOperationInput: CompanyFilterOperationInput;
   CompanyInput: CompanyInput;
   CompanyOutput:
     | ResolversParentTypes["CompanySuccess"]
@@ -820,12 +820,12 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes["NumberFactFailure"];
   NumberFactSuccess: NumberFactSuccess;
   PageInfo: PageInfo;
-  Pagination: Pagination;
+  PaginationInput: PaginationInput;
   Person: PersonModel;
-  PersonFilter: PersonFilter;
-  PersonFilterOperation: PersonFilterOperation;
+  PersonFilterInput: PersonFilterInput;
+  PersonFilterOperationInput: PersonFilterOperationInput;
   PersonInput: PersonInput;
-  PersonSort: PersonSort;
+  PersonSortInput: PersonSortInput;
   PersonalIdentityCode: Scalars["PersonalIdentityCode"];
   PersonsPaginationEdge: Omit<PersonsPaginationEdge, "node"> & {
     node: ResolversParentTypes["Person"];

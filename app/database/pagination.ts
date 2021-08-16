@@ -1,3 +1,5 @@
+import { Knex } from "knex";
+
 import { ValueOf } from "~/@types/global";
 import { SortColumn } from "~/database/sort";
 import { SortOrder } from "~/generation/generated";
@@ -30,3 +32,41 @@ export const getPaginationQueryCursorsFromSort = <T>(params: {
 
   return queryCursors;
 };
+
+export function addQueryCursorFilters<T>(
+  queryBuilder: Knex.QueryBuilder,
+  queryCursors?: QueryCursor<T>[],
+): Knex.QueryBuilder {
+  if (!queryCursors) {
+    return queryBuilder;
+  }
+
+  queryCursors.forEach((_, index) => {
+    queryBuilder.orWhere((qb) =>
+      buildCursorFilter(qb, queryCursors.slice(0, index + 1)),
+    );
+  });
+
+  return queryBuilder;
+}
+
+function buildCursorFilter<T>(
+  queryBuilder: Knex.QueryBuilder,
+  queryCursors: QueryCursor<T>[],
+): Knex.QueryBuilder {
+  const filterLength = queryCursors.length;
+  queryCursors.forEach((queryCursor, index) => {
+    if (queryCursor.column === "uuid") {
+      queryBuilder.andWhere(queryCursor.column, ">", queryCursor.value);
+
+      return;
+    }
+    const comparatorDirection = queryCursor.order === SortOrder.Asc ? ">" : "<";
+
+    const comparator = filterLength === index + 1 ? comparatorDirection : "=";
+
+    queryBuilder.andWhere(queryCursor.column, comparator, queryCursor.value);
+  });
+
+  return queryBuilder;
+}

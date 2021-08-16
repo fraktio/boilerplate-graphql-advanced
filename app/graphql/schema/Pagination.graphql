@@ -1,6 +1,6 @@
 scalar Cursor
 
-input Pagination {
+input PaginationInput {
   limit: Int,
   cursor: Cursor,
 }

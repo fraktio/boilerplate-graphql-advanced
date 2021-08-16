@@ -9,7 +9,7 @@ import {
   applyDateFilters,
   applyStringFilters,
 } from "~/database/filters";
-import { QueryCursor } from "~/database/pagination";
+import { addQueryCursorFilters, QueryCursor } from "~/database/pagination";
 import { SortColumn } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import {
@@ -17,7 +17,6 @@ import {
   PersonFilterOperation,
   PersonFilter,
   FilterOperator,
-  SortOrder,
 } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
@@ -191,44 +190,6 @@ export const personQueries = {
     return personRows.map(formatPersonRow);
   },
 };
-
-export function addQueryCursorFilters<T>(
-  queryBuilder: Knex.QueryBuilder,
-  queryCursors?: QueryCursor<T>[],
-): Knex.QueryBuilder {
-  if (!queryCursors) {
-    return queryBuilder;
-  }
-
-  queryCursors.forEach((_, index) => {
-    queryBuilder.orWhere((qb) =>
-      buildCursorFilter(qb, queryCursors.slice(0, index + 1)),
-    );
-  });
-
-  return queryBuilder;
-}
-
-function buildCursorFilter<T>(
-  queryBuilder: Knex.QueryBuilder,
-  queryCursors: QueryCursor<T>[],
-): Knex.QueryBuilder {
-  const filterLength = queryCursors.length;
-  queryCursors.forEach((queryCursor, index) => {
-    if (queryCursor.column === "uuid") {
-      queryBuilder.andWhere(queryCursor.column, ">", queryCursor.value);
-    } else {
-      const comparatorDirection =
-        queryCursor.order === SortOrder.Asc ? ">" : "<";
-
-      const comparator = filterLength === index + 1 ? comparatorDirection : "=";
-
-      queryBuilder.andWhere(queryCursor.column, comparator, queryCursor.value);
-    }
-  });
-
-  return queryBuilder;
-}
 
 export function addPersonFilters(
   queryBuilder: Knex.QueryBuilder,
