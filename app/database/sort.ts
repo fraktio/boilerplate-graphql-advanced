@@ -16,7 +16,7 @@ export function createSortParams<T extends SortFields>(params: {
 }): SortColumn[] {
   const { sort, defaultSortField } = params;
 
-  const uuidSort = {
+  const uuidSort: SortColumn = {
     column: "uuid",
     order: SortOrder.Desc,
   };
