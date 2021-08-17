@@ -1,3 +1,5 @@
+import { Maybe } from "graphql-tools";
+
 import { ValueOf } from "~/@types/global";
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
@@ -6,27 +8,34 @@ import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPers
 import {
   getPaginationLimit,
   getPaginationQueryCursorsFromSort,
+  Pagination,
   PAGINATION_LIMIT_OVERFLOW,
   QueryCursor,
 } from "~/database/pagination";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDB } from "~/database/person/personDatabase";
+import { PersonFilterOperation } from "~/database/person/personFilters";
 import {
   CreatePersonOptions,
   PersonID,
   PersonTable,
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
-import { createSortParams, SortColumn } from "~/database/sort";
-import {
-  Maybe,
-  Pagination,
-  PersonFilterOperation,
-  PersonSort,
-  PersonSortField,
-} from "~/generation/generated";
+import { createSortParams, SortColumn, SortOrder } from "~/database/sort";
 import { UUID } from "~/generation/mappers";
 import { Cursor } from "~/graphql/scalars/CursorResolver";
+
+export enum PersonSortField {
+  Birthday = "birthday",
+  FirstName = "firstName",
+  LastName = "lastName",
+  CreatedAt = "createdAt",
+}
+
+export type PersonSortInput = {
+  field: PersonSortField;
+  order: SortOrder;
+};
 
 export const personHandler = async (params: {
   knex: DBSession;
@@ -55,7 +64,7 @@ export const personsHandler = async (params: {
   knex: DBSession;
   personDL: PersonDataLoader;
   filters?: PersonFilterOperation;
-  sort?: PersonSort[];
+  sort?: PersonSortInput[];
   pagination: Pagination;
 }): Promise<PersonsPaginationResponse> => {
   const sort = createSortParams({

@@ -1,7 +1,9 @@
+import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
 
 import { ValueOf } from "~/@types/global";
 import { SortColumn, SortOrder } from "~/database/sort";
+import { Cursor } from "~/graphql/scalars/CursorResolver";
 
 export const PAGINATION_DEFAULT_LIMIT = 20;
 export const PAGINATION_LIMIT_OVERFLOW = 1;
@@ -9,6 +11,11 @@ export const PAGINATION_LIMIT_OVERFLOW = 1;
 export function getPaginationLimit(limit?: number): number {
   return limit || PAGINATION_DEFAULT_LIMIT;
 }
+
+export type Pagination = {
+  limit?: Maybe<number>;
+  cursor?: Maybe<Cursor>;
+};
 
 export type QueryCursor<T> = {
   column: string;
