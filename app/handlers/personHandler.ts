@@ -68,7 +68,7 @@ export const personsHandler = async (params: {
     knex: knex,
     personDL: personDL,
     sort: sort,
-    queryCursorUUID: pagination.cursor?.queryCursor || undefined,
+    queryCursorUUID: pagination.cursor?.queryCursor,
   });
 
   const limit = getPaginationLimit(pagination.limit || undefined);
