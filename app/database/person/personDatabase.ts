@@ -59,7 +59,7 @@ export const personDB = {
     knex: DBSession;
     personDL: PersonDataLoader;
     filters?: PersonFilterOperation;
-    sort: SortColumn[];
+    sort?: SortColumn[];
     queryCursor?: QueryCursor<ValueOf<PersonTable>>[];
     limit: number;
   }): Promise<PersonTable[]> {

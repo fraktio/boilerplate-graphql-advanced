@@ -14,7 +14,7 @@ import {
   PersonFilter,
   PersonFilterOperation,
 } from "~/database/person/personFilters";
-import { SortColumn } from "~/database/sort";
+import { SortColumn, SortOrder } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import { UUID } from "~/generation/mappers";
 import {
@@ -23,6 +23,8 @@ import {
   FinnishPersonalIdentityCode,
 } from "~/generation/scalars";
 import { asCountryCode } from "~/validation/converters";
+
+const PERSON_DEFAULT_SORT = { column: "createdAt", order: SortOrder.Desc };
 
 export interface PersonID extends ID {
   __PersonID: never;
@@ -114,7 +116,7 @@ export const personQueries = {
   async getAll(params: {
     knex: DBSession;
     filters?: PersonFilterOperation;
-    sort: SortColumn[];
+    sort?: SortColumn[];
     queryCursor?: QueryCursor<ValueOf<PersonTable>>[];
     limit: number;
   }): Promise<PersonTable[]> {
@@ -123,7 +125,7 @@ export const personQueries = {
       .andWhere((qb) => addQueryCursorFilters(qb, params.queryCursor))
       .andWhere((qb) => addPersonFilters(qb, params.filters))
       .limit(params.limit)
-      .orderBy(params.sort);
+      .orderBy(params.sort ? params.sort : [PERSON_DEFAULT_SORT]);
 
     return persons.map(formatPersonRow);
   },
