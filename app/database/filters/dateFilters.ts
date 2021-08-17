@@ -1,15 +1,16 @@
 import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
+import { DateTime } from "luxon";
 
 import { getSqlOperator, FilterOperator } from "~/database/filters/operators";
 
 export type DateFilter = {
-  equal?: Maybe<Date>;
-  notEqual?: Maybe<Date>;
-  lessThan?: Maybe<Date>;
-  lessOrEqualThan?: Maybe<Date>;
-  greaterThan?: Maybe<Date>;
-  greaterOrEqualThan?: Maybe<Date>;
+  equal?: Maybe<DateTime>;
+  notEqual?: Maybe<DateTime>;
+  lessThan?: Maybe<DateTime>;
+  lessOrEqualThan?: Maybe<DateTime>;
+  greaterThan?: Maybe<DateTime>;
+  greaterOrEqualThan?: Maybe<DateTime>;
 };
 
 export function applyDateFilters(input: {
