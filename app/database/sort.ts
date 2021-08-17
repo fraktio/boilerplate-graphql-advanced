@@ -1,5 +1,7 @@
-import { SortOrder } from "~/generation/generated";
-
+export enum SortOrder {
+  Asc = "ASC",
+  Desc = "DESC",
+}
 export type SortColumn = {
   column: string;
   order: SortOrder;

@@ -1,23 +1,21 @@
+import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import { ValueOf } from "~/@types/global";
 import { DBSession } from "~/database/connection";
-import {
-  buildFilterQuery,
-  applyDateFilters,
-  applyStringFilters,
-} from "~/database/filters";
+import { buildFilterQuery } from "~/database/filters";
+import { applyDateFilters } from "~/database/filters/dateFilters";
+import { FilterOperator } from "~/database/filters/operators";
+import { applyStringFilters } from "~/database/filters/stringFilters";
 import { addQueryCursorFilters, QueryCursor } from "~/database/pagination";
+import {
+  PersonFilter,
+  PersonFilterOperation,
+} from "~/database/person/personFilters";
 import { SortColumn } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
-import {
-  Maybe,
-  PersonFilterOperation,
-  PersonFilter,
-  FilterOperator,
-} from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,
