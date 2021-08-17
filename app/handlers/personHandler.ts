@@ -23,7 +23,7 @@ import {
 } from "~/database/person/personQueries";
 import { createSortParams, SortColumn, SortOrder } from "~/database/sort";
 import { UUID } from "~/generation/mappers";
-import { Cursor } from "~/graphql/scalars/CursorResolver";
+import { PaginationResponse } from "~/handlers/pagination";
 
 export enum PersonSortField {
   Birthday = "birthday",
@@ -48,17 +48,7 @@ export const personHandler = async (params: {
     personDL: params.personDL,
   });
 
-export type PersonsPaginationEdge = {
-  cursor: Cursor;
-  node: PersonTable;
-};
-
-export type PersonsPaginationResponse = {
-  edges: PersonsPaginationEdge[];
-  pageInfo: {
-    hasNextPage: boolean;
-  };
-};
+export type PersonsPaginationResponse = PaginationResponse<PersonTable>;
 
 export const personsHandler = async (params: {
   knex: DBSession;
