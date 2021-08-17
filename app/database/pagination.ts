@@ -1,8 +1,7 @@
 import { Knex } from "knex";
 
 import { ValueOf } from "~/@types/global";
-import { SortColumn } from "~/database/sort";
-import { SortOrder } from "~/generation/generated";
+import { SortColumn, SortOrder } from "~/database/sort";
 
 export const PAGINATION_DEFAULT_LIMIT = 20;
 export const PAGINATION_LIMIT_OVERFLOW = 1;

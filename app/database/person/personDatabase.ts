@@ -1,9 +1,12 @@
+import { Maybe } from "graphql-tools";
+
 import { ValueOf } from "~/@types/global";
 import { CompanyID } from "~/database/company/companyQueries";
 import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { QueryCursor } from "~/database/pagination";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
+import { PersonFilterOperation } from "~/database/person/personFilters";
 import {
   CreatePersonOptions,
   personQueries,
@@ -12,7 +15,6 @@ import {
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
 import { SortColumn } from "~/database/sort";
-import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const personDB = {

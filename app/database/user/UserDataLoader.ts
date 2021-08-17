@@ -1,11 +1,11 @@
 import DataLoader from "dataloader";
+import { Maybe } from "graphql-tools";
 
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
 } from "~/database/AbstractDataLoader";
 import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
-import { Maybe } from "~/generation/generated";
 
 export type UserLoader = DataLoader<UserID, Maybe<UserTable>>;
 
