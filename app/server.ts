@@ -26,7 +26,7 @@ type CreateSercerFunction = (params: {
 export const createServer: CreateSercerFunction = ({ config }) => {
   const logger = createLogger({ config });
 
-  const knex = createKnex({ databaseConfig: config.database });
+  const knex = createKnex({ databaseConfig: config.database, logger });
   const app = createExpress({ config, knex });
 
   app.use(loggerHandler({ logger }));
