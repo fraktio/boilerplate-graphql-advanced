@@ -9,7 +9,8 @@ const server = app.listen({ port: config.env.apiPort }, () => {
   logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
 });
 
-process.on("SIGINT", () => {
+process.on("SIGTERM", () => {
+  logger.error("Received SIGTERM");
   knex.destroy();
   server.close();
 });
