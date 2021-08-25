@@ -7,6 +7,18 @@ import { toSuccess, toFailure, Try } from "~/utils/validation";
 export type Transaction = Knex.Transaction;
 export type DBSession = Knex | Transaction;
 
+export const testDbConnection = async (params: {
+  dbConnection: DBSession;
+}): Promise<Try<true, Error>> => {
+  try {
+    await params.dbConnection.raw("select 1+1 as result");
+
+    return toSuccess(true);
+  } catch (error) {
+    return toFailure(error);
+  }
+};
+
 export const withTransaction = async <T>(
   params: { knex: DBSession; logger: Logger },
   asyncCallback: (cParams: { transaction: Transaction }) => Promise<T>,
@@ -49,6 +61,7 @@ const createConnection = (
     return {
       host: fullHost,
       user: params.databaseConfig.user,
+      port: params.databaseConfig.port,
       password: params.databaseConfig.password,
       database: params.databaseConfig.databaseName,
     };
