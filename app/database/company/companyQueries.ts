@@ -7,6 +7,7 @@ import {
   CompanyFilterOperation,
 } from "~/database/company/companyFilters";
 import { DBSession } from "~/database/connection";
+import { NotFoundError } from "~/database/error/NotFoundError";
 import { buildFilterQuery } from "~/database/filters";
 import { FilterOperator } from "~/database/filters/operators";
 import { applyStringFilters } from "~/database/filters/stringFilters";
@@ -72,7 +73,7 @@ export const companyQueries = {
     });
 
     if (!company) {
-      throw new Error("Invalid companyId");
+      throw new NotFoundError("Invalid companyId");
     }
 
     return company;

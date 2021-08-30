@@ -9,3 +9,7 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
+type InvalidCursorFailure implements FailureOutput {
+  message: String!
+  field: String!
+}

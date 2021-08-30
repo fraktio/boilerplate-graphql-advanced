@@ -1,6 +1,7 @@
 import { UserInputError } from "apollo-server-express";
 
 import { Resolvers } from "~/generation/generated";
+import { resolveFailure } from "~/graphql/resolvers/failureResolvers";
 import {
   addPersonHandler,
   adultEmployersHandler,
@@ -57,7 +58,7 @@ export const personResolver: Resolvers = {
     },
 
     async persons(_, { filters, sort, pagination }, { knex, dataLoaders }) {
-      const personsResponse = await personsHandler({
+      const personsResult = await personsHandler({
         knex,
         personDL: dataLoaders.personDL,
         filters: filters || undefined,
@@ -65,10 +66,16 @@ export const personResolver: Resolvers = {
         pagination: pagination,
       });
 
-      return personsResponse;
+      if (personsResult.success) {
+        return {
+          __typename: "PersonsPaginationResponse",
+          ...personsResult.value,
+        };
+      }
+
+      return resolveFailure(personsResult.failure);
     },
   },
-
   Mutation: {
     async addPerson(_, { input }, { knex, dataLoaders }) {
       const newPerson = {
@@ -79,40 +86,45 @@ export const personResolver: Resolvers = {
         birthday: input.person.birthday,
         nationality: input.person.nationality,
         personalIdentityCode: input.person.personalIdentityCode,
+        gender: input.person.gender,
       };
 
-      const person = addPersonHandler({
+      const addedPerson = await addPersonHandler({
         knex,
         person: newPerson,
         personDL: dataLoaders.personDL,
       });
+      if (addedPerson.success) {
+        return { __typename: "AddPersonSuccess", person: addedPerson.value };
+      }
 
-      return { __typename: "AddPersonSuccess", person };
+      return resolveFailure(addedPerson.failure);
     },
 
     async editPerson(_, { input }, { knex, dataLoaders }) {
       const modifiedPerson = {
         firstName: input.person.firstName,
         lastName: input.person.lastName,
-        phone: input.person.phone ?? null,
+        phone: input.person.phone || null,
         email: input.person.email,
         birthday: input.person.birthday,
         nationality: input.person.nationality,
         personalIdentityCode: input.person.personalIdentityCode,
+        gender: input.person.gender,
       };
 
-      const person = await modifyPerson({
+      const editPerson = await modifyPerson({
         knex,
         personUUID: input.UUID,
         modifiedPerson,
         personDL: dataLoaders.personDL,
       });
 
-      if (!person) {
-        throw new Error("Invalid person uuid");
+      if (editPerson.success) {
+        return { __typename: "EditPersonSuccess", person: editPerson.value };
       }
 
-      return { __typename: "EditPersonSuccess", person };
+      return resolveFailure(editPerson.failure);
     },
   },
 };

@@ -1,5 +1,6 @@
 import {
   formatPersonRow,
+  Gender,
   PersonID,
   PersonTable,
   PersonTableRow,
@@ -25,6 +26,7 @@ export const dbPersonMockTableRow: PersonTableRow = {
   updatedAt: null,
   nationality: "FI",
   personalIdentityCode: "230488-577C" as unknown as FinnishPersonalIdentityCode,
+  gender: Gender.Male,
 };
 
 export const dbPersonMockTableRowUpdated: PersonTableRow = {

@@ -5,6 +5,7 @@ import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
 import { DBSession } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
+import { NotFoundError } from "~/database/error/NotFoundError";
 import {
   getPaginationLimit,
   getPaginationQueryCursorsFromSort,
@@ -23,7 +24,11 @@ import {
 } from "~/database/person/personQueries";
 import { createSortParams, SortColumn, SortOrder } from "~/database/sort";
 import { UUID } from "~/generation/mappers";
+import { InvalidCursorFailure } from "~/handlers/failures/InvalidCursorFailure";
+import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
+import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";
 import { PaginationResponse } from "~/handlers/pagination";
+import { toSuccess, toFailure, Try } from "~/utils/validation";
 
 export enum PersonSortField {
   Birthday = "birthday",
@@ -56,7 +61,7 @@ export const personsHandler = async (params: {
   filters?: PersonFilterOperation;
   sort?: PersonSortInput[];
   pagination: Pagination;
-}): Promise<PersonsPaginationResponse> => {
+}): Promise<Try<PersonsPaginationResponse, InvalidCursorFailure>> => {
   const sort = createSortParams({
     sort: params.sort,
     defaultSortField: PersonSortField.Birthday,
@@ -69,6 +74,12 @@ export const personsHandler = async (params: {
     sort: sort,
     queryCursorUUID: pagination.cursor?.queryCursor,
   });
+
+  if (pagination.cursor && !queryCursors.length) {
+    return toFailure(
+      new InvalidCursorFailure("pagination.cursor", "Invalid cursor"),
+    );
+  }
 
   const limit = getPaginationLimit(pagination.limit || undefined);
 
@@ -99,7 +110,7 @@ export const personsHandler = async (params: {
     edges,
   };
 
-  return response;
+  return toSuccess(response);
 };
 
 export const getPersonPaginationCursors = async (params: {
@@ -113,20 +124,27 @@ export const getPersonPaginationCursors = async (params: {
     return [];
   }
 
-  const cursorItem = await personDB.tryGetByUUID({
-    knex: knex,
-    personUUID: queryCursorUUID,
-    personDL: personDL,
-  });
+  try {
+    const cursorItem = await personDB.tryGetByUUID({
+      knex: knex,
+      personUUID: queryCursorUUID,
+      personDL: personDL,
+    });
 
-  return getPaginationQueryCursorsFromSort({ cursorItem: cursorItem, sort });
+    return getPaginationQueryCursorsFromSort({ cursorItem: cursorItem, sort });
+  } catch (e) {
+    if (e instanceof NotFoundError) {
+      return [];
+    }
+    throw e;
+  }
 };
 
 export const addPersonHandler = async (params: {
   knex: DBSession;
   person: CreatePersonOptions;
   personDL: PersonDataLoader;
-}): Promise<PersonTable> =>
+}): Promise<Try<PersonTable, UniqueConstraintViolationFailure>> =>
   await personDB.create({
     knex: params.knex,
     person: params.person,
@@ -138,7 +156,9 @@ export const modifyPerson = async (params: {
   personUUID: UUID;
   modifiedPerson: UpdatePersonOptions;
   personDL: PersonDataLoader;
-}): Promise<Maybe<PersonTable>> =>
+}): Promise<
+  Try<PersonTable, UniqueConstraintViolationFailure | NotFoundFailure>
+> =>
   await personDB.updateByUUID({
     knex: params.knex,
     personUUID: params.personUUID,
