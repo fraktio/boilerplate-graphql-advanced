@@ -15,7 +15,7 @@ export const createSchema = (
   inheritResolversFromInterfaces: true,
   resolverValidationOptions: {
     requireResolversForArgs: true,
-    requireResolversForResolveType: true,
+    requireResolversForResolveType: false,
     allowResolversNotInSchema: true,
   },
   resolvers,

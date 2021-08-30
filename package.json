@@ -60,6 +60,7 @@
     "luxon": "^1.27.0",
     "pg": "^8.6.0",
     "serverless-http": "^2.7.0",
+    "ts-custom-error": "^3.2.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

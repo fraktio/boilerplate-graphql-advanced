@@ -8,3 +8,8 @@ type UniqueConstraintViolationFailure implements FailureOutput {
   message: String!
   field: String!
 }
+
+type NotFoundFailure implements FailureOutput {
+  message: String!
+  field: String!
+}

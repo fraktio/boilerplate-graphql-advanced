@@ -102,6 +102,7 @@ export type AddPersonPersonInput = {
   birthday: Scalars["Date"];
   nationality: Scalars["CountryCode"];
   personalIdentityCode: Scalars["PersonalIdentityCode"];
+  gender: Gender;
 };
 
 export type AddPersonSuccess = {
@@ -121,6 +122,7 @@ export type Adult = Person & {
   nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
+  gender: Gender;
   employers: Array<Company>;
 };
 
@@ -207,7 +209,10 @@ export type EditPersonInput = {
   person: AddPersonPersonInput;
 };
 
-export type EditPersonOutput = EditPersonSuccess;
+export type EditPersonOutput =
+  | EditPersonSuccess
+  | UniqueConstraintViolationFailure
+  | NotFoundFailure;
 
 export type EditPersonSuccess = {
   __typename?: "EditPersonSuccess";
@@ -223,6 +228,18 @@ export enum FilterOperator {
   And = "AND",
   Or = "OR",
 }
+
+export enum Gender {
+  Male = "MALE",
+  Female = "FEMALE",
+  Other = "OTHER",
+}
+
+export type InvalidCursorFailure = FailureOutput & {
+  __typename?: "InvalidCursorFailure";
+  message: Scalars["String"];
+  field: Scalars["String"];
+};
 
 export type LoginUserFailure = {
   __typename?: "LoginUserFailure";
@@ -286,6 +303,12 @@ export type MutationRemoveEmployeeArgs = {
   input: RemoveEmployeeInput;
 };
 
+export type NotFoundFailure = FailureOutput & {
+  __typename?: "NotFoundFailure";
+  message: Scalars["String"];
+  field: Scalars["String"];
+};
+
 export type NumberFact = {
   __typename?: "NumberFact";
   fact: Scalars["String"];
@@ -328,6 +351,7 @@ export type Person = {
   nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
+  gender: Gender;
 };
 
 export type PersonFilterInput = {
@@ -357,6 +381,8 @@ export type PersonSortInput = {
   order: SortOrder;
 };
 
+export type PersonsOutput = PersonsPaginationResponse | InvalidCursorFailure;
+
 export type PersonsPaginationEdge = {
   __typename?: "PersonsPaginationEdge";
   cursor: Scalars["Cursor"];
@@ -376,7 +402,7 @@ export type Query = {
   company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
-  persons: PersonsPaginationResponse;
+  persons: PersonsOutput;
 };
 
 export type QueryCompaniesArgs = {
@@ -482,6 +508,7 @@ export type Underage = Person & {
   nationality: Scalars["CountryCode"];
   birthday: Scalars["Date"];
   timestamp: Timestamp;
+  gender: Gender;
 };
 
 /** Operation fails because some value is not unique */
@@ -671,13 +698,21 @@ export type ResolversTypes = ResolversObject<{
     Omit<EditCompanySuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
   EditPersonInput: EditPersonInput;
-  EditPersonOutput: ResolversTypes["EditPersonSuccess"];
+  EditPersonOutput:
+    | ResolversTypes["EditPersonSuccess"]
+    | ResolversTypes["UniqueConstraintViolationFailure"]
+    | ResolversTypes["NotFoundFailure"];
   EditPersonSuccess: ResolverTypeWrapper<
     Omit<EditPersonSuccess, "person"> & { person: ResolversTypes["Person"] }
   >;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
-  FailureOutput: ResolversTypes["UniqueConstraintViolationFailure"];
+  FailureOutput:
+    | ResolversTypes["InvalidCursorFailure"]
+    | ResolversTypes["NotFoundFailure"]
+    | ResolversTypes["UniqueConstraintViolationFailure"];
   FilterOperator: FilterOperator;
+  Gender: Gender;
+  InvalidCursorFailure: ResolverTypeWrapper<InvalidCursorFailure>;
   LoginUserFailure: ResolverTypeWrapper<LoginUserFailure>;
   LoginUserInput: LoginUserInput;
   LoginUserResponse:
@@ -687,6 +722,7 @@ export type ResolversTypes = ResolversObject<{
     Omit<LoginUserSuccess, "user"> & { user: ResolversTypes["User"] }
   >;
   Mutation: ResolverTypeWrapper<{}>;
+  NotFoundFailure: ResolverTypeWrapper<NotFoundFailure>;
   NumberFact: ResolverTypeWrapper<NumberFact>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   NumberFactFailure: ResolverTypeWrapper<NumberFactFailure>;
@@ -704,6 +740,9 @@ export type ResolversTypes = ResolversObject<{
   PersonSortField: PersonSortField;
   PersonSortInput: PersonSortInput;
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
+  PersonsOutput:
+    | ResolversTypes["PersonsPaginationResponse"]
+    | ResolversTypes["InvalidCursorFailure"];
   PersonsPaginationEdge: ResolverTypeWrapper<
     Omit<PersonsPaginationEdge, "node"> & { node: ResolversTypes["Person"] }
   >;
@@ -796,12 +835,19 @@ export type ResolversParentTypes = ResolversObject<{
     company: ResolversParentTypes["Company"];
   };
   EditPersonInput: EditPersonInput;
-  EditPersonOutput: ResolversParentTypes["EditPersonSuccess"];
+  EditPersonOutput:
+    | ResolversParentTypes["EditPersonSuccess"]
+    | ResolversParentTypes["UniqueConstraintViolationFailure"]
+    | ResolversParentTypes["NotFoundFailure"];
   EditPersonSuccess: Omit<EditPersonSuccess, "person"> & {
     person: ResolversParentTypes["Person"];
   };
   EmailAddress: Scalars["EmailAddress"];
-  FailureOutput: ResolversParentTypes["UniqueConstraintViolationFailure"];
+  FailureOutput:
+    | ResolversParentTypes["InvalidCursorFailure"]
+    | ResolversParentTypes["NotFoundFailure"]
+    | ResolversParentTypes["UniqueConstraintViolationFailure"];
+  InvalidCursorFailure: InvalidCursorFailure;
   LoginUserFailure: LoginUserFailure;
   LoginUserInput: LoginUserInput;
   LoginUserResponse:
@@ -811,6 +857,7 @@ export type ResolversParentTypes = ResolversObject<{
     user: ResolversParentTypes["User"];
   };
   Mutation: {};
+  NotFoundFailure: NotFoundFailure;
   NumberFact: NumberFact;
   Int: Scalars["Int"];
   NumberFactFailure: NumberFactFailure;
@@ -827,6 +874,9 @@ export type ResolversParentTypes = ResolversObject<{
   PersonInput: PersonInput;
   PersonSortInput: PersonSortInput;
   PersonalIdentityCode: Scalars["PersonalIdentityCode"];
+  PersonsOutput:
+    | ResolversParentTypes["PersonsPaginationResponse"]
+    | ResolversParentTypes["InvalidCursorFailure"];
   PersonsPaginationEdge: Omit<PersonsPaginationEdge, "node"> & {
     node: ResolversParentTypes["Person"];
   };
@@ -936,6 +986,7 @@ export type AdultResolvers<
   >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
+  gender?: Resolver<ResolversTypes["Gender"], ParentType, ContextType>;
   employers?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
@@ -1060,7 +1111,13 @@ export type EditPersonOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["EditPersonOutput"] = ResolversParentTypes["EditPersonOutput"],
 > = ResolversObject<{
-  __resolveType: TypeResolveFn<"EditPersonSuccess", ParentType, ContextType>;
+  __resolveType: TypeResolveFn<
+    | "EditPersonSuccess"
+    | "UniqueConstraintViolationFailure"
+    | "NotFoundFailure",
+    ParentType,
+    ContextType
+  >;
 }>;
 
 export type EditPersonSuccessResolvers<
@@ -1081,12 +1138,23 @@ export type FailureOutputResolvers<
   ParentType extends ResolversParentTypes["FailureOutput"] = ResolversParentTypes["FailureOutput"],
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
-    "UniqueConstraintViolationFailure",
+    | "InvalidCursorFailure"
+    | "NotFoundFailure"
+    | "UniqueConstraintViolationFailure",
     ParentType,
     ContextType
   >;
   message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   field?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+}>;
+
+export type InvalidCursorFailureResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["InvalidCursorFailure"] = ResolversParentTypes["InvalidCursorFailure"],
+> = ResolversObject<{
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  field?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type LoginUserFailureResolvers<
@@ -1171,6 +1239,15 @@ export type MutationResolvers<
   >;
 }>;
 
+export type NotFoundFailureResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["NotFoundFailure"] = ResolversParentTypes["NotFoundFailure"],
+> = ResolversObject<{
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  field?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type NumberFactResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["NumberFact"] = ResolversParentTypes["NumberFact"],
@@ -1236,12 +1313,24 @@ export type PersonResolvers<
   >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
+  gender?: Resolver<ResolversTypes["Gender"], ParentType, ContextType>;
 }>;
 
 export interface PersonalIdentityCodeScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["PersonalIdentityCode"], any> {
   name: "PersonalIdentityCode";
 }
+
+export type PersonsOutputResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["PersonsOutput"] = ResolversParentTypes["PersonsOutput"],
+> = ResolversObject<{
+  __resolveType: TypeResolveFn<
+    "PersonsPaginationResponse" | "InvalidCursorFailure",
+    ParentType,
+    ContextType
+  >;
+}>;
 
 export type PersonsPaginationEdgeResolvers<
   ContextType = Context,
@@ -1304,7 +1393,7 @@ export type QueryResolvers<
     RequireFields<QueryPersonArgs, "input">
   >;
   persons?: Resolver<
-    ResolversTypes["PersonsPaginationResponse"],
+    ResolversTypes["PersonsOutput"],
     ParentType,
     ContextType,
     RequireFields<QueryPersonsArgs, "pagination">
@@ -1415,6 +1504,7 @@ export type UnderageResolvers<
   >;
   birthday?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes["Timestamp"], ParentType, ContextType>;
+  gender?: Resolver<ResolversTypes["Gender"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1462,10 +1552,12 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   EditPersonSuccess?: EditPersonSuccessResolvers<ContextType>;
   EmailAddress?: GraphQLScalarType;
   FailureOutput?: FailureOutputResolvers<ContextType>;
+  InvalidCursorFailure?: InvalidCursorFailureResolvers<ContextType>;
   LoginUserFailure?: LoginUserFailureResolvers<ContextType>;
   LoginUserResponse?: LoginUserResponseResolvers<ContextType>;
   LoginUserSuccess?: LoginUserSuccessResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  NotFoundFailure?: NotFoundFailureResolvers<ContextType>;
   NumberFact?: NumberFactResolvers<ContextType>;
   NumberFactFailure?: NumberFactFailureResolvers<ContextType>;
   NumberFactOutput?: NumberFactOutputResolvers<ContextType>;
@@ -1473,6 +1565,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   PageInfo?: PageInfoResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   PersonalIdentityCode?: GraphQLScalarType;
+  PersonsOutput?: PersonsOutputResolvers<ContextType>;
   PersonsPaginationEdge?: PersonsPaginationEdgeResolvers<ContextType>;
   PersonsPaginationResponse?: PersonsPaginationResponseResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;

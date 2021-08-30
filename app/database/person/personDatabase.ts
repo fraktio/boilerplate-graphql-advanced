@@ -4,6 +4,7 @@ import { ValueOf } from "~/@types/global";
 import { CompanyID } from "~/database/company/companyQueries";
 import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
+import { NotFoundError } from "~/database/error/NotFoundError";
 import { QueryCursor } from "~/database/pagination";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { PersonFilterOperation } from "~/database/person/personFilters";
@@ -16,6 +17,9 @@ import {
 } from "~/database/person/personQueries";
 import { SortColumn } from "~/database/sort";
 import { UUID } from "~/generation/mappers";
+import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
+import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";
+import { Try } from "~/utils/validation";
 
 export const personDB = {
   async get(params: {
@@ -49,7 +53,7 @@ export const personDB = {
   }): Promise<PersonTable> {
     const person = await this.getByUUID(params);
     if (!person) {
-      throw new Error(`Invalid person UUID: ${params.personUUID}`);
+      throw new NotFoundError(`Invalid person UUID: ${params.personUUID}`);
     }
 
     return person;
@@ -77,12 +81,16 @@ export const personDB = {
     knex: DBSession;
     person: CreatePersonOptions;
     personDL: PersonDataLoader;
-  }): Promise<PersonTable> {
-    const person = await personQueries.create(params);
+  }): Promise<Try<PersonTable, UniqueConstraintViolationFailure>> {
+    const personResult = await personQueries.create(params);
 
-    params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+    if (personResult.success) {
+      params.personDL
+        .getLoader({ knex: params.knex })
+        .prime(personResult.value.id, personResult.value);
+    }
 
-    return person;
+    return personResult;
   },
 
   async updateByUUID(params: {
@@ -90,14 +98,17 @@ export const personDB = {
     personUUID: UUID;
     person: UpdatePersonOptions;
     personDL: PersonDataLoader;
-  }): Promise<Maybe<PersonTable>> {
-    const person = await personQueries.updateByUUID(params);
+  }): Promise<
+    Try<PersonTable, UniqueConstraintViolationFailure | NotFoundFailure>
+  > {
+    const personResult = await personQueries.updateByUUID(params);
 
-    if (person) {
+    if (personResult.success) {
+      const person = personResult.value;
       params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
     }
 
-    return person;
+    return personResult;
   },
 
   async getPersonsOfCompany(params: {
