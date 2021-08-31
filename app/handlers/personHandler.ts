@@ -1,4 +1,5 @@
 import { Maybe } from "graphql-tools";
+import { DateTime } from "luxon";
 
 import { ValueOf } from "~/@types/global";
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
@@ -124,21 +125,35 @@ export const getPersonPaginationCursors = async (params: {
     return [];
   }
 
-  try {
-    const cursorItem = await personDB.tryGetByUUID({
-      knex: knex,
-      personUUID: queryCursorUUID,
-      personDL: personDL,
-    });
+  const cursorItem = await personDB.tryGetByUUID({
+    knex: knex,
+    personUUID: queryCursorUUID,
+    personDL: personDL,
+  });
 
-    return getPaginationQueryCursorsFromSort({ cursorItem: cursorItem, sort });
-  } catch (e) {
-    if (e instanceof NotFoundError) {
-      return [];
-    }
-    throw e;
-  }
+  return getPaginationQueryCursorsFromSort({
+    cursorItem: mapPersonPaginationFields(cursorItem),
+    sort,
+  });
 };
+
+type PersonSortCursors = {
+  uuid: UUID;
+  birthday: DateTime;
+  firstName: string;
+  lastName: string;
+  createdAt: DateTime;
+};
+
+const mapPersonPaginationFields = (
+  personTable: PersonTable,
+): PersonSortCursors => ({
+  uuid: personTable.UUID,
+  birthday: personTable.birthday,
+  firstName: personTable.firstName,
+  lastName: personTable.lastName,
+  createdAt: personTable.timestamp.createdAt,
+});
 
 export const addPersonHandler = async (params: {
   knex: DBSession;

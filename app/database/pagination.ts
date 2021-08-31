@@ -1,7 +1,6 @@
 import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
 
-import { ValueOf } from "~/@types/global";
 import { SortColumn, SortOrder } from "~/database/sort";
 import { Cursor } from "~/graphql/scalars/CursorResolver";
 
@@ -24,16 +23,19 @@ export type QueryCursor<T> = {
 };
 
 export const getPaginationQueryCursorsFromSort = <T>(params: {
-  cursorItem: T;
+  cursorItem: Record<string, T>;
   sort: SortColumn[];
-}): QueryCursor<ValueOf<T>>[] => {
+}): QueryCursor<T>[] => {
   const queryCursors = params.sort.map((sortItem) => {
-    // TODO, smarter mapping column vs object field names
-    const cursorColumn = sortItem.column === "uuid" ? "UUID" : sortItem.column;
+    if (sortItem.column in params.cursorItem) {
+      return {
+        column: sortItem.column,
+        value: params.cursorItem[sortItem.column],
+        order: sortItem.order,
+      };
+    }
 
-    const value = params.cursorItem[cursorColumn as keyof T];
-
-    return { column: sortItem.column, value: value, order: sortItem.order };
+    throw new Error(`Invalid pagination key ${sortItem.column}`);
   });
 
   return queryCursors;
