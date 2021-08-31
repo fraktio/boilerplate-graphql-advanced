@@ -6,37 +6,45 @@ import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueCons
 
 type FailureObject = InvalidCursorFailure | UniqueConstraintViolationFailure;
 
+enum FailureTypes {
+  InvalidCursorFailure,
+  UniqueConstraintViolationFailure,
+  NotFoundFailure,
+}
+
 type ResolvedFailure = {
-  __typename: string;
+  __typename: FailureTypes;
   field: string;
   message: string;
 };
 
 export const failureResolvers = {
   FailureOutput: {
-    __resolveType(failureOutput: FailureObject): string {
+    __resolveType(failureOutput: FailureObject): FailureTypes {
       return resolveFailureType(failureOutput);
     },
   },
 };
 
-export function resolveFailureType(failureObject: FailureObject): string {
+export function resolveFailureType(failureObject: FailureObject): FailureTypes {
   switch (failureObject.constructor) {
     case InvalidCursorFailure:
-      return "InvalidCursorFailure";
+      return FailureTypes.InvalidCursorFailure;
 
     case UniqueConstraintViolationFailure:
-      return "UniqueConstraintViolationFailure";
+      return FailureTypes.UniqueConstraintViolationFailure;
 
     case NotFoundFailure:
-      return "NotFoundFailure";
+      return FailureTypes.NotFoundFailure;
   }
   throw new ApolloError("Cannot determine FailureObject type");
 }
 
 export function resolveFailure(failureObject: FailureObject): ResolvedFailure {
+  const type = resolveFailureType(failureObject);
+
   return {
-    __typename: resolveFailureType(failureObject),
+    __typename: type,
     field: failureObject.field,
     message: failureObject.message,
   };
