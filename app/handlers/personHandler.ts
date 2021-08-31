@@ -1,4 +1,3 @@
-import { Maybe } from "graphql-tools";
 import { DateTime } from "luxon";
 
 import { ValueOf } from "~/@types/global";
@@ -6,7 +5,6 @@ import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
 import { DBSession } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
-import { NotFoundError } from "~/database/error/NotFoundError";
 import {
   getPaginationLimit,
   getPaginationQueryCursorsFromSort,
@@ -24,6 +22,7 @@ import {
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
 import { createSortParams, SortColumn, SortOrder } from "~/database/sort";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { InvalidCursorFailure } from "~/handlers/failures/InvalidCursorFailure";
 import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
@@ -125,23 +124,16 @@ export const getPersonPaginationCursors = async (params: {
     return [];
   }
 
-  try {
-    const cursorItem = await personDB.tryGetByUUID({
-      knex: knex,
-      personUUID: queryCursorUUID,
-      personDL: personDL,
-    });
+  const cursorItem = await personDB.tryGetByUUID({
+    knex: knex,
+    personUUID: queryCursorUUID,
+    personDL: personDL,
+  });
 
-    return getPaginationQueryCursorsFromSort({
-      cursorItem: mapQueryPersonFields(cursorItem),
-      sort,
-    });
-  } catch (e) {
-    if (e instanceof NotFoundError) {
-      return [];
-    }
-    throw e;
-  }
+  return getPaginationQueryCursorsFromSort({
+    cursorItem: mapPersonPaginationFields(cursorItem),
+    sort,
+  });
 };
 
 type PersonSortCursors = {
@@ -152,15 +144,15 @@ type PersonSortCursors = {
   createdAt: DateTime;
 };
 
-function mapQueryPersonFields(personTable: PersonTable): PersonSortCursors {
-  return {
-    uuid: personTable.UUID,
-    birthday: personTable.birthday,
-    firstName: personTable.firstName,
-    lastName: personTable.lastName,
-    createdAt: personTable.timestamp.createdAt,
-  };
-}
+const mapPersonPaginationFields = (
+  personTable: PersonTable,
+): PersonSortCursors => ({
+  uuid: personTable.UUID,
+  birthday: personTable.birthday,
+  firstName: personTable.firstName,
+  lastName: personTable.lastName,
+  createdAt: personTable.timestamp.createdAt,
+});
 
 export const addPersonHandler = async (params: {
   knex: DBSession;
