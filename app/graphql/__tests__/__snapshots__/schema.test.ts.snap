@@ -14,6 +14,8 @@ GraphQLSchema {
       "interfaces": Array [],
       "objects": Array [
         "UniqueConstraintViolationFailure",
+        "NotFoundFailure",
+        "InvalidCursorFailure",
       ],
     },
     "Person": Object {
@@ -68,12 +70,15 @@ GraphQLSchema {
     "Email": "Email",
     "FailureOutput": "FailureOutput",
     "FilterOperator": "FilterOperator",
+    "Gender": "Gender",
     "Int": "Int",
+    "InvalidCursorFailure": "InvalidCursorFailure",
     "LoginUserFailure": "LoginUserFailure",
     "LoginUserInput": "LoginUserInput",
     "LoginUserResponse": "LoginUserResponse",
     "LoginUserSuccess": "LoginUserSuccess",
     "Mutation": "Mutation",
+    "NotFoundFailure": "NotFoundFailure",
     "NumberFact": "NumberFact",
     "NumberFactFailure": "NumberFactFailure",
     "NumberFactInput": "NumberFactInput",
@@ -88,6 +93,7 @@ GraphQLSchema {
     "PersonSortField": "PersonSortField",
     "PersonSortInput": "PersonSortInput",
     "PersonalIdentityCode": "PersonalIdentityCode",
+    "PersonsOutput": "PersonsOutput",
     "PersonsPaginationEdge": "PersonsPaginationEdge",
     "PersonsPaginationResponse": "PersonsPaginationResponse",
     "Phone": "Phone",
@@ -130,8 +136,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1029,
-              "start": 1024,
+              "end": 1196,
+              "start": 1191,
             },
             "value": "Query",
           },

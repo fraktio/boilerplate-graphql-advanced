@@ -28,8 +28,7 @@ export const getPaginationQueryCursorsFromSort = <T>(params: {
   sort: SortColumn[];
 }): QueryCursor<ValueOf<T>>[] => {
   const queryCursors = params.sort.map((sortItem) => {
-    // TODO, smarter mapping column vs object field names
-    const cursorColumn = sortItem.column === "uuid" ? "UUID" : sortItem.column;
+    const cursorColumn = sortItem.column;
 
     const value = params.cursorItem[cursorColumn as keyof T];
 

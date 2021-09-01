@@ -1,7 +1,6 @@
 import { UserInputError } from "apollo-server-express";
 
 import { Resolvers } from "~/generation/generated";
-import { resolveFailure } from "~/graphql/resolvers/failureResolvers";
 import {
   addPersonHandler,
   adultEmployersHandler,
@@ -73,7 +72,11 @@ export const personResolver: Resolvers = {
         };
       }
 
-      return resolveFailure(personsResult.failure);
+      return {
+        __typename: personsResult.failure.__typename,
+        message: personsResult.failure.message,
+        field: personsResult.failure.field,
+      };
     },
   },
   Mutation: {
@@ -94,11 +97,16 @@ export const personResolver: Resolvers = {
         person: newPerson,
         personDL: dataLoaders.personDL,
       });
+
       if (addedPerson.success) {
         return { __typename: "AddPersonSuccess", person: addedPerson.value };
       }
 
-      return resolveFailure(addedPerson.failure);
+      return {
+        __typename: addedPerson.failure.__typename,
+        message: addedPerson.failure.message,
+        field: addedPerson.failure.field,
+      };
     },
 
     async editPerson(_, { input }, { knex, dataLoaders }) {
@@ -121,10 +129,16 @@ export const personResolver: Resolvers = {
       });
 
       if (editPerson.success) {
-        return { __typename: "EditPersonSuccess", person: editPerson.value };
+        const tussi = { ...editPerson.value, peppe: "makkaeeeera" };
+
+        return { __typename: "EditPersonSuccess", person: tussi };
       }
 
-      return resolveFailure(editPerson.failure);
+      return {
+        __typename: editPerson.failure.__typename,
+        message: editPerson.failure.message,
+        field: editPerson.failure.field,
+      };
     },
   },
 };
