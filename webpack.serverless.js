@@ -7,4 +7,7 @@ const prod = require("./webpack.prod.js");
 module.exports = merge(prod, {
   mode: slsw.lib.webpack.isLocal ? "development" : "production",
   entry: slsw.lib.entries,
+  output: {
+    filename: "serverlessHandler.js",
+  },
 });

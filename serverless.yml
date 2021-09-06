@@ -48,6 +48,7 @@ custom:
         includeModules:
             forceExclude:
               - aws-sdk
+              - "@google-cloud/logging-bunyan"
             forceInclude:
               - pg
 
@@ -102,7 +103,7 @@ provider:
     
 functions:
     graphql:
-        handler: app/serverlessHandler.graphqlHandler
+        handler: serverlessHandler.graphqlHandler
         events:
         - http:
             path: graphql
