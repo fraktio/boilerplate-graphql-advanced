@@ -1,10 +1,11 @@
-import { DatabaseConfig } from "~/config/databaseConfig";
+import { DatabaseConfig } from "~/config/configs/databaseConfig";
+import { Platform } from "~/config/configs/platformConfig";
 import { getConnection } from "~/database/connection";
 
 describe("database tests / connection", () => {
   it("createUUID", async () => {
     const databaseConfig: DatabaseConfig = {
-      type: "type",
+      type: "pg",
       host: "host",
       user: "user",
       port: 5432,
@@ -12,7 +13,10 @@ describe("database tests / connection", () => {
       databaseName: "databaseName",
     };
 
-    const result = getConnection({ databaseConfig });
+    const result = getConnection({
+      databaseConfig,
+      platformConfig: { type: Platform.Local },
+    });
 
     expect(result).toMatchSnapshot();
   });

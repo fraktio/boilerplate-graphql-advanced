@@ -1,17 +1,38 @@
-import bunyan from "bunyan";
+import { LoggingBunyan } from "@google-cloud/logging-bunyan";
+import bunyan, { Stream } from "bunyan";
 
-import { Config } from "~/config/config";
+import { LoggingConfig } from "~/config/configs/loggingConfig";
+import { Platform, PlatformConfig } from "~/config/configs/platformConfig";
 
 export type Logger = bunyan;
 
-export const createLogger = (opts: { config: Config }): Logger =>
+const createStreams = (params: {
+  loggingConfig: LoggingConfig;
+  platformConfig: PlatformConfig;
+}): Stream[] => {
+  const { loggingLevel } = params.loggingConfig;
+
+  switch (params.platformConfig.type) {
+    case Platform.GoogleCloudPlatform:
+      return [new LoggingBunyan().stream(loggingLevel)];
+
+    case Platform.Local:
+    default:
+      return [
+        {
+          level: loggingLevel,
+          stream: process.stdout,
+        },
+      ];
+  }
+};
+
+export const createLogger = (params: {
+  loggingConfig: LoggingConfig;
+  platformConfig: PlatformConfig;
+}): Logger =>
   bunyan.createLogger({
-    name: opts.config.logging.name,
-    version: opts.config.logging.version,
-    streams: [
-      {
-        level: opts.config.logging.loggingLevel,
-        stream: process.stdout,
-      },
-    ],
+    name: params.loggingConfig.name,
+    version: params.loggingConfig.version,
+    streams: createStreams(params),
   });

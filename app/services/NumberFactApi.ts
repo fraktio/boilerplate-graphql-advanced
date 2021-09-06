@@ -15,7 +15,10 @@ export class NumberFactApi extends RESTDataSource<BaseContext> {
   }
 
   protected willSendRequest(request: RequestOptions): void {
-    request.headers.set("Authorization", this.context.config.numberFact.token);
+    request.headers.set(
+      "Authorization",
+      this.context.config.api.numberFact.token,
+    );
   }
 
   public async getFact(params: {

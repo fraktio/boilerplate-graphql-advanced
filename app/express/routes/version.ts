@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { LoggingConfig } from "~/config/loggingConfig";
+import { LoggingConfig } from "~/config/configs/loggingConfig";
 
 export const createVersionRoutes = (params: {
   loggingConfig: LoggingConfig;
