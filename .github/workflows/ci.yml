@@ -2,20 +2,6 @@ name: CI
 on: [push]
 
 jobs:
-  serverless: 
-    runs-on: ubuntu-latest
-    container: node:15
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Check serverless package (correct packages in dependency list)
-      run: npm run build:serverless
-
   docker: 
     runs-on: ubuntu-latest
     
