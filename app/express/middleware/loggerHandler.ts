@@ -72,6 +72,8 @@ export const createLoggerMiddleware = (params: {
     const childLogger = params.logger.child(requestTrace);
     // eslint-disable-next-line no-param-reassign
     req.logger = childLogger;
+    // eslint-disable-next-line no-param-reassign
+    req.requestId = requestTrace.requestId;
 
     childLogger.info("start of request");
     res.on("finish", function responseSent() {

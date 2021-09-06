@@ -1,7 +1,7 @@
 import { Response } from "express";
 
+import { EnvConfig } from "~/config/configs/envConfig";
 import { SessionConfig } from "~/config/configs/sessionConfig";
-import { EnvConfig } from "~/config/envConfig";
 import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";

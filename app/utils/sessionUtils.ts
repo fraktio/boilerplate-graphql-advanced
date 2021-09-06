@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { sign, verify } from "jsonwebtoken";
 import { DateTime } from "luxon";
 
-import { CookiesConfig } from "~/config/cookiesConfig";
-import { EnvConfig } from "~/config/envConfig";
+import { EnvConfig } from "~/config/configs/envConfig";
+import { SessionConfig } from "~/config/configs/sessionConfig";
 import { UserTable } from "~/database/user/userQueries";
 import { UUID } from "~/generation/mappers";
 import { toFailure, toSuccess, Try } from "~/utils/validation";
@@ -29,22 +29,22 @@ class Authentication {
   public generateAndSetToken(params: {
     res: Response;
     user: UserTable;
-    cookieConfig: CookiesConfig;
+    sessionConfig: SessionConfig;
     envConfig: EnvConfig;
   }): GenerateAccessTokenResponse {
     const signObj: JWTAccessPayload = { uuid: params.user.UUID };
 
-    const accessToken = sign(signObj, params.cookieConfig.secret, {
-      expiresIn: params.cookieConfig.accessTokenAgeSeconds,
+    const accessToken = sign(signObj, params.sessionConfig.secret, {
+      expiresIn: params.sessionConfig.accessTokenAgeSeconds,
     });
 
     const expiresAt = this.getTokenExpireDate({
-      ageSeconds: params.cookieConfig.accessTokenAgeSeconds,
+      ageSeconds: params.sessionConfig.accessTokenAgeSeconds,
     });
 
     params.res.cookie(this.AUTHORIZATION_HEADER, accessToken, {
       expires: expiresAt.toJSDate(),
-      domain: params.cookieConfig.domain,
+      domain: params.sessionConfig.domain,
       sameSite: "strict",
       httpOnly: true,
       secure: params.envConfig.isProduction,
@@ -58,7 +58,7 @@ class Authentication {
 
   public verifyToken(params: {
     req: Request;
-    cookiesConfig: CookiesConfig;
+    sessionConfig: SessionConfig;
   }): Try<JWTAccessPayload, null> {
     const authHeader = params.req.cookies[this.AUTHORIZATION_HEADER];
 
@@ -69,7 +69,7 @@ class Authentication {
     try {
       const verifiedPayload = verify(
         authHeader,
-        params.cookiesConfig.secret,
+        params.sessionConfig.secret,
       ) as JWTAccessPayload;
 
       return toSuccess(verifiedPayload);
