@@ -1,8 +1,14 @@
 import knex, { Knex } from "knex";
 
-import { DatabaseConfig } from "~/config/databaseConfig";
+import { DatabaseConfig } from "~/config/configs/databaseConfig";
+import {
+  Platform,
+  PlatformConfig,
+  PlatformGoogleCloudConfig,
+  PlatformLocalConfig,
+} from "~/config/configs/platformConfig";
 import { Logger } from "~/logger";
-import { toSuccess, toFailure, Try } from "~/utils/validation";
+import { toFailure, toSuccess, Try } from "~/utils/validation";
 
 export type Transaction = Knex.Transaction;
 export type DBSession = Knex | Transaction;
@@ -38,39 +44,19 @@ export const withTransaction = async <T>(
   }
 };
 
-type ConnectionParams = {
+type ConnectionParams<T extends PlatformConfig = PlatformConfig> = {
+  platformConfig: T;
   databaseConfig: DatabaseConfig;
   logger?: Logger;
 };
 
-const createConnection = (
-  params: ConnectionParams,
+const createConnectionLocal = (
+  params: ConnectionParams<PlatformLocalConfig>,
 ): Knex.StaticConnectionConfig => {
-  // eslint-disable-next-line no-process-env
-  const googleCloudConnectionName = process.env.CLOUD_SQL_CONNECTION_NAME;
-
-  if (googleCloudConnectionName) {
-    const host = params.databaseConfig.host ?? "/cloudsql";
-    const fullHost = `${host}/${googleCloudConnectionName}`;
-
-    params.logger?.info(
-      { databaseHost: fullHost },
-      "Database connection: Google Cloud Platform",
-    );
-
-    return {
-      host: fullHost,
-      user: params.databaseConfig.user,
-      port: params.databaseConfig.port,
-      password: params.databaseConfig.password,
-      database: params.databaseConfig.databaseName,
-    };
-  }
-
-  params.logger?.info(
-    { databaseHost: params.databaseConfig.host },
-    "Database connection: Local",
-  );
+  params.logger?.info({
+    databaseHost: params.databaseConfig.host,
+    platform: params.platformConfig.type,
+  });
 
   return {
     host: params.databaseConfig.host,
@@ -79,6 +65,42 @@ const createConnection = (
     password: params.databaseConfig.password,
     database: params.databaseConfig.databaseName,
   };
+};
+
+const createConnectionGoogleCloudPlatform = (
+  params: ConnectionParams<PlatformGoogleCloudConfig>,
+): Knex.StaticConnectionConfig => {
+  const fullHost = `${params.databaseConfig.host}/${params.platformConfig.sqlConnectionName}`;
+
+  params.logger?.info({
+    databaseHost: fullHost,
+    platform: params.platformConfig.type,
+  });
+
+  return {
+    host: fullHost,
+    user: params.databaseConfig.user,
+    port: params.databaseConfig.port,
+    password: params.databaseConfig.password,
+    database: params.databaseConfig.databaseName,
+  };
+};
+
+const createConnection = (
+  params: ConnectionParams,
+): Knex.StaticConnectionConfig => {
+  switch (params.platformConfig.type) {
+    case Platform.GoogleCloudPlatform:
+      return createConnectionGoogleCloudPlatform(
+        params as ConnectionParams<PlatformGoogleCloudConfig>,
+      );
+
+    case Platform.Local:
+    default:
+      return createConnectionLocal(
+        params as ConnectionParams<PlatformLocalConfig>,
+      );
+  }
 };
 
 export const createKnex = (params: ConnectionParams): DBSession =>

@@ -45,7 +45,7 @@ export const authenticationResolver: Resolvers = {
         knex,
         res,
         input,
-        cookiesConfig: config.cookies,
+        sessionConfig: config.session,
         envConfig: config.env,
         userDL: dataLoaders.userDL,
       });
@@ -66,7 +66,7 @@ export const authenticationResolver: Resolvers = {
     },
 
     logout(_, __, { res, config }) {
-      logoutHandler({ res, cookiesConfig: config.cookies });
+      logoutHandler({ res, sessionConfig: config.session });
 
       return true;
     },

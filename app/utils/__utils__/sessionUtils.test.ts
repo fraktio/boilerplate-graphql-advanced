@@ -1,18 +1,19 @@
 import { Response, Request } from "express";
 import { verify } from "jsonwebtoken";
 
-import { CookiesConfig } from "~/config/cookiesConfig";
-import { EnvConfig } from "~/config/envConfig";
+import { EnvConfig } from "~/config/configs/envConfig";
+import { SessionConfig } from "~/config/configs/sessionConfig";
 import { UserTable } from "~/database/user/userQueries";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 describe("utils / hashing", () => {
   const SECRET = "secret";
-  const mockCookiesConfig: CookiesConfig = {
+  const mockSessionConfig: SessionConfig = {
     path: "/",
     domain: "domain",
     secret: SECRET,
     accessTokenAgeSeconds: 999,
+    refreshTokenAgeSeconds: 9999,
   };
 
   const mockEnvConfig: EnvConfig = {
@@ -33,7 +34,7 @@ describe("utils / hashing", () => {
         cookie: mockCallback,
       } as unknown as Response,
       user: mockUser,
-      cookieConfig: mockCookiesConfig,
+      sessionConfig: mockSessionConfig,
       envConfig: mockEnvConfig,
     });
 
@@ -47,7 +48,7 @@ describe("utils / hashing", () => {
           authorization: accessToken.accessToken,
         },
       } as unknown as Request,
-      cookiesConfig: mockCookiesConfig,
+      sessionConfig: mockSessionConfig,
     });
 
     expect(result).toMatchObject({

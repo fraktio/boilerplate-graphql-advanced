@@ -44,7 +44,7 @@ Resources:
       Name: ${self:custom.rds.clusterDatabaseSecretName}
       Description: 'This is a Secrets Manager secret for an RDS DB instance'
       GenerateSecretString:
-        SecretStringTemplate: '{"username": "${env:DATABASE_DATABASE_NAME}"}'
+        SecretStringTemplate: '{"username": "${env:DATABASE_NAME}"}'
         GenerateStringKey: 'password'
         PasswordLength: 30
         ExcludeCharacters: '"@/\'

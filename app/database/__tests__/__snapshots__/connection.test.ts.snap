@@ -2,7 +2,7 @@
 
 exports[`database tests / connection createUUID 1`] = `
 Object {
-  "client": "type",
+  "client": "pg",
   "connection": Object {
     "database": "databaseName",
     "host": "host",

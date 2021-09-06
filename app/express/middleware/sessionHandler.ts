@@ -1,16 +1,16 @@
 import { RequestHandler } from "express";
 
-import { CookiesConfig } from "~/config/cookiesConfig";
+import { SessionConfig } from "~/config/configs/sessionConfig";
 import { DBSession } from "~/database/connection";
 import { userQueries } from "~/database/user/userQueries";
 import { sessionUtils } from "~/utils/sessionUtils";
 
 export const sessionHandler =
-  (params: { knex: DBSession; cookiesConfig: CookiesConfig }): RequestHandler =>
+  (params: { knex: DBSession; sessionConfig: SessionConfig }): RequestHandler =>
   async (req, _, next): Promise<void> => {
     const tokenResponse = sessionUtils.authentication.verifyToken({
       req,
-      cookiesConfig: params.cookiesConfig,
+      sessionConfig: params.sessionConfig,
     });
 
     if (!tokenResponse.success) {

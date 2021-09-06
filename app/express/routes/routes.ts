@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { LoggingConfig } from "~/config/loggingConfig";
+import { LoggingConfig } from "~/config/configs/loggingConfig";
 import { DBSession } from "~/database/connection";
 import { createHealthRoutes } from "~/express/routes/health";
 import { createVersionRoutes } from "~/express/routes/version";

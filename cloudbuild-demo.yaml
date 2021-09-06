@@ -1,0 +1,111 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-cache
+  entrypoint: 'bash'
+  args:
+   - '-c'
+   - |
+     docker pull eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest || exit 0
+     docker pull eu.gcr.io/$PROJECT_ID/$_IMAGE:latest || exit 0
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-build-dependencies
+  waitFor:
+    - docker-cache
+  args: [
+            'build',
+            '--target', 'build',
+            '--cache-from', 'eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest',
+            '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest',
+            '.'
+        ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-build-release
+  waitFor:
+    - docker-build-dependencies
+  args: [
+            'build',
+            '--target', 'release',
+            '--cache-from', 'eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest',
+            '--cache-from', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest',
+            '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
+            '-t', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest',
+            '.'
+        ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-push-build-dependencies
+  waitFor:
+    - docker-build-dependencies
+  args: [
+            'push', 
+            'eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest'
+        ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-push-build-release-short-sha
+  waitFor:
+    - docker-build-release
+  args: [
+            'push', 
+            'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA',
+        ]
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: docker-push-build-release-latest
+  waitFor:
+    - docker-build-release
+  args: [
+            'push', 
+            'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest',
+        ]
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: deploy
+  entrypoint: gcloud
+  waitFor:
+    - docker-push-build-release-short-sha
+  args: [
+            'beta', 'run', 'deploy', 'graphql-training-demo',
+            '--image', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA', 
+            '--region', '$_REGION',
+            '--cpu', '1000m',
+            '--memory', '256Mi',
+            '--min-instances', '0',
+            '--max-instances', '1',
+            '--service-account', '$_SERVICE_ACCOUNT_NAME',
+            '--allow-unauthenticated',
+            '--platform', 'managed',
+            '--set-cloudsql-instances', '$_CLOUD_SQL_CONNECTION_NAME',
+            
+            '--update-env-vars', 'GOOGLE_CLOUD_SQL_CONNECTION_NAME=$_CLOUD_SQL_CONNECTION_NAME',
+            '--update-env-vars', 'GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID',
+            '--update-env-vars', 'PLATFORM=google-cloud-platform',
+            
+            '--update-env-vars', 'DATABASE_NAME=$_CLOUD_SQL_INSTANCE_NAME',
+            '--update-env-vars', 'DATABASE_USER=$_CLOUD_SQL_USER_NAME',
+            '--update-env-vars', 'DATABASE_PORT=5432',
+            '--update-env-vars', 'DATABASE_HOST=/cloudsql',
+            '--update-env-vars', 'DATABASE_TYPE=pg',
+
+            '--update-env-vars', 'API_NUMBER_FACT_TOKEN=number-fact-token',
+
+            '--update-env-vars', 'TOKEN_PATH=/graphql',
+            '--update-env-vars', 'TOKEN_DOMAIN=frakt.io',
+            '--update-env-vars', 'TOKEN_SECRET=abckissakavelee123',
+            '--update-env-vars', 'ACCESS_TOKEN_AGE_SECONDS=302400',
+            '--update-env-vars', 'REFRESH_TOKEN_AGE_SECONDS=604800',
+
+            '--update-env-vars', 'API_CORS_ENDPOINT=*',
+            '--update-env-vars', 'IS_PRODUCTION=TRUE',
+            '--update-env-vars', 'LOGGING_LEVEL=info',
+            
+            '--update-secrets', 'DATABASE_PASSWORD=DB_USER_PASSWORD:latest',
+        ]
+
+tags: ['$PROJECT_ID-$_IMAGE']
+images: ['eu.gcr.io/$PROJECT_ID/$_IMAGE-build:latest', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:$SHORT_SHA', 'eu.gcr.io/$PROJECT_ID/$_IMAGE:latest']
+
+
+

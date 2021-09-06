@@ -22,8 +22,13 @@ const server = app.listen({ port: config.env.apiPort }, async () => {
     process.exit(1);
   }
 
-  logger.info("Database connection success 🎉");
+  logger.info("🎉 Database connection success");
   logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
+});
+
+process.on("SIGTERM", () => {
+  logger.error("Received SIGTERM");
+  closeAll();
 });
 
 process.on("SIGINT", closeAll);

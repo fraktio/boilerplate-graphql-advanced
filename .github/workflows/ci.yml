@@ -2,20 +2,6 @@ name: CI
 on: [push]
 
 jobs:
-  serverless: 
-    runs-on: ubuntu-latest
-    container: node:15
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Check serverless package (correct packages in dependency list)
-      run: npm run build:serverless
-
   docker: 
     runs-on: ubuntu-latest
     
@@ -72,7 +58,7 @@ jobs:
         DATABASE_USER: graphql-boilerplate-ci
         DATABASE_PORT: 5432
         DATABASE_PASSWORD: graphql-boilerplate-ci
-        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+        DATABASE_NAME: graphql-boilerplate-ci
 
     - name: Database Seed
       run: npm run seed
@@ -82,7 +68,7 @@ jobs:
         DATABASE_USER: graphql-boilerplate-ci
         DATABASE_PORT: 5432
         DATABASE_PASSWORD: graphql-boilerplate-ci
-        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+        DATABASE_NAME: graphql-boilerplate-ci
 
     - name: Database Migration Rollback
       run: npm run database:migrate:rollback
@@ -92,7 +78,7 @@ jobs:
         DATABASE_USER: graphql-boilerplate-ci
         DATABASE_PORT: 5432
         DATABASE_PASSWORD: graphql-boilerplate-ci
-        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+        DATABASE_NAME: graphql-boilerplate-ci
 
 
     - name: Tests
@@ -102,7 +88,7 @@ jobs:
         DATABASE_PORT: 5432
         DATABASE_HOST: postgres
         DATABASE_PASSWORD: graphql-boilerplate-ci
-        DATABASE_DATABASE_NAME: graphql-boilerplate-ci
+        DATABASE_NAME: graphql-boilerplate-ci
 
     - name: Check for non generated files
       run: git diff --exit-code

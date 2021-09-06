@@ -6,7 +6,7 @@ const { merge } = require("webpack-merge");
 
 const common = require("./webpack.common.js");
 
-dotenv.config({ path: path.join(__dirname, ".env.development") });
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 module.exports = merge(common, {
   mode: "development",

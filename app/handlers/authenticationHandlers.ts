@@ -1,7 +1,7 @@
 import { Response } from "express";
 
-import { CookiesConfig } from "~/config/cookiesConfig";
-import { EnvConfig } from "~/config/envConfig";
+import { EnvConfig } from "~/config/configs/envConfig";
+import { SessionConfig } from "~/config/configs/sessionConfig";
 import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userDB } from "~/database/user/userDatabase";
@@ -28,7 +28,7 @@ export const loginHandler = async (params: {
   knex: DBSession;
   res: Response;
   input: LoginHandlerInput;
-  cookiesConfig: CookiesConfig;
+  sessionConfig: SessionConfig;
   envConfig: EnvConfig;
   userDL: UserDataLoader;
 }): Promise<Try<UserTable, LogInHandlerErrors>> => {
@@ -54,7 +54,7 @@ export const loginHandler = async (params: {
   sessionUtils.authentication.generateAndSetToken({
     res: params.res,
     user,
-    cookieConfig: params.cookiesConfig,
+    sessionConfig: params.sessionConfig,
     envConfig: params.envConfig,
   });
 
@@ -63,11 +63,11 @@ export const loginHandler = async (params: {
 
 export const logoutHandler = async (params: {
   res: Response;
-  cookiesConfig: CookiesConfig;
+  sessionConfig: SessionConfig;
 }): Promise<boolean> => {
   sessionUtils.authentication.clear({
     res: params.res,
-    path: params.cookiesConfig.path,
+    path: params.sessionConfig.path,
   });
 
   return true;
