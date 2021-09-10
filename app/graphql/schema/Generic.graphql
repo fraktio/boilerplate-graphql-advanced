@@ -10,7 +10,7 @@ enum AccessRight {
   USER
   ADMIN
 }
-directive @authenticated(requires: AccessRight = ADMIN) on OBJECT | FIELD_DEFINITION
+
 directive @deprecated(reason: String = "This field is deprecated") on FIELD_DEFINITION | ENUM_VALUE
 
 type Timestamp {

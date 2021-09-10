@@ -12,8 +12,8 @@ const getAuthenticatedUserQuery = gql`
   }
 `;
 
-const { app, knex } = createTestServer();
-registerTestHandlers({ knex });
+const { app, startServer } = createTestServer();
+registerTestHandlers({ startServer });
 
 describe("Graphql / endpoints", () => {
   it("extensions in response", async () => {

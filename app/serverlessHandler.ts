@@ -7,7 +7,8 @@ import { createServer } from "~/server";
 
 export const graphqlHandler: Handler = async (event, context) => {
   const config = createConfig();
-  const { app } = createServer({ config });
+  const { app, startServer } = await createServer({ config });
+  await startServer();
   const handler = serverless(app);
 
   return await handler(event, context);

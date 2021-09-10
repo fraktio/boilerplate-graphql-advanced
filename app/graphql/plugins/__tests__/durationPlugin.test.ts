@@ -21,12 +21,13 @@ describe("graphql / plugins / durationPlugin", () => {
   } as unknown as GraphQLRequestContextWillSendResponse<Context>;
 
   it("returning payload", async () => {
-    const { requestDidStart } = durationPlugin();
-    if (!requestDidStart) {
+    if (!durationPlugin.requestDidStart) {
       throw new Error("No 'requestDidStart' in 'durationPlugin'");
     }
 
-    const requestDidStartResponse = requestDidStart(requestContext);
+    const requestDidStartResponse = await durationPlugin.requestDidStart(
+      requestContext,
+    );
     if (!requestDidStartResponse) {
       throw new Error("No listeners in 'durationPlugin.requestDidStart'");
     }

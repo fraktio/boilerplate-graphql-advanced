@@ -1,9 +1,9 @@
-import { ApolloServerPlugin, ValueOrPromise } from "apollo-server-plugin-base";
+import { ApolloServerPlugin } from "apollo-server-plugin-base";
 
 import { Context } from "~/graphql/context";
 
 export const apolloServerLogger: ApolloServerPlugin<Context> = {
-  requestDidStart: (requestContext) => {
+  requestDidStart: async (requestContext) => {
     requestContext.context.logger.info(
       {
         url: requestContext.request.http?.url,
@@ -13,7 +13,7 @@ export const apolloServerLogger: ApolloServerPlugin<Context> = {
     );
 
     return {
-      didEncounterErrors: (requestContext): ValueOrPromise<void> => {
+      didEncounterErrors: async (requestContext): Promise<void> => {
         requestContext.context.logger.error(
           {
             errors: requestContext.errors.map((error) => ({

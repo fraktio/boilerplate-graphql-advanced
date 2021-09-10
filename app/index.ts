@@ -4,14 +4,23 @@ import { createServer } from "~/server";
 
 const config = createConfig();
 
-const { app, logger, knex } = createServer({ config });
+const { logger, knex, apolloServer, startServer } = createServer({ config });
 
 const closeAll = (): void => {
   knex.destroy();
-  server.close();
+  apolloServer.stop();
 };
 
-const server = app.listen({ port: config.env.apiPort }, async () => {
+process.on("SIGTERM", () => {
+  logger.error("Received SIGTERM");
+  closeAll();
+});
+
+process.on("SIGINT", closeAll);
+
+startServer().then(async () => {
+  logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
+
   const result = await testDbConnection({
     dbConnection: knex,
   });
@@ -23,12 +32,4 @@ const server = app.listen({ port: config.env.apiPort }, async () => {
   }
 
   logger.info("🎉 Database connection success");
-  logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
 });
-
-process.on("SIGTERM", () => {
-  logger.error("Received SIGTERM");
-  closeAll();
-});
-
-process.on("SIGINT", closeAll);

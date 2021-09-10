@@ -6,10 +6,10 @@ import {
 import { Context } from "~/graphql/context";
 import { willSendResponseExtensions } from "~/graphql/plugins/pluginMergers";
 
-export const requestIdPlugin = (): ApolloServerPlugin<Context> => ({
-  requestDidStart: (): GraphQLRequestListener<Context> => ({
-    willSendResponse: willSendResponseExtensions((requestContext) => ({
+export const requestIdPlugin: ApolloServerPlugin<Context> = {
+  requestDidStart: async (): Promise<GraphQLRequestListener<Context>> => ({
+    willSendResponse: await willSendResponseExtensions((requestContext) => ({
       requestId: requestContext.context.requestId,
     })),
   }),
-});
+};

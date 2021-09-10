@@ -22,7 +22,7 @@ class Authentication {
 
   private getTokenExpireDate(opts: { ageSeconds: number }): DateTime {
     return DateTime.utc().plus({
-      second: opts.ageSeconds * 1000,
+      seconds: opts.ageSeconds * 1000,
     });
   }
 

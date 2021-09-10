@@ -19,12 +19,13 @@ describe("graphql / plugins / operationNamePlugin", () => {
   } as unknown as GraphQLRequestContextWillSendResponse<Context>;
 
   it("returning payload", async () => {
-    const { requestDidStart } = operationNamePlugin();
-    if (!requestDidStart) {
+    if (!operationNamePlugin.requestDidStart) {
       throw new Error("No 'requestDidStart' in operationNamePlugin");
     }
 
-    const requestDidStartResponse = requestDidStart(requestContext);
+    const requestDidStartResponse = await operationNamePlugin.requestDidStart(
+      requestContext,
+    );
     if (!requestDidStartResponse) {
       throw new Error("No listener in 'operationNamePlugin.requestDidStart'");
     }

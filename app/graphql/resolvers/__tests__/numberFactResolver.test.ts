@@ -30,8 +30,8 @@ const numberFactInput = {
   input: { number: NUMBER },
 };
 
-const { app, knex } = createTestServer();
-registerTestHandlers({ knex });
+const { app, startServer } = createTestServer();
+registerTestHandlers({ startServer });
 
 describe("Graphql / endpoints", () => {
   it("numberFact / failure", async () => {

@@ -21,7 +21,7 @@ export const testDbConnection = async (params: {
 
     return toSuccess(true);
   } catch (error) {
-    return toFailure(error);
+    return toFailure(error as Error);
   }
 };
 
@@ -40,7 +40,7 @@ export const withTransaction = async <T>(
     await transaction.rollback();
     params.logger.fatal(error, "Transaction error");
 
-    return toFailure(error);
+    return toFailure(error as Error);
   }
 };
 

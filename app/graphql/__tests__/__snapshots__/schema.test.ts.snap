@@ -4,7 +4,6 @@ exports[`Graphql / schema createExecutableSchema 1`] = `
 GraphQLSchema {
   "__validationErrors": undefined,
   "_directives": Array [
-    "@authenticated",
     "@deprecated",
     "@include",
     "@skip",
@@ -156,8 +155,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1060,
-              "start": 1048,
+              "end": 1045,
+              "start": 1033,
             },
             "value": "Subscription",
           },
@@ -173,12 +172,11 @@ GraphQLSchema {
 
 exports[`Graphql / schema createSchema 1`] = `
 Object {
-  "allowUndefinedInResolve": false,
   "inheritResolversFromInterfaces": true,
   "resolverValidationOptions": Object {
-    "allowResolversNotInSchema": true,
-    "requireResolversForArgs": true,
-    "requireResolversForResolveType": true,
+    "requireResolversForAllFields": "ignore",
+    "requireResolversForResolveType": "warn",
+    "requireResolversToMatchSchema": "warn",
   },
 }
 `;

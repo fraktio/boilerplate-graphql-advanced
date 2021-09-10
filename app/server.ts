@@ -1,4 +1,6 @@
+import { ApolloServer, ExpressContext } from "apollo-server-express";
 import { Express } from "express";
+import { Server } from "http";
 
 import { Config } from "~/config/config";
 import { createKnex, DBSession } from "~/database/connection";
@@ -12,11 +14,22 @@ import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
 import { createLogger, Logger } from "~/logger";
 
-export type CreateServerResponse = {
+export type ServerContext = {
   app: Express;
   logger: Logger;
   knex: DBSession;
   config: Config;
+  apolloServer: ApolloServer<ExpressContext>;
+};
+
+export type StartServerFunction = () => Promise<StartServerResponse>;
+
+export type CreateServerResponse = ServerContext & {
+  startServer: StartServerFunction;
+};
+
+export type StartServerResponse = ServerContext & {
+  server: Server;
 };
 
 type CreateSercerFunction = (params: {
@@ -34,6 +47,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
     logger,
     platformConfig: config.platform,
   });
+
   const app = createExpress({ config, knex });
 
   app.use(createLoggerMiddleware({ logger, platformConfig: config.platform }));
@@ -43,15 +57,24 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   const context = createContext({ knex, config });
   const apolloServer = createApolloServer({ config, context });
 
-  apolloServer.applyMiddleware({ app, cors: false });
+  async function startServer(
+    listening?: () => void,
+  ): Promise<StartServerResponse> {
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app, cors: false });
 
-  if (!config.env.isProduction) {
-    app.use(devFrontendProxy());
+    if (!config.env.isProduction) {
+      app.use(devFrontendProxy());
+    }
+
+    if (config.env.isProduction) {
+      app.use(errorHandler);
+    }
+
+    const server = app.listen({ port: config.env.apiPort }, listening);
+
+    return { app, logger, knex, config, apolloServer, server };
   }
 
-  if (config.env.isProduction) {
-    app.use(errorHandler);
-  }
-
-  return { app, logger, knex, config };
+  return { app, logger, knex, config, apolloServer, startServer };
 };

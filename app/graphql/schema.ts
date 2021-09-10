@@ -1,26 +1,23 @@
 import {
   makeExecutableSchema,
   IExecutableSchemaDefinition,
-} from "apollo-server-express";
+} from "@graphql-tools/schema";
 import { GraphQLSchema } from "graphql";
 
-import { createSchemaDirectives } from "~/graphql/directives/directives";
 import { resolvers } from "~/graphql/resolvers/resolvers";
 import { typeDefs } from "~/graphql/typeDefs";
 
 export const createSchema = (
   opts?: Partial<IExecutableSchemaDefinition>,
 ): IExecutableSchemaDefinition => ({
-  allowUndefinedInResolve: false,
   inheritResolversFromInterfaces: true,
   resolverValidationOptions: {
-    requireResolversForArgs: true,
-    requireResolversForResolveType: true,
-    allowResolversNotInSchema: true,
+    requireResolversForAllFields: "ignore",
+    requireResolversForResolveType: "warn",
+    requireResolversToMatchSchema: "warn",
   },
   resolvers,
   typeDefs,
-  schemaDirectives: createSchemaDirectives(),
   ...opts,
 });
 

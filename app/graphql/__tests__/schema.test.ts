@@ -3,7 +3,7 @@ import { createExecutableSchema, createSchema } from "~/graphql/schema";
 describe("Graphql / schema", () => {
   it("createSchema", async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { resolvers, typeDefs, schemaDirectives, ...rest } = createSchema();
+    const { resolvers, typeDefs, ...rest } = createSchema();
 
     expect(rest).toMatchSnapshot();
   });

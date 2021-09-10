@@ -34,7 +34,7 @@ describe("graphql / plugins / apolloServerLoggerPlugin", () => {
       throw new Error("No 'requestDidStart' in 'apolloServerLoggerPlugin'");
     }
 
-    const listeners = requestDidStart(requestContext);
+    const listeners = await requestDidStart(requestContext);
 
     if (!listeners?.didEncounterErrors) {
       throw new Error("No 'didEncounterErrors' in 'apolloServerLoggerPlugin'");

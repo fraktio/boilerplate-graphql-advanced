@@ -21,12 +21,13 @@ describe("graphql / plugins / requestIdPlugin", () => {
   } as unknown as GraphQLRequestContextWillSendResponse<Context>;
 
   it("returning payload", async () => {
-    const { requestDidStart } = requestIdPlugin();
-    if (!requestDidStart) {
+    if (!requestIdPlugin.requestDidStart) {
       throw new Error("No 'requestDidStart' in 'requestIdPlugin'");
     }
 
-    const requestDidStartResponse = requestDidStart(requestContext);
+    const requestDidStartResponse = await requestIdPlugin.requestDidStart(
+      requestContext,
+    );
     if (!requestDidStartResponse) {
       throw new Error("No listeners in 'requestIdPlugin.requestDidStart'");
     }
