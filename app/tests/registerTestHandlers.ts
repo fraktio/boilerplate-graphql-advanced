@@ -1,16 +1,32 @@
-import { DBSession } from "~/database/connection";
+import { StartServerFunction, StartServerResponse } from "~/server";
 import { migrateTestDatabase, resetTestDatabase } from "~/tests/testDatabase";
 
-export const registerTestHandlers = (params: { knex: DBSession }): void => {
+export const registerTestHandlers = (params: {
+  startServer: StartServerFunction;
+}): void => {
+  let serverOpts: StartServerResponse = null as StartServerResponse;
+
   beforeAll(async () => {
-    await migrateTestDatabase({ knex: params.knex });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    serverOpts = await params.startServer();
+    await migrateTestDatabase({ knex: serverOpts.knex });
   });
 
   beforeEach(async () => {
-    await resetTestDatabase({ knex: params.knex });
+    if (!serverOpts) {
+      return;
+    }
+
+    await resetTestDatabase({ knex: serverOpts.knex });
   });
 
   afterAll(async () => {
-    await params.knex.destroy();
+    if (!serverOpts) {
+      return;
+    }
+
+    await serverOpts.apolloServer.stop();
+    await serverOpts.knex.destroy();
+    serverOpts.server.close();
   });
 };

@@ -36,8 +36,8 @@ const failureUser = {
   input: {},
 };
 
-const { app, knex } = createTestServer();
-registerTestHandlers({ knex });
+const { app, knex, startServer } = createTestServer();
+registerTestHandlers({ startServer });
 
 describe("Graphql / endpoints", () => {
   it("register / failure", async () => {

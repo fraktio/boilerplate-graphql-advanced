@@ -3,8 +3,8 @@ import request from "supertest";
 import { createTestServer } from "~/tests/createTestServer";
 import { registerTestHandlers } from "~/tests/registerTestHandlers";
 
-const { app, knex } = createTestServer();
-registerTestHandlers({ knex });
+const { app, startServer } = createTestServer();
+registerTestHandlers({ startServer });
 
 describe("Express / endpoints", () => {
   it("GET /version", async () => {

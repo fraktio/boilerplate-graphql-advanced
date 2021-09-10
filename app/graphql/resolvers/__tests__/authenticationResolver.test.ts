@@ -40,8 +40,8 @@ const logoutMutation = gql`
   }
 `;
 
-const { app, knex } = createTestServer();
-registerTestHandlers({ knex });
+const { app, knex, startServer } = createTestServer();
+registerTestHandlers({ startServer });
 
 describe("Graphql / endpoints", () => {
   it("Login / success", async () => {

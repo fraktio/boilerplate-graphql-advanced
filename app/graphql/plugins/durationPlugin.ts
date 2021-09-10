@@ -6,13 +6,13 @@ import {
 import { Context } from "~/graphql/context";
 import { willSendResponseExtensions } from "~/graphql/plugins/pluginMergers";
 
-export const durationPlugin = (): ApolloServerPlugin<Context> => ({
-  requestDidStart: (): GraphQLRequestListener<Context> => ({
-    willSendResponse: willSendResponseExtensions((requestContext) => {
+export const durationPlugin: ApolloServerPlugin<Context> = {
+  requestDidStart: async (): Promise<GraphQLRequestListener<Context>> => ({
+    willSendResponse: await willSendResponseExtensions((requestContext) => {
       const durationMilliseconds =
         Date.now() - requestContext.context.startTime;
 
       return { durationMilliseconds };
     }),
   }),
-});
+};

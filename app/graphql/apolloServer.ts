@@ -19,12 +19,9 @@ export const createApolloServer = ({
     validationRules: createValidationRules(),
     schema: createExecutableSchema(),
     formatError: apolloErrorHandler({ config }),
-    plugins: createPlugins(),
+    plugins: createPlugins({ envConfig: config.env }),
     introspection: !config.env.isProduction,
     dataSources: createDataSources,
     persistedQueries: { ttl: 43200 /* 12h */ },
-    playground: config.env.isProduction
-      ? false
-      : { settings: { "request.credentials": "include" } },
     ...rest,
   });

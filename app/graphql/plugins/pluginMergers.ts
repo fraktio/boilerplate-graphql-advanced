@@ -8,7 +8,7 @@ type ContentFC = (params: WillSendResponseParams) => Record<string, unknown>;
 
 export const willSendResponseExtensions =
   (contentFC: ContentFC) =>
-  (params: WillSendResponseParams): void => {
+  async (params: WillSendResponseParams): Promise<void> => {
     const newExtensions = {
       ...params.response.extensions,
       ...contentFC(params),
