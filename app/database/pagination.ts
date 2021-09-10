@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
+import { Maybe } from "~/@types/global";
 import { SortColumn, SortOrder } from "~/database/sort";
-import { Maybe } from "~/generation/generated";
 import { Cursor } from "~/graphql/scalars/CursorResolver";
 
 export const PAGINATION_DEFAULT_LIMIT = 20;

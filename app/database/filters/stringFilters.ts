@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
+import { Maybe } from "~/@types/global";
 import { FilterOperator } from "~/database/filters/operators";
-import { Maybe } from "~/generation/generated";
 
 export type StringFilter = {
   like?: Maybe<string>;

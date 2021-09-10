@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-import { ValueOf } from "~/@types/global";
+import { Maybe, ValueOf } from "~/@types/global";
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB, CompanyTable } from "~/database/company/companyDatabase";
 import { DBSession } from "~/database/connection";
@@ -22,7 +22,6 @@ import {
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
 import { createSortParams, SortColumn, SortOrder } from "~/database/sort";
-import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { InvalidCursorFailure } from "~/handlers/failures/InvalidCursorFailure";
 import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";

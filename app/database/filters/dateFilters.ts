@@ -1,8 +1,8 @@
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
+import { Maybe } from "~/@types/global";
 import { getSqlOperator, FilterOperator } from "~/database/filters/operators";
-import { Maybe } from "~/generation/generated";
 
 export type DateFilter = {
   equal?: Maybe<DateTime>;

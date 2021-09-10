@@ -13,3 +13,5 @@ declare global {
 }
 
 export type ValueOf<T> = T[keyof T];
+
+export type Maybe<T> = null | undefined | T;

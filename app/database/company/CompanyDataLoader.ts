@@ -1,5 +1,6 @@
 import DataLoader from "dataloader";
 
+import { Maybe } from "~/@types/global";
 import {
   AbstractDataLoaderBase,
   DataLoaderParams,
@@ -9,7 +10,6 @@ import {
   CompanyID,
   CompanyTable,
 } from "~/database/company/companyQueries";
-import { Maybe } from "~/generation/generated";
 
 export type CompanyLoader = DataLoader<CompanyID, Maybe<CompanyTable>>;
 

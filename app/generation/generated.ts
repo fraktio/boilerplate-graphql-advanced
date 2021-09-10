@@ -403,7 +403,7 @@ export type Query = {
   company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
-  persons: PersonsPaginationResponse;
+  persons: PersonsOutput;
 };
 
 export type QueryCompaniesArgs = {
@@ -1376,7 +1376,7 @@ export type QueryResolvers<
     RequireFields<QueryPersonArgs, "input">
   >;
   persons?: Resolver<
-    ResolversTypes["PersonsPaginationResponse"],
+    ResolversTypes["PersonsOutput"],
     ParentType,
     ContextType,
     RequireFields<QueryPersonsArgs, "pagination">

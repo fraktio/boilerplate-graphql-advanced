@@ -1,8 +1,8 @@
+import { Maybe } from "graphql/jsutils/Maybe";
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
 import { getSqlOperator, FilterOperator } from "~/database/filters/operators";
-import { Maybe } from "~/generation/generated";
 
 export type TimeFilter = {
   equal?: Maybe<DateTime>;

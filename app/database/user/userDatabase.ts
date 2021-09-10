@@ -1,9 +1,9 @@
 import { PhoneNumber } from "libphonenumber-js";
 
+import { Maybe } from "~/@types/global";
 import { DBSession } from "~/database/connection";
 import { UserDataLoader } from "~/database/user/UserDataLoader";
 import { userQueries, UserID, UserTable } from "~/database/user/userQueries";
-import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 

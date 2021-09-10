@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
-import { ValueOf } from "~/@types/global";
+import { Maybe, ValueOf } from "~/@types/global";
 import { DBSession } from "~/database/connection";
 import { buildFilterQuery } from "~/database/filters";
 import { applyDateFilters } from "~/database/filters/dateFilters";
@@ -16,7 +16,6 @@ import {
 import { SortColumn, SortOrder } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import { withUniqueConstraintHandler } from "~/database/uniqueConstraintHandler";
-import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,

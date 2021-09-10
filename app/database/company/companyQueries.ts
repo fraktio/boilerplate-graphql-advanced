@@ -1,6 +1,7 @@
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
+import { Maybe } from "~/@types/global";
 import {
   CompanyFilter,
   CompanyFilterOperation,
@@ -11,7 +12,6 @@ import { buildFilterQuery } from "~/database/filters";
 import { FilterOperator } from "~/database/filters/operators";
 import { applyStringFilters } from "~/database/filters/stringFilters";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
-import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export interface CompanyID extends ID {
