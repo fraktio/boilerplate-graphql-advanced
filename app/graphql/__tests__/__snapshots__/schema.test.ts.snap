@@ -172,7 +172,6 @@ GraphQLSchema {
 
 exports[`Graphql / schema createSchema 1`] = `
 Object {
-  "allowUndefinedInResolve": false,
   "inheritResolversFromInterfaces": true,
   "resolverValidationOptions": Object {
     "requireResolversForAllFields": "ignore",
