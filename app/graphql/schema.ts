@@ -4,14 +4,12 @@ import {
 } from "@graphql-tools/schema";
 import { GraphQLSchema } from "graphql";
 
-import { createSchemaDirectives } from "~/graphql/directives/directives";
 import { resolvers } from "~/graphql/resolvers/resolvers";
 import { typeDefs } from "~/graphql/typeDefs";
 
 export const createSchema = (
   opts?: Partial<IExecutableSchemaDefinition>,
 ): IExecutableSchemaDefinition => ({
-  allowUndefinedInResolve: false,
   inheritResolversFromInterfaces: true,
   resolverValidationOptions: {
     requireResolversForAllFields: "ignore",
@@ -20,7 +18,6 @@ export const createSchema = (
   },
   resolvers,
   typeDefs,
-  schemaDirectives: createSchemaDirectives(),
   ...opts,
 });
 

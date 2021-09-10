@@ -4,7 +4,7 @@ import { migrateTestDatabase, resetTestDatabase } from "~/tests/testDatabase";
 export const registerTestHandlers = (params: {
   startServer: StartServerFunction;
 }): void => {
-  let serverOpts: StartServerResponse = null as StartServerResponse;
+  let serverOpts: StartServerResponse = null as unknown as StartServerResponse;
 
   beforeAll(async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
