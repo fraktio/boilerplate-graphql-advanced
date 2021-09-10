@@ -1,9 +1,9 @@
-import { Maybe } from "graphql-tools";
 import { PhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
 import { DBSession } from "~/database/connection";
 import { createUUID, ID, Table } from "~/database/tables";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { EmailAddress } from "~/generation/scalars";
 

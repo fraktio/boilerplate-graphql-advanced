@@ -1,4 +1,3 @@
-import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
@@ -17,6 +16,7 @@ import {
 import { SortColumn, SortOrder } from "~/database/sort";
 import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import { withUniqueConstraintHandler } from "~/database/uniqueConstraintHandler";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,

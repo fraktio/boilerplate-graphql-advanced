@@ -1,5 +1,4 @@
 import DataLoader from "dataloader";
-import { Maybe } from "graphql-tools";
 
 import {
   AbstractDataLoaderBase,
@@ -10,6 +9,7 @@ import {
   CompanyID,
   CompanyTable,
 } from "~/database/company/companyQueries";
+import { Maybe } from "~/generation/generated";
 
 export type CompanyLoader = DataLoader<CompanyID, Maybe<CompanyTable>>;
 

@@ -1,7 +1,6 @@
-import { Maybe } from "graphql-tools";
-
 import { FilterOperator } from "~/database/filters/operators";
 import { StringFilter } from "~/database/filters/stringFilters";
+import { Maybe } from "~/generation/generated";
 
 export type CompanyFilter = {
   filterOperations?: Maybe<Array<CompanyFilterOperation>>;

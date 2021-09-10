@@ -1,7 +1,7 @@
-import { Maybe } from "graphql-tools";
 import { Knex } from "knex";
 
 import { FilterOperator } from "~/database/filters/operators";
+import { Maybe } from "~/generation/generated";
 
 export type StringFilter = {
   like?: Maybe<string>;

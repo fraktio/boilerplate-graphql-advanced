@@ -1,5 +1,3 @@
-import { Maybe } from "graphql-tools";
-
 import { ValueOf } from "~/@types/global";
 import { CompanyID } from "~/database/company/companyQueries";
 import { DBSession } from "~/database/connection";
@@ -16,6 +14,7 @@ import {
   UpdatePersonOptions,
 } from "~/database/person/personQueries";
 import { SortColumn } from "~/database/sort";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
 import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";

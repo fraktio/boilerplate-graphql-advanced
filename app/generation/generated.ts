@@ -93,8 +93,7 @@ export type AddPersonInput = {
 
 export type AddPersonOutput =
   | AddPersonSuccess
-  | UniqueConstraintViolationFailure
-  | NotFoundFailure;
+  | UniqueConstraintViolationFailure;
 
 export type AddPersonPersonInput = {
   birthday: Scalars["Date"];
@@ -650,8 +649,7 @@ export type ResolversTypes = ResolversObject<{
   AddPersonInput: AddPersonInput;
   AddPersonOutput:
     | ResolversTypes["AddPersonSuccess"]
-    | ResolversTypes["UniqueConstraintViolationFailure"]
-    | ResolversTypes["NotFoundFailure"];
+    | ResolversTypes["UniqueConstraintViolationFailure"];
   AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: ResolverTypeWrapper<
     Omit<AddPersonSuccess, "person"> & { person: ResolversTypes["Person"] }
@@ -788,8 +786,7 @@ export type ResolversParentTypes = ResolversObject<{
   AddPersonInput: AddPersonInput;
   AddPersonOutput:
     | ResolversParentTypes["AddPersonSuccess"]
-    | ResolversParentTypes["UniqueConstraintViolationFailure"]
-    | ResolversParentTypes["NotFoundFailure"];
+    | ResolversParentTypes["UniqueConstraintViolationFailure"];
   AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: Omit<AddPersonSuccess, "person"> & {
     person: ResolversParentTypes["Person"];
@@ -938,7 +935,7 @@ export type AddPersonOutputResolvers<
   ParentType extends ResolversParentTypes["AddPersonOutput"] = ResolversParentTypes["AddPersonOutput"],
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
-    "AddPersonSuccess" | "UniqueConstraintViolationFailure" | "NotFoundFailure",
+    "AddPersonSuccess" | "UniqueConstraintViolationFailure",
     ParentType,
     ContextType
   >;

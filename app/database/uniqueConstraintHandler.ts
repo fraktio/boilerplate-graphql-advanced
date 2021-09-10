@@ -16,7 +16,7 @@ export async function withUniqueConstraintHandler<T>(
 
       return new UniqueConstraintViolationFailure(
         field || "",
-        formatError(error.detail),
+        formatError(error.detail as string),
       );
     }
     throw error;

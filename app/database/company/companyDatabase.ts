@@ -1,4 +1,3 @@
-import { Maybe } from "graphql-tools";
 import { DateTime } from "luxon";
 
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
@@ -11,6 +10,7 @@ import { DBSession } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
 import { PersonFilterOperation } from "~/database/person/personFilters";
 import { PersonID } from "~/database/person/personQueries";
+import { Maybe } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export type CompanyTable = {

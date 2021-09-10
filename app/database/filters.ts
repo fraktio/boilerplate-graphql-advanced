@@ -1,4 +1,3 @@
-import { Maybe } from "graphql-tools";
 import type { Knex } from "knex";
 
 import { CompanyFilterOperation } from "~/database/company/companyFilters";
@@ -7,6 +6,7 @@ import { FilterOperator } from "~/database/filters/operators";
 import { StringFilter } from "~/database/filters/stringFilters";
 import { TimeFilter } from "~/database/filters/timeFilter";
 import { PersonFilterOperation } from "~/database/person/personFilters";
+import { Maybe } from "~/generation/generated";
 
 export class InvalidFilterCountError extends Error {}
 
