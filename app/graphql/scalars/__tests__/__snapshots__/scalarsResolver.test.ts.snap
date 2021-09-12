@@ -8,5 +8,6 @@ Object {
   "EmailAddress": "Email",
   "PhoneNumber": "Phone",
   "UUID": "UUID",
+  "Upload": "Upload",
 }
 `;

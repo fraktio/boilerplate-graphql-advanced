@@ -104,6 +104,7 @@ GraphQLSchema {
     "UUID": "UUID",
     "Underage": "Underage",
     "UniqueConstraintViolationFailure": "UniqueConstraintViolationFailure",
+    "Upload": "Upload",
     "User": "User",
     "__Directive": "__Directive",
     "__DirectiveLocation": "__DirectiveLocation",
