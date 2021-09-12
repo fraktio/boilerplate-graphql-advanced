@@ -60,6 +60,7 @@
     "luxon": "^1.27.0",
     "pg": "^8.7.1",
     "serverless-http": "^2.7.0",
+    "subscriptions-transport-ws": "^0.9.19",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
