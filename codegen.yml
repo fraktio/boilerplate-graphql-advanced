@@ -13,6 +13,7 @@ generates:
       scalars:
         UUID: ./mappers#UUID
         Date: luxon#DateTime
+        Upload: ./scalars#Upload
         DateTime: luxon#DateTime
         CountryCode: ./scalars#CountryCode
         EmailAddress: ./scalars#EmailAddress
