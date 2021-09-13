@@ -1,3 +1,4 @@
+import { FileUpload } from "graphql-upload";
 import { Maybe } from "graphql/jsutils/Maybe";
 import { Iso3166Alpha2Code } from "iso-3166-ts";
 import { DateTime } from "luxon";
@@ -6,6 +7,8 @@ import { UUID as GeneratedUUID } from "~/generation/mappers";
 import { Cursor as CursorResolverCursor } from "~/graphql/scalars/CursorResolver";
 
 export type UUID = GeneratedUUID;
+
+export type Upload = Promise<FileUpload>;
 
 export interface EmailAddress extends String {
   _email: never;
