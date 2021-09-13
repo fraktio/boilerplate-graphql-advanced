@@ -7,7 +7,7 @@ import { Context } from "~/graphql/context";
 export const createInlineTracePlugin = (params: {
   graphql: GraphqlConfig;
 }): ApolloServerPlugin<Context>[] => {
-  if (!params.graphql.allowInlineTrace) {
+  if (params.graphql.allowInlineTrace) {
     return [ApolloServerPluginInlineTrace()];
   }
 

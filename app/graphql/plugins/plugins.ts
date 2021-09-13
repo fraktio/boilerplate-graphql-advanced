@@ -14,9 +14,9 @@ export const createPlugins = (params: {
 }): Array<ApolloServerPlugin> => [
   apolloServerLoggerPlugin,
   createPlaygroundPlugin({ graphqlConfig: params.graphqlConfig }),
+  ...createInlineTracePlugin({ graphql: params.graphqlConfig }),
   responseCachePlugin(),
   operationNamePlugin,
   durationPlugin,
   requestIdPlugin,
-  ...createInlineTracePlugin({ graphql: params.graphqlConfig }),
 ];
