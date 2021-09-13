@@ -16,6 +16,9 @@ export const createTestConfig = (): Config => ({
       token: "token",
     },
   },
+  graphql: {
+    allowIntrospection: true,
+  },
   database: {
     type: "pg",
     host: getEnvFallback(DATABASE_HOST, "localhost"),

@@ -10,7 +10,7 @@ import { Context } from "~/graphql/context";
 export const createPlaygroundPlugin = (params: {
   graphqlConfig: GraphqlConfig;
 }): ApolloServerPlugin<Context> => {
-  if (params.graphqlConfig.showPlayground) {
+  if (params.graphqlConfig.allowIntrospection) {
     return ApolloServerPluginLandingPageGraphQLPlayground({
       settings: { "request.credentials": "include", "editor.theme": "dark" },
     });
