@@ -1,7 +1,7 @@
 import { ApolloServerPlugin } from "apollo-server-plugin-base";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
 
-import { EnvConfig } from "~/config/configs/envConfig";
+import { GraphqlConfig } from "~/config/configs/graphqlConfig";
 import { durationPlugin } from "~/graphql/plugins/durationPlugin";
 import { apolloServerLoggerPlugin } from "~/graphql/plugins/loggerPlugin";
 import { operationNamePlugin } from "~/graphql/plugins/operationNamePlugin";
@@ -9,10 +9,10 @@ import { createPlaygroundPlugin } from "~/graphql/plugins/playgroundPlugin";
 import { requestIdPlugin } from "~/graphql/plugins/requestIdPlugin";
 
 export const createPlugins = (params: {
-  envConfig: EnvConfig;
+  graphqlConfig: GraphqlConfig;
 }): Array<ApolloServerPlugin> => [
   apolloServerLoggerPlugin,
-  createPlaygroundPlugin({ envConfig: params.envConfig }),
+  createPlaygroundPlugin({ graphqlConfig: params.graphqlConfig }),
   responseCachePlugin(),
   operationNamePlugin,
   durationPlugin,
