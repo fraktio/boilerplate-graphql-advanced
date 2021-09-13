@@ -1,0 +1,15 @@
+scalar Cursor
+
+input PaginationInput {
+  limit: Int,
+  cursor: Cursor,
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+}
+
+type InvalidCursorFailure implements FailureOutput {
+  message: String!
+  field: String!
+}

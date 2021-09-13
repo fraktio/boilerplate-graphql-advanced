@@ -20,7 +20,7 @@ type CompanyFailureNotFound {
 }
 
 type Query {
-  companies(filters: CompanyFilterOperation): [Company!]!
+  companies(filters: CompanyFilterOperationInput): [Company!]!
   company(input: CompanyQuery!): CompanyOutput!
 }
 
@@ -59,12 +59,12 @@ type EditCompanyFailureNotFound {
   success: Boolean
 }
 
-input CompanyFilterOperation {
+input CompanyFilterOperationInput {
   operator: FilterOperator!
-  filters: [CompanyFilter!]
+  filters: [CompanyFilterInput!]
 }
 
-input CompanyFilter {
-  filterOperations: [CompanyFilterOperation!]
+input CompanyFilterInput {
+  filterOperations: [CompanyFilterOperationInput!]
   nameFilter: StringFilter
 }

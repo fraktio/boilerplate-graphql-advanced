@@ -2,31 +2,41 @@ import { Knex } from "knex";
 import { PhoneNumber, parsePhoneNumber } from "libphonenumber-js";
 import { DateTime } from "luxon";
 
+import { Maybe, ValueOf } from "~/@types/global";
 import { DBSession } from "~/database/connection";
+import { buildFilterQuery } from "~/database/filters";
+import { applyDateFilters } from "~/database/filters/dateFilters";
+import { FilterOperator } from "~/database/filters/operators";
+import { applyStringFilters } from "~/database/filters/stringFilters";
+import { addQueryCursorFilters, QueryCursor } from "~/database/pagination";
 import {
-  buildFilterQuery,
-  applyDateFilters,
-  applyStringFilters,
-} from "~/database/filters";
-import { createUUID, ID, Table, tableColumn } from "~/database/tables";
-import {
-  Maybe,
-  PersonFilterOperation,
   PersonFilter,
-  FilterOperator,
-  PersonSort,
-  SortOrder,
-} from "~/generation/generated";
+  PersonFilterOperation,
+} from "~/database/person/personFilters";
+import { SortColumn, SortOrder } from "~/database/sort";
+import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import { withUniqueConstraintHandler } from "~/database/uniqueConstraintHandler";
 import { UUID } from "~/generation/mappers";
 import {
   CountryCode,
   EmailAddress,
   FinnishPersonalIdentityCode,
 } from "~/generation/scalars";
+import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
+import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";
+import { toFailure, toSuccess, Try } from "~/utils/validation";
 import { asCountryCode } from "~/validation/converters";
+
+const PERSON_DEFAULT_SORT = { column: "createdAt", order: SortOrder.Desc };
 
 export interface PersonID extends ID {
   __PersonID: never;
+}
+
+export enum Gender {
+  Male = "MALE",
+  Female = "FEMALE",
+  Other = "OTHER",
 }
 
 export type PersonTableRow = Readonly<{
@@ -34,13 +44,14 @@ export type PersonTableRow = Readonly<{
   uuid: UUID;
   firstName: string;
   lastName: string;
-  phone: string;
+  phone: string | null;
   email: EmailAddress;
   birthday: Date;
   createdAt: Date;
   updatedAt: Date | null;
   nationality: CountryCode;
   personalIdentityCode: FinnishPersonalIdentityCode;
+  gender: Gender;
 }>;
 
 export type PersonTable = {
@@ -48,7 +59,7 @@ export type PersonTable = {
   UUID: UUID;
   firstName: string;
   lastName: string;
-  phone: PhoneNumber;
+  phone: PhoneNumber | null;
   email: EmailAddress;
   birthday: DateTime;
   timestamp: {
@@ -57,6 +68,7 @@ export type PersonTable = {
   };
   nationality: CountryCode;
   personalIdentityCode: FinnishPersonalIdentityCode;
+  gender: Gender;
 };
 
 export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
@@ -64,11 +76,12 @@ export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
   UUID: row.uuid,
   firstName: row.firstName,
   lastName: row.lastName,
-  phone: parsePhoneNumber(row.phone),
+  phone: row.phone ? parsePhoneNumber(row.phone) : null,
   email: row.email,
   birthday: DateTime.fromJSDate(row.birthday),
   nationality: asCountryCode(row.nationality),
   personalIdentityCode: row.personalIdentityCode,
+  gender: row.gender as Gender,
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
     updatedAt: row.updatedAt ? DateTime.fromJSDate(row.updatedAt) : null,
@@ -83,6 +96,7 @@ export type CreatePersonOptions = {
   birthday: DateTime;
   nationality: CountryCode;
   personalIdentityCode: FinnishPersonalIdentityCode;
+  gender: Gender;
 };
 
 export type UpdatePersonOptions = CreatePersonOptions;
@@ -115,12 +129,16 @@ export const personQueries = {
   async getAll(params: {
     knex: DBSession;
     filters?: PersonFilterOperation;
-    sort?: PersonSort[];
+    sort?: SortColumn[];
+    queryCursor?: QueryCursor<ValueOf<PersonTable>>[];
+    limit: number;
   }): Promise<PersonTable[]> {
     const persons = await params
       .knex<PersonTableRow>(Table.PERSONS)
+      .andWhere((qb) => addQueryCursorFilters(qb, params.queryCursor))
       .andWhere((qb) => addPersonFilters(qb, params.filters))
-      .orderBy(applyPersonSort(params.sort));
+      .limit(params.limit)
+      .orderBy(params.sort ? params.sort : [PERSON_DEFAULT_SORT]);
 
     return persons.map(formatPersonRow);
   },
@@ -128,50 +146,83 @@ export const personQueries = {
   async create(params: {
     knex: DBSession;
     person: CreatePersonOptions;
-  }): Promise<PersonTable> {
+  }): Promise<Try<PersonTable, UniqueConstraintViolationFailure>> {
     const phone = params.person.phone?.formatInternational();
     const birthday = params.person.birthday.toJSDate();
 
-    const persons = await params
-      .knex<PersonTableRow>(Table.PERSONS)
-      .insert({
-        uuid: createUUID(),
-        firstName: params.person.firstName,
-        lastName: params.person.lastName,
-        phone,
-        email: params.person.email,
-        birthday,
-      })
-      .returning("*");
+    const person = await withUniqueConstraintHandler(
+      async () => {
+        const persons = await params
+          .knex<PersonTableRow>(Table.PERSONS)
+          .insert({
+            uuid: createUUID(),
+            firstName: params.person.firstName,
+            lastName: params.person.lastName,
+            phone,
+            email: params.person.email,
+            birthday,
+            gender: params.person.gender,
+            personalIdentityCode: params.person.personalIdentityCode,
+            nationality: params.person.nationality,
+          })
+          .returning("*");
 
-    return formatPersonRow(persons[0]);
+        return formatPersonRow(persons[0]);
+      },
+      (error) => error.toString(),
+    );
+
+    if (person instanceof UniqueConstraintViolationFailure) {
+      return toFailure(person);
+    }
+
+    return toSuccess(person);
   },
 
   async updateByUUID(params: {
     knex: DBSession;
     personUUID: UUID;
     person: UpdatePersonOptions;
-  }): Promise<Maybe<PersonTable>> {
+  }): Promise<
+    Try<PersonTable, UniqueConstraintViolationFailure | NotFoundFailure>
+  > {
     const phone = params.person.phone?.formatInternational();
     const birthday = params.person.birthday.toJSDate();
 
-    const persons = await params
-      .knex(Table.PERSONS)
-      .update({
-        firstName: params.person.firstName,
-        lastName: params.person.lastName,
-        phone,
-        email: params.person.email,
-        birthday,
-      })
-      .where({ uuid: params.personUUID })
-      .returning("*");
+    const person = await withUniqueConstraintHandler(
+      async () => {
+        const persons = await params
+          .knex(Table.PERSONS)
+          .update({
+            firstName: params.person.firstName,
+            lastName: params.person.lastName,
+            phone,
+            email: params.person.email,
+            birthday,
+            gender: params.person.gender,
+            personalIdentityCode: params.person.personalIdentityCode,
+            nationality: params.person.nationality,
+          })
+          .where({ uuid: params.personUUID })
+          .returning("*");
 
-    if (persons.length === 0) {
-      return null;
+        if (persons.length === 0) {
+          return null;
+        }
+
+        return formatPersonRow(persons[0]);
+      },
+      (error) => error.toString(),
+    );
+    if (!person) {
+      return toFailure(new NotFoundFailure("UUID", "Person not found"));
     }
 
-    return formatPersonRow(persons[0]);
+    if (person instanceof UniqueConstraintViolationFailure) {
+      return toFailure(person);
+    }
+
+    return toSuccess(person);
   },
 
   async getPersonsByIds(params: {
@@ -185,22 +236,6 @@ export const personQueries = {
     return personRows.map(formatPersonRow);
   },
 };
-
-type ApplyPersonSortResponse = {
-  column: string;
-  order: SortOrder;
-};
-
-function applyPersonSort(sort?: PersonSort[]): ApplyPersonSortResponse[] {
-  if (!sort) {
-    return [{ column: "firstName", order: SortOrder.Asc }];
-  }
-
-  return sort.map((element) => ({
-    column: element.field,
-    order: element.order,
-  }));
-}
 
 export function addPersonFilters(
   queryBuilder: Knex.QueryBuilder,

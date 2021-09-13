@@ -1,3 +1,4 @@
+import { Maybe } from "~/@types/global";
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import { companyDB } from "~/database/company/companyDatabase";
 import { CompanyID, CompanyTable } from "~/database/company/companyQueries";
@@ -5,8 +6,8 @@ import { DBSession } from "~/database/connection";
 import { PersonsOfCompanyDataLoader } from "~/database/employee/PersonsOfCompanyDataLoader";
 import { PersonDataLoader } from "~/database/person/PersonDataLoader";
 import { personDB } from "~/database/person/personDatabase";
+import { PersonFilterOperation } from "~/database/person/personFilters";
 import { PersonTable } from "~/database/person/personQueries";
-import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export const companiesHandler = async (params: {

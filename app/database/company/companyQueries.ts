@@ -1,15 +1,17 @@
 import { Knex } from "knex";
 import { DateTime } from "luxon";
 
-import { DBSession } from "~/database/connection";
-import { applyStringFilters, buildFilterQuery } from "~/database/filters";
-import { createUUID, ID, Table, tableColumn } from "~/database/tables";
+import { Maybe } from "~/@types/global";
 import {
   CompanyFilter,
   CompanyFilterOperation,
-  FilterOperator,
-  Maybe,
-} from "~/generation/generated";
+} from "~/database/company/companyFilters";
+import { DBSession } from "~/database/connection";
+import { NotFoundError } from "~/database/error/NotFoundError";
+import { buildFilterQuery } from "~/database/filters";
+import { FilterOperator } from "~/database/filters/operators";
+import { applyStringFilters } from "~/database/filters/stringFilters";
+import { createUUID, ID, Table, tableColumn } from "~/database/tables";
 import { UUID } from "~/generation/mappers";
 
 export interface CompanyID extends ID {
@@ -71,7 +73,7 @@ export const companyQueries = {
     });
 
     if (!company) {
-      throw new Error("Invalid companyId");
+      throw new NotFoundError("Invalid companyId");
     }
 
     return company;

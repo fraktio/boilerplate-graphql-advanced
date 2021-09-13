@@ -14,7 +14,8 @@
     "build": "webpack --config webpack.prod.js",
     "build:serverless": "serverless package",
     "lint": "eslint . --ext ts,js",
-    "test": "jest --forceExit --detectOpenHandles",
+    "test": "jest --updateSnapshot --forceExit --detectOpenHandles",
+    "test:update": "jest --updateSnapshot",
     "script": "ts-node --files -r tsconfig-paths/register",
     "knex": "ts-node -r tsconfig-paths/register node_modules/knex/bin/cli.js",
     "codegen": "graphql-codegen && npm run codegen:disable-rules && npm  run codegen:lint",
@@ -52,8 +53,6 @@
     "graphql-validation-complexity": "^0.4.2",
     "helmet": "^4.6.0",
     "http-proxy-middleware": "^2.0.1",
-    "io-ts": "^2.2.16",
-    "io-ts-reporters": "^2.0.0",
     "iso-3166-ts": "^2.1.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.11",
@@ -62,6 +61,7 @@
     "pg": "^8.7.1",
     "serverless-http": "^2.7.0",
     "subscriptions-transport-ws": "^0.9.19",
+    "ts-custom-error": "^3.2.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

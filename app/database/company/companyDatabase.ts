@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 
+import { Maybe } from "~/@types/global";
 import { CompanyDataLoader } from "~/database/company/CompanyDataLoader";
 import {
   companyQueries,
@@ -8,8 +9,8 @@ import {
 } from "~/database/company/companyQueries";
 import { DBSession } from "~/database/connection";
 import { CompaniesOfPersonDataLoader } from "~/database/employee/CompaniesOfPersonDataLoader";
+import { PersonFilterOperation } from "~/database/person/personFilters";
 import { PersonID } from "~/database/person/personQueries";
-import { Maybe, PersonFilterOperation } from "~/generation/generated";
 import { UUID } from "~/generation/mappers";
 
 export type CompanyTable = {
