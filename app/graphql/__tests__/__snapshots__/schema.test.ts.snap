@@ -166,8 +166,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1429,
-              "start": 1417,
+              "end": 1414,
+              "start": 1402,
             },
             "value": "Subscription",
           },
@@ -185,9 +185,9 @@ exports[`Graphql / schema createSchema 1`] = `
 Object {
   "inheritResolversFromInterfaces": true,
   "resolverValidationOptions": Object {
-    "allowResolversNotInSchema": true,
-    "requireResolversForArgs": true,
-    "requireResolversForResolveType": false,
+    "requireResolversForAllFields": "ignore",
+    "requireResolversForResolveType": "ignore",
+    "requireResolversToMatchSchema": "warn",
   },
 }
 `;

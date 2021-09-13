@@ -64,7 +64,7 @@ union PersonsOutput = PersonsPaginationResponse | InvalidCursorFailure
 
 type Query {
   persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsOutput!
-  person(input: PersonInput!): Person! @authenticated
+  person(input: PersonInput!): Person!
 }
 
 input PersonInput {
