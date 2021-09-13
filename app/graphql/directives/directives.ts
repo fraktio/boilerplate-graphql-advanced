@@ -1,10 +1,13 @@
-// eslint-disable-next-line max-len
-// import { AuthenticatedDirective } from "~/graphql/directives/authenticatedDirective";
+import { GraphQLSchema } from "graphql";
 
-type ChemaDirectives = {
-  // authenticated: typeof AuthenticatedDirective;
-};
+import { authDirectiveTransformer } from "~/graphql/directives/authenticatedDirective";
 
-export const createSchemaDirectives = (): ChemaDirectives => ({
-  // authenticated: AuthenticatedDirective,
-});
+const directives = [authDirectiveTransformer];
+
+export const applyDirectivestToSchema = (
+  schema: GraphQLSchema,
+): GraphQLSchema =>
+  directives.reduce(
+    (schemaToBeApllied, directive) => directive(schemaToBeApllied),
+    schema,
+  );
