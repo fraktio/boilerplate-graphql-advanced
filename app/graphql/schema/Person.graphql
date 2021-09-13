@@ -5,7 +5,6 @@ enum Gender {
 }
 
 interface Person {
-  "Requires authentication and ADMIN privileges"
   UUID: UUID!
   firstName: String!
   lastName: String!
@@ -15,13 +14,14 @@ interface Person {
   birthday: Date!
   timestamp: Timestamp!
   gender: Gender!
+  "Requires authentication and ADMIN privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
 }
 
 """
 Adult is over 16 years old Person
 """
 type Adult implements Person {
-  "Requires authentication and ADMIN privileges"
   UUID: UUID!
   firstName: String!
   lastName: String!
@@ -32,14 +32,15 @@ type Adult implements Person {
   timestamp: Timestamp!
   gender: Gender!
   employers: [Company!]!
+  "Requires authentication and ADMIN privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
 }
 
 """
 Underage is under 16 years old Person
 """
 type Underage implements Person {
-  "Requires authentication and ADMIN privileges"
-  UUID: UUID!
+  UUID: UUID! 
   firstName: String!
   lastName: String!
   phone: PhoneNumber
@@ -48,6 +49,8 @@ type Underage implements Person {
   birthday: Date!
   timestamp: Timestamp!
   gender: Gender!
+  "Requires authentication and ADMIN privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
 }
 
 type PersonsPaginationEdge {
