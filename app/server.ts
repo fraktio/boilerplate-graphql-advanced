@@ -59,9 +59,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   const context = createContext({ knex, config });
   const apolloServer = createApolloServer({ config, context });
 
-  async function startServer(
-    listening?: () => void,
-  ): Promise<StartServerResponse> {
+  async function startServer(): Promise<StartServerResponse> {
     await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 
@@ -73,9 +71,11 @@ export const createServer: CreateSercerFunction = ({ config }) => {
       app.use(errorHandler);
     }
 
-    const server = app.listen({ port: config.env.apiPort }, listening);
-
-    return { app, logger, knex, config, apolloServer, server };
+    return await new Promise((resolve) => {
+      const server = app.listen({ port: config.env.apiPort }, () => {
+        resolve({ app, logger, knex, config, apolloServer, server });
+      });
+    });
   }
 
   return { app, logger, knex, config, apolloServer, startServer };

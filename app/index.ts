@@ -4,21 +4,29 @@ import { createServer } from "~/server";
 
 const config = createConfig();
 
-const { logger, knex, apolloServer, startServer } = createServer({ config });
+const { startServer } = createServer({ config });
 
-const closeAll = (): void => {
-  knex.destroy();
-  apolloServer.stop();
-};
+startServer().then(async ({ logger, knex, apolloServer, server }) => {
+  const closeAll = (): void => {
+    server.close();
+    knex.destroy();
+    apolloServer.stop();
+    process.exit();
+  };
 
-process.on("SIGTERM", () => {
-  logger.error("Received SIGTERM");
-  closeAll();
-});
+  process.on("SIGTERM", () => {
+    logger.error("Received SIGTERM");
+    closeAll();
+  });
 
-process.on("SIGINT", closeAll);
+  process.on("SIGTERM", () => {
+    server.close();
+  });
 
-startServer().then(async () => {
+  process.on("SIGINT", () => {
+    server.close();
+  });
+
   logger.info(`🚀 Server ready, listening on port ${config.env.apiPort}`);
 
   const result = await testDbConnection({

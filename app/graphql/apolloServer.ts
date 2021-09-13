@@ -19,7 +19,7 @@ export const createApolloServer = ({
     validationRules: createValidationRules(),
     schema: createExecutableSchema(),
     formatError: apolloErrorHandler({ config }),
-    plugins: createPlugins({ envConfig: config.env }),
+    plugins: createPlugins({ graphqlConfig: config.graphql }),
     introspection: !config.env.isProduction,
     dataSources: createDataSources,
     persistedQueries: { ttl: 43200 /* 12h */ },
