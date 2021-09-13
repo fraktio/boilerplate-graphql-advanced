@@ -19,5 +19,6 @@ COPY --chown=node:node --from=build /app/node_modules ./node_modules
 RUN ["rm", "-rf", "/app"]
 USER node
 
+ENV API_PORT=8080
 EXPOSE 8080
 CMD [ "node", "./main.js" ]
