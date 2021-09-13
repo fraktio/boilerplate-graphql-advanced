@@ -83,6 +83,8 @@ steps:
             '--update-env-vars', 'GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID',
             '--update-env-vars', 'PLATFORM=google-cloud-platform',
 
+            '--update-env-vars', 'API_NUMBER_FACT_TOKEN=abcdkissakavelee',
+
             '--update-env-vars', 'GRAPHQL_SHOW_PLAYGROUND=TRUE',
             
             '--update-env-vars', 'DATABASE_NAME=$_CLOUD_SQL_INSTANCE_NAME',
@@ -100,7 +102,6 @@ steps:
             '--update-env-vars', 'IS_PRODUCTION=TRUE',
             '--update-env-vars', 'LOGGING_LEVEL=info',
             
-            '--update-secrets', 'API_NUMBER_FACT_TOKEN=API_NUMBER_FACT_TOKEN:latest',
             '--update-secrets', 'TOKEN_SECRET=TOKEN_SECRET:latest',
             '--update-secrets', 'DATABASE_PASSWORD=DATABASE_PASSWORD:latest',
         ]
