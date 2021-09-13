@@ -1,4 +1,5 @@
 import { UserInputError } from "apollo-server-express";
+import { PubSub } from "graphql-subscriptions";
 
 import { Resolvers } from "~/generation/generated";
 import {
@@ -8,6 +9,12 @@ import {
   personHandler,
   personsHandler,
 } from "~/handlers/personHandler";
+
+export const pubsub = new PubSub();
+
+export enum Subscriptions {
+  PERSON_ADDED = "personAdded",
+}
 
 export const personResolver: Resolvers = {
   AddPersonOutput: {
@@ -99,6 +106,10 @@ export const personResolver: Resolvers = {
       });
 
       if (addedPerson.success) {
+        pubsub.publish(Subscriptions.PERSON_ADDED, {
+          personAdded: addedPerson.value,
+        });
+
         return { __typename: "AddPersonSuccess", person: addedPerson.value };
       }
 
@@ -139,6 +150,11 @@ export const personResolver: Resolvers = {
         message: editPerson.failure.message,
         field: editPerson.failure.field,
       };
+    },
+  },
+  Subscription: {
+    personAdded: {
+      subscribe: () => pubsub.asyncIterator(Subscriptions.PERSON_ADDED),
     },
   },
 };

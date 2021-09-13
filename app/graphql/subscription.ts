@@ -6,12 +6,13 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 export const createSubscription = (params: {
   schema: GraphQLSchema;
   httpServer: Server;
-  path: string;
 }): SubscriptionServer => {
   // Providing `onConnect` is the `SubscriptionServer` equivalent to the
   // `context` function in `ApolloServer`. Please [see the docs](https://github.com/apollographql/subscriptions-transport-ws#constructoroptions-socketoptions--socketserver)
   // for more information on this hook.
   const handleConnection = (): Record<string, string> => ({});
+
+  const server = new ApolloServer({ schema: params.schema, context: {} });
 
   const subscriptionServer = SubscriptionServer.create(
     {
@@ -22,7 +23,7 @@ export const createSubscription = (params: {
     },
     {
       server: params.httpServer,
-      path: new ApolloServer({}).graphqlPath,
+      path: server.graphqlPath,
     },
   );
 

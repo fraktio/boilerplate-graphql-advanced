@@ -1,7 +1,7 @@
 import { ApolloServer, ExpressContext } from "apollo-server-express";
 import { Express } from "express";
 import { graphqlUploadExpress } from "graphql-upload";
-import { Server } from "http";
+import { Server, createServer as createHttpServer } from "http";
 
 import { Config } from "~/config/config";
 import { createKnex, DBSession } from "~/database/connection";
@@ -57,7 +57,8 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   app.use(sessionHandler({ sessionConfig: config.session, knex }));
 
   const context = createContext({ knex, config });
-  const apolloServer = createApolloServer({ config, context });
+  const httpServer = createHttpServer(app);
+  const apolloServer = createApolloServer({ config, context, httpServer });
 
   async function startServer(): Promise<StartServerResponse> {
     await apolloServer.start();
@@ -72,7 +73,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
     }
 
     return await new Promise((resolve) => {
-      const server = app.listen({ port: config.env.apiPort }, () => {
+      const server = httpServer.listen({ port: config.env.apiPort }, () => {
         resolve({ app, logger, knex, config, apolloServer, server });
       });
     });
