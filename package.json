@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "@google-cloud/logging-bunyan": "^3.1.0",
+    "@graphql-tools/schema": "^8.2.0",
+    "@graphql-tools/utils": "^8.2.2",
     "apollo-datasource-rest": "^0.14.0",
     "apollo-server-express": "^3.3.0",
     "apollo-server-plugin-response-cache": "^3.2.0",
@@ -45,6 +47,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "finnish-ssn": "^2.0.4",
+    "fp-ts": "^2.11.2",
     "graphql": "^15.5.3",
     "graphql-depth-limit": "^1.1.0",
     "graphql-scalars": "^1.10.1",
