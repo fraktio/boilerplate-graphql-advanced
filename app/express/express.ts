@@ -13,10 +13,7 @@ export const createExpress = (opts: {
 }): Express => {
   const app = express();
 
-  // https://github.com/helmetjs/helmet
-  const helmetMiddleware = helmet(
-    opts.config.env.isProduction ? undefined : { contentSecurityPolicy: false },
-  );
+  const helmetMiddleware = helmet({ contentSecurityPolicy: false });
 
   app.use(helmetMiddleware);
   app.use(cors({ origin: opts.config.env.apiCorsEndpoint, credentials: true }));
