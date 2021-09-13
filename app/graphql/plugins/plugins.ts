@@ -3,6 +3,7 @@ import responseCachePlugin from "apollo-server-plugin-response-cache";
 
 import { GraphqlConfig } from "~/config/configs/graphqlConfig";
 import { durationPlugin } from "~/graphql/plugins/durationPlugin";
+import { createInlineTracePlugin } from "~/graphql/plugins/inlineTracePlugin";
 import { apolloServerLoggerPlugin } from "~/graphql/plugins/loggerPlugin";
 import { operationNamePlugin } from "~/graphql/plugins/operationNamePlugin";
 import { createPlaygroundPlugin } from "~/graphql/plugins/playgroundPlugin";
@@ -17,4 +18,5 @@ export const createPlugins = (params: {
   operationNamePlugin,
   durationPlugin,
   requestIdPlugin,
+  ...createInlineTracePlugin({ graphql: params.graphqlConfig }),
 ];

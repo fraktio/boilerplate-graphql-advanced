@@ -18,6 +18,7 @@ export const createTestConfig = (): Config => ({
   },
   graphql: {
     allowIntrospection: true,
+    allowInlineTrace: true,
   },
   database: {
     type: "pg",

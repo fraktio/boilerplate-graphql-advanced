@@ -86,6 +86,7 @@ steps:
             '--update-env-vars', 'API_NUMBER_FACT_TOKEN=abcdkissakavelee',
 
             '--update-env-vars', 'GRAPHQL_ALLOW_INTROSPECTION=TRUE',
+            '--update-env-vars', 'GRAPHQL_INLINE_TRACE=TRUE',
             
             '--update-env-vars', 'DATABASE_NAME=$_CLOUD_SQL_INSTANCE_NAME',
             '--update-env-vars', 'DATABASE_USER=$_CLOUD_SQL_USER_NAME',
