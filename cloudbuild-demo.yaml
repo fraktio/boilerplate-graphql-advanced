@@ -93,7 +93,6 @@ steps:
 
             '--update-env-vars', 'TOKEN_PATH=/graphql',
             '--update-env-vars', 'TOKEN_DOMAIN=frakt.io',
-            '--update-env-vars', 'TOKEN_SECRET=abckissakavelee123',
             '--update-env-vars', 'ACCESS_TOKEN_AGE_SECONDS=302400',
             '--update-env-vars', 'REFRESH_TOKEN_AGE_SECONDS=604800',
 
@@ -101,6 +100,7 @@ steps:
             '--update-env-vars', 'IS_PRODUCTION=TRUE',
             '--update-env-vars', 'LOGGING_LEVEL=info',
             
+            '--update-secrets', 'TOKEN_SECRET=TOKEN_SECRET:latest',
             '--update-secrets', 'DATABASE_PASSWORD=DB_USER_PASSWORD:latest',
         ]
 
