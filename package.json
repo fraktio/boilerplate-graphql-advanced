@@ -14,6 +14,7 @@
     "build": "webpack --config webpack.prod.js",
     "build:serverless": "serverless package",
     "lint": "eslint . --ext ts,js",
+    "test:nuke-db": "jest --updateSnapshot --forceExit --detectOpenHandles  --reInitializeDb=true",
     "test": "jest --updateSnapshot --forceExit --detectOpenHandles",
     "test:update": "jest --updateSnapshot",
     "script": "ts-node --files -r tsconfig-paths/register",
@@ -25,7 +26,7 @@
     "validate-schema:scalars": "npm run script -- ./scripts/validate-scalars.ts",
     "typescript-check": "node_modules/.bin/tsc",
     "database:migrate:latest": "npm run knex -- migrate:latest",
-    "database:migrate:rollback": "npm run knex -- migrate:rollback --all",
+    "database:migrate:rollback": "npm run knex -- migrate:rollback",
     "seed": "npm run knex -- seed:run",
     "validate": "npm ls",
     "postinstall": "node-prune"
