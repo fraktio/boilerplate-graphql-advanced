@@ -5,6 +5,10 @@ import {
 } from "~/config/configs/databaseConfig";
 import { createEnvConfig, EnvConfig } from "~/config/configs/envConfig";
 import {
+  createGraphqlgConfig,
+  GraphqlConfig,
+} from "~/config/configs/graphqlConfig";
+import {
   createLoggingConfig,
   LoggingConfig,
 } from "~/config/configs/loggingConfig";
@@ -20,6 +24,7 @@ import {
 export type Config = {
   api: APIConfig;
   database: DatabaseConfig;
+  graphql: GraphqlConfig;
   env: EnvConfig;
   logging: LoggingConfig;
   platform: PlatformConfig;
@@ -29,6 +34,7 @@ export type Config = {
 export const createConfig = (): Config => ({
   api: createAPIConfig(),
   database: createDatabaseConfig(),
+  graphql: createGraphqlgConfig(),
   env: createEnvConfig(),
   logging: createLoggingConfig(),
   platform: createPlatformConfig(),
