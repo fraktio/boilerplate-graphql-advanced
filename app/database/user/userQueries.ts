@@ -23,6 +23,7 @@ export type UserTableRow = Readonly<{
   email: EmailAddress;
   phoneNumber: string;
   hashedPassword: string;
+  accessLevel: [UserAccessLevel];
   createdAt: Date;
   updatedAt: Date | null;
 }>;
@@ -44,7 +45,7 @@ export type UserTable = {
 export const formatUserRow = (row: UserTableRow): UserTable => ({
   id: row.id,
   UUID: row.uuid,
-  accessLevel: [UserAccessLevel.USER],
+  accessLevel: row.accessLevel,
   username: row.username,
   email: row.email,
   phoneNumber: row.phoneNumber,

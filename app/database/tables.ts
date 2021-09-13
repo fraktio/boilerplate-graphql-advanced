@@ -11,6 +11,8 @@ export enum Table {
   EMPLOYEE = "employee",
   COMPANY = "company",
   PERSONS = "person",
+  KNEX_MIGRATIONS = "knex_migrations",
+  KNEX_MIGRATIONS_LOCK = "knex_migrations_lock",
 }
 
 export interface ID extends Number {

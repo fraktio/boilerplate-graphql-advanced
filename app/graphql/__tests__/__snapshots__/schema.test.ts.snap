@@ -4,6 +4,7 @@ exports[`Graphql / schema createExecutableSchema 1`] = `
 GraphQLSchema {
   "__validationErrors": undefined,
   "_directives": Array [
+    "@auth",
     "@deprecated",
     "@include",
     "@skip",
@@ -167,8 +168,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1414,
-              "start": 1402,
+              "end": 1435,
+              "start": 1423,
             },
             "value": "Subscription",
           },

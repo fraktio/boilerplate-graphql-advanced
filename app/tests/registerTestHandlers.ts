@@ -1,5 +1,9 @@
 import { StartServerFunction, StartServerResponse } from "~/server";
-import { migrateTestDatabase, resetTestDatabase } from "~/tests/testDatabase";
+import {
+  nukeDatabase,
+  migrateTestDatabase,
+  resetTestDatabase,
+} from "~/tests/testDatabase";
 
 export const registerTestHandlers = (params: {
   startServer: StartServerFunction;
@@ -9,6 +13,9 @@ export const registerTestHandlers = (params: {
   beforeAll(async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     serverOpts = await params.startServer();
+    if (process.argv.filter((x) => x.startsWith("--reInitializeDb"))[0]) {
+      await nukeDatabase({ knex: serverOpts.knex });
+    }
     await migrateTestDatabase({ knex: serverOpts.knex });
   });
 
@@ -16,7 +23,6 @@ export const registerTestHandlers = (params: {
     if (!serverOpts) {
       return;
     }
-
     await resetTestDatabase({ knex: serverOpts.knex });
   });
 

@@ -2,7 +2,7 @@ import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
-    .raw("CREATE EXTENSION btree_gist;")
+    .raw("CREATE EXTENSION IF NOT EXISTS btree_gist;")
     .createTable("users", (table) => {
       table.increments("id").primary().notNullable();
       table.uuid("uuid").notNullable();

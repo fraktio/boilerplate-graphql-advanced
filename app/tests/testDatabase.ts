@@ -17,6 +17,20 @@ export const migrateTestDatabase = async (params: {
 }): Promise<void> => {
   await params.knex.migrate.latest();
 };
+
+export const nukeDatabase = async ({
+  knex,
+}: {
+  knex: DBSession;
+}): Promise<void> => {
+  await knex.schema.dropTableIfExists(Table.EMPLOYEE);
+  await knex.schema.dropTableIfExists(Table.PERSONS);
+  await knex.schema.dropTableIfExists(Table.COMPANY);
+  await knex.schema.dropTableIfExists(Table.USERS);
+  await knex.schema.dropTableIfExists(Table.KNEX_MIGRATIONS_LOCK);
+  await knex.schema.dropTableIfExists(Table.KNEX_MIGRATIONS);
+};
+
 export const resetTestDatabase = async ({
   knex,
 }: {

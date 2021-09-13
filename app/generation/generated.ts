@@ -904,6 +904,17 @@ export type ResolversParentTypes = ResolversObject<{
   User: UserModel;
 }>;
 
+export type AuthDirectiveArgs = {
+  requires?: Maybe<AccessRight>;
+};
+
+export type AuthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = AuthDirectiveArgs,
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type AddCompanyOutputResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["AddCompanyOutput"] = ResolversParentTypes["AddCompanyOutput"],
@@ -1575,4 +1586,8 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   UniqueConstraintViolationFailure?: UniqueConstraintViolationFailureResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
+}>;
+
+export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
+  auth?: AuthDirectiveResolver<any, any, ContextType>;
 }>;
