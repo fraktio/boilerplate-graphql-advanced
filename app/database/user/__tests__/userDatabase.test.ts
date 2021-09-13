@@ -1,5 +1,6 @@
 import {
   formatUserRow,
+  UserAccessLevel,
   UserID,
   UserTable,
   UserTableRow,
@@ -19,6 +20,7 @@ export const dbUserMockTableRow: UserTableRow = {
   hashedPassword: "valid-hashed-password",
   createdAt: new Date(datetimeString),
   updatedAt: null,
+  accessLevel: [UserAccessLevel.USER],
 };
 
 export const dbUserMockTableRowUpdated: UserTableRow = {

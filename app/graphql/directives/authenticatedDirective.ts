@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils";
 import { AuthenticationError } from "apollo-server-express";
-import { GraphQLSchema } from "graphql";
+import { defaultFieldResolver, GraphQLSchema } from "graphql";
 
 const directiveName = "auth";
 
@@ -24,10 +26,12 @@ export function authDirectiveTransformer(schema: GraphQLSchema): GraphQLSchema {
       if (authDirective) {
         const { requires } = authDirective;
         if (requires) {
+          // Get this field's original resolver
           const { resolve = defaultFieldResolver } = fieldConfig;
-          fieldConfig.resolve = function (source, args, context, info) {
+
+          // eslint-disable-next-line max-params
+          fieldConfig.resolve = function (source, args, context, info): any {
             if (!context.authenticatedUser) {
-              // context.headers.authToken
               throw new AuthenticationError("Authentication required");
             }
             const { authenticatedUser } = context;

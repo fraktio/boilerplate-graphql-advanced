@@ -3,7 +3,7 @@ import { Knex } from "knex";
 import { v4 as uuidv4 } from "uuid";
 
 import { Table } from "~/database/tables";
-import { UserTableRow } from "~/database/user/userQueries";
+import { UserAccessLevel, UserTableRow } from "~/database/user/userQueries";
 import { hashingUtils } from "~/utils/hashingUtils";
 
 export const testUsername = "username";
@@ -17,6 +17,7 @@ type CreateUser = {
   email: string;
   phoneNumber: string;
   hashedPassword: string;
+  accessLevel: UserAccessLevel[];
 };
 
 const createUser = (opts: {
@@ -28,6 +29,7 @@ const createUser = (opts: {
   email: faker.internet.email(),
   phoneNumber: faker.phone.phoneNumber(),
   hashedPassword: opts.password,
+  accessLevel: [UserAccessLevel.USER],
 });
 
 export const seed = async (knex: Knex): Promise<void> => {
