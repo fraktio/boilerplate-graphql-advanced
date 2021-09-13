@@ -116,6 +116,7 @@ GraphQLSchema {
     "UUID": "UUID",
     "Underage": "Underage",
     "UniqueConstraintViolationFailure": "UniqueConstraintViolationFailure",
+    "Upload": "Upload",
     "User": "User",
     "__Directive": "__Directive",
     "__DirectiveLocation": "__DirectiveLocation",
@@ -187,7 +188,7 @@ Object {
   "inheritResolversFromInterfaces": true,
   "resolverValidationOptions": Object {
     "requireResolversForAllFields": "ignore",
-    "requireResolversForResolveType": "warn",
+    "requireResolversForResolveType": "ignore",
     "requireResolversToMatchSchema": "warn",
   },
 }

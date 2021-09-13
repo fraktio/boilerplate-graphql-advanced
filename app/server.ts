@@ -1,5 +1,6 @@
 import { ApolloServer, ExpressContext } from "apollo-server-express";
 import { Express } from "express";
+import { graphqlUploadExpress } from "graphql-upload";
 import { Server } from "http";
 
 import { Config } from "~/config/config";
@@ -50,6 +51,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
 
   const app = createExpress({ config, knex });
 
+  app.use(graphqlUploadExpress());
   app.use(createLoggerMiddleware({ logger, platformConfig: config.platform }));
   app.use(createRoutes({ knex, loggingConfig: config.logging }));
   app.use(sessionHandler({ sessionConfig: config.session, knex }));

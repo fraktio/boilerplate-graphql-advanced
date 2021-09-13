@@ -26,6 +26,7 @@ import {
   Cursor,
   EmailAddress,
   FinnishPersonalIdentityCode,
+  Upload,
 } from "./scalars";
 
 export type Maybe<T> = T | null;
@@ -57,6 +58,7 @@ export type Scalars = {
   PersonalIdentityCode: FinnishPersonalIdentityCode;
   PhoneNumber: PhoneNumber;
   UUID: UUID;
+  Upload: Upload;
 };
 
 export enum AccessRight {
@@ -768,6 +770,7 @@ export type ResolversTypes = ResolversObject<{
   UUID: ResolverTypeWrapper<Scalars["UUID"]>;
   Underage: ResolverTypeWrapper<Underage>;
   UniqueConstraintViolationFailure: ResolverTypeWrapper<UniqueConstraintViolationFailure>;
+  Upload: ResolverTypeWrapper<Scalars["Upload"]>;
   User: ResolverTypeWrapper<UserModel>;
 }>;
 
@@ -897,6 +900,7 @@ export type ResolversParentTypes = ResolversObject<{
   UUID: Scalars["UUID"];
   Underage: Underage;
   UniqueConstraintViolationFailure: UniqueConstraintViolationFailure;
+  Upload: Scalars["Upload"];
   User: UserModel;
 }>;
 
@@ -1500,6 +1504,11 @@ export type UniqueConstraintViolationFailureResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Upload"], any> {
+  name: "Upload";
+}
+
 export type UserResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"],
@@ -1564,5 +1573,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   UUID?: GraphQLScalarType;
   Underage?: UnderageResolvers<ContextType>;
   UniqueConstraintViolationFailure?: UniqueConstraintViolationFailureResolvers<ContextType>;
+  Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
 }>;

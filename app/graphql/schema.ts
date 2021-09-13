@@ -13,7 +13,7 @@ export const createSchema = (
   inheritResolversFromInterfaces: true,
   resolverValidationOptions: {
     requireResolversForAllFields: "ignore",
-    requireResolversForResolveType: "warn",
+    requireResolversForResolveType: "ignore",
     requireResolversToMatchSchema: "warn",
   },
   resolvers,

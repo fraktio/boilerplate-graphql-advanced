@@ -1,21 +1,15 @@
 import { ValidationError } from "apollo-server-express";
 import { GraphQLScalarType, ValueNode } from "graphql";
-import * as t from "io-ts";
 
 import { UUID } from "~/generation/scalars";
 import { hashingUtils } from "~/utils/hashingUtils";
 import { asUUID } from "~/validation/converters";
 
 const ERROR_MESSAGE = "Cursor is not a valid cursor";
+const ERROR_MESSAGE_EMPTY =
+  "Cursor is not a valid cursor, cursor cannot be empty";
 
-export const CursorDecoder = t.interface(
-  {
-    queryCursor: t.string,
-  },
-  "cursorDecoder",
-);
-
-export type RawCursor = t.TypeOf<typeof CursorDecoder>;
+export type RawCursor = { queryCursor: string };
 
 export type Cursor = {
   queryCursor: UUID;
@@ -35,9 +29,12 @@ export const parseRawCursorFromString = (value: string): RawCursor => {
     const decoded = hashingUtils.base64ToString(value);
     const cursor = JSON.parse(decoded);
 
-    const validated = CursorDecoder.decode(cursor);
-    if (validated._tag === "Left") {
+    if (typeof cursor.queryCursor !== "string") {
       throw new ValidationError(ERROR_MESSAGE);
+    }
+
+    if (cursor.queryCursor === "") {
+      throw new ValidationError(ERROR_MESSAGE_EMPTY);
     }
 
     return cursor;
