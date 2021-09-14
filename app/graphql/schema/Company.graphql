@@ -2,7 +2,7 @@ type Company {
   UUID: UUID!
   name: String!
   timestamp: Timestamp!
-  employees: [Adult!]!
+  employees: [Person!]!
 }
 
 input CompanyQuery {

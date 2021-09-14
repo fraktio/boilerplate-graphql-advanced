@@ -1,85 +1,13 @@
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
-}
 
 interface Person {
   UUID: UUID!
   firstName: String!
   lastName: String!
-  phone: PhoneNumber
-  email: EmailAddress!
-  nationality: CountryCode!
-  birthday: Date!
-  timestamp: Timestamp!
-  gender: Gender!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
 }
 
-"""
-Adult is over 16 years old Person
-"""
-type Adult implements Person {
-  UUID: UUID!
-  firstName: String!
-  lastName: String!
-  phone: PhoneNumber
-  email: EmailAddress!
-  nationality: CountryCode!
-  birthday: Date!
-  timestamp: Timestamp!
-  gender: Gender!
-  employers: [Company!]!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
-}
+  #1. add allPersons -query 
 
-"""
-Underage is under 16 years old Person
-"""
-type Underage implements Person {
-  UUID: UUID!  
-  firstName: String! 
-  lastName: String! 
-  phone: PhoneNumber
-  email: EmailAddress!
-  nationality: CountryCode!
-  birthday: Date!
-  timestamp: Timestamp!
-  gender: Gender!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
-}
 
-type PersonsPaginationEdge {
-  cursor: Cursor!
-  node: Person!
-}
-
-type PersonsPaginationResponse {
-  edges: [PersonsPaginationEdge!]!
-  pageInfo: PageInfo!
-}
-
-union PersonsPaginationOutput = PersonsPaginationResponse | InvalidCursorFailure
-
-type Query {
-  persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsPaginationOutput!
-  allPersons: [Person!]!
-  person(input: PersonInput!): Person! @auth(requires:USER)
-  "Cached person query is cached for 120 seconds" 
-  cachedPerson(input: PersonInput!): Person! @auth(requires:USER) @cacheControl(maxAge: 120)
-}
-
-input PersonInput {
-  UUID: UUID!
-}
-
-type Subscription {
-  personAdded: Person!
-}
 
 type Mutation {
   addPerson(input: AddPersonInput!): AddPersonOutput!
@@ -88,23 +16,20 @@ type Mutation {
 
 input AddPersonPersonInput {
   firstName: String! 
-  "Last name has to be minimum of 1 chracters and maximum of 50"
-  lastName: String!  @length(max:50 min:1)
+  lastName: String!  
   phone: PhoneNumber 
   email: EmailAddress!
   birthday: Date! 
   nationality: CountryCode!
   personalIdentityCode: PersonalIdentityCode! 
-  gender: Gender!
 }
 
 input AddPersonInput {
   person: AddPersonPersonInput!
 }
 
-union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
 
-type AddPersonSuccess {
+type AddPersonOutput {
   person: Person! 
 }
 
@@ -113,36 +38,7 @@ input EditPersonInput {
   person: AddPersonPersonInput!
 }
 
-union EditPersonOutput = EditPersonSuccess | UniqueConstraintViolationFailure | NotFoundFailure
 
-type EditPersonSuccess {
+type EditPersonOutput {
   person: Person!
-}
-
-input PersonFilterOperationInput {
-  operator: FilterOperator!
-  filters: [PersonFilterInput!]
-}
-
-input PersonFilterInput {
-  filterOperations: [PersonFilterOperationInput!]
-  birthdayFilter: DateFilter
-  nameFilter: StringFilter
-}
-
-enum PersonSortField {
-  birthday
-  firstName
-  lastName
-  createdAt
-}
-
-enum SortOrder {
-  ASC
-  DESC
-}
-
-input PersonSortInput {
-  field: PersonSortField!
-  order: SortOrder!
 }

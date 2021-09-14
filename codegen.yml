@@ -6,7 +6,6 @@ generates:
       mappers:
         Company: ./mappers#CompanyModel
         Person: ./mappers#PersonModel
-        Adult: ./mappers#AdultModel
         User: ./mappers#UserModel
       contextType: ../graphql/context#Context
       useIndexSignature: true
