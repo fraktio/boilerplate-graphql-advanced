@@ -46,7 +46,6 @@ export type Scalars = {
   Float: number;
   CountryCode: CountryCode;
   Cursor: Cursor;
-  Date: DateTime;
   DateTime: DateTime;
   EmailAddress: EmailAddress;
   PersonalIdentityCode: FinnishPersonalIdentityCode;
@@ -93,7 +92,7 @@ export type AddPersonOutput = {
 };
 
 export type AddPersonPersonInput = {
-  birthday: Scalars["Date"];
+  birthday: Scalars["DateTime"];
   email: Scalars["EmailAddress"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
@@ -105,7 +104,7 @@ export type AddPersonPersonInput = {
 export type Adult = Person & {
   __typename?: "Adult";
   UUID: Scalars["UUID"];
-  birthday: Scalars["String"];
+  birthday: Scalars["DateTime"];
   email: Scalars["String"];
   employers: Array<Company>;
   firstName: Scalars["String"];
@@ -173,12 +172,12 @@ export type CompanySuccess = {
 };
 
 export type DateFilter = {
-  equal?: Maybe<Scalars["Date"]>;
-  greaterOrEqualThan?: Maybe<Scalars["Date"]>;
-  greaterThan?: Maybe<Scalars["Date"]>;
-  lessOrEqualThan?: Maybe<Scalars["Date"]>;
-  lessThan?: Maybe<Scalars["Date"]>;
-  notEqual?: Maybe<Scalars["Date"]>;
+  equal?: Maybe<Scalars["DateTime"]>;
+  greaterOrEqualThan?: Maybe<Scalars["DateTime"]>;
+  greaterThan?: Maybe<Scalars["DateTime"]>;
+  lessOrEqualThan?: Maybe<Scalars["DateTime"]>;
+  lessThan?: Maybe<Scalars["DateTime"]>;
+  notEqual?: Maybe<Scalars["DateTime"]>;
 };
 
 export type EditCompanyFailureNotFound = {
@@ -332,7 +331,7 @@ export type PaginationInput = {
 
 export type Person = {
   UUID: Scalars["UUID"];
-  birthday: Scalars["String"];
+  birthday: Scalars["DateTime"];
   email: Scalars["String"];
   firstName: Scalars["String"];
   gender?: Maybe<Gender>;
@@ -433,7 +432,7 @@ export type Timestamp = {
 export type Underage = Person & {
   __typename?: "Underage";
   UUID: Scalars["UUID"];
-  birthday: Scalars["String"];
+  birthday: Scalars["DateTime"];
   email: Scalars["String"];
   firstName: Scalars["String"];
   gender?: Maybe<Gender>;
@@ -607,7 +606,6 @@ export type ResolversTypes = ResolversObject<{
   >;
   CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
   Cursor: ResolverTypeWrapper<Scalars["Cursor"]>;
-  Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateFilter: DateFilter;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   EditCompanyFailureNotFound: ResolverTypeWrapper<EditCompanyFailureNotFound>;
@@ -723,7 +721,6 @@ export type ResolversParentTypes = ResolversObject<{
   };
   CountryCode: Scalars["CountryCode"];
   Cursor: Scalars["Cursor"];
-  Date: Scalars["Date"];
   DateFilter: DateFilter;
   DateTime: Scalars["DateTime"];
   EditCompanyFailureNotFound: EditCompanyFailureNotFound;
@@ -872,7 +869,7 @@ export type AdultResolvers<
   ParentType extends ResolversParentTypes["Adult"] = ResolversParentTypes["Adult"],
 > = ResolversObject<{
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
-  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   employers?: Resolver<
     Array<ResolversTypes["Company"]>,
@@ -964,11 +961,6 @@ export interface CountryCodeScalarConfig
 export interface CursorScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["Cursor"], any> {
   name: "Cursor";
-}
-
-export interface DateScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["Date"], any> {
-  name: "Date";
 }
 
 export interface DateTimeScalarConfig
@@ -1181,7 +1173,7 @@ export type PersonResolvers<
 > = ResolversObject<{
   __resolveType: TypeResolveFn<"Adult" | "Underage", ParentType, ContextType>;
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
-  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
@@ -1317,7 +1309,7 @@ export type UnderageResolvers<
   ParentType extends ResolversParentTypes["Underage"] = ResolversParentTypes["Underage"],
 > = ResolversObject<{
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
-  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
@@ -1366,7 +1358,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   CompanySuccess?: CompanySuccessResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   Cursor?: GraphQLScalarType;
-  Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   EditCompanyFailureNotFound?: EditCompanyFailureNotFoundResolvers<ContextType>;
   EditCompanyOutput?: EditCompanyOutputResolvers<ContextType>;
