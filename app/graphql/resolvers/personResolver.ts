@@ -33,8 +33,10 @@ export const personResolver: Resolvers = {
   },
 
   Person: {
-    __resolveType() {
-      return "Adult";
+    __resolveType(person) {
+      return person.birthday.diffNow("years").years < -18
+        ? "Adult"
+        : "Underage";
     },
   },
 
