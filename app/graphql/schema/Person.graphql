@@ -7,10 +7,7 @@ type Person {
   email: String!
   nationality: String!
   birthday: String!
-<<<<<<< HEAD
   employers: [Company!]!
-=======
->>>>>>> dd62fa6 (schema stuff)
 }
 
 type Query {

@@ -18,6 +18,10 @@ export const personResolver: Resolvers = {
       });
     },
   },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4de123e (traversing)
   Query: {
     async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
@@ -29,6 +33,10 @@ export const personResolver: Resolvers = {
     },
   },
 
+<<<<<<< HEAD
+=======
+  Mutation: {
+>>>>>>> 4de123e (traversing)
     async addPerson(_, { input }, { knex, dataLoaders }) {
       const newPerson = {
         firstName: input.person.firstName,
