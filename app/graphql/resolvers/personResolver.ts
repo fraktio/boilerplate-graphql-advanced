@@ -3,7 +3,7 @@ import { Resolvers } from "~/generation/generated";
 import {
   addPersonHandler,
   modifyPerson,
-  // UNCOMMENT ME! personHandler,
+  // UNCOMMENT ME! personsHandler,
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
