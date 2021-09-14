@@ -7,6 +7,7 @@ import { CursorResolver } from "~/graphql/scalars/CursorResolver";
 import { DateResolver } from "~/graphql/scalars/DateResolver";
 import { DateTimeResolver } from "~/graphql/scalars/DateTimeResolver";
 import { EmailResolver } from "~/graphql/scalars/EmailResolver";
+import { PersonalIdentityCodeResolver } from "~/graphql/scalars/PersonalIdentityCodeResolver";
 import { PhoneNumberResolver } from "~/graphql/scalars/PhoneNumberResolver";
 
 export const createScalarResolvers = (): Resolvers => ({
@@ -18,4 +19,5 @@ export const createScalarResolvers = (): Resolvers => ({
   PhoneNumber: PhoneNumberResolver,
   CountryCode: CountryCodeResolver,
   Cursor: CursorResolver,
+  PersonalIdentityCode: PersonalIdentityCodeResolver,
 });

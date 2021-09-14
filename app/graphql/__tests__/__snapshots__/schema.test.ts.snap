@@ -6,6 +6,7 @@ GraphQLSchema {
   "_directives": Array [
     "@auth",
     "@deprecated",
+    "@length",
     "@include",
     "@skip",
     "@specifiedBy",
@@ -110,6 +111,7 @@ GraphQLSchema {
     "SortOrder": "SortOrder",
     "String": "String",
     "StringFilter": "StringFilter",
+    "StringWithMaxLength50AndMinLength1": "StringWithMaxLength50AndMinLength1",
     "Subscription": "Subscription",
     "TimeFilter": "TimeFilter",
     "Timestamp": "Timestamp",
@@ -138,8 +140,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1411,
-              "start": 1406,
+              "end": 1414,
+              "start": 1409,
             },
             "value": "Query",
           },
@@ -168,8 +170,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1685,
-              "start": 1673,
+              "end": 1688,
+              "start": 1676,
             },
             "value": "Subscription",
           },

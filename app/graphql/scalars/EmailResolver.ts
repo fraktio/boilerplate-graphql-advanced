@@ -4,7 +4,7 @@ import { GraphQLScalarType, ValueNode } from "graphql";
 import { EmailAddress } from "~/generation/scalars";
 import { validateEmail } from "~/validation/validators/emailValidator";
 
-const ERROR_MESSAGE = "Email must be a valid a valid emai address";
+const ERROR_MESSAGE = "Email must be a valid a valid email address";
 
 const formatEmailToString = (value: EmailAddress): string => value.toString();
 

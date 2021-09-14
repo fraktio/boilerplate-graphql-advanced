@@ -16,6 +16,8 @@ directive @auth(requires: AccessRight = ADMIN) on OBJECT | FIELD_DEFINITION
 
 directive @deprecated(reason: String = "This field is deprecated") on FIELD_DEFINITION | ENUM_VALUE
 
+directive @length(min: Int, max: Int ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
 type Timestamp {
   createdAt: DateTime!
   modifiedAt: DateTime

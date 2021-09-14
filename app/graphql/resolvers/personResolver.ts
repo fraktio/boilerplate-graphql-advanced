@@ -151,9 +151,7 @@ export const personResolver: Resolvers = {
       });
 
       if (editPerson.success) {
-        const tussi = { ...editPerson.value, peppe: "makkaeeeera" };
-
-        return { __typename: "EditPersonSuccess", person: tussi };
+        return { __typename: "EditPersonSuccess", person: editPerson.value };
       }
 
       return {

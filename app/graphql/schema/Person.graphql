@@ -40,9 +40,9 @@ type Adult implements Person {
 Underage is under 16 years old Person
 """
 type Underage implements Person {
-  UUID: UUID! 
-  firstName: String!
-  lastName: String!
+  UUID: UUID!  
+  firstName: String! 
+  lastName: String! 
   phone: PhoneNumber
   email: EmailAddress!
   nationality: CountryCode!
@@ -85,13 +85,14 @@ type Mutation {
 }
 
 input AddPersonPersonInput {
-  firstName: String!
-  lastName: String!
-  phone: PhoneNumber
+  firstName: String! 
+  "Last name has to be minimum of 1 chracters and maximum of 50"
+  lastName: String!  @length(max:50 min:1)
+  phone: PhoneNumber 
   email: EmailAddress!
-  birthday: Date!
+  birthday: Date! 
   nationality: CountryCode!
-  personalIdentityCode: PersonalIdentityCode!
+  personalIdentityCode: PersonalIdentityCode! 
   gender: Gender!
 }
 
@@ -102,7 +103,7 @@ input AddPersonInput {
 union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
 
 type AddPersonSuccess {
-  person: Person!
+  person: Person! 
 }
 
 input EditPersonInput {

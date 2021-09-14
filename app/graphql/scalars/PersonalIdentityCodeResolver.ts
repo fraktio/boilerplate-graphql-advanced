@@ -28,6 +28,7 @@ export const PersonalIdentityCodeResolver = new GraphQLScalarType({
     if (ast.kind !== "StringValue") {
       throw new ValidationError(ERROR_MESSAGE);
     }
+
     const result = validateFinnishPersonalIdentityCode(ast.value);
 
     if (result.success) {
