@@ -1,8 +1,6 @@
 
-interface Person {
+type Person {
   UUID: UUID!
-  firstName: String!
-  lastName: String!
 }
 
   #1. add allPersons -query 
