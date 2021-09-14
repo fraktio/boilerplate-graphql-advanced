@@ -1,11 +1,17 @@
 
 type Person {
   UUID: UUID!
+  firstName: String!
+  lastName: String!
+  phone: String!
+  email: String!
+  nationality: String!
+  birthday: String!
 }
 
-  #1. add allPersons -query 
-
-
+type Query {
+  allPersons: [Person]!
+}
 
 type Mutation {
   addPerson(input: AddPersonInput!): AddPersonOutput!
@@ -25,7 +31,6 @@ input AddPersonPersonInput {
 input AddPersonInput {
   person: AddPersonPersonInput!
 }
-
 
 type AddPersonOutput {
   person: Person! 

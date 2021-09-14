@@ -4,7 +4,7 @@ import {
   addPersonHandler
   // UNCOMMENT ME @ STEP 2 adultEmployersHandler,
   modifyPerson,
-  // UNCOMMENT ME @ STEP 1  personsHandler,
+  personsHandler,
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
@@ -21,7 +21,6 @@ export const personResolver: Resolvers = {
   },
   */
   Query: {
-    /* UNCOMMENT ME @ STEP 1
     async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,
@@ -30,7 +29,6 @@ export const personResolver: Resolvers = {
 
       return persons;
     },
-   */
   },
   Mutation: {
     async addPerson(_, { input }, { knex, dataLoaders }) {
