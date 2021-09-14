@@ -5,6 +5,7 @@ import {
   addPersonHandler,
   modifyPerson,
   personsHandler,
+  personHandler,
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
@@ -18,11 +19,21 @@ export const personResolver: Resolvers = {
       });
     },
   },
-<<<<<<< HEAD
-=======
-
->>>>>>> 4de123e (traversing)
   Query: {
+    async person(_, { input }, { knex, dataLoaders }) {
+      const person = await personHandler({
+        knex,
+        personUUID: input.UUID,
+        personDL: dataLoaders.personDL,
+      });
+
+      if (!person) {
+        throw new Error("Invalid person uuid");
+      }
+
+      return person;
+    },
+
     async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,
@@ -33,10 +44,7 @@ export const personResolver: Resolvers = {
     },
   },
 
-<<<<<<< HEAD
-=======
   Mutation: {
->>>>>>> 4de123e (traversing)
     async addPerson(_, { input }, { knex, dataLoaders }) {
       const newPerson = {
         firstName: input.person.firstName,

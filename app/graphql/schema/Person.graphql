@@ -12,6 +12,11 @@ type Person {
 
 type Query {
   allPersons: [Person]!
+  person(input: PersonInput!): Person!
+}
+
+input PersonInput {
+  UUID: UUID!
 }
 
 type Mutation {
