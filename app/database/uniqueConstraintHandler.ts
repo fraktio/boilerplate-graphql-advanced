@@ -1,4 +1,3 @@
-import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
 import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";
 
 const DATABASE_ERROR_UNIQUE_VIOLATION = "23505";
