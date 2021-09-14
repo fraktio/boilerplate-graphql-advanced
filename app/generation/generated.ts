@@ -315,6 +315,7 @@ export type Person = {
   UUID: Scalars["UUID"];
   birthday: Scalars["String"];
   email: Scalars["String"];
+  employers: Array<Company>;
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   nationality: Scalars["String"];
@@ -1103,6 +1104,11 @@ export type PersonResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  employers?: Resolver<
+    Array<ResolversTypes["Company"]>,
+    ParentType,
+    ContextType
+  >;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
