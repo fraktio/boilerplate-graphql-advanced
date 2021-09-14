@@ -102,6 +102,19 @@ export type AddPersonPersonInput = {
   phone?: Maybe<Scalars["PhoneNumber"]>;
 };
 
+export type Adult = Person & {
+  __typename?: "Adult";
+  UUID: Scalars["UUID"];
+  birthday: Scalars["String"];
+  email: Scalars["String"];
+  employers: Array<Company>;
+  firstName: Scalars["String"];
+  gender?: Maybe<Gender>;
+  lastName: Scalars["String"];
+  nationality: Scalars["String"];
+  phone: Scalars["String"];
+};
+
 export type AuthenticatedUserFailure = {
   __typename?: "AuthenticatedUserFailure";
   success: Scalars["Boolean"];
@@ -318,11 +331,9 @@ export type PaginationInput = {
 };
 
 export type Person = {
-  __typename?: "Person";
   UUID: Scalars["UUID"];
   birthday: Scalars["String"];
   email: Scalars["String"];
-  employers: Array<Company>;
   firstName: Scalars["String"];
   gender?: Maybe<Gender>;
   lastName: Scalars["String"];
@@ -417,6 +428,18 @@ export type Timestamp = {
   __typename?: "Timestamp";
   createdAt: Scalars["DateTime"];
   modifiedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type Underage = Person & {
+  __typename?: "Underage";
+  UUID: Scalars["UUID"];
+  birthday: Scalars["String"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  gender?: Maybe<Gender>;
+  lastName: Scalars["String"];
+  nationality: Scalars["String"];
+  phone: Scalars["String"];
 };
 
 /** Operation fails because some value is not unique */
@@ -558,6 +581,9 @@ export type ResolversTypes = ResolversObject<{
     Omit<AddPersonOutput, "person"> & { person: ResolversTypes["Person"] }
   >;
   AddPersonPersonInput: AddPersonPersonInput;
+  Adult: ResolverTypeWrapper<
+    Omit<Adult, "employers"> & { employers: Array<ResolversTypes["Company"]> }
+  >;
   AuthenticatedUserFailure: ResolverTypeWrapper<AuthenticatedUserFailure>;
   AuthenticatedUserResponse:
     | ResolversTypes["AuthenticatedUserFailure"]
@@ -649,6 +675,7 @@ export type ResolversTypes = ResolversObject<{
   TimeFilter: TimeFilter;
   Timestamp: ResolverTypeWrapper<Timestamp>;
   UUID: ResolverTypeWrapper<Scalars["UUID"]>;
+  Underage: ResolverTypeWrapper<Underage>;
   UniqueConstraintViolationFailure: ResolverTypeWrapper<UniqueConstraintViolationFailure>;
   Upload: ResolverTypeWrapper<Scalars["Upload"]>;
   User: ResolverTypeWrapper<UserModel>;
@@ -671,6 +698,9 @@ export type ResolversParentTypes = ResolversObject<{
     person: ResolversParentTypes["Person"];
   };
   AddPersonPersonInput: AddPersonPersonInput;
+  Adult: Omit<Adult, "employers"> & {
+    employers: Array<ResolversParentTypes["Company"]>;
+  };
   AuthenticatedUserFailure: AuthenticatedUserFailure;
   AuthenticatedUserResponse:
     | ResolversParentTypes["AuthenticatedUserFailure"]
@@ -757,6 +787,7 @@ export type ResolversParentTypes = ResolversObject<{
   TimeFilter: TimeFilter;
   Timestamp: Timestamp;
   UUID: Scalars["UUID"];
+  Underage: Underage;
   UniqueConstraintViolationFailure: UniqueConstraintViolationFailure;
   Upload: Scalars["Upload"];
   User: UserModel;
@@ -833,6 +864,26 @@ export type AddPersonOutputResolvers<
   ParentType extends ResolversParentTypes["AddPersonOutput"] = ResolversParentTypes["AddPersonOutput"],
 > = ResolversObject<{
   person?: Resolver<ResolversTypes["Person"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AdultResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Adult"] = ResolversParentTypes["Adult"],
+> = ResolversObject<{
+  UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  employers?: Resolver<
+    Array<ResolversTypes["Company"]>,
+    ParentType,
+    ContextType
+  >;
+  firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  phone?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1128,20 +1179,15 @@ export type PersonResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"],
 > = ResolversObject<{
+  __resolveType: TypeResolveFn<"Adult" | "Underage", ParentType, ContextType>;
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  employers?: Resolver<
-    Array<ResolversTypes["Company"]>,
-    ParentType,
-    ContextType
-  >;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   phone?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export interface PersonalIdentityCodeScalarConfig
@@ -1266,6 +1312,21 @@ export interface UuidScalarConfig
   name: "UUID";
 }
 
+export type UnderageResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["Underage"] = ResolversParentTypes["Underage"],
+> = ResolversObject<{
+  UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  phone?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UniqueConstraintViolationFailureResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["UniqueConstraintViolationFailure"] = ResolversParentTypes["UniqueConstraintViolationFailure"],
@@ -1295,6 +1356,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   AddEmployeeOutput?: AddEmployeeOutputResolvers<ContextType>;
   AddEmployeeSuccess?: AddEmployeeSuccessResolvers<ContextType>;
   AddPersonOutput?: AddPersonOutputResolvers<ContextType>;
+  Adult?: AdultResolvers<ContextType>;
   AuthenticatedUserFailure?: AuthenticatedUserFailureResolvers<ContextType>;
   AuthenticatedUserResponse?: AuthenticatedUserResponseResolvers<ContextType>;
   AuthenticatedUserSuccess?: AuthenticatedUserSuccessResolvers<ContextType>;
@@ -1335,6 +1397,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   RemoveEmployeeSuccess?: RemoveEmployeeSuccessResolvers<ContextType>;
   Timestamp?: TimestampResolvers<ContextType>;
   UUID?: GraphQLScalarType;
+  Underage?: UnderageResolvers<ContextType>;
   UniqueConstraintViolationFailure?: UniqueConstraintViolationFailureResolvers<ContextType>;
   Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;

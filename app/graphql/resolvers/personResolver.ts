@@ -8,7 +8,7 @@ import {
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
-  Person: {
+  Adult: {
     async employers(person, _, { knex, dataLoaders }) {
       return await adultEmployersHandler({
         knex,
@@ -16,6 +16,14 @@ export const personResolver: Resolvers = {
         companyDL: dataLoaders.companyDL,
         companiesOfPersonDL: dataLoaders.companiesOfPersonDL,
       });
+    },
+  },
+
+  Person: {
+    __resolveType(person) {
+      return person.birthday.diffNow("years").years < -18
+        ? "Adult"
+        : "Underage";
     },
   },
 

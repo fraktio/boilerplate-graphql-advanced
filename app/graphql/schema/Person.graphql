@@ -4,7 +4,7 @@ enum Gender {
   OTHER
 }
 
-type Person {
+interface Person {
   UUID: UUID!
   firstName: String!
   lastName: String!
@@ -12,7 +12,29 @@ type Person {
   email: String!
   nationality: String!
   birthday: String!
+  gender: Gender
+}
+
+type Adult implements Person {
+  UUID: UUID!
+  firstName: String!
+  lastName: String!
+  phone: String!
+  email: String!
+  nationality: String!
+  birthday: String!
+  gender: Gender
   employers: [Company!]!
+}
+
+type Underage implements Person {
+  UUID: UUID!
+  firstName: String!
+  lastName: String!
+  phone: String!
+  email: String!
+  nationality: String!
+  birthday: String!
   gender: Gender
 }
 
