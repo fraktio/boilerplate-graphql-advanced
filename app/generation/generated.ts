@@ -93,10 +93,6 @@ export type AddPersonInput = {
   person: AddPersonPersonInput;
 };
 
-export type AddPersonOutput =
-  | AddPersonSuccess
-  | UniqueConstraintViolationFailure;
-
 export type AddPersonPersonInput = {
   birthday: Scalars["Date"];
   email: Scalars["EmailAddress"];
@@ -294,7 +290,7 @@ export type Mutation = {
   __typename?: "Mutation";
   addCompany: AddCompanyOutput;
   addEmployee: AddEmployeeOutput;
-  addPerson: AddPersonOutput;
+  addPerson: Person;
   editCompany: EditCompanyOutput;
   editPerson: EditPersonOutput;
   fileMetadata: FileMetadataResponse;
@@ -694,9 +690,6 @@ export type ResolversTypes = ResolversObject<{
     Omit<AddEmployeeSuccess, "company"> & { company: ResolversTypes["Company"] }
   >;
   AddPersonInput: AddPersonInput;
-  AddPersonOutput:
-    | ResolversTypes["AddPersonSuccess"]
-    | ResolversTypes["UniqueConstraintViolationFailure"];
   AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: ResolverTypeWrapper<
     Omit<AddPersonSuccess, "person"> & { person: ResolversTypes["Person"] }
@@ -840,9 +833,6 @@ export type ResolversParentTypes = ResolversObject<{
     company: ResolversParentTypes["Company"];
   };
   AddPersonInput: AddPersonInput;
-  AddPersonOutput:
-    | ResolversParentTypes["AddPersonSuccess"]
-    | ResolversParentTypes["UniqueConstraintViolationFailure"];
   AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: Omit<AddPersonSuccess, "person"> & {
     person: ResolversParentTypes["Person"];
@@ -1028,17 +1018,6 @@ export type AddEmployeeSuccessResolvers<
 > = ResolversObject<{
   company?: Resolver<ResolversTypes["Company"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type AddPersonOutputResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["AddPersonOutput"] = ResolversParentTypes["AddPersonOutput"],
-> = ResolversObject<{
-  __resolveType: TypeResolveFn<
-    "AddPersonSuccess" | "UniqueConstraintViolationFailure",
-    ParentType,
-    ContextType
-  >;
 }>;
 
 export type AddPersonSuccessResolvers<
@@ -1328,7 +1307,7 @@ export type MutationResolvers<
     RequireFields<MutationAddEmployeeArgs, "input">
   >;
   addPerson?: Resolver<
-    ResolversTypes["AddPersonOutput"],
+    ResolversTypes["Person"],
     ParentType,
     ContextType,
     RequireFields<MutationAddPersonArgs, "input">
@@ -1690,7 +1669,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   AddCompanySuccess?: AddCompanySuccessResolvers<ContextType>;
   AddEmployeeOutput?: AddEmployeeOutputResolvers<ContextType>;
   AddEmployeeSuccess?: AddEmployeeSuccessResolvers<ContextType>;
-  AddPersonOutput?: AddPersonOutputResolvers<ContextType>;
   AddPersonSuccess?: AddPersonSuccessResolvers<ContextType>;
   Adult?: AdultResolvers<ContextType>;
   AuthenticatedUserFailure?: AuthenticatedUserFailureResolvers<ContextType>;

@@ -82,7 +82,7 @@ type Subscription {
 }
 
 type Mutation {
-  addPerson(input: AddPersonInput!): AddPersonOutput!
+  addPerson(input: AddPersonInput!): Person!
   editPerson(input: EditPersonInput!): EditPersonOutput!
 }
 
@@ -101,8 +101,6 @@ input AddPersonPersonInput {
 input AddPersonInput {
   person: AddPersonPersonInput!
 }
-
-union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
 
 type AddPersonSuccess {
   person: Person! 

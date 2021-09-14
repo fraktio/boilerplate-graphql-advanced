@@ -18,14 +18,6 @@ export enum Subscriptions {
 }
 
 export const personResolver: Resolvers = {
-  AddPersonOutput: {
-    __resolveType(addPersonOutputResponse) {
-      return (
-        addPersonOutputResponse.__typename ?? "UniqueConstraintViolationFailure"
-      );
-    },
-  },
-
   EditPersonOutput: {
     __resolveType(editPersonOutputResponse) {
       return editPersonOutputResponse.__typename ?? "EditPersonSuccess";
@@ -130,19 +122,15 @@ export const personResolver: Resolvers = {
         personDL: dataLoaders.personDL,
       });
 
-      if (addedPerson.success) {
-        pubsub.publish(Subscriptions.PERSON_ADDED, {
-          personAdded: addedPerson.value,
-        });
-
-        return { __typename: "AddPersonSuccess", person: addedPerson.value };
+      if (!addedPerson.success) {
+        throw new Error("Failed to add user");
       }
 
-      return {
-        __typename: addedPerson.failure.typename,
-        message: addedPerson.failure.message,
-        field: addedPerson.failure.field,
-      };
+      pubsub.publish(Subscriptions.PERSON_ADDED, {
+        personAdded: addedPerson.value,
+      });
+
+      return addedPerson.value;
     },
 
     async editPerson(_, { input }, { knex, dataLoaders }) {
