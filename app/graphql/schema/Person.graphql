@@ -69,6 +69,8 @@ type Query {
   persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsPaginationOutput!
   allPersons: [Person!]!
   person(input: PersonInput!): Person! @auth(requires:USER)
+  "Cached person query is cached for 120 seconds" 
+  cachedPerson(input: PersonInput!): Person! @auth(requires:USER) @cacheControl(maxAge: 120)
 }
 
 input PersonInput {

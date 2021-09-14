@@ -1,5 +1,7 @@
 import { GeneralFailure } from "~/handlers/failures/GeneralFailure";
 
+type FailureType = "UniqueConstraintViolationFailure";
+
 export class UniqueConstraintViolationFailure extends GeneralFailure {
-  __typename!: "UniqueConstraintViolationFailure";
+  public typename = "UniqueConstraintViolationFailure" as FailureType;
 }

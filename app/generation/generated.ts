@@ -102,6 +102,7 @@ export type AddPersonPersonInput = {
   email: Scalars["EmailAddress"];
   firstName: Scalars["String"];
   gender: Gender;
+  /** Last name has to be minimum of 1 chracters and maximum of 50 */
   lastName: Scalars["String"];
   nationality: Scalars["CountryCode"];
   personalIdentityCode: Scalars["PersonalIdentityCode"];
@@ -143,6 +144,11 @@ export type AuthenticatedUserSuccess = {
   __typename?: "AuthenticatedUserSuccess";
   user: User;
 };
+
+export enum CacheControlScope {
+  Private = "PRIVATE",
+  Public = "PUBLIC",
+}
 
 export type Company = {
   __typename?: "Company";
@@ -406,11 +412,17 @@ export type Query = {
   __typename?: "Query";
   allPersons: Array<Person>;
   authenticatedUser: AuthenticatedUserResponse;
+  /** Cached person query is cached for 120 seconds */
+  cachedPerson: Person;
   companies: Array<Company>;
   company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
   persons: PersonsPaginationOutput;
+};
+
+export type QueryCachedPersonArgs = {
+  input: PersonInput;
 };
 
 export type QueryCompaniesArgs = {
@@ -671,6 +683,7 @@ export type ResolversTypes = ResolversObject<{
     Omit<AuthenticatedUserSuccess, "user"> & { user: ResolversTypes["User"] }
   >;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
+  CacheControlScope: CacheControlScope;
   Company: ResolverTypeWrapper<CompanyModel>;
   CompanyFailureNotFound: ResolverTypeWrapper<CompanyFailureNotFound>;
   CompanyFilterInput: CompanyFilterInput;
@@ -919,6 +932,31 @@ export type AuthDirectiveResolver<
   Parent,
   ContextType = Context,
   Args = AuthDirectiveArgs,
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type CacheControlDirectiveArgs = {
+  inheritMaxAge?: Maybe<Scalars["Boolean"]>;
+  maxAge?: Maybe<Scalars["Int"]>;
+  scope?: Maybe<CacheControlScope>;
+};
+
+export type CacheControlDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = CacheControlDirectiveArgs,
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type LengthDirectiveArgs = {
+  max?: Maybe<Scalars["Int"]>;
+  min?: Maybe<Scalars["Int"]>;
+};
+
+export type LengthDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = Context,
+  Args = LengthDirectiveArgs,
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AddCompanyOutputResolvers<
@@ -1387,6 +1425,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  cachedPerson?: Resolver<
+    ResolversTypes["Person"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryCachedPersonArgs, "input">
+  >;
   companies?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
@@ -1616,4 +1660,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
 
 export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
   auth?: AuthDirectiveResolver<any, any, ContextType>;
+  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
+  length?: LengthDirectiveResolver<any, any, ContextType>;
 }>;

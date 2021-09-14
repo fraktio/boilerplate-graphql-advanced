@@ -1,5 +1,7 @@
 import { GeneralFailure } from "~/handlers/failures/GeneralFailure";
 
+type FailureType = "InvalidCursorFailure";
+
 export class InvalidCursorFailure extends GeneralFailure {
-  __typename!: "InvalidCursorFailure";
+  public typename = "InvalidCursorFailure" as FailureType;
 }

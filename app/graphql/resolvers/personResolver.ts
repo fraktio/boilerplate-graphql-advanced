@@ -64,6 +64,20 @@ export const personResolver: Resolvers = {
       return person;
     },
 
+    async cachedPerson(_, { input }, { knex, dataLoaders }) {
+      const person = await personHandler({
+        knex,
+        personUUID: input.UUID,
+        personDL: dataLoaders.personDL,
+      });
+
+      if (!person) {
+        throw new UserInputError("Invalid person uuid");
+      }
+
+      return person;
+    },
+
     async persons(_, { filters, sort, pagination }, { knex, dataLoaders }) {
       const personsResult = await personsPaginationHandler({
         knex,
@@ -81,7 +95,7 @@ export const personResolver: Resolvers = {
       }
 
       return {
-        __typename: personsResult.failure.__typename,
+        __typename: personsResult.failure.typename,
         message: personsResult.failure.message,
         field: personsResult.failure.field,
       };
@@ -125,7 +139,7 @@ export const personResolver: Resolvers = {
       }
 
       return {
-        __typename: addedPerson.failure.__typename,
+        __typename: addedPerson.failure.typename,
         message: addedPerson.failure.message,
         field: addedPerson.failure.field,
       };
@@ -155,7 +169,7 @@ export const personResolver: Resolvers = {
       }
 
       return {
-        __typename: editPerson.failure.__typename,
+        __typename: editPerson.failure.typename,
         message: editPerson.failure.message,
         field: editPerson.failure.field,
       };

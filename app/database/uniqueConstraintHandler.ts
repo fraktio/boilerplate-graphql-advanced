@@ -1,3 +1,4 @@
+import { NotFoundFailure } from "~/handlers/failures/NotFoundFailure";
 import { UniqueConstraintViolationFailure } from "~/handlers/failures/UniqueConstraintViolationFailure";
 
 const DATABASE_ERROR_UNIQUE_VIOLATION = "23505";
@@ -21,10 +22,12 @@ export async function withUniqueConstraintHandler<T>(
       if (match) {
         const [_, field] = match;
 
-        return new UniqueConstraintViolationFailure(
+        const test = new UniqueConstraintViolationFailure(
           field || "",
           formatError(err.detail),
         );
+
+        return test;
       }
     }
     throw error;

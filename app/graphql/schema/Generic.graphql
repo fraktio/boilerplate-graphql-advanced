@@ -7,9 +7,19 @@ scalar PhoneNumber
 scalar PersonalIdentityCode
 scalar CountryCode
 
+type Timestamp {
+  createdAt: DateTime!
+  modifiedAt: DateTime
+}
+
 enum AccessRight {
   USER
   ADMIN
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
 }
 
 directive @auth(requires: AccessRight = ADMIN) on OBJECT | FIELD_DEFINITION
@@ -18,7 +28,8 @@ directive @deprecated(reason: String = "This field is deprecated") on FIELD_DEFI
 
 directive @length(min: Int, max: Int ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
-type Timestamp {
-  createdAt: DateTime!
-  modifiedAt: DateTime
-}
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+  inheritMaxAge: Boolean
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
