@@ -7,16 +7,10 @@ type Person {
   email: String!
   nationality: String!
   birthday: String!
-  employers: [Company!]!
 }
 
 type Query {
   allPersons: [Person]!
-  person(input: PersonInput!): Person!
-}
-
-input PersonInput {
-  UUID: UUID!
 }
 
 type Mutation {

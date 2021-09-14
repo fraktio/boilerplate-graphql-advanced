@@ -315,15 +315,21 @@ export type Person = {
   UUID: Scalars["UUID"];
   birthday: Scalars["String"];
   email: Scalars["String"];
+<<<<<<< HEAD
   employers: Array<Company>;
+=======
+>>>>>>> dd62fa6 (schema stuff)
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   nationality: Scalars["String"];
   phone: Scalars["String"];
+<<<<<<< HEAD
 };
 
 export type PersonInput = {
   UUID: Scalars["UUID"];
+=======
+>>>>>>> dd62fa6 (schema stuff)
 };
 
 export type Query = {
@@ -1115,11 +1121,14 @@ export type PersonResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+<<<<<<< HEAD
   employers?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
     ContextType
   >;
+=======
+>>>>>>> dd62fa6 (schema stuff)
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
