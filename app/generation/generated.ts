@@ -46,7 +46,6 @@ export type Scalars = {
   Float: number;
   CountryCode: CountryCode;
   Cursor: Cursor;
-  Date: DateTime;
   DateTime: DateTime;
   EmailAddress: EmailAddress;
   PersonalIdentityCode: FinnishPersonalIdentityCode;
@@ -93,7 +92,7 @@ export type AddPersonOutput = {
 };
 
 export type AddPersonPersonInput = {
-  birthday: Scalars["Date"];
+  birthday: Scalars["String"];
   email: Scalars["EmailAddress"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
@@ -160,12 +159,12 @@ export type CompanySuccess = {
 };
 
 export type DateFilter = {
-  equal?: Maybe<Scalars["Date"]>;
-  greaterOrEqualThan?: Maybe<Scalars["Date"]>;
-  greaterThan?: Maybe<Scalars["Date"]>;
-  lessOrEqualThan?: Maybe<Scalars["Date"]>;
-  lessThan?: Maybe<Scalars["Date"]>;
-  notEqual?: Maybe<Scalars["Date"]>;
+  equal?: Maybe<Scalars["DateTime"]>;
+  greaterOrEqualThan?: Maybe<Scalars["DateTime"]>;
+  greaterThan?: Maybe<Scalars["DateTime"]>;
+  lessOrEqualThan?: Maybe<Scalars["DateTime"]>;
+  lessThan?: Maybe<Scalars["DateTime"]>;
+  notEqual?: Maybe<Scalars["DateTime"]>;
 };
 
 export type EditCompanyFailureNotFound = {
@@ -557,7 +556,6 @@ export type ResolversTypes = ResolversObject<{
   >;
   CountryCode: ResolverTypeWrapper<Scalars["CountryCode"]>;
   Cursor: ResolverTypeWrapper<Scalars["Cursor"]>;
-  Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateFilter: DateFilter;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   EditCompanyFailureNotFound: ResolverTypeWrapper<EditCompanyFailureNotFound>;
@@ -667,7 +665,6 @@ export type ResolversParentTypes = ResolversObject<{
   };
   CountryCode: Scalars["CountryCode"];
   Cursor: Scalars["Cursor"];
-  Date: Scalars["Date"];
   DateFilter: DateFilter;
   DateTime: Scalars["DateTime"];
   EditCompanyFailureNotFound: EditCompanyFailureNotFound;
@@ -886,11 +883,6 @@ export interface CountryCodeScalarConfig
 export interface CursorScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["Cursor"], any> {
   name: "Cursor";
-}
-
-export interface DateScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["Date"], any> {
-  name: "Date";
 }
 
 export interface DateTimeScalarConfig
@@ -1254,7 +1246,6 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   CompanySuccess?: CompanySuccessResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   Cursor?: GraphQLScalarType;
-  Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   EditCompanyFailureNotFound?: EditCompanyFailureNotFoundResolvers<ContextType>;
   EditCompanyOutput?: EditCompanyOutputResolvers<ContextType>;

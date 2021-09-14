@@ -13,12 +13,12 @@ input TimeFilter {
 }
 
 input DateFilter {
-  equal: Date
-  notEqual: Date
-  lessThan: Date
-  lessOrEqualThan: Date
-  greaterThan: Date
-  greaterOrEqualThan: Date
+  equal: DateTime
+  notEqual: DateTime
+  lessThan: DateTime
+  lessOrEqualThan: DateTime
+  greaterThan: DateTime
+  greaterOrEqualThan: DateTime
 }
 
 input StringFilter {

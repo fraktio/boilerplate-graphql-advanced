@@ -17,7 +17,7 @@ input AddPersonPersonInput {
   lastName: String!  
   phone: PhoneNumber 
   email: EmailAddress!
-  birthday: Date! 
+  birthday: DateTime! 
   nationality: CountryCode!
   personalIdentityCode: PersonalIdentityCode! 
 }
