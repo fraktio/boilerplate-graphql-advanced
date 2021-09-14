@@ -1,0 +1,20 @@
+type File {
+  encoding: String!
+  filename: String!
+  mimetype: String!
+}
+
+type FileMetadataSuccess {
+  metadata: File!
+}
+
+type FileMetadataInvalidFile implements FailureOutput {
+  message: String!
+  field: String!
+}
+
+union FileMetadataResponse = FileMetadataSuccess |  FileMetadataInvalidFile
+
+type Mutation {
+  fileMetadata(file: Upload!): FileMetadataResponse!
+}

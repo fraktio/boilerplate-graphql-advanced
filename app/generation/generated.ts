@@ -234,6 +234,28 @@ export type FailureOutput = {
   message: Scalars["String"];
 };
 
+export type File = {
+  __typename?: "File";
+  encoding: Scalars["String"];
+  filename: Scalars["String"];
+  mimetype: Scalars["String"];
+};
+
+export type FileMetadataInvalidFile = FailureOutput & {
+  __typename?: "FileMetadataInvalidFile";
+  field: Scalars["String"];
+  message: Scalars["String"];
+};
+
+export type FileMetadataResponse =
+  | FileMetadataInvalidFile
+  | FileMetadataSuccess;
+
+export type FileMetadataSuccess = {
+  __typename?: "FileMetadataSuccess";
+  metadata: File;
+};
+
 export enum FilterOperator {
   And = "AND",
   Or = "OR",
@@ -275,6 +297,7 @@ export type Mutation = {
   addPerson: AddPersonOutput;
   editCompany: EditCompanyOutput;
   editPerson: EditPersonOutput;
+  fileMetadata: FileMetadataResponse;
   login: LoginUserResponse;
   logout: Scalars["Boolean"];
   register: RegisterResponse;
@@ -299,6 +322,10 @@ export type MutationEditCompanyArgs = {
 
 export type MutationEditPersonArgs = {
   input: EditPersonInput;
+};
+
+export type MutationFileMetadataArgs = {
+  file: Scalars["Upload"];
 };
 
 export type MutationLoginArgs = {
@@ -719,9 +746,16 @@ export type ResolversTypes = ResolversObject<{
   >;
   EmailAddress: ResolverTypeWrapper<Scalars["EmailAddress"]>;
   FailureOutput:
+    | ResolversTypes["FileMetadataInvalidFile"]
     | ResolversTypes["InvalidCursorFailure"]
     | ResolversTypes["NotFoundFailure"]
     | ResolversTypes["UniqueConstraintViolationFailure"];
+  File: ResolverTypeWrapper<File>;
+  FileMetadataInvalidFile: ResolverTypeWrapper<FileMetadataInvalidFile>;
+  FileMetadataResponse:
+    | ResolversTypes["FileMetadataInvalidFile"]
+    | ResolversTypes["FileMetadataSuccess"];
+  FileMetadataSuccess: ResolverTypeWrapper<FileMetadataSuccess>;
   FilterOperator: FilterOperator;
   Gender: Gender;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
@@ -857,9 +891,16 @@ export type ResolversParentTypes = ResolversObject<{
   };
   EmailAddress: Scalars["EmailAddress"];
   FailureOutput:
+    | ResolversParentTypes["FileMetadataInvalidFile"]
     | ResolversParentTypes["InvalidCursorFailure"]
     | ResolversParentTypes["NotFoundFailure"]
     | ResolversParentTypes["UniqueConstraintViolationFailure"];
+  File: File;
+  FileMetadataInvalidFile: FileMetadataInvalidFile;
+  FileMetadataResponse:
+    | ResolversParentTypes["FileMetadataInvalidFile"]
+    | ResolversParentTypes["FileMetadataSuccess"];
+  FileMetadataSuccess: FileMetadataSuccess;
   Int: Scalars["Int"];
   InvalidCursorFailure: InvalidCursorFailure;
   LoginUserFailure: LoginUserFailure;
@@ -1185,6 +1226,7 @@ export type FailureOutputResolvers<
   ParentType extends ResolversParentTypes["FailureOutput"] = ResolversParentTypes["FailureOutput"],
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
+    | "FileMetadataInvalidFile"
     | "InvalidCursorFailure"
     | "NotFoundFailure"
     | "UniqueConstraintViolationFailure",
@@ -1193,6 +1235,44 @@ export type FailureOutputResolvers<
   >;
   field?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+}>;
+
+export type FileResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["File"] = ResolversParentTypes["File"],
+> = ResolversObject<{
+  encoding?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  filename?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  mimetype?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FileMetadataInvalidFileResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["FileMetadataInvalidFile"] = ResolversParentTypes["FileMetadataInvalidFile"],
+> = ResolversObject<{
+  field?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FileMetadataResponseResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["FileMetadataResponse"] = ResolversParentTypes["FileMetadataResponse"],
+> = ResolversObject<{
+  __resolveType: TypeResolveFn<
+    "FileMetadataInvalidFile" | "FileMetadataSuccess",
+    ParentType,
+    ContextType
+  >;
+}>;
+
+export type FileMetadataSuccessResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["FileMetadataSuccess"] = ResolversParentTypes["FileMetadataSuccess"],
+> = ResolversObject<{
+  metadata?: Resolver<ResolversTypes["File"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type InvalidCursorFailureResolvers<
@@ -1264,6 +1344,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationEditPersonArgs, "input">
+  >;
+  fileMetadata?: Resolver<
+    ResolversTypes["FileMetadataResponse"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationFileMetadataArgs, "file">
   >;
   login?: Resolver<
     ResolversTypes["LoginUserResponse"],
@@ -1625,6 +1711,10 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   EditPersonSuccess?: EditPersonSuccessResolvers<ContextType>;
   EmailAddress?: GraphQLScalarType;
   FailureOutput?: FailureOutputResolvers<ContextType>;
+  File?: FileResolvers<ContextType>;
+  FileMetadataInvalidFile?: FileMetadataInvalidFileResolvers<ContextType>;
+  FileMetadataResponse?: FileMetadataResponseResolvers<ContextType>;
+  FileMetadataSuccess?: FileMetadataSuccessResolvers<ContextType>;
   InvalidCursorFailure?: InvalidCursorFailureResolvers<ContextType>;
   LoginUserFailure?: LoginUserFailureResolvers<ContextType>;
   LoginUserResponse?: LoginUserResponseResolvers<ContextType>;

@@ -3,6 +3,7 @@ import { mergeResolvers } from "@graphql-tools/merge";
 import { authenticationResolver } from "~/graphql/resolvers/authenticationResolver";
 import { companyResolver } from "~/graphql/resolvers/companyResolver";
 import { employeeResolver } from "~/graphql/resolvers/employeeResolver";
+import { fileResolver } from "~/graphql/resolvers/fileResolver";
 import { genericResolver } from "~/graphql/resolvers/genericResolver";
 import { numberFactResolver } from "~/graphql/resolvers/numberFactResolver";
 import { personResolver } from "~/graphql/resolvers/personResolver";
@@ -17,6 +18,7 @@ const resolversArray = [
   genericResolver,
   employeeResolver,
   numberFactResolver,
+  fileResolver,
   createScalarResolvers(),
 ];
 
