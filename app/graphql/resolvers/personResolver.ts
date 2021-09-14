@@ -3,12 +3,11 @@ import { Resolvers } from "~/generation/generated";
 import {
   addPersonHandler,
   modifyPerson,
-  // UNCOMMENT ME! personsHandler,
+  personsHandler,
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
   Query: {
-    /* UNCOMMENT ME!
     async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,
@@ -17,7 +16,6 @@ export const personResolver: Resolvers = {
 
       return persons;
     },
-   */
   },
   Mutation: {
     async addPerson(_, { input }, { knex, dataLoaders }) {

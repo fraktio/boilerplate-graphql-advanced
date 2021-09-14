@@ -312,13 +312,19 @@ export type PaginationInput = {
 };
 
 export type Person = {
+  __typename?: "Person";
   UUID: Scalars["UUID"];
+  birthday: Scalars["String"];
+  email: Scalars["String"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
+  nationality: Scalars["String"];
+  phone: Scalars["String"];
 };
 
 export type Query = {
   __typename?: "Query";
+  allPersons: Array<Maybe<Person>>;
   authenticatedUser: AuthenticatedUserResponse;
   companies: Array<Company>;
   company: CompanyOutput;
@@ -1102,10 +1108,14 @@ export type PersonResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"],
 > = ResolversObject<{
-  __resolveType: TypeResolveFn<null, ParentType, ContextType>;
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
+  birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  phone?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export interface PersonalIdentityCodeScalarConfig
@@ -1122,6 +1132,11 @@ export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = ResolversObject<{
+  allPersons?: Resolver<
+    Array<Maybe<ResolversTypes["Person"]>>,
+    ParentType,
+    ContextType
+  >;
   authenticatedUser?: Resolver<
     ResolversTypes["AuthenticatedUserResponse"],
     ParentType,
