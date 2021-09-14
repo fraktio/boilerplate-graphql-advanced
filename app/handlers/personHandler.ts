@@ -57,6 +57,19 @@ export type PersonsPaginationResponse = PaginationResponse<PersonTable>;
 export const personsHandler = async (params: {
   knex: DBSession;
   personDL: PersonDataLoader;
+}): Promise<PersonTable[]> => {
+  const results = await personDB.getAll({
+    knex: params.knex,
+    personDL: params.personDL,
+    limit: getPaginationLimit(),
+  });
+
+  return results;
+};
+
+export const personsPaginationHandler = async (params: {
+  knex: DBSession;
+  personDL: PersonDataLoader;
   filters?: PersonFilterOperation;
   sort?: PersonSortInput[];
   pagination: Pagination;

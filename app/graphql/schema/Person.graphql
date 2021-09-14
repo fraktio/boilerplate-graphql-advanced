@@ -63,10 +63,17 @@ type PersonsPaginationResponse {
   pageInfo: PageInfo!
 }
 
-union PersonsOutput = PersonsPaginationResponse | InvalidCursorFailure
+union PersonsPaginationOutput = PersonsPaginationResponse | InvalidCursorFailure
+
+type PersonsResponse {
+  persons: [Person!]!
+}
+
+union PersonsOutput = PersonsResponse | InvalidCursorFailure
 
 type Query {
-  persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsOutput!
+  personsPagination(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsPaginationOutput!
+  persons: PersonsOutput!
   person(input: PersonInput!): Person! @auth(requires:USER)
 }
 

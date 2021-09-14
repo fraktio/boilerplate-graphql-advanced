@@ -8,6 +8,7 @@ import {
   modifyPerson,
   personHandler,
   personsHandler,
+  personsPaginationHandler,
 } from "~/handlers/personHandler";
 
 export const pubsub = new PubSub();
@@ -63,8 +64,12 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async persons(_, { filters, sort, pagination }, { knex, dataLoaders }) {
-      const personsResult = await personsHandler({
+    async personsPagination(
+      _,
+      { filters, sort, pagination },
+      { knex, dataLoaders },
+    ) {
+      const personsResult = await personsPaginationHandler({
         knex,
         personDL: dataLoaders.personDL,
         filters: filters || undefined,
@@ -85,7 +90,20 @@ export const personResolver: Resolvers = {
         field: personsResult.failure.field,
       };
     },
+
+    async persons(_, __, { knex, dataLoaders }) {
+      const persons = await personsHandler({
+        knex,
+        personDL: dataLoaders.personDL,
+      });
+
+      return {
+        __typename: "PersonsResponse",
+        persons,
+      };
+    },
   },
+
   Mutation: {
     async addPerson(_, { input }, { knex, dataLoaders }) {
       const newPerson = {
