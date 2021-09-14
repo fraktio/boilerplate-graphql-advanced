@@ -316,10 +316,16 @@ export type Person = {
   UUID: Scalars["UUID"];
   birthday: Scalars["String"];
   email: Scalars["String"];
+  employers: Array<Company>;
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   nationality: Scalars["String"];
   phone: Scalars["String"];
+};
+
+export type PersonInput = {
+  __typename?: "PersonInput";
+  uuid: Scalars["UUID"];
 };
 
 export type Query = {
@@ -329,6 +335,7 @@ export type Query = {
   companies: Array<Company>;
   company: CompanyOutput;
   numberFact: NumberFactOutput;
+  person: Person;
 };
 
 export type QueryCompaniesArgs = {
@@ -341,6 +348,10 @@ export type QueryCompanyArgs = {
 
 export type QueryNumberFactArgs = {
   input: NumberFactInput;
+};
+
+export type QueryPersonArgs = {
+  input: PersonInput;
 };
 
 export type RegisterFailure = {
@@ -607,6 +618,7 @@ export type ResolversTypes = ResolversObject<{
   PageInfo: ResolverTypeWrapper<PageInfo>;
   PaginationInput: PaginationInput;
   Person: ResolverTypeWrapper<PersonModel>;
+  PersonInput: ResolverTypeWrapper<PersonInput>;
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   Query: ResolverTypeWrapper<{}>;
@@ -716,6 +728,7 @@ export type ResolversParentTypes = ResolversObject<{
   PageInfo: PageInfo;
   PaginationInput: PaginationInput;
   Person: PersonModel;
+  PersonInput: PersonInput;
   PersonalIdentityCode: Scalars["PersonalIdentityCode"];
   PhoneNumber: Scalars["PhoneNumber"];
   Query: {};
@@ -1111,10 +1124,23 @@ export type PersonResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  employers?: Resolver<
+    Array<ResolversTypes["Company"]>,
+    ParentType,
+    ContextType
+  >;
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   phone?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PersonInputResolvers<
+  ContextType = Context,
+  ParentType extends ResolversParentTypes["PersonInput"] = ResolversParentTypes["PersonInput"],
+> = ResolversObject<{
+  uuid?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1159,6 +1185,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryNumberFactArgs, "input">
+  >;
+  person?: Resolver<
+    ResolversTypes["Person"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryPersonArgs, "input">
   >;
 }>;
 
@@ -1292,6 +1324,7 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   NumberFactSuccess?: NumberFactSuccessResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
+  PersonInput?: PersonInputResolvers<ContextType>;
   PersonalIdentityCode?: GraphQLScalarType;
   PhoneNumber?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
