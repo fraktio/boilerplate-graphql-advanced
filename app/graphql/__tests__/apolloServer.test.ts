@@ -9,7 +9,7 @@ const httpServer = createServer();
 
 describe("Graphql / endpoints", () => {
   it("logout", async () => {
-    const server = createApolloServer({ config, httpServer });
+    const server = createApolloServer({ config, context: {}, httpServer });
 
     expect(server.constructor.name).toBe("ApolloServer");
   });
