@@ -321,26 +321,12 @@ export type Person = {
   UUID: Scalars["UUID"];
   birthday: Scalars["String"];
   email: Scalars["String"];
-<<<<<<< HEAD
-<<<<<<< HEAD
   employers: Array<Company>;
-=======
->>>>>>> dd62fa6 (schema stuff)
-=======
-  employers: Array<Company>;
->>>>>>> 29f0176 (resolver)
   firstName: Scalars["String"];
   gender?: Maybe<Gender>;
   lastName: Scalars["String"];
   nationality: Scalars["String"];
   phone: Scalars["String"];
-<<<<<<< HEAD
-};
-
-export type PersonInput = {
-  UUID: Scalars["UUID"];
-=======
->>>>>>> dd62fa6 (schema stuff)
 };
 
 export type PersonInput = {
@@ -637,15 +623,7 @@ export type ResolversTypes = ResolversObject<{
   PageInfo: ResolverTypeWrapper<PageInfo>;
   PaginationInput: PaginationInput;
   Person: ResolverTypeWrapper<PersonModel>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   PersonInput: PersonInput;
-=======
-  PersonInput: ResolverTypeWrapper<PersonInput>;
->>>>>>> 29f0176 (resolver)
-=======
-  PersonInput: PersonInput;
->>>>>>> 49915da (enums)
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
   Query: ResolverTypeWrapper<{}>;
@@ -1145,20 +1123,11 @@ export type PersonResolvers<
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 29f0176 (resolver)
   employers?: Resolver<
     Array<ResolversTypes["Company"]>,
     ParentType,
     ContextType
   >;
-<<<<<<< HEAD
-=======
->>>>>>> dd62fa6 (schema stuff)
-=======
->>>>>>> 29f0176 (resolver)
   firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes["Gender"]>, ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
