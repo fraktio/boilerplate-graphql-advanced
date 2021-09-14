@@ -94,8 +94,8 @@ GraphQLSchema {
     "PersonSortField": "PersonSortField",
     "PersonSortInput": "PersonSortInput",
     "PersonalIdentityCode": "PersonalIdentityCode",
-    "PersonsOutput": "PersonsOutput",
     "PersonsPaginationEdge": "PersonsPaginationEdge",
+    "PersonsPaginationOutput": "PersonsPaginationOutput",
     "PersonsPaginationResponse": "PersonsPaginationResponse",
     "Phone": "Phone",
     "Query": "Query",
@@ -138,8 +138,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1401,
-              "start": 1396,
+              "end": 1411,
+              "start": 1406,
             },
             "value": "Query",
           },
@@ -168,8 +168,8 @@ GraphQLSchema {
           "name": Object {
             "kind": "Name",
             "loc": Object {
-              "end": 1640,
-              "start": 1628,
+              "end": 1685,
+              "start": 1673,
             },
             "value": "Subscription",
           },

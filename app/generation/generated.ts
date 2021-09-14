@@ -386,8 +386,6 @@ export type PersonSortInput = {
   order: SortOrder;
 };
 
-export type PersonsOutput = InvalidCursorFailure | PersonsResponse;
-
 export type PersonsPaginationEdge = {
   __typename?: "PersonsPaginationEdge";
   cursor: Scalars["Cursor"];
@@ -404,20 +402,15 @@ export type PersonsPaginationResponse = {
   pageInfo: PageInfo;
 };
 
-export type PersonsResponse = {
-  __typename?: "PersonsResponse";
-  persons: Array<Person>;
-};
-
 export type Query = {
   __typename?: "Query";
+  allPersons: Array<Person>;
   authenticatedUser: AuthenticatedUserResponse;
   companies: Array<Company>;
   company: CompanyOutput;
   numberFact: NumberFactOutput;
   person: Person;
-  persons: PersonsOutput;
-  personsPagination: PersonsPaginationOutput;
+  persons: PersonsPaginationOutput;
 };
 
 export type QueryCompaniesArgs = {
@@ -436,7 +429,7 @@ export type QueryPersonArgs = {
   input: PersonInput;
 };
 
-export type QueryPersonsPaginationArgs = {
+export type QueryPersonsArgs = {
   filters?: Maybe<PersonFilterOperationInput>;
   pagination: PaginationInput;
   sort?: Maybe<Array<PersonSortInput>>;
@@ -746,9 +739,6 @@ export type ResolversTypes = ResolversObject<{
   PersonSortField: PersonSortField;
   PersonSortInput: PersonSortInput;
   PersonalIdentityCode: ResolverTypeWrapper<Scalars["PersonalIdentityCode"]>;
-  PersonsOutput:
-    | ResolversTypes["InvalidCursorFailure"]
-    | ResolversTypes["PersonsResponse"];
   PersonsPaginationEdge: ResolverTypeWrapper<
     Omit<PersonsPaginationEdge, "node"> & { node: ResolversTypes["Person"] }
   >;
@@ -758,11 +748,6 @@ export type ResolversTypes = ResolversObject<{
   PersonsPaginationResponse: ResolverTypeWrapper<
     Omit<PersonsPaginationResponse, "edges"> & {
       edges: Array<ResolversTypes["PersonsPaginationEdge"]>;
-    }
-  >;
-  PersonsResponse: ResolverTypeWrapper<
-    Omit<PersonsResponse, "persons"> & {
-      persons: Array<ResolversTypes["Person"]>;
     }
   >;
   PhoneNumber: ResolverTypeWrapper<Scalars["PhoneNumber"]>;
@@ -889,9 +874,6 @@ export type ResolversParentTypes = ResolversObject<{
   PersonInput: PersonInput;
   PersonSortInput: PersonSortInput;
   PersonalIdentityCode: Scalars["PersonalIdentityCode"];
-  PersonsOutput:
-    | ResolversParentTypes["InvalidCursorFailure"]
-    | ResolversParentTypes["PersonsResponse"];
   PersonsPaginationEdge: Omit<PersonsPaginationEdge, "node"> & {
     node: ResolversParentTypes["Person"];
   };
@@ -900,9 +882,6 @@ export type ResolversParentTypes = ResolversObject<{
     | ResolversParentTypes["PersonsPaginationResponse"];
   PersonsPaginationResponse: Omit<PersonsPaginationResponse, "edges"> & {
     edges: Array<ResolversParentTypes["PersonsPaginationEdge"]>;
-  };
-  PersonsResponse: Omit<PersonsResponse, "persons"> & {
-    persons: Array<ResolversParentTypes["Person"]>;
   };
   PhoneNumber: Scalars["PhoneNumber"];
   Query: {};
@@ -1356,17 +1335,6 @@ export interface PersonalIdentityCodeScalarConfig
   name: "PersonalIdentityCode";
 }
 
-export type PersonsOutputResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["PersonsOutput"] = ResolversParentTypes["PersonsOutput"],
-> = ResolversObject<{
-  __resolveType: TypeResolveFn<
-    "InvalidCursorFailure" | "PersonsResponse",
-    ParentType,
-    ContextType
-  >;
-}>;
-
 export type PersonsPaginationEdgeResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["PersonsPaginationEdge"] = ResolversParentTypes["PersonsPaginationEdge"],
@@ -1400,14 +1368,6 @@ export type PersonsPaginationResponseResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PersonsResponseResolvers<
-  ContextType = Context,
-  ParentType extends ResolversParentTypes["PersonsResponse"] = ResolversParentTypes["PersonsResponse"],
-> = ResolversObject<{
-  persons?: Resolver<Array<ResolversTypes["Person"]>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export interface PhoneNumberScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes["PhoneNumber"], any> {
   name: "PhoneNumber";
@@ -1417,6 +1377,11 @@ export type QueryResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = ResolversObject<{
+  allPersons?: Resolver<
+    Array<ResolversTypes["Person"]>,
+    ParentType,
+    ContextType
+  >;
   authenticatedUser?: Resolver<
     ResolversTypes["AuthenticatedUserResponse"],
     ParentType,
@@ -1446,12 +1411,11 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryPersonArgs, "input">
   >;
-  persons?: Resolver<ResolversTypes["PersonsOutput"], ParentType, ContextType>;
-  personsPagination?: Resolver<
+  persons?: Resolver<
     ResolversTypes["PersonsPaginationOutput"],
     ParentType,
     ContextType,
-    RequireFields<QueryPersonsPaginationArgs, "pagination">
+    RequireFields<QueryPersonsArgs, "pagination">
   >;
 }>;
 
@@ -1630,11 +1594,9 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   PageInfo?: PageInfoResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
   PersonalIdentityCode?: GraphQLScalarType;
-  PersonsOutput?: PersonsOutputResolvers<ContextType>;
   PersonsPaginationEdge?: PersonsPaginationEdgeResolvers<ContextType>;
   PersonsPaginationOutput?: PersonsPaginationOutputResolvers<ContextType>;
   PersonsPaginationResponse?: PersonsPaginationResponseResolvers<ContextType>;
-  PersonsResponse?: PersonsResponseResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   RegisterFailure?: RegisterFailureResolvers<ContextType>;

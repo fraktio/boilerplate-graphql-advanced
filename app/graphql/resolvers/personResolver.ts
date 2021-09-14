@@ -64,11 +64,7 @@ export const personResolver: Resolvers = {
       return person;
     },
 
-    async personsPagination(
-      _,
-      { filters, sort, pagination },
-      { knex, dataLoaders },
-    ) {
+    async persons(_, { filters, sort, pagination }, { knex, dataLoaders }) {
       const personsResult = await personsPaginationHandler({
         knex,
         personDL: dataLoaders.personDL,
@@ -91,16 +87,13 @@ export const personResolver: Resolvers = {
       };
     },
 
-    async persons(_, __, { knex, dataLoaders }) {
+    async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,
         personDL: dataLoaders.personDL,
       });
 
-      return {
-        __typename: "PersonsResponse",
-        persons,
-      };
+      return persons;
     },
   },
 
