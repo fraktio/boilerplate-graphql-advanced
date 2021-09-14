@@ -1,14 +1,27 @@
 import { Gender } from "~/database/person/personQueries";
 import { Resolvers } from "~/generation/generated";
 import {
-  addPersonHandler,
+  addPersonHandler
+  // UNCOMMENT ME @ STEP 2 adultEmployersHandler,
   modifyPerson,
-  // UNCOMMENT ME! personsHandler,
+  // UNCOMMENT ME @ STEP 1  personsHandler,
 } from "~/handlers/personHandler";
 
 export const personResolver: Resolvers = {
+  /* UNCOMMENT ME @ STEP 2
+  Person: {
+    async employers(person, _, { knex, dataLoaders }) {
+      return await adultEmployersHandler({
+        knex,
+        personId: person.id,
+        companyDL: dataLoaders.companyDL,
+        companiesOfPersonDL: dataLoaders.companiesOfPersonDL,
+      });
+    },
+  },
+  */
   Query: {
-    /* UNCOMMENT ME!
+    /* UNCOMMENT ME @ STEP 1
     async allPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,

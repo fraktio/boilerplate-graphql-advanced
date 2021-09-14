@@ -312,9 +312,8 @@ export type PaginationInput = {
 };
 
 export type Person = {
+  __typename?: "Person";
   UUID: Scalars["UUID"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
 };
 
 export type Query = {
@@ -1102,10 +1101,8 @@ export type PersonResolvers<
   ContextType = Context,
   ParentType extends ResolversParentTypes["Person"] = ResolversParentTypes["Person"],
 > = ResolversObject<{
-  __resolveType: TypeResolveFn<null, ParentType, ContextType>;
   UUID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
-  firstName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export interface PersonalIdentityCodeScalarConfig
