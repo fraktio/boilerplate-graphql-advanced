@@ -116,7 +116,6 @@ export type AddPersonSuccess = {
 /** Adult is over 16 years old Person */
 export type Adult = Person & {
   __typename?: "Adult";
-  /** Requires authentication and ADMIN privileges */
   UUID: Scalars["UUID"];
   birthday: Scalars["Date"];
   email: Scalars["EmailAddress"];
@@ -125,6 +124,8 @@ export type Adult = Person & {
   gender: Gender;
   lastName: Scalars["String"];
   nationality: Scalars["CountryCode"];
+  /** Requires authentication and ADMIN privileges */
+  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   timestamp: Timestamp;
 };
@@ -345,7 +346,6 @@ export type PaginationInput = {
 };
 
 export type Person = {
-  /** Requires authentication and ADMIN privileges */
   UUID: Scalars["UUID"];
   birthday: Scalars["Date"];
   email: Scalars["EmailAddress"];
@@ -353,6 +353,8 @@ export type Person = {
   gender: Gender;
   lastName: Scalars["String"];
   nationality: Scalars["CountryCode"];
+  /** Requires authentication and ADMIN privileges */
+  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   timestamp: Timestamp;
 };
@@ -502,7 +504,6 @@ export type Timestamp = {
 /** Underage is under 16 years old Person */
 export type Underage = Person & {
   __typename?: "Underage";
-  /** Requires authentication and ADMIN privileges */
   UUID: Scalars["UUID"];
   birthday: Scalars["Date"];
   email: Scalars["EmailAddress"];
@@ -510,6 +511,8 @@ export type Underage = Person & {
   gender: Gender;
   lastName: Scalars["String"];
   nationality: Scalars["CountryCode"];
+  /** Requires authentication and ADMIN privileges */
+  personalIdentityCode: Scalars["PersonalIdentityCode"];
   phone?: Maybe<Scalars["PhoneNumber"]>;
   timestamp: Timestamp;
 };
@@ -984,6 +987,11 @@ export type AdultResolvers<
     ParentType,
     ContextType
   >;
+  personalIdentityCode?: Resolver<
+    ResolversTypes["PersonalIdentityCode"],
+    ParentType,
+    ContextType
+  >;
   phone?: Resolver<
     Maybe<ResolversTypes["PhoneNumber"]>,
     ParentType,
@@ -1306,6 +1314,11 @@ export type PersonResolvers<
     ParentType,
     ContextType
   >;
+  personalIdentityCode?: Resolver<
+    ResolversTypes["PersonalIdentityCode"],
+    ParentType,
+    ContextType
+  >;
   phone?: Resolver<
     Maybe<ResolversTypes["PhoneNumber"]>,
     ParentType,
@@ -1494,6 +1507,11 @@ export type UnderageResolvers<
   lastName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   nationality?: Resolver<
     ResolversTypes["CountryCode"],
+    ParentType,
+    ContextType
+  >;
+  personalIdentityCode?: Resolver<
+    ResolversTypes["PersonalIdentityCode"],
     ParentType,
     ContextType
   >;
