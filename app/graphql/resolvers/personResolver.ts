@@ -1,4 +1,3 @@
-import { Gender } from "~/database/person/personQueries";
 import { Resolvers } from "~/generation/generated";
 import {
   adultEmployersHandler,
@@ -54,7 +53,7 @@ export const personResolver: Resolvers = {
         birthday: input.person.birthday,
         nationality: input.person.nationality,
         personalIdentityCode: input.person.personalIdentityCode,
-        gender: Gender.Other,
+        gender: input.person.gender,
       };
 
       const addedPerson = await addPersonHandler({
@@ -79,7 +78,7 @@ export const personResolver: Resolvers = {
         birthday: input.person.birthday,
         nationality: input.person.nationality,
         personalIdentityCode: input.person.personalIdentityCode,
-        gender: Gender.Other,
+        gender: input.person.gender,
       };
 
       const editPerson = await modifyPerson({

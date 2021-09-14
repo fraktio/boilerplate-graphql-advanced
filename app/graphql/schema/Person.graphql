@@ -1,3 +1,8 @@
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
 
 type Person {
   UUID: UUID!
@@ -8,6 +13,7 @@ type Person {
   nationality: String!
   birthday: String!
   employers: [Company!]!
+  gender: Gender
 }
 
 type Query {
