@@ -33,3 +33,5 @@ directive @cacheControl(
   scope: CacheControlScope
   inheritMaxAge: Boolean
 ) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
+
+directive @dateFormat(defaultFormat: String = "yyyy mm dd" ) on FIELD_DEFINITION

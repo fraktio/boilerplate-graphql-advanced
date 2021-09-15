@@ -11,7 +11,7 @@ interface Person {
   phone: PhoneNumber
   email: EmailAddress!
   nationality: CountryCode!
-  birthday: Date!
+  birthday: Date! 
   timestamp: Timestamp!
   gender: Gender!
   "Requires authentication and ADMIN privileges"
@@ -28,7 +28,7 @@ type Adult implements Person {
   phone: PhoneNumber
   email: EmailAddress!
   nationality: CountryCode!
-  birthday: Date!
+  birthday: Date! @dateFormat
   timestamp: Timestamp!
   gender: Gender!
   employers: [Company!]!
@@ -46,7 +46,7 @@ type Underage implements Person {
   phone: PhoneNumber
   email: EmailAddress!
   nationality: CountryCode!
-  birthday: Date!
+  birthday: Date! @dateFormat
   timestamp: Timestamp!
   gender: Gender!
   "Requires authentication and ADMIN privileges"
