@@ -24,6 +24,13 @@ export const DATABASE_PORT = "DATABASE_PORT";
 export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
 export const DATABASE_NAME = "DATABASE_NAME";
 
+// Redis
+export const IS_REDIS_USED = "IS_REDIS_USED";
+export const REDIS_HOST = "REDIS_HOST";
+export const REDIS_PORT = "REDIS_PORT";
+export const REDIS_USERNAME = "REDIS_USERNAME";
+export const REDIS_PASSWORD = "REDIS_PASSWORD";
+
 // Platform config
 export const PLATFORM = "PLATFORM";
 export const GOOGLE_CLOUD_SQL_CONNECTION_NAME =

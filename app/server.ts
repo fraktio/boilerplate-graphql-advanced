@@ -14,6 +14,7 @@ import { createRoutes } from "~/express/routes/routes";
 import { createApolloServer } from "~/graphql/apolloServer";
 import { createContext } from "~/graphql/context";
 import { createLogger, Logger } from "~/logger";
+import { createRedis } from "~/redis";
 
 export type ServerContext = {
   app: Express;
@@ -49,6 +50,10 @@ export const createServer: CreateSercerFunction = ({ config }) => {
     platformConfig: config.platform,
   });
 
+  const redisCache = config.redis.useRedis
+    ? createRedis({ redisConfig: config.redis })
+    : undefined;
+
   const app = createExpress({ config, knex });
 
   app.use(graphqlUploadExpress());
@@ -58,7 +63,12 @@ export const createServer: CreateSercerFunction = ({ config }) => {
 
   const context = createContext({ knex, config });
   const httpServer = createHttpServer(app);
-  const apolloServer = createApolloServer({ config, context, httpServer });
+  const apolloServer = createApolloServer({
+    config,
+    context,
+    httpServer,
+    cache: redisCache,
+  });
 
   async function startServer(): Promise<StartServerResponse> {
     await apolloServer.start();

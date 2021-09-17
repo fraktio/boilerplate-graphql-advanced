@@ -20,6 +20,9 @@ export const createTestConfig = (): Config => ({
     allowIntrospection: true,
     allowInlineTrace: true,
   },
+  redis: {
+    useRedis: false,
+  },
   database: {
     type: "pg",
     host: getEnvFallback(DATABASE_HOST, "localhost"),

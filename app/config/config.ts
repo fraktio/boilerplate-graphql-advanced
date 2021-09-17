@@ -16,6 +16,7 @@ import {
   createPlatformConfig,
   PlatformConfig,
 } from "~/config/configs/platformConfig";
+import { createRedisConfig, RedisConfig } from "~/config/configs/redisConfig";
 import {
   createSessionConfig,
   SessionConfig,
@@ -29,6 +30,7 @@ export type Config = {
   logging: LoggingConfig;
   platform: PlatformConfig;
   session: SessionConfig;
+  redis: RedisConfig;
 };
 
 export const createConfig = (): Config => ({
@@ -39,4 +41,5 @@ export const createConfig = (): Config => ({
   logging: createLoggingConfig(),
   platform: createPlatformConfig(),
   session: createSessionConfig(),
+  redis: createRedisConfig(),
 });

@@ -19,3 +19,19 @@ services:
       POSTGRES_PASSWORD: graphql-boilerplate-test
       POSTGRES_USER: graphql-boilerplate-test
       POSTGRES_DB: graphql-boilerplate-test
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  test-redis:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "63791:63791"
+    environment:
+      - REDIS_REPLICATION_MODE=master
