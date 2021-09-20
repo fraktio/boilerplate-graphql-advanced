@@ -1,5 +1,4 @@
 import { ApolloServerPlugin } from "apollo-server-plugin-base";
-import responseCachePlugin from "apollo-server-plugin-response-cache";
 import { GraphQLSchema } from "graphql";
 import { Server } from "http";
 
@@ -21,7 +20,6 @@ export const createPlugins = (params: {
   apolloServerLoggerPlugin,
   createPlaygroundPlugin({ graphqlConfig: params.graphqlConfig }),
   ...createInlineTracePlugin({ graphql: params.graphqlConfig }),
-  responseCachePlugin(),
   operationNamePlugin,
   durationPlugin,
   requestIdPlugin,
