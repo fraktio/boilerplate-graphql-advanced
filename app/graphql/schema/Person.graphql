@@ -11,7 +11,7 @@ interface Person {
   phone: PhoneNumber
   email: EmailAddress!
   nationality: CountryCode!
-  birthday: Date!
+  birthday: Date! 
   timestamp: Timestamp!
   gender: Gender!
   "Requires authentication and ADMIN privileges"
@@ -66,10 +66,30 @@ type PersonsPaginationResponse {
 union PersonsPaginationOutput = PersonsPaginationResponse | InvalidCursorFailure
 
 type Query {
+  """
+    ### Paginated header result
+    
+    **input arguments**
+    1. filter 
+    2. sort
+    3. pagination - mandatory
+  """
   persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsPaginationOutput!
+  
+  """
+    Returns all persons as list
+  """
   allPersons: [Person!]!
+
+  """
+    Returns person. requires authentication.
+  """
   person(input: PersonInput!): Person! @auth(requires:USER)
-  "Cached person query is cached for 120 seconds" 
+
+
+  """
+    Returns cached person. requires authentication. cahed for 120 seconds
+  """
   cachedPerson(input: PersonInput!): Person! @auth(requires:USER) @cacheControl(maxAge: 120)
 }
 
@@ -82,7 +102,14 @@ type Subscription {
 }
 
 type Mutation {
+  """
+    Creates new person 
+  """
   addPerson(input: AddPersonInput!): AddPersonOutput!
+
+  """
+    Edit existing person
+  """
   editPerson(input: EditPersonInput!): EditPersonOutput!
 }
 
@@ -90,7 +117,7 @@ input AddPersonPersonInput {
   firstName: String! 
   "Last name has to be minimum of 1 chracters and maximum of 50"
   lastName: String!  @length(max:50 min:1)
-  phone: PhoneNumber 
+  phone: PhoneNumber! 
   email: EmailAddress!
   birthday: Date! 
   nationality: CountryCode!
