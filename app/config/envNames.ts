@@ -2,6 +2,7 @@ export const LOGGING_LEVEL = "LOGGING_LEVEL";
 export const API_PORT = "API_PORT";
 export const IS_PRODUCTION = "IS_PRODUCTION";
 export const API_CORS_ENDPOINT = "API_CORS_ENDPOINT";
+export const API_EXPOSE_ERRORS = "API_EXPOSE_ERRORS";
 
 export const TOKEN_PATH = "TOKEN_PATH";
 export const TOKEN_DOMAIN = "TOKEN_DOMAIN";

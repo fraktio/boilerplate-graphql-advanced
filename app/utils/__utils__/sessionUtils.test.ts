@@ -18,7 +18,8 @@ describe("utils / hashing", () => {
 
   const mockEnvConfig: EnvConfig = {
     apiPort: 999,
-    isProduction: true,
+    isProduction: false,
+    apiExposeErrors: false,
     apiCorsEndpoint: "endpoint",
   };
 
