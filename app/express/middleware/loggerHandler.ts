@@ -66,7 +66,7 @@ export const createLoggerMiddleware = (params: {
     const requestTrace = {
       [TRACE_KEY_NAME]: traceId,
       requestId: uuidv4(),
-      userUUID: req.user?.UUID,
+      userUUID: req.user?.id,
     };
 
     const childLogger = params.logger.child(requestTrace);

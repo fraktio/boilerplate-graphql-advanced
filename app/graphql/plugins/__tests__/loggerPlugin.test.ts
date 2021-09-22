@@ -17,7 +17,8 @@ describe("graphql / plugins / apolloServerLoggerPlugin", () => {
           error: errorMock,
         },
         authenticatedUser: {
-          UUID: "UUID",
+          internalId: "internalId",
+          id: "id",
         },
       },
       request: {
@@ -50,7 +51,7 @@ describe("graphql / plugins / apolloServerLoggerPlugin", () => {
     expect(infoMock.mock.calls).toMatchObject([
       [
         {
-          authenticatedUserUUID: "UUID",
+          authenticatedUserUUID: "id",
           graphqlQuery: "query",
           operationName: "operationName",
           url: "/graphql",
@@ -61,7 +62,7 @@ describe("graphql / plugins / apolloServerLoggerPlugin", () => {
     expect(errorMock.mock.calls).toMatchObject([
       [
         {
-          authenticatedUserUUID: "UUID",
+          authenticatedUserUUID: "id",
           errors: [{ extra: "extra", name: "name", stack: "stack" }],
           operationName: "operationName",
         },

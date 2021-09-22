@@ -1,12 +1,12 @@
 type Company {
-  UUID: UUID!
+  id: UUID!
   name: String!
   timestamp: Timestamp!
   employees: [Adult!]!
 }
 
 input CompanyQuery {
-  UUID: UUID!
+  id: UUID!
 }
 
 union CompanyOutput = CompanySuccess | CompanyFailureNotFound
@@ -34,7 +34,7 @@ input AddCompanyInput {
 }
 
 input EditCompanyInput {
-  UUID: UUID!
+  id: UUID!
   company: CompanyInput!
 }
 

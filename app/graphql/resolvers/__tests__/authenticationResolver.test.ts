@@ -24,7 +24,7 @@ const loginMutation = gql`
 
   fragment LoginUserSuccess on LoginUserSuccess {
     user {
-      UUID
+      id
       username
     }
   }

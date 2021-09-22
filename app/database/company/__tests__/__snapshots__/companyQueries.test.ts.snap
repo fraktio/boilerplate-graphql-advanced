@@ -2,13 +2,13 @@
 
 exports[`database tests / company formatUserRow 1`] = `
 Object {
-  "UUID": "valid-uuid",
   "accessLevel": Array [
     "USER",
   ],
   "email": "email",
   "hashedPassword": "valid-hashed-password",
-  "id": 2,
+  "id": "valid-uuid",
+  "internalId": 2,
   "phoneNumber": "valid-phonenumber",
   "timestamp": Object {
     "createdAt": "2021-03-12T11:16:56.000+00:00",
@@ -20,13 +20,13 @@ Object {
 
 exports[`database tests / company formatUserRow updated 1`] = `
 Object {
-  "UUID": "valid-uuid",
   "accessLevel": Array [
     "USER",
   ],
   "email": "email",
   "hashedPassword": "valid-hashed-password",
-  "id": 2,
+  "id": "valid-uuid",
+  "internalId": 2,
   "phoneNumber": "valid-phonenumber",
   "timestamp": Object {
     "createdAt": "2021-03-12T11:16:56.000+00:00",

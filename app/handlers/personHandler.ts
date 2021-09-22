@@ -111,7 +111,7 @@ export const personsPaginationHandler = async (params: {
   }
 
   const edges = results.map((result) => ({
-    cursor: { queryCursor: result.UUID },
+    cursor: { queryCursor: result.id },
     node: result,
   }));
 
@@ -159,7 +159,7 @@ type PersonSortCursors = {
 const mapPersonPaginationFields = (
   personTable: PersonTable,
 ): PersonSortCursors => ({
-  uuid: personTable.UUID,
+  uuid: personTable.id,
   birthday: personTable.birthday,
   firstName: personTable.firstName,
   lastName: personTable.lastName,

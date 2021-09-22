@@ -26,7 +26,9 @@ export const userDB = {
     });
 
     if (user) {
-      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+      params.userDL
+        .getLoader({ knex: params.knex })
+        .prime(user.internalId, user);
     }
 
     return user;
@@ -43,7 +45,9 @@ export const userDB = {
     });
 
     if (user) {
-      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+      params.userDL
+        .getLoader({ knex: params.knex })
+        .prime(user.internalId, user);
     }
 
     return user;
@@ -60,7 +64,9 @@ export const userDB = {
     });
 
     if (user) {
-      params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+      params.userDL
+        .getLoader({ knex: params.knex })
+        .prime(user.internalId, user);
     }
 
     return user;
@@ -76,7 +82,7 @@ export const userDB = {
       newUser: params.newUser,
     });
 
-    params.userDL.getLoader({ knex: params.knex }).prime(user.id, user);
+    params.userDL.getLoader({ knex: params.knex }).prime(user.internalId, user);
 
     return user;
   },

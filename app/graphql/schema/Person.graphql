@@ -5,7 +5,7 @@ enum Gender {
 }
 
 interface Person {
-  UUID: UUID!
+  id: UUID!
   firstName: String!
   lastName: String!
   phone: PhoneNumber
@@ -22,7 +22,7 @@ interface Person {
 Adult is over 16 years old Person
 """
 type Adult implements Person {
-  UUID: UUID!
+  id: UUID!
   firstName: String!
   lastName: String!
   phone: PhoneNumber
@@ -40,7 +40,7 @@ type Adult implements Person {
 Underage is under 16 years old Person
 """
 type Underage implements Person {
-  UUID: UUID!  
+  id: UUID!  
   firstName: String! 
   lastName: String! 
   phone: PhoneNumber
@@ -94,7 +94,7 @@ type Query {
 }
 
 input PersonInput {
-  UUID: UUID!
+  id: UUID!
 }
 
 type Subscription {
@@ -136,7 +136,7 @@ type AddPersonSuccess {
 }
 
 input EditPersonInput {
-  UUID: UUID!
+  id: UUID!
   person: AddPersonPersonInput!
 }
 

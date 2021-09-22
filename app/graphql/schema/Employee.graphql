@@ -8,13 +8,13 @@ type Mutation {
 }
 
 input AddEmployeeInput {
-  companyUUID: UUID!
-  personUUID: UUID!
+  companyId: UUID!
+  personId: UUID!
 }
 
 input RemoveEmployeeInput {
-  companyUUID: UUID!
-  personUUID: UUID!
+  companyId: UUID!
+  personId: UUID!
 }
 
 union AddEmployeeOutput = AddEmployeeSuccess #| possible other failures

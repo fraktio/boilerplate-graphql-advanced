@@ -50,8 +50,8 @@ export type AddCompanySuccess = {
 };
 
 export type AddEmployeeInput = {
-  companyUUID: Scalars['UUID'];
-  personUUID: Scalars['UUID'];
+  companyId: Scalars['UUID'];
+  personId: Scalars['UUID'];
 };
 
 export type AddEmployeeOutput = AddEmployeeSuccess;
@@ -87,12 +87,12 @@ export type AddPersonSuccess = {
 /** Adult is over 16 years old Person */
 export type Adult = Person & {
   __typename?: 'Adult';
-  UUID: Scalars['UUID'];
   birthday: Scalars['Date'];
   email: Scalars['EmailAddress'];
   employers: Array<Company>;
   firstName: Scalars['String'];
   gender: Gender;
+  id: Scalars['UUID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
   /** Requires authentication and ADMIN privileges */
@@ -120,8 +120,8 @@ export enum CacheControlScope {
 
 export type Company = {
   __typename?: 'Company';
-  UUID: Scalars['UUID'];
   employees: Array<Adult>;
+  id: Scalars['UUID'];
   name: Scalars['String'];
   timestamp: Timestamp;
 };
@@ -148,7 +148,7 @@ export type CompanyInput = {
 export type CompanyOutput = CompanyFailureNotFound | CompanySuccess;
 
 export type CompanyQuery = {
-  UUID: Scalars['UUID'];
+  id: Scalars['UUID'];
 };
 
 export type CompanySuccess = {
@@ -171,8 +171,8 @@ export type EditCompanyFailureNotFound = {
 };
 
 export type EditCompanyInput = {
-  UUID: Scalars['UUID'];
   company: CompanyInput;
+  id: Scalars['UUID'];
 };
 
 export type EditCompanyOutput = EditCompanyFailureNotFound | EditCompanySuccess;
@@ -183,7 +183,7 @@ export type EditCompanySuccess = {
 };
 
 export type EditPersonInput = {
-  UUID: Scalars['UUID'];
+  id: Scalars['UUID'];
   person: AddPersonPersonInput;
 };
 
@@ -351,11 +351,11 @@ export type PaginationInput = {
 };
 
 export type Person = {
-  UUID: Scalars['UUID'];
   birthday: Scalars['Date'];
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   gender: Gender;
+  id: Scalars['UUID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
   /** Requires authentication and ADMIN privileges */
@@ -376,7 +376,7 @@ export type PersonFilterOperationInput = {
 };
 
 export type PersonInput = {
-  UUID: Scalars['UUID'];
+  id: Scalars['UUID'];
 };
 
 export enum PersonSortField {
@@ -475,8 +475,8 @@ export type RegisterSuccess = {
 };
 
 export type RemoveEmployeeInput = {
-  companyUUID: Scalars['UUID'];
-  personUUID: Scalars['UUID'];
+  companyId: Scalars['UUID'];
+  personId: Scalars['UUID'];
 };
 
 export type RemoveEmployeeOutput = RemoveEmployeeSuccess;
@@ -519,11 +519,11 @@ export type Timestamp = {
 /** Underage is under 16 years old Person */
 export type Underage = Person & {
   __typename?: 'Underage';
-  UUID: Scalars['UUID'];
   birthday: Scalars['Date'];
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   gender: Gender;
+  id: Scalars['UUID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
   /** Requires authentication and ADMIN privileges */
@@ -541,7 +541,7 @@ export type UniqueConstraintViolationFailure = FailureOutput & {
 
 export type User = {
   __typename?: 'User';
-  UUID: Scalars['UUID'];
+  id: Scalars['UUID'];
   username: Scalars['String'];
 };
 
@@ -846,12 +846,12 @@ export type AddPersonSuccessResolvers<ContextType = Context, ParentType extends 
 }>;
 
 export type AdultResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Adult'] = ResolversParentTypes['Adult']> = ResolversObject<{
-  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   employers?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;
@@ -875,8 +875,8 @@ export type AuthenticatedUserSuccessResolvers<ContextType = Context, ParentType 
 }>;
 
 export type CompanyResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']> = ResolversObject<{
-  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   employees?: Resolver<Array<ResolversTypes['Adult']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1033,11 +1033,11 @@ export type PageInfoResolvers<ContextType = Context, ParentType extends Resolver
 
 export type PersonResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person']> = ResolversObject<{
   __resolveType: TypeResolveFn<'Adult' | 'Underage', ParentType, ContextType>;
-  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;
@@ -1123,11 +1123,11 @@ export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type UnderageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Underage'] = ResolversParentTypes['Underage']> = ResolversObject<{
-  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   birthday?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;
@@ -1147,7 +1147,7 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 }
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  UUID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

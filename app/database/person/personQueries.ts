@@ -55,8 +55,8 @@ export type PersonTableRow = Readonly<{
 }>;
 
 export type PersonTable = {
-  id: PersonID;
-  UUID: UUID;
+  internalId: PersonID;
+  id: UUID;
   firstName: string;
   lastName: string;
   phone: PhoneNumber | null;
@@ -72,8 +72,8 @@ export type PersonTable = {
 };
 
 export const formatPersonRow = (row: PersonTableRow): PersonTable => ({
-  id: row.id,
-  UUID: row.uuid,
+  internalId: row.id,
+  id: row.uuid,
   firstName: row.firstName,
   lastName: row.lastName,
   phone: row.phone ? parsePhoneNumber(row.phone) : null,

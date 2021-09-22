@@ -44,7 +44,7 @@ export const personResolver: Resolvers = {
     async employers(adult, _, { knex, dataLoaders }) {
       return await adultEmployersHandler({
         knex,
-        personId: adult.id,
+        personId: adult.internalId,
         companyDL: dataLoaders.companyDL,
         companiesOfPersonDL: dataLoaders.companiesOfPersonDL,
       });
@@ -55,7 +55,7 @@ export const personResolver: Resolvers = {
     async person(_, { input }, { knex, dataLoaders }) {
       const person = await personHandler({
         knex,
-        personUUID: input.UUID,
+        personUUID: input.id,
         personDL: dataLoaders.personDL,
       });
 
@@ -69,7 +69,7 @@ export const personResolver: Resolvers = {
     async cachedPerson(_, { input }, { knex, dataLoaders }) {
       const person = await personHandler({
         knex,
-        personUUID: input.UUID,
+        personUUID: input.id,
         personDL: dataLoaders.personDL,
       });
 
@@ -161,7 +161,7 @@ export const personResolver: Resolvers = {
 
       const editPerson = await modifyPerson({
         knex,
-        personUUID: input.UUID,
+        personUUID: input.id,
         modifiedPerson,
         personDL: dataLoaders.personDL,
       });

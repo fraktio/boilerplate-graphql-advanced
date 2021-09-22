@@ -32,7 +32,7 @@ class Authentication {
     sessionConfig: SessionConfig;
     envConfig: EnvConfig;
   }): GenerateAccessTokenResponse {
-    const signObj: JWTAccessPayload = { uuid: params.user.UUID };
+    const signObj: JWTAccessPayload = { uuid: params.user.id };
 
     const accessToken = sign(signObj, params.sessionConfig.secret, {
       expiresIn: params.sessionConfig.accessTokenAgeSeconds,

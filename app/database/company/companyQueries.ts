@@ -27,8 +27,8 @@ export type CompanyTableRow = Readonly<{
 }>;
 
 export type CompanyTable = {
-  id: CompanyID;
-  UUID: UUID;
+  internalId: CompanyID;
+  id: UUID;
   name: string;
   timestamp: {
     createdAt: DateTime;
@@ -41,8 +41,8 @@ export type CreateCompanyParams = {
 };
 
 export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
-  id: row.id,
-  UUID: row.uuid,
+  internalId: row.id,
+  id: row.uuid,
   name: row.name,
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),

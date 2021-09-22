@@ -7,12 +7,13 @@ export interface UUID extends String {
   _UUID: never;
 }
 
-export type UserModel = User & Pick<UserTable, "id">;
+export type UserModel = User & Pick<UserTable, "internalId">;
 
 export type CompanyModel = Omit<Company, "employees"> &
-  Pick<CompanyTable, "id">;
+  Pick<CompanyTable, "internalId">;
 
-export type PersonModel = Omit<Person, "languages"> & Pick<PersonTable, "id">;
+export type PersonModel = Omit<Person, "languages"> &
+  Pick<PersonTable, "internalId">;
 
 export type AdultModel = Omit<Adult, "languages" | "employers"> &
-  Pick<PersonTable, "id">;
+  Pick<PersonTable, "internalId">;

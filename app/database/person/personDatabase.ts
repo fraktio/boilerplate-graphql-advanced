@@ -38,7 +38,9 @@ export const personDB = {
     const person = await personQueries.getByUUID(params);
 
     if (person) {
-      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+      params.personDL
+        .getLoader({ knex: params.knex })
+        .prime(person.internalId, person);
     }
 
     return person;
@@ -69,7 +71,7 @@ export const personDB = {
 
     persons.forEach((person) => {
       const dataLoader = params.personDL.getLoader({ knex: params.knex });
-      dataLoader.prime(person.id, person);
+      dataLoader.prime(person.internalId, person);
     });
 
     return persons;
@@ -85,7 +87,7 @@ export const personDB = {
     if (personResult.success) {
       params.personDL
         .getLoader({ knex: params.knex })
-        .prime(personResult.value.id, personResult.value);
+        .prime(personResult.value.internalId, personResult.value);
     }
 
     return personResult;
@@ -103,7 +105,9 @@ export const personDB = {
 
     if (personResult.success) {
       const person = personResult.value;
-      params.personDL.getLoader({ knex: params.knex }).prime(person.id, person);
+      params.personDL
+        .getLoader({ knex: params.knex })
+        .prime(person.internalId, person);
     }
 
     return personResult;

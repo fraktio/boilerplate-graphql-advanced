@@ -41,8 +41,8 @@ export const addEmployeeHandler = async (params: {
 
   await employeeDB.create({
     knex: params.knex,
-    companyId: company.id,
-    personId: person.id,
+    companyId: company.internalId,
+    personId: person.internalId,
   });
 
   return toSuccess(company);
@@ -82,8 +82,8 @@ export const removeEmployeeHandler = async (params: {
 
   await employeeDB.remove({
     knex: params.knex,
-    companyId: company.id,
-    personId: person.id,
+    companyId: company.internalId,
+    personId: person.internalId,
   });
 
   return toSuccess(company);

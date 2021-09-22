@@ -9,7 +9,7 @@ RUN npm ci
 COPY . ./
 RUN npm run build
 RUN npm run postinstall
-RUN npm prune --prodcution
+RUN npm prune --production
 
 
 FROM node:16-slim@sha256:af6f241029c4d63107c6ccbbd030c44d331786d724bd9c2e615edf46deab58e2 as release

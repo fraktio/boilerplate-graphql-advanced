@@ -1,4 +1,4 @@
 type User {
-  UUID: UUID!
+  id: UUID!
   username: String!
 }

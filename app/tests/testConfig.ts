@@ -33,7 +33,7 @@ export const createTestConfig = (): Config => ({
   },
   env: {
     apiPort: 4001,
-    isProduction: true,
+    isProduction: false,
     apiCorsEndpoint: "*",
   },
   logging: {

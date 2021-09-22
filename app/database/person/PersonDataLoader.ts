@@ -22,7 +22,8 @@ export class PersonDataLoader extends AbstractDataLoaderBase<PersonLoader> {
       });
 
       return ids.map(
-        (id) => employees.find((employee) => employee.id === id) || null,
+        (id) =>
+          employees.find((employee) => employee.internalId === id) || null,
       );
     });
 

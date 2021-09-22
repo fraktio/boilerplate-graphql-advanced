@@ -31,7 +31,7 @@ export const companyResolver: Resolvers = {
     async employees(company, __, { knex, dataLoaders }) {
       return companyEmployees({
         knex,
-        companyId: company.id,
+        companyId: company.internalId,
         personDL: dataLoaders.personDL,
         personsOfCompanyDL: dataLoaders.personsOfCompanyDL,
       });
@@ -50,7 +50,7 @@ export const companyResolver: Resolvers = {
     async company(_, { input }, { knex, dataLoaders }) {
       const company = await companyHandler({
         knex,
-        companyUUID: input.UUID,
+        companyUUID: input.id,
         companyDL: dataLoaders.companyDL,
       });
 
@@ -82,7 +82,7 @@ export const companyResolver: Resolvers = {
     async editCompany(_, { input }, { knex, dataLoaders }) {
       const company = await editCompanyHandler({
         knex,
-        companyUUID: input.UUID,
+        companyUUID: input.id,
         company: { name: input.company.name },
         companyDL: dataLoaders.companyDL,
       });

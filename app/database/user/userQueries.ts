@@ -29,8 +29,8 @@ export type UserTableRow = Readonly<{
 }>;
 
 export type UserTable = {
-  id: UserID;
-  UUID: UUID;
+  internalId: UserID;
+  id: UUID;
   username: string;
   email: EmailAddress;
   phoneNumber: string;
@@ -43,8 +43,8 @@ export type UserTable = {
 };
 
 export const formatUserRow = (row: UserTableRow): UserTable => ({
-  id: row.id,
-  UUID: row.uuid,
+  internalId: row.id,
+  id: row.uuid,
   accessLevel: row.accessLevel,
   username: row.username,
   email: row.email,

@@ -17,7 +17,9 @@ export class UserDataLoader extends AbstractDataLoaderBase<UserLoader> {
         userIds: ids,
       });
 
-      return ids.map((id) => users.find((user) => user.id === id) || null);
+      return ids.map(
+        (id) => users.find((user) => user.internalId === id) || null,
+      );
     });
 
     return userLoader;

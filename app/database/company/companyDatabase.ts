@@ -14,8 +14,8 @@ import { PersonID } from "~/database/person/personQueries";
 import { UUID } from "~/generation/mappers";
 
 export type CompanyTable = {
-  id: CompanyID;
-  UUID: UUID;
+  id: UUID;
+  internalId: CompanyID;
   name: string;
   timestamp: {
     createdAt: DateTime;
@@ -24,8 +24,8 @@ export type CompanyTable = {
 };
 
 export const formatCompanyRow = (row: CompanyTableRow): CompanyTable => ({
-  id: row.id,
-  UUID: row.uuid,
+  id: row.uuid,
+  internalId: row.id,
   name: row.name,
   timestamp: {
     createdAt: DateTime.fromJSDate(row.createdAt),
@@ -44,7 +44,7 @@ export const companyDB = {
     if (company) {
       params.companyDL
         .getLoader({ knex: params.knex })
-        .prime(company.id, company);
+        .prime(company.internalId, company);
     }
 
     return company;
@@ -59,7 +59,7 @@ export const companyDB = {
 
     params.companyDL
       .getLoader({ knex: params.knex })
-      .prime(company.id, company);
+      .prime(company.internalId, company);
 
     return company;
   },
@@ -74,7 +74,7 @@ export const companyDB = {
     if (company) {
       params.companyDL
         .getLoader({ knex: params.knex })
-        .prime(company.id, company);
+        .prime(company.internalId, company);
     }
 
     return company;
@@ -89,7 +89,7 @@ export const companyDB = {
 
     const dataloader = params.companyDL.getLoader({ knex: params.knex });
     companies.forEach((company) => {
-      dataloader.prime(company.id, company);
+      dataloader.prime(company.internalId, company);
     });
 
     return companies;
@@ -107,7 +107,7 @@ export const companyDB = {
 
     params.companyDL
       .getLoader({ knex: params.knex })
-      .prime(company.id, company);
+      .prime(company.internalId, company);
 
     return company;
   },
@@ -123,7 +123,7 @@ export const companyDB = {
     if (company) {
       params.companyDL
         .getLoader({ knex: params.knex })
-        .prime(company.id, company);
+        .prime(company.internalId, company);
     }
 
     return company;

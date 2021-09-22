@@ -17,7 +17,7 @@ const getCompanyQuery = gql`
 
   fragment CompanySuccess on CompanySuccess {
     company {
-      UUID
+      id
       name
     }
   }
@@ -31,7 +31,7 @@ const getCompaniesQuery = gql`
   query GetCompanies {
     companies {
       __typename
-      UUID
+      id
       name
     }
   }
@@ -48,7 +48,7 @@ const addCompanyMutation = gql`
   fragment AddCompanySuccess on AddCompanySuccess {
     company {
       __typename
-      UUID
+      id
       name
     }
   }
@@ -66,7 +66,7 @@ const updateCompanyMutation = gql`
   fragment EditCompanySuccess on EditCompanySuccess {
     company {
       __typename
-      UUID
+      id
       name
     }
   }
@@ -86,17 +86,17 @@ describe("Graphql / endpoints", () => {
       knex,
       overrides: { name: NAME },
     });
-    const params = { input: { UUID: company.UUID } };
+    const params = { input: { id: company.id } };
     const { body } = await gqlRequest(app, getCompanyQuery, params);
 
     expect(body.data.company.__typename).toBe("CompanySuccess");
-    expect(body.data.company.company.UUID).toBe(company.UUID);
+    expect(body.data.company.company.id).toBe(company.id);
     expect(body.data.company.company.name).toBe(NAME);
   });
 
   it("company / failure", async () => {
     const params = {
-      input: { UUID: createUUID() },
+      input: { id: createUUID() },
     };
     const { body } = await gqlRequest(app, getCompanyQuery, params);
 
@@ -121,11 +121,11 @@ describe("Graphql / endpoints", () => {
 
     const [first, second] = body.data.companies;
     expect(first.__typename).toBe("Company");
-    expect(first.UUID).toBe(company1.UUID);
+    expect(first.id).toBe(company1.id);
     expect(first.name).toBe(NAME1);
 
     expect(second.__typename).toBe("Company");
-    expect(second.UUID).toBe(company2.UUID);
+    expect(second.id).toBe(company2.id);
     expect(second.name).toBe(NAME2);
   });
 
@@ -147,7 +147,7 @@ describe("Graphql / endpoints", () => {
     const newRandomName = "Random name after";
     const params = {
       input: {
-        UUID: company1.UUID,
+        id: company1.id,
         company: {
           name: newRandomName,
         },
@@ -163,7 +163,7 @@ describe("Graphql / endpoints", () => {
   it("editCompany / failure", async () => {
     const params = {
       input: {
-        UUID: createUUID(),
+        id: createUUID(),
         company: {
           name: "name",
         },

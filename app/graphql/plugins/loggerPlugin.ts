@@ -7,7 +7,7 @@ export const apolloServerLoggerPlugin: ApolloServerPlugin<Context> = {
     requestContext.context.logger.info(
       {
         authenticatedUserUUID:
-          requestContext.context.authenticatedUser?.UUID ?? null,
+          requestContext.context.authenticatedUser?.id ?? null,
         url: requestContext.request.http?.url,
         operationName: requestContext.request.operationName,
         graphqlQuery: requestContext.request.query,
@@ -20,7 +20,7 @@ export const apolloServerLoggerPlugin: ApolloServerPlugin<Context> = {
         requestContext.context.logger.error(
           {
             authenticatedUserUUID:
-              requestContext.context.authenticatedUser?.UUID ?? null,
+              requestContext.context.authenticatedUser?.id ?? null,
             operationName: requestContext.request.operationName,
             errors: requestContext.errors.map((error) => ({
               ...error,

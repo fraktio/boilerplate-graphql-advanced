@@ -26,7 +26,8 @@ describe("utils / hashing", () => {
     const mockCallback = jest.fn();
     const SECRET = "secret";
     const mockUser = {
-      UUID: "mockUUID",
+      internalId: "internalId",
+      id: "id",
     } as unknown as UserTable;
 
     const accessToken = sessionUtils.authentication.generateAndSetToken({
@@ -39,7 +40,7 @@ describe("utils / hashing", () => {
     });
 
     expect(verify(accessToken.accessToken, SECRET)).toMatchObject({
-      uuid: mockUser.UUID,
+      uuid: mockUser.id,
     });
 
     const result = sessionUtils.authentication.verifyToken({
@@ -53,7 +54,7 @@ describe("utils / hashing", () => {
 
     expect(result).toMatchObject({
       success: true,
-      value: { uuid: "mockUUID" },
+      value: { uuid: "id" },
     });
 
     expect(mockCallback.mock.calls.length).toBe(1);

@@ -22,7 +22,7 @@ export class CompanyDataLoader extends AbstractDataLoaderBase<CompanyLoader> {
       });
 
       return ids.map(
-        (id) => companies.find((company) => company.id === id) || null,
+        (id) => companies.find((company) => company.internalId === id) || null,
       );
     });
 

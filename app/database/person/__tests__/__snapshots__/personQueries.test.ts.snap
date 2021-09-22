@@ -2,12 +2,12 @@
 
 exports[`database tests / person formatPersonRow 1`] = `
 Object {
-  "UUID": "valid-uuid",
   "birthday": "2021-03-12T11:16:56.000+00:00",
   "email": "valid-email",
   "firstName": "firstname",
   "gender": "MALE",
-  "id": 2,
+  "id": "valid-uuid",
+  "internalId": 2,
   "lastName": "lastname",
   "nationality": "FI",
   "personalIdentityCode": "230488-577C",
@@ -10065,12 +10065,12 @@ Object {
 
 exports[`database tests / person formatPersonRow updated 1`] = `
 Object {
-  "UUID": "valid-uuid",
   "birthday": "2021-03-12T11:16:56.000+00:00",
   "email": "valid-email",
   "firstName": "firstname",
   "gender": "MALE",
-  "id": 2,
+  "id": "valid-uuid",
+  "internalId": 2,
   "lastName": "lastname",
   "nationality": "FI",
   "personalIdentityCode": "230488-577C",
