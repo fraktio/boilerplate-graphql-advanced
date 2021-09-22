@@ -107,6 +107,7 @@ steps:
 
             '--update-env-vars', 'API_CORS_ENDPOINT=*',
             '--update-env-vars', 'IS_PRODUCTION=TRUE',
+            '--update-env-vars', 'API_EXPOSE_ERRORS=TRUE',
             '--update-env-vars', 'LOGGING_LEVEL=info',
             
             '--update-secrets', 'TOKEN_SECRET=TOKEN_SECRET:latest',
