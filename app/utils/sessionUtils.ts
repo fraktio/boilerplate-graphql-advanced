@@ -45,7 +45,7 @@ class Authentication {
     params.res.cookie(this.AUTHORIZATION_HEADER, accessToken, {
       expires: expiresAt.toJSDate(),
       domain: params.sessionConfig.domain,
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
       secure: params.envConfig.isProduction,
     });
