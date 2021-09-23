@@ -66,7 +66,7 @@ describe("utils / hashing", () => {
         {
           domain: "domain",
           expires: expect.any(Date),
-          sameSite: "strict",
+          sameSite: "none",
         },
       ],
     ]);

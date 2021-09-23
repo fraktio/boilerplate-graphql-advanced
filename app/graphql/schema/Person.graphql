@@ -77,9 +77,9 @@ type Query {
   persons(filters: PersonFilterOperationInput, sort: [PersonSortInput!], pagination: PaginationInput!): PersonsPaginationOutput!
   
   """
-    Returns all persons as list
+    Returns newest persons as list 
   """
-  allPersons: [Person!]!
+  newestPersons: [Person!]!
 
   """
     Returns person. requires authentication.

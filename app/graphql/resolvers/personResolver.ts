@@ -1,7 +1,7 @@
 import { UserInputError } from "apollo-server-express";
 import { PubSub } from "graphql-subscriptions";
 
-import { Resolvers } from "~/generation/generated";
+import { Resolvers, SortOrder } from "~/generation/generated";
 import {
   addPersonHandler,
   adultEmployersHandler,
@@ -103,9 +103,15 @@ export const personResolver: Resolvers = {
       };
     },
 
-    async allPersons(_, __, { knex, dataLoaders }) {
+    async newestPersons(_, __, { knex, dataLoaders }) {
       const persons = await personsHandler({
         knex,
+        sort: [
+          {
+            column: "createdAt",
+            order: SortOrder.Desc,
+          },
+        ],
         personDL: dataLoaders.personDL,
       });
 

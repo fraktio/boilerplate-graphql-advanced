@@ -76,7 +76,7 @@ export type AddPersonPersonInput = {
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
   personalIdentityCode: Scalars['PersonalIdentityCode'];
-  phone?: Maybe<Scalars['PhoneNumber']>;
+  phone: Scalars['PhoneNumber'];
 };
 
 export type AddPersonSuccess = {
@@ -257,8 +257,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   addCompany: AddCompanyOutput;
   addEmployee: AddEmployeeOutput;
+  /** Creates new person  */
   addPerson: AddPersonOutput;
   editCompany: EditCompanyOutput;
+  /** Edit existing person */
   editPerson: EditPersonOutput;
   fileMetadata: FileMetadataResponse;
   login: LoginUserResponse;
@@ -407,14 +409,24 @@ export type PersonsPaginationResponse = {
 
 export type Query = {
   __typename?: 'Query';
-  allPersons: Array<Person>;
   authenticatedUser: AuthenticatedUserResponse;
-  /** Cached person query is cached for 120 seconds */
+  /** Returns cached person. requires authentication. cahed for 120 seconds */
   cachedPerson: Person;
   companies: Array<Company>;
   company: CompanyOutput;
+  /** Returns newest persons as list  */
+  newestPersons: Array<Person>;
   numberFact: NumberFactOutput;
+  /** Returns person. requires authentication. */
   person: Person;
+  /**
+   * ### Paginated header result
+   *
+   * **input arguments**
+   * 1. filter
+   * 2. sort
+   * 3. pagination - mandatory
+   */
   persons: PersonsPaginationOutput;
 };
 
@@ -1070,11 +1082,11 @@ export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<Resolve
 }
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  allPersons?: Resolver<Array<ResolversTypes['Person']>, ParentType, ContextType>;
   authenticatedUser?: Resolver<ResolversTypes['AuthenticatedUserResponse'], ParentType, ContextType>;
   cachedPerson?: Resolver<ResolversTypes['Person'], ParentType, ContextType, RequireFields<QueryCachedPersonArgs, 'input'>>;
   companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompaniesArgs, never>>;
   company?: Resolver<ResolversTypes['CompanyOutput'], ParentType, ContextType, RequireFields<QueryCompanyArgs, 'input'>>;
+  newestPersons?: Resolver<Array<ResolversTypes['Person']>, ParentType, ContextType>;
   numberFact?: Resolver<ResolversTypes['NumberFactOutput'], ParentType, ContextType, RequireFields<QueryNumberFactArgs, 'input'>>;
   person?: Resolver<ResolversTypes['Person'], ParentType, ContextType, RequireFields<QueryPersonArgs, 'input'>>;
   persons?: Resolver<ResolversTypes['PersonsPaginationOutput'], ParentType, ContextType, RequireFields<QueryPersonsArgs, 'pagination'>>;
