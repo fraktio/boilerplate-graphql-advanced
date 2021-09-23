@@ -101,7 +101,7 @@ steps:
             '--update-env-vars', 'DATABASE_TYPE=pg',
             
             '--update-env-vars', 'TOKEN_PATH=/graphql',
-            '--update-env-vars', 'TOKEN_DOMAIN=graphql-training-api.frakt.io',
+            '--update-env-vars', 'TOKEN_DOMAIN=frakt.io',
             '--update-env-vars', 'ACCESS_TOKEN_AGE_SECONDS=302400',
             '--update-env-vars', 'REFRESH_TOKEN_AGE_SECONDS=604800',
 
