@@ -47,7 +47,7 @@ class Authentication {
       domain: params.sessionConfig.domain,
       sameSite: "none",
       httpOnly: true,
-      secure: params.envConfig.isProduction,
+      secure: false,
     });
 
     return {
