@@ -28,7 +28,7 @@ export const errorHandler: ErrorRequestHandler = (
 export const apolloErrorHandler =
   (opts: { config: Config }) =>
   (error: GraphQLError): GraphQLFormattedError => {
-    if (!opts.config.env.apiExposeErrors) {
+    if (opts.config.env.apiExposeErrors) {
       return error;
     }
 
