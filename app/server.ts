@@ -51,7 +51,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
   });
 
   const redisCache = config.redis.useRedis
-    ? createRedis({ redisConfig: config.redis })
+    ? createRedis({ redisConfig: config.redis, logger })
     : undefined;
 
   const app = createExpress({ config, knex });
