@@ -81,9 +81,11 @@ steps:
 
             '--set-cloudsql-instances', '$_CLOUD_SQL_CONNECTION_NAME',
 
-            '--update-env-vars', 'IS_REDIS_USED=FALSE',
-            # '--update-env-vars', 'REDIS_HOST=$_REDIS_HOST',
-            # '--update-env-vars', 'REDIS_PORT=$_REDIS_PORT',
+            '--update-env-vars', 'IS_REDIS_USED=TRUE',
+            '--update-env-vars', 'REDIS_HOST=$_REDIS_HOST',
+            '--update-env-vars', 'REDIS_PORT=$_REDIS_PORT',
+            '--update-env-vars', 'REDIS_USRENAME=username',
+            '--update-env-vars', 'REDIS_PASSWORD=password',
             
             '--update-env-vars', 'GOOGLE_CLOUD_SQL_CONNECTION_NAME=$_CLOUD_SQL_CONNECTION_NAME',
             '--update-env-vars', 'GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID',
