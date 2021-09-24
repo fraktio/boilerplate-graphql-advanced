@@ -32,7 +32,8 @@ export const apolloErrorHandler =
       return error;
     }
 
-    if (error.originalError instanceof PersistedQueryNotFoundError) {
+    if (error instanceof PersistedQueryNotFoundError) {
+      // We want to compare error not error.originalError
       return error;
     }
 
