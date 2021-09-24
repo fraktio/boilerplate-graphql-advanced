@@ -1,6 +1,13 @@
 import fs from "fs";
 /* eslint-disable no-process-env */
 
+const printError = (message: string): void => {
+  const error = new Error(
+    `${message}\n\nFix invalid environment variable and restart the application\n`,
+  );
+  console.error(error);
+};
+
 export const getEnv = <T extends string>(
   envKey: string,
   allowedValues?: T[],
@@ -18,7 +25,7 @@ export const getEnv = <T extends string>(
   }
 
   if (allowedValues) {
-    console.error(
+    printError(
       `Environment variable ${envKey} is not set, accepted values: ${allowedValues
         .map((value) => `"${value}"`)
         .join(", ")}`,
@@ -26,7 +33,7 @@ export const getEnv = <T extends string>(
     process.exit(1);
   }
 
-  console.error(`Environment variable ${envKey} is not set`);
+  printError(`Environment variable ${envKey} is not set`);
   process.exit(1);
 };
 
@@ -36,7 +43,7 @@ export const getEnvInt = (envKey: string): number => {
   const integerRegex = /^\d+$/;
 
   if (!integerRegex.test(value)) {
-    console.error(
+    printError(
       `Environment variable ${envKey}. Received invalid value for INT: ${value}`,
     );
     process.exit(1);
@@ -56,7 +63,7 @@ export const getEnvBool = (envKey: string): boolean => {
     return false;
   }
 
-  console.error(
+  printError(
     `Environment variable ${envKey}. Accepted values: 'TRUE' or 'FALSE' Received invalid value for BOOLEAN: ${value}`,
   );
   process.exit(1);
@@ -82,7 +89,7 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
   const parsed = parseInt(value, 10);
 
   if (isNaN(parsed)) {
-    console.error(
+    printError(
       `Environment variable ${envKey}. Received invalid value for INT: ${value}`,
     );
     process.exit(1);
@@ -100,7 +107,7 @@ export const getEnvPackageJSON = (): Package => {
   try {
     return JSON.parse(fs.readFileSync("package.json", "utf8")) as Package;
   } catch (e) {
-    console.error(
+    printError(
       "'package.json' was not found. 'package.json' is needed in the root directory.",
     );
     process.exit(1);

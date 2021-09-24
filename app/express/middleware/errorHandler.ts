@@ -1,3 +1,4 @@
+import { PersistedQueryNotFoundError } from "apollo-server-errors";
 import {
   AuthenticationError,
   UserInputError,
@@ -28,6 +29,10 @@ export const apolloErrorHandler =
   (opts: { config: Config }) =>
   (error: GraphQLError): GraphQLFormattedError => {
     if (!opts.config.env.apiExposeErrors) {
+      return error;
+    }
+
+    if (error.originalError instanceof PersistedQueryNotFoundError) {
       return error;
     }
 
