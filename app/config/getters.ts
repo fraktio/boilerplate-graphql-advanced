@@ -18,14 +18,16 @@ export const getEnv = <T extends string>(
   }
 
   if (allowedValues) {
-    throw new Error(
+    console.error(
       `Environment variable ${envKey} is not set, accepted values: ${allowedValues
         .map((value) => `"${value}"`)
         .join(", ")}`,
     );
+    process.exit(1);
   }
 
-  throw new Error(`Environment variable ${envKey} is not set`);
+  console.error(`Environment variable ${envKey} is not set`);
+  process.exit(1);
 };
 
 export const getEnvInt = (envKey: string): number => {
@@ -34,9 +36,10 @@ export const getEnvInt = (envKey: string): number => {
   const integerRegex = /^\d+$/;
 
   if (!integerRegex.test(value)) {
-    throw new Error(
+    console.error(
       `Environment variable ${envKey}. Received invalid value for INT: ${value}`,
     );
+    process.exit(1);
   }
 
   return parseInt(value, 10);
@@ -53,9 +56,10 @@ export const getEnvBool = (envKey: string): boolean => {
     return false;
   }
 
-  throw new Error(
+  console.error(
     `Environment variable ${envKey}. Accepted values: 'TRUE' or 'FALSE' Received invalid value for BOOLEAN: ${value}`,
   );
+  process.exit(1);
 };
 
 export const getEnvFallback = (envKey: string, fallback: string): string => {
@@ -78,9 +82,10 @@ export const getEnvIntFallback = (envKey: string, fallback: number): number => {
   const parsed = parseInt(value, 10);
 
   if (isNaN(parsed)) {
-    throw new Error(
+    console.error(
       `Environment variable ${envKey}. Received invalid value for INT: ${value}`,
     );
+    process.exit(1);
   }
 
   return parsed;
@@ -95,8 +100,9 @@ export const getEnvPackageJSON = (): Package => {
   try {
     return JSON.parse(fs.readFileSync("package.json", "utf8")) as Package;
   } catch (e) {
-    throw new Error(
+    console.error(
       "'package.json' was not found. 'package.json' is needed in the root directory.",
     );
+    process.exit(1);
   }
 };
