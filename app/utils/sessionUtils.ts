@@ -105,7 +105,7 @@ class Authentication {
   }
 
   public clear(params: { res: Response; path: string }): void {
-    params.res.clearCookie(this.AUTHORIZATION_HEADER, { path: params.path });
+    params.res.clearCookie(this.AUTHORIZATION_HEADER);
   }
 }
 
