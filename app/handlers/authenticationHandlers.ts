@@ -24,6 +24,11 @@ export enum LogInHandlerErrors {
   InvalidPassword = "invalid-password",
 }
 
+type LoginSuccesPlayload = {
+  user: UserTable;
+  token: string;
+};
+
 export const loginHandler = async (params: {
   knex: DBSession;
   res: Response;
@@ -31,7 +36,7 @@ export const loginHandler = async (params: {
   sessionConfig: SessionConfig;
   envConfig: EnvConfig;
   userDL: UserDataLoader;
-}): Promise<Try<UserTable, LogInHandlerErrors>> => {
+}): Promise<Try<LoginSuccesPlayload, LogInHandlerErrors>> => {
   const user = await userDB.getByUsername({
     knex: params.knex,
     username: params.input.username,
@@ -51,14 +56,17 @@ export const loginHandler = async (params: {
     return toFailure(LogInHandlerErrors.InvalidPassword);
   }
 
-  sessionUtils.authentication.generateAndSetToken({
+  const { accessToken } = sessionUtils.authentication.generateAndSetToken({
     res: params.res,
     user,
     sessionConfig: params.sessionConfig,
     envConfig: params.envConfig,
   });
 
-  return toSuccess(user);
+  return toSuccess({
+    user,
+    token: accessToken,
+  });
 };
 
 export const logoutHandler = async (params: {

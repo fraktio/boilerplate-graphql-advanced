@@ -58,8 +58,8 @@ export const createServer: CreateSercerFunction = ({ config }) => {
 
   app.use(graphqlUploadExpress());
   app.use(createLoggerMiddleware({ logger, platformConfig: config.platform }));
-  app.use(createRoutes({ knex, loggingConfig: config.logging }));
   app.use(sessionHandler({ sessionConfig: config.session, knex }));
+  app.use(createRoutes({ knex, loggingConfig: config.logging }));
 
   const context = createContext({ knex, config });
   const httpServer = createHttpServer(app);

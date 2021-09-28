@@ -250,6 +250,7 @@ export type LoginUserResponse = LoginUserFailure | LoginUserSuccess;
 
 export type LoginUserSuccess = {
   __typename?: 'LoginUserSuccess';
+  token: Scalars['String'];
   user: User;
 };
 
@@ -995,6 +996,7 @@ export type LoginUserResponseResolvers<ContextType = Context, ParentType extends
 }>;
 
 export type LoginUserSuccessResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LoginUserSuccess'] = ResolversParentTypes['LoginUserSuccess']> = ResolversObject<{
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

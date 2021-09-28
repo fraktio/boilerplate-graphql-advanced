@@ -56,19 +56,45 @@ class Authentication {
     };
   }
 
-  public verifyToken(params: {
-    req: Request;
-    sessionConfig: SessionConfig;
-  }): Try<JWTAccessPayload, null> {
-    const authHeader = params.req.cookies[this.AUTHORIZATION_HEADER];
+  public getToken(params: { req: Request }): Try<string, null> {
+    const authCookie = params.req.cookies[this.AUTHORIZATION_HEADER];
+
+    if (authCookie) {
+      return toSuccess(authCookie);
+    }
+
+    const authHeader = params.req.headers.authorization;
 
     if (!authHeader) {
       return toFailure(null);
     }
 
+    if (!authHeader.startsWith("Bearer")) {
+      return toFailure(null);
+    }
+
+    const [_, token] = authHeader.split(" ");
+
+    if (token) {
+      return toSuccess(token);
+    }
+
+    return toFailure(null);
+  }
+
+  public verifyToken(params: {
+    req: Request;
+    sessionConfig: SessionConfig;
+  }): Try<JWTAccessPayload, null> {
+    const authToken = this.getToken({ req: params.req });
+
+    if (!authToken.success) {
+      return toFailure(null);
+    }
+
     try {
       const verifiedPayload = verify(
-        authHeader,
+        authToken.value,
         params.sessionConfig.secret,
       ) as JWTAccessPayload;
 

@@ -53,7 +53,8 @@ export const authenticationResolver: Resolvers = {
       if (response.success) {
         return {
           __typename: "LoginUserSuccess",
-          user: response.value,
+          token: response.value.token,
+          user: response.value.user,
         };
       }
 
