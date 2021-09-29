@@ -1,7 +1,7 @@
 import { Gender } from "~/database/person/personQueries";
 import { Resolvers } from "~/generation/generated";
 import {
-  addPersonHandler
+  addPersonHandler,
   // UNCOMMENT ME @ STEP 2 adultEmployersHandler,
   modifyPerson,
   // UNCOMMENT ME @ STEP 1  personsHandler,
