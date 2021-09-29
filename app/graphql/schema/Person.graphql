@@ -119,7 +119,7 @@ type Mutation {
   editPerson(input: EditPersonInput!): EditPersonOutput!
 }
 
-input PersonInput {
+input MutatePersonInput {
   firstName: String! 
   "Last name has to be minimum of 1 chracters and maximum of 50"
   lastName: String!  @length(max:50 min:1)
@@ -132,7 +132,7 @@ input PersonInput {
 }
 
 input AddPersonInput {
-  person: PersonInput!
+  person: MutatePersonInput!
 }
 
 union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
@@ -143,7 +143,7 @@ type AddPersonSuccess {
 
 input EditPersonInput {
   id: UUID!
-  person: PersonInput!
+  person: MutatePersonInput!
 }
 
 union EditPersonOutput = EditPersonSuccess | UniqueConstraintViolationFailure | NotFoundFailure
