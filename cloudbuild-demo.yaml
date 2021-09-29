@@ -114,6 +114,11 @@ steps:
             
             '--update-secrets', 'TOKEN_SECRET=TOKEN_SECRET:latest',
             '--update-secrets', 'DATABASE_PASSWORD=DATABASE_PASSWORD:latest',
+
+            '--update-secrets', 'APOLLO_KEY=APOLLO_KEY:latest',
+            '--update-env-vars', 'APOLLO_GRAPH_ID=Boiler-test',
+            '--update-env-vars', 'APOLLO_GRAPH_VARIANT=current',
+            '--update-env-vars', 'APOLLO_SCHEMA_REPORTING=true',
         ]
 
 tags: ['$PROJECT_ID-$_IMAGE']
