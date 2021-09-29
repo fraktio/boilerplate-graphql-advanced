@@ -62,22 +62,10 @@ export type AddEmployeeSuccess = {
 };
 
 export type AddPersonInput = {
-  person: AddPersonPersonInput;
+  person: PersonInput;
 };
 
 export type AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure;
-
-export type AddPersonPersonInput = {
-  birthday: Scalars['Date'];
-  email: Scalars['EmailAddress'];
-  firstName: Scalars['String'];
-  gender: Gender;
-  /** Last name has to be minimum of 1 chracters and maximum of 50 */
-  lastName: Scalars['String'];
-  nationality: Scalars['CountryCode'];
-  personalIdentityCode: Scalars['PersonalIdentityCode'];
-  phone: Scalars['PhoneNumber'];
-};
 
 export type AddPersonSuccess = {
   __typename?: 'AddPersonSuccess';
@@ -93,9 +81,11 @@ export type Adult = Person & {
   firstName: Scalars['String'];
   gender: Gender;
   id: Scalars['UUID'];
+  /** Requires authentication and ADMIN privileges */
+  internalId: Scalars['ID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
-  /** Requires authentication and ADMIN privileges */
+  /** Requires authentication and USER privileges */
   personalIdentityCode: Scalars['PersonalIdentityCode'];
   phone?: Maybe<Scalars['PhoneNumber']>;
   timestamp: Timestamp;
@@ -184,7 +174,7 @@ export type EditCompanySuccess = {
 
 export type EditPersonInput = {
   id: Scalars['UUID'];
-  person: AddPersonPersonInput;
+  person: PersonInput;
 };
 
 export type EditPersonOutput = EditPersonSuccess | NotFoundFailure | UniqueConstraintViolationFailure;
@@ -359,9 +349,11 @@ export type Person = {
   firstName: Scalars['String'];
   gender: Gender;
   id: Scalars['UUID'];
+  /** Requires authentication and ADMIN privileges */
+  internalId: Scalars['ID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
-  /** Requires authentication and ADMIN privileges */
+  /** Requires authentication and USER privileges */
   personalIdentityCode: Scalars['PersonalIdentityCode'];
   phone?: Maybe<Scalars['PhoneNumber']>;
   timestamp: Timestamp;
@@ -379,7 +371,16 @@ export type PersonFilterOperationInput = {
 };
 
 export type PersonInput = {
+  birthday: Scalars['Date'];
+  email: Scalars['EmailAddress'];
+  firstName: Scalars['String'];
+  gender: Gender;
   id: Scalars['UUID'];
+  /** Last name has to be minimum of 1 chracters and maximum of 50 */
+  lastName: Scalars['String'];
+  nationality: Scalars['CountryCode'];
+  personalIdentityCode: Scalars['PersonalIdentityCode'];
+  phone: Scalars['PhoneNumber'];
 };
 
 export enum PersonSortField {
@@ -537,9 +538,11 @@ export type Underage = Person & {
   firstName: Scalars['String'];
   gender: Gender;
   id: Scalars['UUID'];
+  /** Requires authentication and ADMIN privileges */
+  internalId: Scalars['ID'];
   lastName: Scalars['String'];
   nationality: Scalars['CountryCode'];
-  /** Requires authentication and ADMIN privileges */
+  /** Requires authentication and USER privileges */
   personalIdentityCode: Scalars['PersonalIdentityCode'];
   phone?: Maybe<Scalars['PhoneNumber']>;
   timestamp: Timestamp;
@@ -637,7 +640,6 @@ export type ResolversTypes = ResolversObject<{
   AddEmployeeSuccess: ResolverTypeWrapper<Omit<AddEmployeeSuccess, 'company'> & { company: ResolversTypes['Company'] }>;
   AddPersonInput: AddPersonInput;
   AddPersonOutput: ResolversTypes['AddPersonSuccess'] | ResolversTypes['UniqueConstraintViolationFailure'];
-  AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: ResolverTypeWrapper<Omit<AddPersonSuccess, 'person'> & { person: ResolversTypes['Person'] }>;
   Adult: ResolverTypeWrapper<AdultModel>;
   AuthenticatedUserFailure: ResolverTypeWrapper<AuthenticatedUserFailure>;
@@ -673,6 +675,7 @@ export type ResolversTypes = ResolversObject<{
   FileMetadataSuccess: ResolverTypeWrapper<FileMetadataSuccess>;
   FilterOperator: FilterOperator;
   Gender: Gender;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   InvalidCursorFailure: ResolverTypeWrapper<InvalidCursorFailure>;
   LoginUserFailure: ResolverTypeWrapper<LoginUserFailure>;
@@ -731,7 +734,6 @@ export type ResolversParentTypes = ResolversObject<{
   AddEmployeeSuccess: Omit<AddEmployeeSuccess, 'company'> & { company: ResolversParentTypes['Company'] };
   AddPersonInput: AddPersonInput;
   AddPersonOutput: ResolversParentTypes['AddPersonSuccess'] | ResolversParentTypes['UniqueConstraintViolationFailure'];
-  AddPersonPersonInput: AddPersonPersonInput;
   AddPersonSuccess: Omit<AddPersonSuccess, 'person'> & { person: ResolversParentTypes['Person'] };
   Adult: AdultModel;
   AuthenticatedUserFailure: AuthenticatedUserFailure;
@@ -764,6 +766,7 @@ export type ResolversParentTypes = ResolversObject<{
   FileMetadataInvalidFile: FileMetadataInvalidFile;
   FileMetadataResponse: ResolversParentTypes['FileMetadataInvalidFile'] | ResolversParentTypes['FileMetadataSuccess'];
   FileMetadataSuccess: FileMetadataSuccess;
+  ID: Scalars['ID'];
   Int: Scalars['Int'];
   InvalidCursorFailure: InvalidCursorFailure;
   LoginUserFailure: LoginUserFailure;
@@ -865,6 +868,7 @@ export type AdultResolvers<ContextType = Context, ParentType extends ResolversPa
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  internalId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;
@@ -1052,6 +1056,7 @@ export type PersonResolvers<ContextType = Context, ParentType extends ResolversP
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  internalId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;
@@ -1142,6 +1147,7 @@ export type UnderageResolvers<ContextType = Context, ParentType extends Resolver
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   gender?: Resolver<ResolversTypes['Gender'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  internalId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nationality?: Resolver<ResolversTypes['CountryCode'], ParentType, ContextType>;
   personalIdentityCode?: Resolver<ResolversTypes['PersonalIdentityCode'], ParentType, ContextType>;

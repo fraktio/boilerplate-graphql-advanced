@@ -5,6 +5,8 @@ enum Gender {
 }
 
 interface Person {
+  "Requires authentication and ADMIN privileges"
+  internalId: ID! @auth(requires:ADMIN)
   id: UUID!
   firstName: String!
   lastName: String!
@@ -14,14 +16,16 @@ interface Person {
   birthday: Date! 
   timestamp: Timestamp!
   gender: Gender!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
+  "Requires authentication and USER privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:USER)
 }
 
 """
 Adult is over 16 years old Person
 """
 type Adult implements Person {
+  "Requires authentication and ADMIN privileges"
+  internalId: ID! @auth(requires:ADMIN)
   id: UUID!
   firstName: String!
   lastName: String!
@@ -32,14 +36,16 @@ type Adult implements Person {
   timestamp: Timestamp!
   gender: Gender!
   employers: [Company!]!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
+  "Requires authentication and USER privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:USER)
 }
 
 """
 Underage is under 16 years old Person
 """
 type Underage implements Person {
+  "Requires authentication and ADMIN privileges"
+  internalId: ID! @auth(requires:ADMIN)
   id: UUID!  
   firstName: String! 
   lastName: String! 
@@ -49,8 +55,8 @@ type Underage implements Person {
   birthday: Date!
   timestamp: Timestamp!
   gender: Gender!
-  "Requires authentication and ADMIN privileges"
-  personalIdentityCode: PersonalIdentityCode! @auth(requires:ADMIN)
+  "Requires authentication and USER privileges"
+  personalIdentityCode: PersonalIdentityCode! @auth(requires:USER)
 }
 
 type PersonsPaginationEdge {
@@ -113,7 +119,7 @@ type Mutation {
   editPerson(input: EditPersonInput!): EditPersonOutput!
 }
 
-input AddPersonPersonInput {
+input PersonInput {
   firstName: String! 
   "Last name has to be minimum of 1 chracters and maximum of 50"
   lastName: String!  @length(max:50 min:1)
@@ -126,7 +132,7 @@ input AddPersonPersonInput {
 }
 
 input AddPersonInput {
-  person: AddPersonPersonInput!
+  person: PersonInput!
 }
 
 union AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure
@@ -137,7 +143,7 @@ type AddPersonSuccess {
 
 input EditPersonInput {
   id: UUID!
-  person: AddPersonPersonInput!
+  person: PersonInput!
 }
 
 union EditPersonOutput = EditPersonSuccess | UniqueConstraintViolationFailure | NotFoundFailure
