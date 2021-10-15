@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   dev-db:
+    name: postgres
     image: postgres:13-alpine
     restart: always
     ports:
@@ -10,28 +11,28 @@ services:
       POSTGRES_USER: graphql-boilerplate
       POSTGRES_DB: graphql-boilerplate
 
-  test-db:
-    image: postgres:13-alpine
-    restart: always
-    ports:
-      - 54321:5432
-    environment:
-      POSTGRES_PASSWORD: graphql-boilerplate-test
-      POSTGRES_USER: graphql-boilerplate-test
-      POSTGRES_DB: graphql-boilerplate-test
+  # test-db:
+  #   image: postgres:13-alpine
+  #   restart: always
+  #   ports:
+  #     - 54321:5432
+  #   environment:
+  #     POSTGRES_PASSWORD: graphql-boilerplate-test
+  #     POSTGRES_USER: graphql-boilerplate-test
+  #     POSTGRES_DB: graphql-boilerplate-test
 
-  redis:
-    image: "redis:alpine"
-    command: redis-server
-    ports:
-      - "6379:6379"
-    environment:
-      - REDIS_REPLICATION_MODE=master
+  # redis:
+  #   image: "redis:alpine"
+  #   command: redis-server
+  #   ports:
+  #     - "6379:6379"
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
 
-  test-redis:
-    image: "redis:alpine"
-    command: redis-server
-    ports:
-      - "63791:63791"
-    environment:
-      - REDIS_REPLICATION_MODE=master
+  # test-redis:
+  #   image: "redis:alpine"
+  #   command: redis-server
+  #   ports:
+  #     - "63791:63791"
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
