@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   dev-db:
-    name: postgres
+    container_name: postgres
     image: postgres:13-alpine
     restart: always
     ports:
@@ -10,6 +10,11 @@ services:
       POSTGRES_PASSWORD: graphql-boilerplate
       POSTGRES_USER: graphql-boilerplate
       POSTGRES_DB: graphql-boilerplate
+    networks:
+      - database
+
+networks:
+  database:
 
   # test-db:
   #   image: postgres:13-alpine
