@@ -48,6 +48,7 @@ export const createServer: CreateSercerFunction = ({ config }) => {
     databaseConfig: config.database,
     logger,
     platformConfig: config.platform,
+    debug: config.database.knex.debug,
   });
 
   const redisCache = config.redis.useRedis

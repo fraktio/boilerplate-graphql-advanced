@@ -48,6 +48,7 @@ type ConnectionParams<T extends PlatformConfig = PlatformConfig> = {
   platformConfig: T;
   databaseConfig: DatabaseConfig;
   logger?: Logger;
+  debug?: boolean;
 };
 
 const createConnectionLocal = (
@@ -108,6 +109,7 @@ export const createKnex = (params: ConnectionParams): DBSession =>
 
 export const getConnection = (params: ConnectionParams): Knex.Config => ({
   client: params.databaseConfig.type,
+  debug: params.debug || false,
   connection: createConnection(params),
   migrations: {
     directory: "./migrations",

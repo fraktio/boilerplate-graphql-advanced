@@ -62,7 +62,7 @@ export type AddEmployeeSuccess = {
 };
 
 export type AddPersonInput = {
-  person: PersonInput;
+  person: MutatePersonInput;
 };
 
 export type AddPersonOutput = AddPersonSuccess | UniqueConstraintViolationFailure;
@@ -174,7 +174,7 @@ export type EditCompanySuccess = {
 
 export type EditPersonInput = {
   id: Scalars['UUID'];
-  person: PersonInput;
+  person: MutatePersonInput;
 };
 
 export type EditPersonOutput = EditPersonSuccess | NotFoundFailure | UniqueConstraintViolationFailure;
@@ -242,6 +242,18 @@ export type LoginUserSuccess = {
   __typename?: 'LoginUserSuccess';
   token: Scalars['String'];
   user: User;
+};
+
+export type MutatePersonInput = {
+  birthday: Scalars['Date'];
+  email: Scalars['EmailAddress'];
+  firstName: Scalars['String'];
+  gender: Gender;
+  /** Last name has to be minimum of 1 chracters and maximum of 50 */
+  lastName: Scalars['String'];
+  nationality: Scalars['CountryCode'];
+  personalIdentityCode: Scalars['PersonalIdentityCode'];
+  phone: Scalars['PhoneNumber'];
 };
 
 export type Mutation = {
@@ -371,16 +383,7 @@ export type PersonFilterOperationInput = {
 };
 
 export type PersonInput = {
-  birthday: Scalars['Date'];
-  email: Scalars['EmailAddress'];
-  firstName: Scalars['String'];
-  gender: Gender;
   id: Scalars['UUID'];
-  /** Last name has to be minimum of 1 chracters and maximum of 50 */
-  lastName: Scalars['String'];
-  nationality: Scalars['CountryCode'];
-  personalIdentityCode: Scalars['PersonalIdentityCode'];
-  phone: Scalars['PhoneNumber'];
 };
 
 export enum PersonSortField {
@@ -682,6 +685,7 @@ export type ResolversTypes = ResolversObject<{
   LoginUserInput: LoginUserInput;
   LoginUserResponse: ResolversTypes['LoginUserFailure'] | ResolversTypes['LoginUserSuccess'];
   LoginUserSuccess: ResolverTypeWrapper<Omit<LoginUserSuccess, 'user'> & { user: ResolversTypes['User'] }>;
+  MutatePersonInput: MutatePersonInput;
   Mutation: ResolverTypeWrapper<{}>;
   NotFoundFailure: ResolverTypeWrapper<NotFoundFailure>;
   NumberFact: ResolverTypeWrapper<NumberFact>;
@@ -773,6 +777,7 @@ export type ResolversParentTypes = ResolversObject<{
   LoginUserInput: LoginUserInput;
   LoginUserResponse: ResolversParentTypes['LoginUserFailure'] | ResolversParentTypes['LoginUserSuccess'];
   LoginUserSuccess: Omit<LoginUserSuccess, 'user'> & { user: ResolversParentTypes['User'] };
+  MutatePersonInput: MutatePersonInput;
   Mutation: {};
   NotFoundFailure: NotFoundFailure;
   NumberFact: NumberFact;

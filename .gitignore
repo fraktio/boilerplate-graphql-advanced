@@ -4,7 +4,8 @@ build
 .serverless
 .webpack
 .webpackCache
-
+.env
+x
 coverage
 
 node_modules
