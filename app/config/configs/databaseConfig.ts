@@ -5,12 +5,17 @@ import {
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
+  KNEX_DEBUG,
 } from "~/config/envNames";
-import { getEnv, getEnvInt } from "~/config/getters";
+import { getEnv, getEnvInt, getEnvBool } from "~/config/getters";
 
 const allowedDatabaseTypes = ["pg" as const];
 
 type DatabaseType = typeof allowedDatabaseTypes[number];
+
+export type KnexConfig = {
+  debug: boolean;
+};
 
 export type DatabaseConfig = {
   type: DatabaseType;
@@ -19,6 +24,7 @@ export type DatabaseConfig = {
   port: number;
   password: string;
   databaseName: string;
+  knex: KnexConfig;
 };
 
 export const createDatabaseConfig = (): DatabaseConfig => ({
@@ -28,4 +34,7 @@ export const createDatabaseConfig = (): DatabaseConfig => ({
   port: getEnvInt(DATABASE_PORT),
   password: getEnv(DATABASE_PASSWORD),
   databaseName: getEnv(DATABASE_NAME),
+  knex: {
+    debug: getEnvBool(KNEX_DEBUG),
+  },
 });

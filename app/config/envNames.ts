@@ -25,6 +25,9 @@ export const DATABASE_PORT = "DATABASE_PORT";
 export const DATABASE_PASSWORD = "DATABASE_PASSWORD";
 export const DATABASE_NAME = "DATABASE_NAME";
 
+// Database - Knex
+export const KNEX_DEBUG = "KNEX_DEBUG";
+
 // Redis
 export const IS_REDIS_USED = "IS_REDIS_USED";
 export const REDIS_HOST = "REDIS_HOST";
