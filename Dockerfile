@@ -1,4 +1,4 @@
-FROM node:16-slim@sha256:af6f241029c4d63107c6ccbbd030c44d331786d724bd9c2e615edf46deab58e2 as build
+FROM node:16-slim@sha256:230c2b1d462d7dcb61cb7141b16b19aba1844a3679ee5d99e2d94a327cad85ea as build
 WORKDIR /app
 
 # Copy application dependency manifests to the container image.
@@ -12,7 +12,7 @@ RUN npm run postinstall
 RUN npm prune --production
 
 
-FROM node:16-slim@sha256:af6f241029c4d63107c6ccbbd030c44d331786d724bd9c2e615edf46deab58e2 as release
+FROM node:16-slim@sha256:230c2b1d462d7dcb61cb7141b16b19aba1844a3679ee5d99e2d94a327cad85ea as release
 WORKDIR /home/node
 COPY --chown=node:node --from=build /app/dist ./
 COPY --chown=node:node --from=build /app/node_modules ./node_modules
