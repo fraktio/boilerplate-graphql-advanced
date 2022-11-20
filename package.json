@@ -114,7 +114,7 @@
     "serverless": "2.58.0",
     "serverless-offline": "8.1.0",
     "serverless-plugin-typescript": "2.0.0",
-    "serverless-prune-plugin": "1.5.1",
+    "serverless-prune-plugin": "1.6.1",
     "serverless-vpc-plugin": "1.0.4",
     "serverless-webpack": "5.5.4",
     "supertest": "6.1.6",
