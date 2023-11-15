@@ -119,7 +119,7 @@
     "serverless-webpack": "5.5.4",
     "supertest": "6.1.6",
     "ts-jest": "27.0.5",
-    "ts-loader": "9.2.5",
+    "ts-loader": "9.5.1",
     "ts-node": "10.2.1",
     "tsconfig-paths": "3.11.0",
     "typescript": "4.4.3",
