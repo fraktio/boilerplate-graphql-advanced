@@ -63,7 +63,7 @@
     "iso-3166-ts": "2.1.0",
     "jsonwebtoken": "8.5.1",
     "knex": "0.95.11",
-    "libphonenumber-js": "1.9.32",
+    "libphonenumber-js": "1.11.12",
     "luxon": "2.0.2",
     "pg": "8.7.1",
     "serverless-http": "2.7.0",
